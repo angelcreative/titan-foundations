@@ -1,0 +1,31 @@
+{
+  "select": {
+    "description": "Select (botón + popover + lista de opciones). Estructura React Aria: Select, SelectValue, Button (trigger), Popover, ListBox, ListBoxItem.",
+    "aria": "Select + SelectValue + Button[data-slot=trigger] + Popover[data-slot=listbox] + ListBox + ListBoxItem (react-aria-components).",
+    "tokens": {
+      "trigger": {
+        "height": "var(--select-button-height)",
+        "padX": "var(--select-button-pad-x)",
+        "background": "var(--select-button-bg)",
+        "color": "var(--select-button-color)",
+        "border": "var(--select-button-border)",
+        "radius": "var(--select-radius)"
+      },
+      "popover": {
+        "background": "var(--select-popover-bg)",
+        "color": "var(--select-popover-color)",
+        "shadow": "var(--select-popover-shadow)",
+        "radius": "var(--select-popover-radius)"
+      },
+      "item": {
+        "height": "var(--select-item-height)",
+        "padX": "var(--select-item-pad-x)",
+        "radius": "var(--select-item-radius)",
+        "bgFocused": "var(--select-item-focused-bg)",
+        "bgPressed": "var(--select-item-pressed-bg)",
+        "bgSelected": "var(--select-item-selected-bg)"
+      }
+    },
+    "themes": "Cada tema define: --select-button-border, --select-button-color, --select-popover-color, --select-listbox-item-focused-background, --select-listbox-item-pressed-background, --select-listbox-item-selected-background."
+  }
+}

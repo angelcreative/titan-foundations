@@ -1,0 +1,33 @@
+{
+  "menu": {
+    "description": "Menú desplegable (y submenús) con ítems accionables. Estructura React Aria: MenuTrigger, Menu, MenuItem. Submenus usan los mismos tokens (heredan).",
+    "aria": "MenuTrigger + Menu + MenuItem (react-aria-components). Submenus: mismo Menu/MenuItem anidado.",
+    "tokens": {
+      "container": {
+        "minWidth": "var(--menu-min-width)",
+        "maxWidth": "var(--menu-max-width)",
+        "background": "var(--menu-bg)",
+        "color": "var(--menu-color)",
+        "radius": "var(--menu-radius)",
+        "shadow": "var(--menu-shadow)"
+      },
+      "item": {
+        "height": "var(--menu-item-height)",
+        "radius": "var(--menu-item-radius)",
+        "padX": "var(--pad-m)",
+        "bgHover": "var(--menu-item-hover-bg)",
+        "bgPressed": "var(--menu-item-pressed-bg)",
+        "bgSelected": "var(--menu-item-selected-bg)",
+        "colorDisabled": "var(--menu-item-disabled)",
+        "icon": "var(--menu-item-icon)"
+      },
+      "destructive": {
+        "color": "var(--menu-item-destructive-color)",
+        "bgHover": "var(--menu-item-destructive-hover-bg)",
+        "bgPressed": "var(--menu-item-destructive-pressed-bg)",
+        "icon": "var(--menu-item-destructive-icon)"
+      }
+    },
+    "submenu": "Los submenus (menús anidados) usan los mismos tokens que el menú principal; no hay tokens --submenu-*. Estilos en titan-aria: .react-aria-Menu y .react-aria-MenuItem aplican a cualquier nivel."
+  }
+}

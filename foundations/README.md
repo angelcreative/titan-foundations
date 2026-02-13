@@ -12,6 +12,10 @@ Specs en JSON y convenciones para que implementaciones (o Cursor/MCP) puedan rep
 
 - **`drawer.json`** — Drawer: panel deslizante con overlay debajo; header (título + botón cerrar X ghost) y body. Ver [docs/drawer.md](../docs/drawer.md).
 
+- **`menu.json`** — Menu (y submenus): tokens de contenedor e ítems; estructura MenuTrigger, Menu, MenuItem (titan-aria). Submenus heredan los mismos tokens. Ver [docs/menu-and-select.md](../docs/menu-and-select.md).
+
+- **`select.json`** — Select: trigger + popover + listbox; tokens de botón, popover e ítems; estructura Select, Button, Popover, ListBox, ListBoxItem (titan-aria). Ver [docs/menu-and-select.md](../docs/menu-and-select.md).
+
 ## Uso
 
 Al montar el repo de tokens, se puede indicar a Cursor (o al MCP): *“Para tablas tipo reportes, usa la spec `foundations/table-borderless.json` y los tokens documentados en `docs/table-borderless.md`.”* Para navbars: *“Para una navbar del tema demand (o cualquier tema), usa la spec `foundations/navbar.json` y coloca el logo correspondiente a la izquierda.”*

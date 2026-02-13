@@ -4,8 +4,8 @@ Los logos de producto viven en **`assets/logos/`**. Cada archivo es un SVG con n
 
 ## Izquierda de la navbar: icono 9 puntos + logo
 
-- **Orden fijo:** primero el **icono de 9 puntos** (app launcher / waffle), luego el **logo**.
-- El icono de 9 puntos va **siempre a la izquierda del logo**. Lucide: **`LayoutGrid`** (rejilla 3×3).
+- **Orden fijo (obligatorio):** primero el **icono de 9 puntos** (app launcher / waffle), luego el **logo**. El icono va siempre a la izquierda del logo; nunca al revés ni sin el icono.
+- Lucide: **`LayoutGrid`** (rejilla 3×3).
 - El logo se elige según el tema (`data-theme`); sin texto adicional.
 
 ## Mapeo tema → logo

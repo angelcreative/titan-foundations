@@ -17,7 +17,7 @@ Cuando se pida una **navbar** para un tema (p. ej. "navbar demand", "navbar them
    - Tema **tweetbinder** → `src="/assets/logos/logo-tweetbinder.svg"`
    - Tema **connect** → `src="/assets/logos/logo-connect.svg"`
 
-2. **Izquierda, orden fijo:** Primero **LayoutGrid** (9 puntos), luego el **logo** (img con la src anterior). Sin texto junto al logo.
+2. **Izquierda, orden fijo (obligatorio):** El icono de 9 puntos (**LayoutGrid**) va SIEMPRE a la izquierda del logo. Orden: [LayoutGrid] [logo]. Nunca al revés ni sin el icono. Sin texto junto al logo.
 
 3. **Derecha:** Ítems de utilidad + **avatar** (tokens de avatar de Titan).
 

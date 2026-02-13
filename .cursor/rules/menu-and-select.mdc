@@ -1,0 +1,20 @@
+---
+description: Menu, submenus y Select — usar tokens Titan y estructura React Aria (titan-aria)
+globs: ["**/*[Mm]enu*", "**/*[Ss]elect*", "**/*Popover*", "**/*ListBox*"]
+alwaysApply: false
+---
+
+# Menu y Select (Titan)
+
+## Menu (y submenus)
+
+- **Estructura:** MenuTrigger, Menu, MenuItem (react-aria-components / titan-aria). Submenus = mismo Menu/MenuItem anidado.
+- **Tokens:** Usar --menu-min-width, --menu-bg, --menu-color, --menu-radius, --menu-shadow para el contenedor; --menu-item-height, --menu-item-hover-bg, --menu-item-pressed-bg, --menu-item-selected-bg, --menu-item-disabled, --menu-item-icon para ítems. Destructivo: --menu-item-destructive-*.
+- **Submenus:** No hay tokens --submenu-*; heredan los del menú. Misma estructura Aria y mismas clases .react-aria-Menu / .react-aria-MenuItem.
+- **Spec:** foundations/menu.json. Doc: docs/menu-and-select.md.
+
+## Select
+
+- **Estructura:** Select, SelectValue, Button (trigger), Popover (data-slot="listbox"), ListBox, ListBoxItem (titan-aria).
+- **Tokens:** Trigger: --select-button-height, --select-button-bg, --select-button-color, --select-button-border. Popover: --select-popover-bg, --select-popover-color, --select-popover-shadow, --select-popover-radius. Ítems: --select-item-height, --select-item-focused-bg, --select-item-pressed-bg, --select-item-selected-bg (los colores vienen del tema).
+- **Spec:** foundations/select.json. Doc: docs/menu-and-select.md.
