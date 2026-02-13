@@ -427,3 +427,48 @@
   font-family: var(--type-font);
   max-width: 280px;
 }
+
+/* ========== Card (Titan layout component) ========== */
+.titan-Card {
+  background: var(--card-bg);
+  border-radius: var(--card-radius);
+  border: var(--card-border-width) solid var(--card-border-color);
+  box-shadow: var(--card-shadow);
+  padding: var(--card-pad);
+  display: flex;
+  flex-direction: column;
+  gap: var(--card-slot-gap);
+  font-family: var(--type-font);
+  transition: box-shadow 0.12s;
+}
+.titan-Card:hover {
+  box-shadow: var(--card-shadow-hover);
+}
+.titan-Card-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--card-header-slot-gap);
+}
+.titan-Card-title {
+  font-weight: var(--font-weight-600);
+  font-size: var(--font-size-l);
+  line-height: var(--font-leading-l);
+  color: var(--card-title-slot-color);
+}
+.titan-Card-subtitle {
+  font-weight: var(--font-weight-400);
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+  color: var(--card-meta-slot-color);
+}
+.titan-Card-body {
+  font-size: var(--font-size-m);
+  line-height: var(--font-leading-m);
+  color: var(--card-body-slot-color);
+}
+.titan-Card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2xs);
+  margin-top: auto;
+}

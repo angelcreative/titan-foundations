@@ -22,6 +22,10 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 var index_exports = {};
 __export(index_exports, {
   Button: () => Button,
+  Card: () => Card,
+  CardActions: () => CardActions,
+  CardBody: () => CardBody,
+  CardHeader: () => CardHeader,
   Checkbox: () => import_react_aria_components2.Checkbox,
   CheckboxGroup: () => import_react_aria_components2.CheckboxGroup,
   Dialog: () => import_react_aria_components2.Dialog,
@@ -62,11 +66,44 @@ function Button({ variant = "primary", ...props }) {
   return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(import_react_aria_components.Button, { "data-variant": variant, ...props });
 }
 
+// src/Card.tsx
+var import_jsx_runtime2 = require("react/jsx-runtime");
+function Card({ children, className = "", ...props }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+    "div",
+    {
+      className: `titan-Card ${className}`.trim(),
+      "data-slot": "card",
+      ...props,
+      children
+    }
+  );
+}
+function CardHeader({ title, subtitle, className = "", ...props }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: `titan-Card-header ${className}`.trim(), ...props, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "titan-Card-title", children: title }),
+    subtitle != null && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "titan-Card-subtitle", children: subtitle })
+  ] });
+}
+function CardBody({ children, className = "", ...props }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: `titan-Card-body ${className}`.trim(), ...props, children });
+}
+function CardActions({ children, className = "", ...props }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: `titan-Card-actions ${className}`.trim(), ...props, children });
+}
+Card.Header = CardHeader;
+Card.Body = CardBody;
+Card.Actions = CardActions;
+
 // src/index.ts
 var import_react_aria_components2 = require("react-aria-components");
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   Button,
+  Card,
+  CardActions,
+  CardBody,
+  CardHeader,
   Checkbox,
   CheckboxGroup,
   Dialog,

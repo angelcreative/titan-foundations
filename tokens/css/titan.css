@@ -1,3 +1,8 @@
+/**
+ * Titan base — foundations (colors, spacing, typography, borders, elevation)
+ * and semantic/component tokens. No themes; load a theme from tokens/themes/
+ * (e.g. _neutral.css, _demand.css) and set html[data-theme="…"].
+ */
 :root {
   --color-white-10: rgba(255, 255, 255, 0.1);
   --color-white-20: rgba(255, 255, 255, 0.2);
@@ -478,12 +483,72 @@
   --color-pomegranate-800: #b52f0b;
   --color-pomegranate-900: #89250a;
 }
-/**
- * Do not edit directly, this file was auto-generated.
- */
+
 /* ========================================================================== */
-/* APPEND-ONLY TOKENS (semantic + component)                                   */
-/* Do not edit existing tokens above. Paste this BELOW your current titan.css  */
+/* FOUNDATIONS (from tokens/foundations) — required by semantic layer          */
+/* Load a theme (e.g. _neutral.css, _demand.css) for full semantics.          */
+/* ========================================================================== */
+:root {
+  /* Spacing (foundations/spacing.json) */
+  --spacing-5xs: 2px;
+  --spacing-4xs: 4px;
+  --spacing-3xs: 6px;
+  --spacing-2xs: 8px;
+  --spacing-xs: 10px;
+  --spacing-s: 12px;
+  --spacing-m: 16px;
+  --spacing-l: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 40px;
+  --spacing-3xl: 48px;
+  --spacing-4xl: 64px;
+  --spacing-5xl: 80px;
+  --spacing-6xl: 96px;
+  --spacing-7xl: 160px;
+
+  /* Typography (foundations/typography.json) */
+  --font-audiense: "Poppins", sans-serif;
+  --font-size-s: 12px;
+  --font-size-m: 14px;
+  --font-size-l: 16px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 32px;
+  --font-size-4xl: 46px;
+  --font-leading-s: 16px;
+  --font-leading-m: 18px;
+  --font-leading-l: 20px;
+  --font-leading-xl: 22px;
+  --font-leading-2xl: 24px;
+  --font-leading-3xl: 28px;
+  --font-leading-4xl: 36px;
+  --font-leading-5xl: 50px;
+  --font-weight-400: 400;
+  --font-weight-500: 500;
+  --font-weight-600: 600;
+  --font-decoration-underline: underline;
+
+  /* Borders (foundations/borders.json) */
+  --rounded-xs: 4px;
+  --rounded-s: 8px;
+  --rounded-m: 12px;
+  --rounded-l: 16px;
+  --rounded-xl: 20px;
+  --stroke-s: 1px;
+  --stroke-m: 2px;
+  --stroke-l: 3px;
+  --stroke-xl: 4px;
+
+  /* Elevation (foundations/elevation.json) */
+  --box-shadow-0: 0 0 8px 0 var(--color-steel-10);
+  --box-shadow-1: 0 4px 12px 0 var(--color-steel-10);
+  --box-shadow-2: 0 5px 16px 0 var(--color-steel-10);
+  --box-shadow-3: 0 6px 20px 0 var(--color-steel-10);
+  --box-shadow-4: 0 7px 24px 0 var(--color-steel-10);
+}
+
+/* ========================================================================== */
+/* SEMANTIC + COMPONENT TOKENS (no theme; themes live in tokens/themes/)     */
 /* ========================================================================== */
 
 :root {
@@ -778,216 +843,6 @@
 }
 
 /* ========================================================================== */
-/* Theme completion blocks (append-only)                                       */
-/* - You already have audiense / demand / tweetbinder.                         */
-/* - Add insights (blueberry) and digital (indigo).                             */
-/* ========================================================================== */
-
-html[data-theme="insights"] {
-  /* Border */
-  --border: var(--color-steel-200);
-  --border-interactive: var(--color-blueberry-300);
-
-  /* Text */
-  --text-primary-active: var(--color-blueberry-700);
-  --text-primary: var(--color-steel-700);
-
-  --text-secondary: var(--color-blueberry-600);
-  --text-icon-secondary: var(--color-blueberry-600);
-  --text-icon-secondary-hover: var(--color-blueberry-500);
-  --text-icon-secondary-active: var(--color-blueberry-400);
-
-  --background-success: var(--color-blueberry-200);
-  --text-icon-success: var(--color-blueberry-600);
-  --text-success-on-color: var(--color-blueberry-700);
-
-  /* Buttons */
-  --button-primary: var(--color-blueberry-600);
-  --button-primary-hover: var(--color-blueberry-500);
-  --button-primary-active: var(--color-blueberry-700);
-
-  --button-secondary: var(--color-blueberry-200);
-  --button-secondary-hover: var(--color-blueberry-200);
-  --button-secondary-active: var(--color-blueberry-300);
-
-  --button-tertiary-hover: var(--color-blueberry-100);
-  --button-tertiary-active: var(--color-blueberry-200);
-
-  /* Text on buttons */
-  --text-on-primary: var(--color-white-900);
-  --text-on-button-primary: var(--text-on-primary);
-
-  /* Text button (variant="text") */
-  --text-button-color: var(--color-blueberry-600);
-  --text-button-hover-color: var(--color-blueberry-500);
-  --text-button-active-color: var(--color-blueberry-400);
-
-  /* Tabs */
-  --tab-selected-background: var(--color-blueberry-100);
-  --tab-text: var(--color-steel-700);
-  --tab-text-selected: var(--color-blueberry-800);
-
-  /* Checkbox */
-  --checkbox-border: var(--color-steel-700);
-  --checkbox-border-hover: var(--color-blueberry-500);
-  --checkbox-selected-border: var(--color-blueberry-600);
-  --checkbox-selected-background: var(--color-blueberry-600);
-  --checkbox-selected-background-hover: var(--color-blueberry-500);
-
-  /* Radio */
-  --radio-button-border: var(--color-steel-700);
-  --radio-button-border-hover: var(--color-blueberry-600);
-  --radio-button-selected-border: var(--color-blueberry-600);
-  --radio-button-selected-border-hover: var(--color-blueberry-500);
-
-  /* Pagination */
-  --pagination-color: var(--color-steel-900);
-  --pagination-page-button-background-hover: var(--color-steel-10);
-  --pagination-page-button-background-active: var(--color-steel-40);
-
-  /* Table */
-  --table-actionable-row-hover: var(--color-blueberry-100);
-  --table-header-border-bottom: var(--color-steel-300);
-  --table-cell-border-bottom: var(--color-steel-200);
-
-  /* Button group */
-  --button-group-border: var(--color-steel-400);
-  --button-group-color: var(--color-steel-600);
-  --button-group-icon-color: var(--color-steel-500);
-  --button-group-hover-color: var(--color-steel-800);
-  --button-group-hover-icon-color: var(--color-steel-700);
-  --button-group-selected-icon-color: var(--color-blueberry-700);
-  --button-group-selected-background: var(--color-blueberry-100);
-  --button-group-selected-color: var(--color-blueberry-800);
-
-  /* Select */
-  --select-button-border: var(--color-steel-300);
-  --select-button-color: var(--color-steel-700);
-  --select-popover-color: var(--color-steel-700);
-  --select-listbox-item-focused-background: var(--color-blueberry-100);
-  --select-listbox-item-pressed-background: var(--color-blueberry-200);
-  --select-listbox-item-selected-background: var(--color-blueberry-200);
-
-  /* Link */
-  --link-color: var(--color-blueberry-700);
-  --link-visited-color: var(--color-blueberry-900);
-  --link-icon-color: var(--color-blueberry-600);
-  --link-visited-icon-color: var(--color-blueberry-800);
-
-  /* Text input */
-  --input-placeholder-text: var(--color-steel-400);
-  --input-field-text: var(--color-steel-800);
-  --input-stroke: var(--color-steel-300);
-  --input-stroke-hover: var(--color-blueberry-600);
-  --input-stroke-focus: var(--color-steel-800);
-  --input-icon: var(--color-steel-300);
-  --input-icon-focus: var(--color-steel-700);
-  --input-element: var(--color-steel-600);
-}
-
-html[data-theme="digital"] {
-  /* Border */
-  --border: var(--color-steel-200);
-  --border-interactive: var(--color-indigo-300);
-
-  /* Text */
-  --text-primary-active: var(--color-indigo-700);
-  --text-primary: var(--color-steel-700);
-
-  --text-secondary: var(--color-indigo-600);
-  --text-icon-secondary: var(--color-indigo-600);
-  --text-icon-secondary-hover: var(--color-indigo-500);
-  --text-icon-secondary-active: var(--color-indigo-400);
-
-  /* Buttons */
-  --button-primary: var(--color-indigo-600);
-  --button-primary-hover: var(--color-indigo-500);
-  --button-primary-active: var(--color-indigo-700);
-
-  --button-secondary: var(--color-indigo-200);
-  --button-secondary-hover: var(--color-indigo-200);
-  --button-secondary-active: var(--color-indigo-300);
-
-  --button-tertiary-hover: var(--color-indigo-100);
-  --button-tertiary-active: var(--color-indigo-200);
-
-  /* Text on buttons */
-  --text-on-primary: var(--color-white-900);
-  --text-on-button-primary: var(--text-on-primary);
-
-  /* Text button */
-  --text-button-color: var(--color-indigo-600);
-  --text-button-hover-color: var(--color-indigo-500);
-  --text-button-active-color: var(--color-indigo-400);
-
-  /* Tabs */
-  --tab-selected-background: var(--color-indigo-100);
-  --tab-text: var(--color-steel-700);
-  --tab-text-selected: var(--color-indigo-800);
-
-  /* Checkbox */
-  --checkbox-border: var(--color-steel-700);
-  --checkbox-border-hover: var(--color-indigo-500);
-  --checkbox-selected-border: var(--color-indigo-600);
-  --checkbox-selected-background: var(--color-indigo-600);
-  --checkbox-selected-background-hover: var(--color-indigo-500);
-
-  /* Radio */
-  --radio-button-border: var(--color-steel-700);
-  --radio-button-border-hover: var(--color-indigo-600);
-  --radio-button-selected-border: var(--color-indigo-600);
-  --radio-button-selected-border-hover: var(--color-indigo-500);
-
-  /* Table */
-  --table-actionable-row-hover: var(--color-indigo-100);
-  --table-header-border-bottom: var(--color-steel-300);
-  --table-cell-border-bottom: var(--color-steel-200);
-
-  /* Button group */
-  --button-group-border: var(--color-steel-400);
-  --button-group-color: var(--color-steel-600);
-  --button-group-icon-color: var(--color-steel-500);
-  --button-group-hover-color: var(--color-steel-800);
-  --button-group-hover-icon-color: var(--color-steel-700);
-  --button-group-selected-icon-color: var(--color-indigo-700);
-  --button-group-selected-background: var(--color-indigo-100);
-  --button-group-selected-color: var(--color-indigo-800);
-
-  /* Select */
-  --select-button-border: var(--color-steel-300);
-  --select-button-color: var(--color-steel-700);
-  --select-popover-color: var(--color-steel-700);
-  --select-listbox-item-focused-background: var(--color-indigo-100);
-  --select-listbox-item-pressed-background: var(--color-indigo-200);
-  --select-listbox-item-selected-background: var(--color-indigo-200);
-
-  /* Link */
-  --link-color: var(--color-indigo-700);
-  --link-visited-color: var(--color-indigo-900);
-  --link-icon-color: var(--color-indigo-600);
-  --link-visited-icon-color: var(--color-indigo-800);
-
-  /* Text input */
-  --input-placeholder-text: var(--color-steel-400);
-  --input-field-text: var(--color-steel-800);
-  --input-stroke: var(--color-steel-300);
-  --input-stroke-hover: var(--color-indigo-600);
-  --input-stroke-focus: var(--color-steel-800);
-  --input-icon: var(--color-steel-300);
-  --input-icon-focus: var(--color-steel-700);
-  --input-element: var(--color-steel-600);
-}
-
-
-
-/* ========================================================================== */
-/* Default (black) explicit theme alias (optional but safe)                    */
-/* ========================================================================== */
-html[data-theme="default"] {
-  /* This just relies on the base html :root tokens you already set (black). */
-}
-
-/* ========================================================================== */
 /* APPEND-ONLY: Component-level tokens (fully “closed” per component)         */
 /* Paste BELOW your current titan.css. Do not edit existing tokens above.     */
 /* ========================================================================== */
@@ -1133,6 +988,7 @@ html[data-theme="default"] {
   --helper-font-size: var(--font-size-s);    /* 12 */
   --helper-line-height: var(--font-leading-s);
   --helper-color: var(--color-steel-600);
+  --field-error-color: var(--color-error-600);
 
   --input-font-family: var(--type-font);
   --input-font-weight: var(--font-weight-400);
@@ -1410,43 +1266,6 @@ html[data-theme="default"] {
   --skeleton-shimmer: var(--color-black-10);
   --skeleton-radius: var(--radius-control);
 }
-
-/* ========================================================================== */
-/* THEME SAFETY: Keep copy + icons on theme consistent (no color repetition)  */
-/* - Nothing here sets raw colors; it only re-aliases semantic tokens.        */
-/* ========================================================================== */
-
-html[data-theme] {
-  /* Primary on-color stays white */
-  --text-on-primary: var(--color-white-900);
-  --text-on-button-primary: var(--text-on-primary);
-
-  /* Default copy always steel */
-  --copy-primary: var(--color-steel-900);
-  --copy-secondary: var(--color-steel-800);
-  --copy-muted: var(--color-steel-600);
-
-  /* Default icons always steel */
-  --icon-primary: var(--color-steel-800);
-  --icon-secondary: var(--color-steel-700);
-  --icon-muted: var(--color-steel-600);
-}
-
-/* ========================================================================== */
-/* OPTIONAL: per-theme icon-on-color alignment (still no raw colors)          */
-/* ========================================================================== */
-
-html[data-theme="audiense"],
-html[data-theme="demand"],
-html[data-theme="insights"],
-html[data-theme="tweetbinder"],
-html[data-theme="digital"],
-html[data-theme="linkedin"] {
-  --btn-primary-icon: var(--icon-on-color);
-  --btn-secondary-icon: var(--text-button-color);
-  --btn-tertiary-icon: var(--text-button-color);
-}
-
 
 /* ========================================================================== */
 /* APPEND-ONLY: Slot tokens per component (ultra-closed)                      */
@@ -2040,23 +1859,6 @@ html[data-theme="linkedin"] {
 }
 
 /* ========================================================================== */
-/* THEME NORMALIZATION (no raw colors; only aliases)                          */
-/* - Ensures primary button label/icon are always on-color                     */
-/* - Ensures secondary/tertiary labels follow text-button-color                */
-/* ========================================================================== */
-
-html[data-theme] {
-  --button-primary-slot-label: var(--text-on-primary);
-  --button-primary-slot-icon: var(--icon-slot-on-color);
-
-  --button-secondary-slot-label: var(--text-button-color);
-  --button-secondary-slot-icon: var(--text-button-color);
-
-  --button-tertiary-slot-label: var(--text-button-color);
-  --button-tertiary-slot-icon: var(--text-button-color);
-}
-
-/* ========================================================================== */
 /* APPEND-ONLY: Missing component closures + state formalization              */
 /* Paste at the VERY END of titan.css                                         */
 /* ========================================================================== */
@@ -2262,79 +2064,3 @@ html[data-theme] {
   --textfield-icon-disabled: var(--input-icon-disabled-color);
 }
 
-/* ========================================================================== */
-/* APPEND-ONLY: Theme safety overrides (no edits above)                        */
-/* Fix accidental aquamarine primary in linkedin & tweetbinder                 */
-/* ========================================================================== */
-
-html[data-theme="linkedin"] {
-  --button-primary: var(--color-indigo-600);
-  --button-primary-hover: var(--color-indigo-500);
-  --button-primary-active: var(--color-indigo-700);
-
-  --button-secondary: var(--color-indigo-200);
-  --button-secondary-hover: var(--color-indigo-200);
-  --button-secondary-active: var(--color-indigo-300);
-
-  --button-tertiary-hover: var(--color-indigo-100);
-  --button-tertiary-active: var(--color-indigo-200);
-
-  --text-button-color: var(--color-indigo-600);
-  --text-button-hover-color: var(--color-indigo-500);
-  --text-button-active-color: var(--color-indigo-400);
-
-  --link-color: var(--color-indigo-700);
-  --link-visited-color: var(--color-indigo-900);
-  --link-icon-color: var(--color-indigo-600);
-  --link-visited-icon-color: var(--color-indigo-800);
-
-  --tab-selected-background: var(--color-indigo-100);
-  --tab-text-selected: var(--color-indigo-800);
-
-  --checkbox-border-hover: var(--color-indigo-500);
-  --checkbox-selected-border: var(--color-indigo-600);
-  --checkbox-selected-background: var(--color-indigo-600);
-  --checkbox-selected-background-hover: var(--color-indigo-500);
-
-  --radio-button-border-hover: var(--color-indigo-600);
-  --radio-button-selected-border: var(--color-indigo-600);
-  --radio-button-selected-border-hover: var(--color-indigo-500);
-
-  --table-actionable-row-hover: var(--color-indigo-100);
-}
-
-html[data-theme="tweetbinder"] {
-  --button-primary: var(--color-ocean-600);
-  --button-primary-hover: var(--color-ocean-500);
-  --button-primary-active: var(--color-ocean-700);
-
-  --button-secondary: var(--color-ocean-200);
-  --button-secondary-hover: var(--color-ocean-200);
-  --button-secondary-active: var(--color-ocean-300);
-
-  --button-tertiary-hover: var(--color-ocean-100);
-  --button-tertiary-active: var(--color-ocean-200);
-
-  --text-button-color: var(--color-ocean-600);
-  --text-button-hover-color: var(--color-ocean-500);
-  --text-button-active-color: var(--color-ocean-400);
-
-  --link-color: var(--color-ocean-700);
-  --link-visited-color: var(--color-ocean-900);
-  --link-icon-color: var(--color-ocean-600);
-  --link-visited-icon-color: var(--color-ocean-800);
-
-  --tab-selected-background: var(--color-ocean-100);
-  --tab-text-selected: var(--color-ocean-800);
-
-  --checkbox-border-hover: var(--color-ocean-500);
-  --checkbox-selected-border: var(--color-ocean-600);
-  --checkbox-selected-background: var(--color-ocean-600);
-  --checkbox-selected-background-hover: var(--color-ocean-500);
-
-  --radio-button-border-hover: var(--color-ocean-600);
-  --radio-button-selected-border: var(--color-ocean-600);
-  --radio-button-selected-border-hover: var(--color-ocean-500);
-
-  --table-actionable-row-hover: var(--color-ocean-100);
-}

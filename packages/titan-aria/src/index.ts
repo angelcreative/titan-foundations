@@ -5,6 +5,13 @@
 
 export { Button } from './Button';
 export type { ButtonProps, ButtonVariant } from './Button';
+export {
+  Card,
+  CardHeader,
+  CardBody,
+  CardActions,
+} from './Card';
+export type { CardProps, CardHeaderProps, CardActionsProps } from './Card';
 
 export {
   TextField,

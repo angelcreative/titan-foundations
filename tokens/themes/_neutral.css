@@ -1,4 +1,9 @@
-html {
+/**
+ * Neutral theme — primary: black.
+ * html or html[data-theme="neutral"]
+ */
+html,
+html[data-theme="neutral"] {
 	--font-audiense: "Poppins", sans-serif;
 
 	/* Background */
@@ -40,19 +45,19 @@ html {
 	--text-success-on-color: var(--color-success-700);
 	--text-warning-on-color: var(--color-warning-700);
 
-	/* Component Tokens */
-
-	/** Button **/
+	/* Button */
 	--button-disabled: var(--color-black-200);
 	--button-primary: var(--color-black-900);
-	--button-primary-active: var(--color-black-700);
 	--button-primary-hover: var(--color-black-800);
+	--button-primary-active: var(--color-black-700);
 	--button-secondary: var(--color-black-200);
-	--button-secondary-active: var(--color-black-400);
 	--button-secondary-hover: var(--color-black-300);
+	--button-secondary-active: var(--color-black-400);
 	--button-tertiary: var(--color-white-900);
-	--button-tertiary-active: var(--color-black-300);
 	--button-tertiary-hover: var(--color-black-200);
+	--button-tertiary-active: var(--color-black-300);
+	--text-on-primary: var(--color-white-900);
+	--text-on-button-primary: var(--text-on-primary);
 	--text-button-color: var(--color-black-900);
 	--text-button-hover-color: var(--color-black-800);
 	--text-button-active-color: var(--color-black-700);
@@ -60,44 +65,42 @@ html {
 	--text-button-neutral-hover-color: var(--color-steel-800);
 	--text-button-neutral-active-color: var(--color-steel-700);
 
-	/** ErrorButton **/
+	/* ErrorButton */
 	--error-button-primary: var(--color-error-600);
-	--error-button-primary-active: var(--color-error-800);
 	--error-button-primary-hover: var(--color-error-700);
+	--error-button-primary-active: var(--color-error-800);
 	--error-button-secondary: var(--color-black-100);
-	--error-button-secondary-active: var(--color-error-200);
 	--error-button-secondary-hover: var(--color-error-100);
+	--error-button-secondary-active: var(--color-error-200);
 
-	/** Pill **/
+	/* Pill */
 	--pill-background: var(--color-black-200);
 
-	/** Tab **/
-	--tab-selected-background: var(--color-black-100);
-	--tab-text: var(--color-black-700);
+	/* Tab */
 	--tab-background: var(--color-white-900);
+	--tab-text: var(--color-black-700);
 	--tab-text-selected: var(--color-black-800);
+	--tab-selected-background: var(--color-black-100);
 
-	/** Tooltip **/
+	/* Tooltip */
 	--tooltip-background: var(--color-black-800);
 
-	/** Checkbox **/
+	/* Checkbox */
 	--checkbox-size: 20px;
 	--checkbox-checkmark: var(--color-white-900);
-
+	--checkbox-background: var(--color-white-900);
 	--checkbox-border: var(--color-black-900);
 	--checkbox-border-hover: var(--color-black-800);
 	--checkbox-border-focus: var(--color-information-600);
 	--checkbox-border-disabled: var(--color-disabled-200);
 	--checkbox-border-error: var(--color-error-600);
 	--checkbox-border-error-hover: var(--color-error-400);
-
-	--checkbox-selected-border: var(--checkbox-border);
-	--checkbox-background: var(--color-white-900);
+	--checkbox-selected-border: var(--color-black-900);
 	--checkbox-selected-background: var(--color-black-900);
 	--checkbox-selected-background-hover: var(--color-black-700);
 	--checkbox-selected-background-disabled: var(--color-disabled-200);
 
-	/** Radio Button **/
+	/* Radio */
 	--radio-button-size: 20px;
 	--radio-button-border: var(--color-black-700);
 	--radio-button-border-hover: var(--color-black-800);
@@ -110,20 +113,18 @@ html {
 	--radio-button-alert-message-color: var(--color-error-600);
 	--radio-button-alert-icon-color: var(--color-error-500);
 
-	/** Pagination **/
+	/* Pagination */
 	--pagination-color: var(--color-black-900);
 	--pagination-page-button-background-hover: var(--color-black-10);
 	--pagination-page-button-background-active: var(--color-black-40);
 
-	/** Menu **/
+	/* Menu */
 	--menu-min-width: 230px;
 	--menu-max-width: 330px;
 	--menu-background: var(--color-white-900);
 	--menu-color: var(--color-steel-800);
 	--menu-color-mcp: var(--color-white-900);
 	--menu-destructive-color: var(--color-error-600);
-
-	/** Menu item **/
 	--menu-item-hover: var(--color-steel-100);
 	--menu-item-pressed: var(--color-steel-200);
 	--menu-item-selected: var(--color-steel-300);
@@ -134,20 +135,20 @@ html {
 	--menu-destructive-item-pressed: var(--color-error-200);
 	--menu-destructive-item-icon: var(--color-error-500);
 
-	/** Table **/
+	/* Table */
 	--table-actionable-row-hover: var(--color-black-200);
 	--table-header-border-bottom: var(--color-black-700);
 	--table-cell-border-bottom: var(--color-black-200);
 
-	/** Overlay **/
-	--overlay-color: var(--color-blue-40);
+	/* Overlay */
+	--overlay-color: var(--color-black-40);
 
-	/** Avatar **/
+	/* Avatar */
 	--avatar-background: var(--color-steel-600);
 	--avatar-width: 40px;
 	--avatar-height: 40px;
 
-	/** Button Group **/
+	/* Button Group */
 	--button-group-background: var(--color-white-900);
 	--button-group-border: var(--color-black-300);
 	--button-group-color: var(--color-black-600);
@@ -160,11 +161,11 @@ html {
 	--button-group-disabled-color: var(--color-disabled-400);
 	--button-group-disabled-icon-color: var(--color-disabled-300);
 
-	/** Label **/
+	/* Label */
 	--label-color: var(--color-black-800);
 	--label-background: var(--color-black-200);
 
-	/** Select WIP **/
+	/* Select */
 	--select-button-border: var(--color-black-300);
 	--select-button-color: var(--color-black-700);
 	--select-popover-color: var(--color-black-700);
@@ -172,21 +173,21 @@ html {
 	--select-listbox-item-pressed-background: var(--color-black-200);
 	--select-listbox-item-selected-background: var(--color-black-200);
 
-	/** NavBar **/
+	/* NavBar */
 	--navbar-max-width: 1920px;
 	--navbar-height: 70px;
 	--navbar-background: var(--color-white-900);
 	--navbar-border-color: var(--color-steel-100);
 
-	/** Link **/
-	--link-color: var(--color-information-700);
-	--link-visited-color: var(--color-information-900);
+	/* Link */
+	--link-color: var(--color-black-800);
+	--link-visited-color: var(--color-black-900);
 	--link-disabled-color: var(--color-disabled-400);
-	--link-icon-color: var(--color-information-600);
-	--link-visited-icon-color: var(--color-information-800);
+	--link-icon-color: var(--color-black-700);
+	--link-visited-icon-color: var(--color-black-800);
 	--link-disabled-icon-color: var(--color-disabled-300);
 
-	/** Toggle **/
+	/* Toggle */
 	--toggle-color: var(--color-black-900);
 	--toggle-background: var(--color-black-400);
 	--toggle-background-hover: var(--color-black-300);
@@ -197,7 +198,7 @@ html {
 	--toggle-ball-background: var(--color-white-900);
 	--toggle-disabled-background: var(--color-disabled-200);
 
-	/** Text Input **/
+	/* Text Input */
 	--input-placeholder-text: var(--color-black-400);
 	--input-field-text: var(--color-black-800);
 	--input-disabled-text: var(--color-disabled-200);

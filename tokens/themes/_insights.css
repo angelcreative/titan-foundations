@@ -1,8 +1,8 @@
 /**
- * Audiense theme — primary: pomegranate.
- * html[data-theme="audiense"]
+ * Insights theme — primary: blueberry.
+ * html[data-theme="insights"]
  */
-html[data-theme="audiense"] {
+html[data-theme="insights"] {
 	--font-audiense: "Poppins", sans-serif;
 
 	/* Background */
@@ -12,7 +12,7 @@ html[data-theme="audiense"] {
 
 	/* Border */
 	--border: var(--color-steel-200);
-	--border-interactive: var(--color-pomegranate-300);
+	--border-interactive: var(--color-blueberry-300);
 
 	/* Text */
 	--text-disabled: var(--color-disabled-400);
@@ -21,45 +21,45 @@ html[data-theme="audiense"] {
 	--text-error-primary-hover: var(--color-error-700);
 	--text-icon-disabled: var(--color-disabled-400);
 	--text-icon-on-color: var(--color-black-100);
-	--text-icon-secondary: var(--color-pomegranate-600);
-	--text-icon-secondary-active: var(--color-pomegranate-400);
-	--text-icon-secondary-hover: var(--color-pomegranate-500);
+	--text-icon-secondary: var(--color-blueberry-600);
+	--text-icon-secondary-active: var(--color-blueberry-400);
+	--text-icon-secondary-hover: var(--color-blueberry-500);
 	--text-on-color: var(--color-white-900);
 	--text-primary: var(--color-steel-700);
-	--text-primary-active: var(--color-pomegranate-700);
-	--text-secondary: var(--color-pomegranate-600);
+	--text-primary-active: var(--color-blueberry-700);
+	--text-secondary: var(--color-blueberry-600);
 
 	/* System */
 	--background-error: var(--color-error-200);
 	--background-information: var(--color-information-200);
-	--background-success: var(--color-pomegranate-200);
+	--background-success: var(--color-blueberry-200);
 	--background-warning: var(--color-warning-200);
 	--background-disabled: var(--color-black-200);
 	--text-error-on-color: var(--color-error-700);
 	--text-icon-error: var(--color-error-600);
 	--text-icon-information: var(--color-information-600);
-	--text-icon-success: var(--color-pomegranate-600);
+	--text-icon-success: var(--color-blueberry-600);
 	--text-icon-warning: var(--color-warning-600);
 	--text-information-on-color: var(--color-information-700);
-	--text-success-on-color: var(--color-pomegranate-700);
+	--text-success-on-color: var(--color-blueberry-700);
 	--text-warning-on-color: var(--color-warning-700);
 
 	/* Button */
 	--button-disabled: var(--color-black-200);
-	--button-primary: var(--color-pomegranate-600);
-	--button-primary-hover: var(--color-pomegranate-500);
-	--button-primary-active: var(--color-pomegranate-700);
-	--button-secondary: var(--color-pomegranate-100);
-	--button-secondary-hover: var(--color-pomegranate-200);
-	--button-secondary-active: var(--color-pomegranate-300);
+	--button-primary: var(--color-blueberry-600);
+	--button-primary-hover: var(--color-blueberry-500);
+	--button-primary-active: var(--color-blueberry-700);
+	--button-secondary: var(--color-blueberry-200);
+	--button-secondary-hover: var(--color-blueberry-200);
+	--button-secondary-active: var(--color-blueberry-300);
 	--button-tertiary: var(--color-white-900);
-	--button-tertiary-hover: var(--color-pomegranate-100);
-	--button-tertiary-active: var(--color-pomegranate-200);
+	--button-tertiary-hover: var(--color-blueberry-100);
+	--button-tertiary-active: var(--color-blueberry-200);
 	--text-on-primary: var(--color-white-900);
 	--text-on-button-primary: var(--text-on-primary);
-	--text-button-color: var(--color-pomegranate-600);
-	--text-button-hover-color: var(--color-pomegranate-500);
-	--text-button-active-color: var(--color-pomegranate-400);
+	--text-button-color: var(--color-blueberry-600);
+	--text-button-hover-color: var(--color-blueberry-500);
+	--text-button-active-color: var(--color-blueberry-400);
 	--text-button-neutral-color: var(--color-steel-900);
 	--text-button-neutral-hover-color: var(--color-steel-800);
 	--text-button-neutral-active-color: var(--color-steel-700);
@@ -78,8 +78,8 @@ html[data-theme="audiense"] {
 	/* Tab */
 	--tab-background: var(--color-white-900);
 	--tab-text: var(--color-steel-700);
-	--tab-text-selected: var(--color-pomegranate-800);
-	--tab-selected-background: var(--color-pomegranate-100);
+	--tab-text-selected: var(--color-blueberry-800);
+	--tab-selected-background: var(--color-blueberry-100);
 
 	/* Tooltip */
 	--tooltip-background: var(--color-black-800);
@@ -89,26 +89,26 @@ html[data-theme="audiense"] {
 	--checkbox-checkmark: var(--color-white-900);
 	--checkbox-background: var(--color-white-900);
 	--checkbox-border: var(--color-steel-700);
-	--checkbox-border-hover: var(--color-pomegranate-500);
+	--checkbox-border-hover: var(--color-blueberry-500);
 	--checkbox-border-focus: var(--color-information-600);
 	--checkbox-border-disabled: var(--color-disabled-200);
 	--checkbox-border-error: var(--color-error-600);
 	--checkbox-border-error-hover: var(--color-error-400);
-	--checkbox-selected-border: var(--color-pomegranate-600);
-	--checkbox-selected-background: var(--color-pomegranate-600);
-	--checkbox-selected-background-hover: var(--color-pomegranate-400);
+	--checkbox-selected-border: var(--color-blueberry-600);
+	--checkbox-selected-background: var(--color-blueberry-600);
+	--checkbox-selected-background-hover: var(--color-blueberry-500);
 	--checkbox-selected-background-disabled: var(--color-disabled-200);
 
 	/* Radio */
 	--radio-button-size: 20px;
 	--radio-button-border: var(--color-steel-700);
-	--radio-button-border-hover: var(--color-pomegranate-600);
+	--radio-button-border-hover: var(--color-blueberry-600);
 	--radio-button-border-focus: var(--color-information-600);
 	--radio-button-border-disabled: var(--color-disabled-200);
 	--radio-button-border-error: var(--color-error-600);
 	--radio-button-disabled: var(--color-disabled-400);
-	--radio-button-selected-border: var(--color-pomegranate-600);
-	--radio-button-selected-border-hover: var(--color-pomegranate-500);
+	--radio-button-selected-border: var(--color-blueberry-600);
+	--radio-button-selected-border-hover: var(--color-blueberry-500);
 	--radio-button-alert-message-color: var(--color-error-600);
 	--radio-button-alert-icon-color: var(--color-error-500);
 
@@ -135,7 +135,7 @@ html[data-theme="audiense"] {
 	--menu-destructive-item-icon: var(--color-error-500);
 
 	/* Table */
-	--table-actionable-row-hover: var(--color-pomegranate-100);
+	--table-actionable-row-hover: var(--color-blueberry-100);
 	--table-header-border-bottom: var(--color-steel-300);
 	--table-cell-border-bottom: var(--color-steel-200);
 
@@ -154,9 +154,9 @@ html[data-theme="audiense"] {
 	--button-group-icon-color: var(--color-steel-500);
 	--button-group-hover-color: var(--color-steel-800);
 	--button-group-hover-icon-color: var(--color-steel-700);
-	--button-group-selected-icon-color: var(--color-pomegranate-700);
-	--button-group-selected-background: var(--color-pomegranate-100);
-	--button-group-selected-color: var(--color-pomegranate-800);
+	--button-group-selected-icon-color: var(--color-blueberry-700);
+	--button-group-selected-background: var(--color-blueberry-100);
+	--button-group-selected-color: var(--color-blueberry-800);
 	--button-group-disabled-color: var(--color-disabled-400);
 	--button-group-disabled-icon-color: var(--color-disabled-300);
 
@@ -168,9 +168,9 @@ html[data-theme="audiense"] {
 	--select-button-border: var(--color-steel-300);
 	--select-button-color: var(--color-steel-700);
 	--select-popover-color: var(--color-steel-700);
-	--select-listbox-item-focused-background: var(--color-pomegranate-100);
-	--select-listbox-item-pressed-background: var(--color-pomegranate-200);
-	--select-listbox-item-selected-background: var(--color-pomegranate-200);
+	--select-listbox-item-focused-background: var(--color-blueberry-100);
+	--select-listbox-item-pressed-background: var(--color-blueberry-200);
+	--select-listbox-item-selected-background: var(--color-blueberry-200);
 
 	/* NavBar */
 	--navbar-max-width: 1920px;
@@ -179,11 +179,11 @@ html[data-theme="audiense"] {
 	--navbar-border-color: var(--color-steel-100);
 
 	/* Link */
-	--link-color: var(--color-pomegranate-700);
-	--link-visited-color: var(--color-pomegranate-900);
+	--link-color: var(--color-blueberry-700);
+	--link-visited-color: var(--color-blueberry-900);
 	--link-disabled-color: var(--color-disabled-400);
-	--link-icon-color: var(--color-pomegranate-600);
-	--link-visited-icon-color: var(--color-pomegranate-800);
+	--link-icon-color: var(--color-blueberry-600);
+	--link-visited-icon-color: var(--color-blueberry-800);
 	--link-disabled-icon-color: var(--color-disabled-300);
 
 	/* Toggle */
@@ -191,8 +191,8 @@ html[data-theme="audiense"] {
 	--toggle-background: var(--color-steel-400);
 	--toggle-background-hover: var(--color-steel-300);
 	--toggle-border-focus: var(--color-information-600);
-	--toggle-selected-background: var(--color-pomegranate-600);
-	--toggle-selected-background-hover: var(--color-pomegranate-500);
+	--toggle-selected-background: var(--color-blueberry-600);
+	--toggle-selected-background-hover: var(--color-blueberry-500);
 	--toggle-selected-border-focus: var(--color-information-600);
 	--toggle-ball-background: var(--color-white-900);
 	--toggle-disabled-background: var(--color-disabled-200);
@@ -203,7 +203,7 @@ html[data-theme="audiense"] {
 	--input-disabled-text: var(--color-disabled-200);
 	--input-background: var(--color-white-900);
 	--input-stroke: var(--color-steel-300);
-	--input-stroke-hover: var(--color-pomegranate-600);
+	--input-stroke-hover: var(--color-blueberry-600);
 	--input-stroke-focus: var(--color-steel-800);
 	--input-stroke-focus-visible: var(--color-information-600);
 	--input-stroke-error: var(--color-error-700);
