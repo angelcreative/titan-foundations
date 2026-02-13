@@ -3,6 +3,8 @@
     "description": "Navbar: a la izquierda icono 9 puntos (LayoutGrid) + logo según tema; a la derecha ítems de utilidad + avatar. Sin texto junto al logo.",
     "logoPosition": "left",
     "logosPath": "assets/logos",
+    "logoPublicPath": "/assets/logos",
+    "logoSrcRule": "Al generar la navbar, usar siempre <img src=\"/assets/logos/{archivo}\" /> donde {archivo} es el valor de themeToLogo para el tema pedido. Ejemplo: tema demand → src=\"/assets/logos/logo-demand.svg\". Resolver con themeToLogo; no usar icono de sustitución.",
     "leftOrder": ["appLauncher", "logo"],
     "appLauncherIcon": {
       "library": "lucide-react",

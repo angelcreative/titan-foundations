@@ -34,6 +34,6 @@ Reutilizar los **tokens de avatar** de Titan (`--avatar-bg`, `--avatar-size`, `-
 
 1. Leer el tema activo (`data-theme` o contexto de app).
 2. Resolver el archivo de logo con la tabla anterior.
-3. En la zona izquierda: renderizar primero el botón/icono **LayoutGrid** (9 puntos), luego el logo `<img src="…/assets/logos/logo-{tema}.svg" alt="…" />`.
+3. En la zona izquierda: renderizar primero el botón/icono **LayoutGrid** (9 puntos), luego el logo con **`src="/assets/logos/{archivo}"`** donde {archivo} es el de themeToLogo (p. ej. tema demand → `/assets/logos/logo-demand.svg`). La app debe tener los SVG en `public/assets/logos/` (o la ruta equivalente que sirva en `/assets/logos/`).
 
-Spec en JSON: **`foundations/navbar.json`**.
+Spec en JSON: **`foundations/navbar.json`** (campo logoPublicPath y themeToLogo para resolver el src automáticamente).

@@ -1,29 +1,24 @@
 ---
 description: Navbar — icono 9 puntos (LayoutGrid) a la izquierda del logo; logo según tema; avatar reutilizado
-globs: ["**/*navbar*", "**/*Navbar*", "**/layouts/**", "**/components/**/Header*", "**/assets/logos/**"]
+globs: ["**/*navbar*", "**/*Navbar*", "**/layouts/**", "**/components/**/Header*", "**/assets/logos/**", "**/public/**"]
 alwaysApply: false
 ---
 
 # Navbar (Titan)
 
-Cuando se pida una **navbar** para un tema (p. ej. "navbar demand", "navbar insights"):
+Cuando se pida una **navbar** para un tema (p. ej. "navbar demand", "navbar theme insights"):
 
-1. **Izquierda, orden fijo:** Primero el **icono de 9 puntos** (app launcher / waffle), luego el **logo**. Sin texto junto al logo; solo la imagen del logo según tema.
-   - Icono 9 puntos: Lucide **`LayoutGrid`**; siempre a la izquierda del logo.
-   - Logo: archivo de `assets/logos/` según `data-theme` (ver tabla abajo). Suele ser enlace al inicio.
+1. **Logo automático:** Incluir SIEMPRE el <img> del logo con `src="/assets/logos/{archivo}"` donde {archivo} es el valor de **themeToLogo** para ese tema (foundations/navbar.json). NO usar icono (BarChart2, etc.) en lugar del logo.
+   - Tema **demand** → `src="/assets/logos/logo-demand.svg"`
+   - Tema **insights** → `src="/assets/logos/logo-insights.svg"`
+   - Tema **audiense** → `src="/assets/logos/logo-audiense.svg"`
+   - Tema **neutral** → `src="/assets/logos/logo-audiense.svg"`
+   - Tema **linkedin** → `src="/assets/logos/logo-inkedin.svg"`
+   - Tema **tweetbinder** → `src="/assets/logos/logo-tweetbinder.svg"`
+   - Tema **connect** → `src="/assets/logos/logo-connect.svg"`
 
-2. **Archivo de logo según tema** (`assets/logos/`):
+2. **Izquierda, orden fijo:** Primero **LayoutGrid** (9 puntos), luego el **logo** (img con la src anterior). Sin texto junto al logo.
 
-   | Tema (`data-theme`) | Archivo |
-   |---------------------|--------|
-   | `demand` | `logo-demand.svg` |
-   | `audiense` | `logo-audiense.svg` |
-   | `neutral` | `logo-audiense.svg` (mismo que audiense) |
-   | `insights` | `logo-insights.svg` |
-   | `linkedin` | `logo-inkedin.svg` |
-   | `tweetbinder` | `logo-tweetbinder.svg` |
-   | `connect` | `logo-connect.svg` |
+3. **Derecha:** Ítems de utilidad + **avatar** (tokens de avatar de Titan).
 
-3. **Derecha:** Ítems de utilidad (iconos) + **avatar de usuario**. Reutilizar los tokens de **avatar** de Titan (`--avatar-bg`, `--avatar-size`, `--avatar-radius`, `--avatar-color`), no crear tokens específicos de navbar para el avatar.
-
-4. **Spec JSON:** `foundations/navbar.json`. Documentación: `docs/logos-and-navbar.md`.
+4. **Spec:** `foundations/navbar.json`. Documentación: `docs/logos-and-navbar.md`.
