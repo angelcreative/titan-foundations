@@ -33,6 +33,7 @@ __export(index_exports, {
   FieldError: () => import_react_aria_components2.FieldError,
   Group: () => import_react_aria_components2.Group,
   Heading: () => import_react_aria_components2.Heading,
+  Icon: () => Icon,
   Input: () => import_react_aria_components2.Input,
   Label: () => import_react_aria_components2.Label,
   ListBox: () => import_react_aria_components2.ListBox,
@@ -62,14 +63,40 @@ module.exports = __toCommonJS(index_exports);
 // src/Button.tsx
 var import_react_aria_components = require("react-aria-components");
 var import_jsx_runtime = require("react/jsx-runtime");
-function Button({ variant = "primary", ...props }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(import_react_aria_components.Button, { "data-variant": variant, ...props });
+function Button({ variant = "primary", slot, ...props }) {
+  const isIconOnly = slot === "icon";
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+    import_react_aria_components.Button,
+    {
+      "data-variant": variant,
+      "data-slot": isIconOnly ? "icon" : void 0,
+      ...props
+    }
+  );
+}
+
+// src/Icon.tsx
+var import_jsx_runtime2 = require("react/jsx-runtime");
+var sizeMap = {
+  s: { px: 12, stroke: 1.25 },
+  m: { px: 16, stroke: 1.5 },
+  l: { px: 24, stroke: 2 }
+};
+var classMap = {
+  s: "titan-icon-s",
+  m: "titan-icon-m",
+  l: "titan-icon-l"
+};
+function Icon({ icon: LucideIcon, size = "m", className = "", ...props }) {
+  const { px, stroke } = sizeMap[size];
+  const sizeClass = classMap[size];
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: `titan-icon ${sizeClass} ${className}`.trim(), "aria-hidden": true, children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(LucideIcon, { size: px, strokeWidth: stroke, ...props }) });
 }
 
 // src/Card.tsx
-var import_jsx_runtime2 = require("react/jsx-runtime");
+var import_jsx_runtime3 = require("react/jsx-runtime");
 function Card({ children, className = "", ...props }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
     "div",
     {
       className: `titan-Card ${className}`.trim(),
@@ -80,16 +107,16 @@ function Card({ children, className = "", ...props }) {
   );
 }
 function CardHeader({ title, subtitle, className = "", ...props }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: `titan-Card-header ${className}`.trim(), ...props, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "titan-Card-title", children: title }),
-    subtitle != null && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "titan-Card-subtitle", children: subtitle })
+  return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: `titan-Card-header ${className}`.trim(), ...props, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "titan-Card-title", children: title }),
+    subtitle != null && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "titan-Card-subtitle", children: subtitle })
   ] });
 }
 function CardBody({ children, className = "", ...props }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: `titan-Card-body ${className}`.trim(), ...props, children });
+  return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: `titan-Card-body ${className}`.trim(), ...props, children });
 }
 function CardActions({ children, className = "", ...props }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: `titan-Card-actions ${className}`.trim(), ...props, children });
+  return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: `titan-Card-actions ${className}`.trim(), ...props, children });
 }
 Card.Header = CardHeader;
 Card.Body = CardBody;
@@ -111,6 +138,7 @@ var import_react_aria_components2 = require("react-aria-components");
   FieldError,
   Group,
   Heading,
+  Icon,
   Input,
   Label,
   ListBox,

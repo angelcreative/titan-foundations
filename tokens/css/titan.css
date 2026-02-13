@@ -654,6 +654,18 @@
   --icon-disabled: var(--color-disabled-400);
   --icon-on-color: var(--color-white-900);
 
+  /* Lucide icon defaults (size / box / stroke) */
+  --icon-default-color: var(--color-steel-500);
+  --icon-size-s: 12px;
+  --icon-box-s: 15px;
+  --icon-stroke-s: 1.25;
+  --icon-size-m: 16px;
+  --icon-box-m: 20px;
+  --icon-stroke-m: 1.5;
+  --icon-size-l: 24px;
+  --icon-box-l: 30px;
+  --icon-stroke-l: 2;
+
   /* ---------------------------- */
   /* Borders (semantic)           */
   /* ---------------------------- */
