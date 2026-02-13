@@ -1,0 +1,18 @@
+{
+  "copyAndLinks": {
+    "description": "Títulos, cabeceros y cuerpo en steel; color de tema solo para enlaces e interactivos.",
+    "titlesAndHeaders": {
+      "tokens": ["--text-title", "--copy-slot-title", "--card-title-slot-color"],
+      "rule": "always steel (e.g. steel-900); never use theme/brand color"
+    },
+    "bodyAndData": {
+      "tokens": ["--text-body", "--copy-slot-body", "--card-body-slot-color", "--text-muted", "--copy-slot-muted"],
+      "rule": "always steel (e.g. steel-800, steel-600)"
+    },
+    "linksAndInteractive": {
+      "tokens": ["--text-link", "--text-primary-active", "--text-secondary"],
+      "rule": "use theme/brand color (only for links, buttons, active tabs)"
+    },
+    "doNot": "Use --text-primary-active or --text-secondary for section headers or card titles; they must stay steel so headers are not confused with links."
+  }
+}

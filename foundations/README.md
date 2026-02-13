@@ -8,6 +8,8 @@ Specs en JSON y convenciones para que implementaciones (o Cursor/MCP) puedan rep
 
 - **`navbar.json`** — Navbar con logo a la izquierda; mapeo tema → archivo de logo (`assets/logos/logo-{tema}.svg`). Audiense y neutral usan `logo-audiense.svg`. Ver [docs/logos-and-navbar.md](../docs/logos-and-navbar.md).
 
+- **`copy-and-links.json`** — Convención copy: títulos/cabeceros/cuerpo siempre steel; color de tema solo para enlaces. Ver [docs/copy-and-links.md](../docs/copy-and-links.md).
+
 ## Uso
 
 Al montar el repo de tokens, se puede indicar a Cursor (o al MCP): *“Para tablas tipo reportes, usa la spec `foundations/table-borderless.json` y los tokens documentados en `docs/table-borderless.md`.”* Para navbars: *“Para una navbar del tema demand (o cualquier tema), usa la spec `foundations/navbar.json` y coloca el logo correspondiente a la izquierda.”*
