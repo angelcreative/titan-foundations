@@ -1,0 +1,27 @@
+---
+description: Navbar y logos por tema — logo siempre a la izquierda; mapeo theme → assets/logos/logo-{tema}.svg
+globs: ["**/*navbar*", "**/*Navbar*", "**/layouts/**", "**/components/**/Header*", "**/assets/logos/**"]
+alwaysApply: false
+---
+
+# Navbar y logos (Titan)
+
+Cuando se pida una **navbar** para un tema (p. ej. "navbar demand", "navbar para tema insights"):
+
+1. **Logo siempre a la izquierda** de la navbar. El logo es un enlace o elemento clicable que suele llevar al inicio.
+
+2. **Archivo de logo según tema** (carpeta `assets/logos/` en el repo; en la app usar la ruta equivalente, p. ej. `/assets/logos/` o import desde `src/assets/logos/`):
+
+   | Tema (`data-theme`) | Archivo |
+   |---------------------|--------|
+   | `demand` | `logo-demand.svg` |
+   | `audiense` | `logo-audiense.svg` |
+   | `neutral` | `logo-audiense.svg` (mismo que audiense) |
+   | `insights` | `logo-insights.svg` |
+   | `linkedin` | `logo-inkedin.svg` |
+   | `tweetbinder` | `logo-tweetbinder.svg` |
+   | `connect` | `logo-connect.svg` |
+
+3. **Uso en markup:** Incluir un `<img src="…/assets/logos/logo-{tema}.svg" alt="…" />` o equivalente (SVG inline si se prefiere) a la izquierda del contenido de la navbar. Respetar el tema activo (`html[data-theme="…"]` o variable de app) para elegir el archivo.
+
+4. **Spec JSON:** Ver `foundations/navbar.json`. Documentación completa: `docs/logos-and-navbar.md`.

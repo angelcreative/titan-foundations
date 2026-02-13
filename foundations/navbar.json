@@ -1,0 +1,16 @@
+{
+  "navbar": {
+    "description": "Navbar con logo a la izquierda; logo según tema activo (data-theme).",
+    "logoPosition": "left",
+    "logosPath": "assets/logos",
+    "themeToLogo": {
+      "demand": "logo-demand.svg",
+      "audiense": "logo-audiense.svg",
+      "neutral": "logo-audiense.svg",
+      "insights": "logo-insights.svg",
+      "linkedin": "logo-inkedin.svg",
+      "tweetbinder": "logo-tweetbinder.svg",
+      "connect": "logo-connect.svg"
+    }
+  }
+}
