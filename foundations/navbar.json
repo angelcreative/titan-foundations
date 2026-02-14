@@ -10,7 +10,7 @@
     "leftOrder": ["appLauncher", "logo"],
     "appLauncherIcon": {
       "library": "lucide-react",
-      "name": "LayoutGrid",
+      "name": "Grip",
       "description": "Icono 9 puntos (waffle / app launcher); siempre el primer elemento a la izquierda"
     },
     "themeToLogo": {
