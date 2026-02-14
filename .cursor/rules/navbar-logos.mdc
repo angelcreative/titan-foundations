@@ -1,7 +1,7 @@
 ---
 description: Navbar Titan — 100% width; izquierda LayoutGrid + logo tema; derecha 5 icon buttons + avatar; NUNCA otros elementos
 globs: ["**/*navbar*", "**/*Navbar*", "**/layouts/**", "**/components/**/Header*", "**/assets/logos/**", "**/public/**"]
-alwaysApply: false
+alwaysApply: true
 ---
 
 # Navbar (Titan)

@@ -1,7 +1,7 @@
 ---
 description: Template de página — navbar 100% + contenido centrado max 1920px; al pedir layout/template montar esto
 globs: ["**/*template*", "**/*Template*", "**/*layout*", "**/*Layout*", "**/App.*", "**/app.*"]
-alwaysApply: false
+alwaysApply: true
 ---
 
 # Template de página (Titan)

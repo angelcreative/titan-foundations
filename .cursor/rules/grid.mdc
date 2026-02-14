@@ -1,7 +1,7 @@
 ---
 description: Grid 16 columnas para layout; N columnas = span N; contenido centrado max 1920px
 globs: ["**/*layout*", "**/*Layout*", "**/*grid*", "**/*Grid*"]
-alwaysApply: false
+alwaysApply: true
 ---
 
 # Grid de layout (Titan)
