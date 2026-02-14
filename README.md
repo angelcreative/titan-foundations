@@ -16,3 +16,5 @@ See:
 - [Copy y enlaces](docs/copy-and-links.md) — títulos, cabeceros y cuerpo siempre steel; color de tema solo para enlaces (evitar confundir cabeceros con links).
 - [Drawer](docs/drawer.md) — panel deslizante con overlay; header (título + X ghost) y body. Spec: [foundations/drawer.json](foundations/drawer.json).
 - [Menu y Select](docs/menu-and-select.md) — menús desplegables (y submenus) y Select; tokens completos; estructura React Aria. Specs: [foundations/menu.json](foundations/menu.json), [foundations/select.json](foundations/select.json).
+- [Grid](docs/grid.md) — grid 16 columnas para layout; N columnas = span N; contenido centrado max 1920px. Spec: [foundations/grid.json](foundations/grid.json).
+- [Template](docs/template.md) — navbar 100% + contenido max 1920px (responsive 1440, 1280); al pedir "layout" o "template" montar navbar y área con grid. Spec: [foundations/template.json](foundations/template.json).

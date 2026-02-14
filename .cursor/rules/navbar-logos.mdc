@@ -1,24 +1,44 @@
 ---
-description: Navbar — icono 9 puntos (LayoutGrid) a la izquierda del logo; logo según tema; avatar reutilizado
+description: Navbar Titan — 100% width; izquierda LayoutGrid + logo tema; derecha 5 icon buttons + avatar; NUNCA otros elementos
 globs: ["**/*navbar*", "**/*Navbar*", "**/layouts/**", "**/components/**/Header*", "**/assets/logos/**", "**/public/**"]
 alwaysApply: false
 ---
 
 # Navbar (Titan)
 
-Cuando se pida una **navbar** para un tema (p. ej. "navbar demand", "navbar theme insights"):
+Cuando se pida **navbar** (o "navbar demand", "navbar insights", etc.):
 
-1. **Logo automático:** Incluir SIEMPRE el <img> del logo con `src="/assets/logos/{archivo}"` donde {archivo} es el valor de **themeToLogo** para ese tema (foundations/navbar.json). NO usar icono (BarChart2, etc.) en lugar del logo.
-   - Tema **demand** → `src="/assets/logos/logo-demand.svg"`
-   - Tema **insights** → `src="/assets/logos/logo-insights.svg"`
-   - Tema **audiense** → `src="/assets/logos/logo-audiense.svg"`
-   - Tema **neutral** → `src="/assets/logos/logo-audiense.svg"`
-   - Tema **linkedin** → `src="/assets/logos/logo-inkedin.svg"`
-   - Tema **tweetbinder** → `src="/assets/logos/logo-tweetbinder.svg"`
-   - Tema **connect** → `src="/assets/logos/logo-connect.svg"`
+- **Ancho:** 100% (de lado a lado). Nunca menos.
+- **En la navbar NUNCA se pone otro elemento** que no sea los indicados abajo.
 
-2. **Izquierda, orden fijo (obligatorio):** El icono de 9 puntos (**LayoutGrid**) va SIEMPRE a la izquierda del logo. Orden: [LayoutGrid] [logo]. Nunca al revés ni sin el icono. Sin texto junto al logo.
+## Izquierda (solo esto, en este orden)
 
-3. **Derecha:** Ítems de utilidad + **avatar** (tokens de avatar de Titan).
+1. **Icono grid** — Lucide: `LayoutGrid` (rejilla 9 puntos / app launcher). Siempre el primer elemento.
+2. **Logo** — `<img src="/assets/logos/{archivo}" />` donde {archivo} es el de **themeToLogo** para el tema:
+   - "navbar demand" → `logo-demand.svg`
+   - "navbar insights" → `logo-insights.svg`
+   - "navbar audiense" → `logo-audiense.svg`
+   - "navbar neutral" → `logo-audiense.svg`
+   - "navbar linkedin" → `logo-inkedin.svg`
+   - "navbar tweetbinder" → `logo-tweetbinder.svg`
+   - "navbar connect" → `logo-connect.svg`
+   Sin texto junto al logo; solo la imagen.
 
-4. **Spec:** `foundations/navbar.json`. Documentación: `docs/logos-and-navbar.md`.
+## Derecha (solo esto, en este orden)
+
+Siempre y nunca otra cosa: **5 icon buttons** (Lucide) + **avatar de usuario**:
+
+1. **Bell** — notificaciones
+2. **Handshake** — soporte / comunidad
+3. **CircleHelp** — ayuda
+4. **Settings** — configuración
+5. **Sparkles** — función destacada (puede llevar color/gradiente)
+6. **Avatar** — circular, fondo con letra (tokens Titan: `--avatar-bg`, `--avatar-size`, etc.), con **ChevronDown** a la derecha (dropdown).
+
+No añadir ni quitar iconos; no poner búsqueda, menús extra ni ningún otro elemento en la navbar.
+
+## Resumen
+
+- **100% width.** Izquierda: [LayoutGrid] [logo del tema]. Derecha: [Bell] [Handshake] [CircleHelp] [Settings] [Sparkles] [Avatar + ChevronDown]. **Nunca otro elemento.**
+
+Spec: `foundations/navbar.json`. Doc: `docs/logos-and-navbar.md`.

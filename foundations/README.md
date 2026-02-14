@@ -16,6 +16,10 @@ Specs en JSON y convenciones para que implementaciones (o Cursor/MCP) puedan rep
 
 - **`select.json`** — Select: trigger + popover + listbox; tokens de botón, popover e ítems; estructura Select, Button, Popover, ListBox, ListBoxItem (titan-aria). Ver [docs/menu-and-select.md](../docs/menu-and-select.md).
 
+- **`grid.json`** — Grid de layout 16 columnas; contenido centrado max 1920px; "N columnas" = span N. Ver [docs/grid.md](../docs/grid.md).
+
+- **`template.json`** — Template de página: navbar 100% width; debajo contenedor contenido centrado max 1920px (responsive 1440, 1280) con grid 16 cols; sidebar flotante; drawer overlay. Ver [docs/template.md](../docs/template.md).
+
 ## Uso
 
 Al montar el repo de tokens, se puede indicar a Cursor (o al MCP): *“Para tablas tipo reportes, usa la spec `foundations/table-borderless.json` y los tokens documentados en `docs/table-borderless.md`.”* Para navbars: *“Para una navbar del tema demand (o cualquier tema), usa la spec `foundations/navbar.json` y coloca el logo correspondiente a la izquierda.”*

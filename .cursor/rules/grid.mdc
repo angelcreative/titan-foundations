@@ -1,0 +1,12 @@
+---
+description: Grid 16 columnas para layout; N columnas = span N; contenido centrado max 1920px
+globs: ["**/*layout*", "**/*Layout*", "**/*grid*", "**/*Grid*"]
+alwaysApply: false
+---
+
+# Grid de layout (Titan)
+
+- **16 columnas.** Contenedor: display grid, grid-template-columns: repeat(16, 1fr), gap: var(--layout-grid-gap), max-width: var(--layout-grid-max-width), margin: 0 auto, padding horizontal var(--layout-grid-pad-x).
+- **"N columnas"** = grid-column: span N. Ejemplo: "card 4 columnas" → span 4; "dos cards 2 columnas" → dos hijos span 2. Por fila los spans no deben superar 16.
+- **Responsive:** max-width 1440px (viewport <= 1440), 1280px (viewport <= 1280) con var(--layout-content-max-width-md) y var(--layout-content-max-width-sm).
+- Spec: foundations/grid.json. Doc: docs/grid.md.

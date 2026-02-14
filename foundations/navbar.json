@@ -1,15 +1,17 @@
 {
   "navbar": {
-    "description": "Navbar: a la izquierda icono 9 puntos (LayoutGrid) + logo según tema; a la derecha ítems de utilidad + avatar. Sin texto junto al logo.",
+    "description": "Navbar 100% width. Izquierda: LayoutGrid + logo según tema. Derecha: exactamente 5 icon buttons (Bell, Handshake, CircleHelp, Settings, Sparkles) + avatar (fondo con letra) con ChevronDown. En la navbar NUNCA se pone otro elemento.",
+    "width": "100%",
+    "forbidden": "No añadir ni quitar elementos (búsqueda, menús extra, texto 'App', etc.). La navbar solo contiene lo especificado en leftOrder y rightOrder.",
     "logoPosition": "left",
     "logosPath": "assets/logos",
     "logoPublicPath": "/assets/logos",
-    "logoSrcRule": "Al generar la navbar, usar siempre <img src=\"/assets/logos/{archivo}\" /> donde {archivo} es el valor de themeToLogo para el tema pedido. Ejemplo: tema demand → src=\"/assets/logos/logo-demand.svg\". Resolver con themeToLogo; no usar icono de sustitución.",
+    "logoSrcRule": "Usar siempre <img src=\"/assets/logos/{archivo}\" /> donde {archivo} es themeToLogo[tema]. Ejemplo: tema demand → src=\"/assets/logos/logo-demand.svg\". No usar icono de sustitución ni texto junto al logo.",
     "leftOrder": ["appLauncher", "logo"],
     "appLauncherIcon": {
       "library": "lucide-react",
       "name": "LayoutGrid",
-      "description": "Icono de 9 puntos (waffle / app launcher); siempre a la izquierda del logo"
+      "description": "Icono 9 puntos (waffle / app launcher); siempre el primer elemento a la izquierda"
     },
     "themeToLogo": {
       "demand": "logo-demand.svg",
@@ -20,6 +22,15 @@
       "tweetbinder": "logo-tweetbinder.svg",
       "connect": "logo-connect.svg"
     },
-    "avatar": "Reuse Titan avatar tokens (--avatar-bg, --avatar-size, --avatar-radius, --avatar-color, etc.)"
+    "rightOrder": ["notifications", "handshake", "help", "settings", "sparkles", "avatar"],
+    "rightSlot": [
+      { "id": "notifications", "library": "lucide-react", "name": "Bell", "description": "Notificaciones" },
+      { "id": "handshake", "library": "lucide-react", "name": "Handshake", "description": "Soporte / comunidad" },
+      { "id": "help", "library": "lucide-react", "name": "CircleHelp", "description": "Ayuda" },
+      { "id": "settings", "library": "lucide-react", "name": "Settings", "description": "Configuración" },
+      { "id": "sparkles", "library": "lucide-react", "name": "Sparkles", "description": "Función destacada (puede llevar color)" },
+      { "id": "avatar", "component": "avatar", "description": "Avatar circular con fondo + letra; ChevronDown a la derecha (dropdown). Reutilizar tokens --avatar-bg, --avatar-size, --avatar-radius, --avatar-color." }
+    ],
+    "avatar": "Reutilizar tokens Titan (--avatar-bg, --avatar-size, --avatar-radius, --avatar-color). Siempre fondo con letra; incluir ChevronDown para dropdown."
   }
 }

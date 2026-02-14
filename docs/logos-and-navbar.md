@@ -2,6 +2,10 @@
 
 Los logos de producto viven en **`assets/logos/`**. Cada archivo es un SVG con nombre `logo-{tema}.svg`. No se usa texto junto al logo; solo la imagen según el tema activo.
 
+## Regla de oro: en la navbar NUNCA se pone otro elemento
+
+La navbar tiene **ancho 100%** y **solo** los elementos especificados: izquierda (LayoutGrid + logo) y derecha (5 icon buttons + avatar con dropdown). No se añaden búsqueda, menús extra, texto "App", ni ningún otro elemento.
+
 ## Izquierda de la navbar: icono 9 puntos + logo
 
 - **Orden fijo (obligatorio):** primero el **icono de 9 puntos** (app launcher / waffle), luego el **logo**. El icono va siempre a la izquierda del logo; nunca al revés ni sin el icono.
@@ -20,20 +24,31 @@ Los logos de producto viven en **`assets/logos/`**. Cada archivo es un SVG con n
 | `tweetbinder` | `logo-tweetbinder.svg` |
 | `connect` | `logo-connect.svg` |
 
-## Avatar (derecha de la navbar)
+## Derecha de la navbar: exactamente estos elementos (orden fijo)
 
-Reutilizar los **tokens de avatar** de Titan (`--avatar-bg`, `--avatar-size`, `--avatar-radius`, `--avatar-color`, etc.) para el avatar de usuario en la navbar. No definir tokens específicos de navbar para el avatar.
+Siempre y nunca otra cosa, en este orden (Lucide para iconos):
+
+1. **Bell** — Notificaciones  
+2. **Handshake** — Soporte / comunidad  
+3. **CircleHelp** — Ayuda  
+4. **Settings** — Configuración  
+5. **Sparkles** — Función destacada (puede llevar color)  
+6. **Avatar** — Avatar circular con fondo + letra; a la derecha **ChevronDown** (dropdown).
+
+Avatar: reutilizar tokens Titan (`--avatar-bg`, `--avatar-size`, `--avatar-radius`, `--avatar-color`). Siempre fondo con letra; incluir ChevronDown para dropdown.
 
 ## Convención navbar
 
-- **Izquierda:** [Icono LayoutGrid (9 puntos)] [Logo según tema]. Logo suele ser enlace al inicio (home).
-- **Derecha:** Ítems de utilidad (iconos) + avatar (tokens de avatar).
-- El tema lo define la app (p. ej. `html[data-theme="demand"]`).
+- **Ancho:** 100%.
+- **Izquierda:** [LayoutGrid] [Logo según tema]. Logo suele ser enlace al inicio (home). Sin texto junto al logo.
+- **Derecha:** exactamente los 5 icon buttons anteriores + avatar con ChevronDown. No añadir ni quitar elementos.
+- El tema lo define la app (p. ej. `html[data-theme="demand"]` → "navbar demand" → logo demand).
 
 ## Uso en la app
 
 1. Leer el tema activo (`data-theme` o contexto de app).
 2. Resolver el archivo de logo con la tabla anterior.
-3. En la zona izquierda: renderizar primero el botón/icono **LayoutGrid** (9 puntos), luego el logo con **`src="/assets/logos/{archivo}"`** donde {archivo} es el de themeToLogo (p. ej. tema demand → `/assets/logos/logo-demand.svg`). La app debe tener los SVG en `public/assets/logos/` (o la ruta equivalente que sirva en `/assets/logos/`).
+3. **Izquierda:** renderizar primero el botón/icono **LayoutGrid**, luego el logo con **`src="/assets/logos/{archivo}"`** donde {archivo} es el de themeToLogo (p. ej. tema demand → `/assets/logos/logo-demand.svg`). La app debe tener los SVG en `public/assets/logos/` (o la ruta equivalente que sirva en `/assets/logos/`).
+4. **Derecha:** renderizar en orden los 5 icon buttons (Bell, Handshake, CircleHelp, Settings, Sparkles) y el avatar con ChevronDown.
 
-Spec en JSON: **`foundations/navbar.json`** (campo logoPublicPath y themeToLogo para resolver el src automáticamente).
+Spec en JSON: **`foundations/navbar.json`** (`leftOrder`, `rightOrder`, `rightSlot`, `themeToLogo`, `forbidden`).

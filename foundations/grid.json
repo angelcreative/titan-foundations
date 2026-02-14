@@ -1,0 +1,15 @@
+{
+  "grid": {
+    "description": "Grid de layout de 16 columnas; contenido centrado, max-width 1920px (responsive 1440, 1280). 'N columnas' = grid-column: span N.",
+    "cols": 16,
+    "tokens": {
+      "cols": "var(--layout-grid-cols)",
+      "gap": "var(--layout-grid-gap)",
+      "maxWidth": "var(--layout-grid-max-width)",
+      "padX": "var(--layout-grid-pad-x)"
+    },
+    "container": "Contenedor del grid: display: grid; grid-template-columns: repeat(16, 1fr); gap: var(--layout-grid-gap); max-width: var(--layout-grid-max-width); margin: 0 auto; padding-left/right: var(--layout-grid-pad-x);",
+    "spanRule": "Un bloque (card, etc.) a '4 columnas' = grid-column: span 4. '2 columnas' = span 2. Los spans sumados por fila no deben superar 16.",
+    "example": "Una card 4 cols + dos cards 2 cols: primer hijo span 4, segundo y tercero span 2 cada uno (4+2+2=8; o en dos filas: fila1 un item span 4, fila2 dos items span 2)."
+  }
+}
