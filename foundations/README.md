@@ -12,9 +12,9 @@ Specs en JSON y convenciones para que implementaciones (o Cursor/MCP) puedan rep
 
 - **`drawer.json`** — Drawer: panel deslizante con overlay debajo; header (título + botón cerrar X ghost) y body. Ver [docs/drawer.md](../docs/drawer.md).
 
-- **`menu.json`** — Menu (y submenus): tokens de contenedor e ítems; estructura MenuTrigger, Menu, MenuItem (titan-aria). Submenus heredan los mismos tokens. Ver [docs/menu-and-select.md](../docs/menu-and-select.md).
+- **`menu.json`** — Menu (y submenus): tokens de contenedor e ítems; estructura MenuTrigger, Menu, MenuItem (titan-aria). Submenus heredan los mismos tokens. Si `Menu` es oficial en Titan React para la versión del producto, esta spec se usa como fallback/reference. Ver [docs/menu-and-select.md](../docs/menu-and-select.md).
 
-- **`select.json`** — Select: trigger + popover + listbox; tokens de botón, popover e ítems; estructura Select, Button, Popover, ListBox, ListBoxItem (titan-aria). Ver [docs/menu-and-select.md](../docs/menu-and-select.md).
+- **`select.json`** — Select: trigger + popover + listbox; tokens de botón, popover e ítems; estructura Select, Button, Popover, ListBox, ListBoxItem (titan-aria). Si `Select` es oficial en Titan React para la versión del producto, esta spec se usa como fallback/reference. Ver [docs/menu-and-select.md](../docs/menu-and-select.md).
 
 - **`grid.json`** — Grid de layout 16 columnas; contenido centrado max 1920px; "N columnas" = span N. Ver [docs/grid.md](../docs/grid.md).
 
@@ -22,4 +22,11 @@ Specs en JSON y convenciones para que implementaciones (o Cursor/MCP) puedan rep
 
 ## Uso
 
-Al montar el repo de tokens, se puede indicar a Cursor (o al MCP): *“Para tablas tipo reportes, usa la spec `foundations/table-borderless.json` y los tokens documentados en `docs/table-borderless.md`.”* Para navbars: *“Para una navbar del tema demand (o cualquier tema), usa la spec `foundations/navbar.json` y coloca el logo correspondiente a la izquierda.”*
+Al montar el repo de tokens, se puede indicar a Cursor (o al MCP): *“Para tablas tipo reportes, usa la spec `foundations/table-borderless.json` y los tokens documentados en `docs/table-borderless.md`.”*
+
+Para ownership de componentes y precedencia entre capas, usar:
+
+- [docs/integration/decision-policy.md](../docs/integration/decision-policy.md)
+- [docs/integration/component-inventory.md](../docs/integration/component-inventory.md)
+
+Nota de ownership: cuando un componente sea oficial en Titan React, su implementación debe venir de Titan React; la spec local en `foundations/` queda como fallback/reference hasta su retirada.

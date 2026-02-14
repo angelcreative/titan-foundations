@@ -1,5 +1,11 @@
 {
   "select": {
+    "lifecycle": {
+      "status": "fallback-reference",
+      "sourceOfTruth": "@audienseco/titan-react Select",
+      "usageRule": "Use Titan React Select first when available in product version; use this spec only for fallback/reference cases.",
+      "migrationTrigger": "Product uses Titan React Select with required parity."
+    },
     "description": "Select (botón + popover + lista de opciones). Estructura React Aria: Select, SelectValue, Button (trigger), Popover, ListBox, ListBoxItem.",
     "aria": "Select + SelectValue + Button[data-slot=trigger] + Popover[data-slot=listbox] + ListBox + ListBoxItem (react-aria-components).",
     "tokens": {

@@ -1,5 +1,11 @@
 {
   "menu": {
+    "lifecycle": {
+      "status": "fallback-reference",
+      "sourceOfTruth": "@audienseco/titan-react Menu",
+      "usageRule": "Use Titan React Menu first when available in product version; use this spec only for fallback/reference cases.",
+      "migrationTrigger": "Product uses Titan React Menu with required parity."
+    },
     "description": "Menú desplegable (y submenús) con ítems accionables. Estructura React Aria: MenuTrigger, Menu, MenuItem. Submenus usan los mismos tokens (heredan).",
     "aria": "MenuTrigger + Menu + MenuItem (react-aria-components). Submenus: mismo Menu/MenuItem anidado.",
     "tokens": {

@@ -8,6 +8,8 @@ alwaysApply: true
 
 Cuando se pida **navbar** (o "navbar demand", "navbar insights", etc.):
 
+- **Precedencia obligatoria:** si existe componente Navbar oficial en `@audienseco/titan-react` para la versión usada por la app, usar ese componente.  
+  Solo usar esta especificación como fallback cuando no exista Navbar oficial en Titan React.
 - **Ancho:** 100% (de lado a lado). Nunca menos.
 - **En la navbar NUNCA se pone otro elemento** que no sea los indicados abajo.
 

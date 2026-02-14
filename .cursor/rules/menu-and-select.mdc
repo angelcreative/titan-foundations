@@ -6,6 +6,11 @@ alwaysApply: false
 
 # Menu y Select (Titan)
 
+## Precedencia obligatoria
+
+- Si `Menu` o `Select` existen en la versión instalada de `@audienseco/titan-react`, usar Titan React como fuente principal.
+- Usar esta regla (React Aria + tokens) solo como fallback/reference cuando falte capacidad en Titan React para el caso concreto.
+
 ## Menu (y submenus)
 
 - **Estructura:** MenuTrigger, Menu, MenuItem (react-aria-components / titan-aria). Submenus = mismo Menu/MenuItem anidado.

@@ -4,7 +4,7 @@ Al pedir un **template**, **layout** o similar, se monta: **navbar a ancho compl
 
 ## Estructura
 
-1. **Navbar** — 100% width (de lado a lado). Tokens de navbar; incluir LayoutGrid + logo según tema (foundations/navbar.json).
+1. **Navbar** — usar primero la versión oficial en `@audienseco/titan-react` si está disponible. Si no existe en la versión instalada, aplicar fallback local: 100% width (de lado a lado), tokens de navbar, LayoutGrid + logo según tema (`foundations/navbar.json`).
 
 2. **Contenedor de contenido** — Debajo de la navbar: centrado (margin: 0 auto), max-width: var(--layout-content-max-width) (1920px), padding horizontal var(--layout-content-pad-x). Dentro: grid de 16 columnas (ver docs/grid.md) para colocar cards, bloques, etc.
 

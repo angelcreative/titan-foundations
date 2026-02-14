@@ -1,0 +1,34 @@
+---
+description: Titan MCP orchestration — Titan React first, React Aria fallback, Lucide icon fallback
+alwaysApply: true
+---
+
+# Titan MCP Orchestration
+
+When generating UI through Cursor + MCP for this repository, follow this order:
+
+1. Use `@audienseco/titan-react` component first when available in product version.
+2. If missing, use React Aria primitives + Titan tokens/foundations as fallback.
+3. For icons: use Titan React icons first; if missing, use `lucide-react`.
+
+## Components treated as official in Titan React (current team context)
+
+- Stable: `AudienseEcosystemMenu`, `Button Group`, `Buttons`, `Checkbox`, `Dialog`, `Label`, `NavBar`, `Pagination`, `Pill`, `Radio Buttons`, `Tabs`, `Tooltip`.
+- Also treated as official (used in production): `ActionableIcon`, `Avatar`, `Badge`, `Charts`, `Divider`, `Flag`, `GridList`, `Icons`, `Link`, `Loading`, `MatchHighlighter`, `Menu`, `PlatformIcon`, `Popover`, `RefreshSpinner`, `Select`, `Table`, `Toast`, `Toggle`, `Accordion`, `Collapsible`, `Combobox`, `Input`, `TagGroup`, `TextArea`, `TextField`.
+
+## Local fallback ownership notes
+
+- `Navbar`, `Menu`, and `Select` local specs/rules are fallback/reference only.
+- `Drawer` remains fallback with React Aria + Titan tokens unless official Titan React support is confirmed in current version.
+
+## Non-collision rule
+
+- Never output two "official" implementations for the same component in one solution.
+- If using fallback, mark it as temporary (`snowflake`) and align with integration docs.
+
+## References
+
+- `docs/integration/decision-policy.md`
+- `docs/integration/component-inventory.md`
+- `docs/integration/fallback-contract.md`
+- `docs/integration/post-update-audit-runbook.md`

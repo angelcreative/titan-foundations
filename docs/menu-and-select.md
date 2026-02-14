@@ -1,5 +1,8 @@
 # Menu y Select (Titan)
 
+> Ownership policy: usar primero `@audienseco/titan-react` para `Menu` y `Select` cuando exista soporte en la versión instalada.
+> Este documento y las specs de `foundations/` quedan como fallback/reference para transición, exploración o casos no cubiertos.
+
 Menús desplegables y Select usan la estructura de **React Aria** (titan-aria) y los **tokens de Titan**. Los estilos en `titan-aria/styles` aplican esas variables.
 
 ---
