@@ -1,0 +1,63 @@
+{
+  "tabs": {
+    "lifecycle": {
+      "status": "aria-primary",
+      "sourceOfTruth": "audiense zeroheight tabs page (captured) + titan token contract",
+      "usageRule": "Implement Tabs from source contract first. If docs/rules/spec conflict, source-of-truth wins.",
+      "migrationTrigger": "Sync local docs/rules/spec whenever tabs source updates."
+    },
+    "description": "Tabs organize related content into sections and switch visible panel in-place.",
+    "canonicalTerminology": {
+      "partNames": ["tabs-container", "tab-list", "tab-trigger", "tab-panel"],
+      "stateNames": ["default", "hover", "selected", "disabled"],
+      "rule": "Use canonical names in docs/rules/contracts; do not use aliases."
+    },
+    "structure": {
+      "required": ["tab list container", "tab triggers", "associated tab panels"],
+      "optional": ["tab icon", "badge/counter", "scrollable tab list for overflow"],
+      "selectionRule": "Exactly one tab selected per tablist."
+    },
+    "tokens": {
+      "tabsBackground": "var(--tabs-slot-bg)",
+      "tabsRadius": "var(--tabs-slot-radius)",
+      "tabsPadding": "var(--tabs-slot-pad)",
+      "tabHeight": "var(--tab-slot-height)",
+      "tabRadius": "var(--tab-slot-radius)",
+      "tabBackground": "var(--tab-slot-bg)",
+      "tabSelectedBackground": "var(--tab-slot-bg-selected)",
+      "tabColor": "var(--tab-slot-color)",
+      "tabSelectedColor": "var(--tab-slot-color-selected)",
+      "focusRing": "var(--focus-ring)",
+      "focusOffset": "var(--focus-ring-offset)"
+    },
+    "states": {
+      "tab": ["default", "hover", "selected", "disabled"]
+    },
+    "interaction": {
+      "keyboard": "Arrow keys move focus between tabs; Enter/Space activates selected tab.",
+      "focus": "Visible focus state is mandatory.",
+      "panelBehavior": "Only active tab panel is visible; inactive panels are hidden from view."
+    },
+    "responsive": {
+      "overflowRule": "When tabs overflow width, enable horizontal scrolling or controlled collapse without breaking selection.",
+      "labelRule": "Keep labels concise and readable; avoid wrapping when possible."
+    },
+    "dosAndDonts": {
+      "do": [
+        "Use Tabs for sibling content sections in same context.",
+        "Keep labels short and scannable.",
+        "Preserve selected tab state on re-render when possible."
+      ],
+      "dont": [
+        "Do not use Tabs as primary global navigation.",
+        "Do not hide critical actions behind disabled tabs without explanation.",
+        "Do not allow multiple selected tabs in a single tablist."
+      ]
+    },
+    "blockingRules": [
+      "If required tab semantics cannot be satisfied, return BLOCKER.",
+      "If required states are missing, return FAIL.",
+      "If selection behavior allows more than one active tab, return FAIL."
+    ]
+  }
+}

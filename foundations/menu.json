@@ -2,30 +2,52 @@
   "menu": {
     "lifecycle": {
       "status": "aria-primary",
-      "sourceOfTruth": "react-aria-components + Titan tokens/foundations",
-      "usageRule": "Use React Aria Menu anatomy with Titan tokens; use titan-aria wrappers when they avoid rework.",
-      "migrationTrigger": "Normalize temporary snowflake variants to this Aria/token contract."
+      "sourceOfTruth": "titan-comp-doc/menu.pdf",
+      "usageRule": "Implement Menu from PDF contract first. If docs/rules/spec conflict, PDF wins.",
+      "migrationTrigger": "Sync local docs/rules/spec whenever menu.pdf changes."
     },
-    "description": "Menú desplegable (y submenús) con ítems accionables. Estructura React Aria: MenuTrigger, Menu, MenuItem. Submenus usan los mismos tokens (heredan).",
-    "aria": "MenuTrigger + Menu + MenuItem (react-aria-components). Submenus: mismo Menu/MenuItem anidado.",
+    "description": "Menu transitorio de acciones o enlaces, activado por trigger (boton, icono o clic derecho).",
+    "aria": "MenuTrigger + Menu + MenuItem (react-aria-components). Open/close must follow focus, keyboard and collision/flip behavior.",
+    "canonicalTerminology": {
+      "stateNames": ["default", "hover", "pressed", "selected", "disabled"],
+      "variantNames": ["search-item", "profile-item", "notifications-item", "destructive-item"],
+      "submenuKey": "max-nesting-levels",
+      "rule": "Use canonical names in docs/rules/contracts; avoid aliases or case variants."
+    },
+    "anatomy": {
+      "required": ["container", "items"],
+      "optional": ["icons", "dividers"],
+      "dividerRule": "Divider uses same width as items and same vertical rhythm as item-item spacing."
+    },
     "tokens": {
       "container": {
-        "minWidth": "var(--menu-min-width)",
-        "maxWidth": "var(--menu-max-width)",
+        "paddingX": "$spacing-2xs",
+        "paddingY": "$spacing-xs",
+        "gap": "$spacing-4xs",
+        "shadow": "$box-shadow-2",
+        "radius": "$rounded-m",
         "background": "var(--menu-bg)",
         "color": "var(--menu-color)",
-        "radius": "var(--menu-radius)",
-        "shadow": "var(--menu-shadow)"
+        "minWidth": "var(--menu-min-width)",
+        "maxWidth": "var(--menu-max-width)"
       },
       "item": {
-        "height": "var(--menu-item-height)",
-        "radius": "var(--menu-item-radius)",
-        "padX": "var(--pad-m)",
+        "paddingX": "$spacing-s",
+        "paddingY": "$spacing-xs",
+        "height": "40px",
+        "radius": "$rounded-s",
+        "iconSize": "$size-m",
+        "gapIconLabel": "$spacing-m",
+        "label": "$body-m-500",
         "bgHover": "var(--menu-item-hover-bg)",
         "bgPressed": "var(--menu-item-pressed-bg)",
         "bgSelected": "var(--menu-item-selected-bg)",
         "colorDisabled": "var(--menu-item-disabled)",
-        "icon": "var(--menu-item-icon)"
+        "iconColor": "var(--menu-item-icon)"
+      },
+      "divider": {
+        "strokeColor": "$color-steel-200",
+        "strokeWidth": "$stroke-s"
       },
       "destructive": {
         "color": "var(--menu-item-destructive-color)",
@@ -34,6 +56,92 @@
         "icon": "var(--menu-item-destructive-icon)"
       }
     },
-    "submenu": "Los submenus (menús anidados) usan los mismos tokens que el menú principal; no hay tokens --submenu-*. Estilos en titan-aria: .react-aria-Menu y .react-aria-MenuItem aplican a cualquier nivel."
+    "status": {
+      "default": { "icon": "$color-steel-700", "text": "$color-steel-800", "bg": "transparent" },
+      "hover": { "icon": "$color-steel-700", "text": "$color-steel-800", "bg": "$color-steel-100" },
+      "pressed": { "icon": "$color-steel-700", "text": "$color-steel-800", "bg": "$color-steel-200" },
+      "selected": { "icon": "$color-steel-700", "text": "$color-steel-800", "bg": "$color-steel-300" },
+      "disabled": { "icon": "$color-disabled-400", "text": "$color-disabled-400", "bg": "transparent" }
+    },
+    "sizing": {
+      "minWidth": "230px",
+      "maxWidth": "330px",
+      "maxLabelBoxWidth": "270px",
+      "itemHeight": "40px"
+    },
+    "truncation": {
+      "singleLine": "On hover animate left-right then right-left.",
+      "multiLine": "On hover animate top-bottom then bottom-top."
+    },
+    "scroll": {
+      "maxVisibleItemsDefault": 5,
+      "maxVisibleItemsNotifications": 3,
+      "rule": "Use internal vertical scroll when visible max is exceeded. Menu must stay inside viewport."
+    },
+    "alignment": {
+      "triggerGap": "$spacing-2xs",
+      "placement": "Anchor to trigger and open top/bottom + left/right depending on available space (collision flip).",
+      "consistencyRule": "Inside one menu, keep item structure coherent (all with icon or all without icon where possible)."
+    },
+    "submenu": {
+      "maxNestingLevels": 1,
+      "trigger": "Open on hover (pointer) and RightArrow/Enter (keyboard).",
+      "close": "Close on selection or blur.",
+      "focus": "Keep parent item focus/hover while child is open.",
+      "tokens": {
+        "triggerGap": "$spacing-4xs",
+        "submenuGap": "$spacing-2xs",
+        "iconSize": "$size-m"
+      }
+    },
+    "variants": {
+      "searchItem": {
+        "label": "$body-m-400",
+        "labelHighlighted": "$body-m-600",
+        "states": "Keeps standard states except disabled."
+      },
+      "profileItem": {
+        "avatar": "40x40",
+        "labelName": "$body-m-600",
+        "labelUsername": "$body-s-400",
+        "labelMetric": "$body-s-500",
+        "gap2": "$spacing-4xs",
+        "gap3": "$spacing-m"
+      },
+      "notificationsItem": {
+        "width": "Always max width",
+        "titleLinesMax": 2,
+        "dateLabel": "$body-s-400",
+        "states": "Uses default/hover/pressed pattern."
+      },
+      "destructiveItem": {
+        "states": "Keeps standard states except selected.",
+        "status": {
+          "default": { "icon": "$color-error-500", "text": "$color-error-600", "bg": "transparent" },
+          "hover": { "icon": "$color-error-500", "text": "$color-error-600", "bg": "$color-error-100" },
+          "pressed": { "icon": "$color-error-500", "text": "$color-error-600", "bg": "$color-error-200" },
+          "disabled": { "icon": "$color-disabled-400", "text": "$color-disabled-400", "bg": "transparent" }
+        }
+      }
+    },
+    "dosAndDonts": {
+      "dos": [
+        "Use short action-oriented labels.",
+        "Group with dividers when scanning improves.",
+        "Place destructive actions at the end.",
+        "Limit submenu depth to one level."
+      ],
+      "donts": [
+        "Do not use more than one submenu level.",
+        "Do not misalign icon/checkmark/shortcut columns.",
+        "Do not use menu for persistent navigation or complex forms."
+      ]
+    },
+    "leftVisualSlot": {
+      "container": "20x20",
+      "safeArea": "$spacing-5xs",
+      "graphicSize": "16x16",
+      "rule": "Center custom graphics and respect safe area."
+    }
   }
 }

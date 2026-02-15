@@ -1,0 +1,223 @@
+{
+  "button": {
+    "lifecycle": {
+      "status": "aria-primary",
+      "sourceOfTruth": "titan-comp-doc/button.pdf",
+      "usageRule": "Implement Button from PDF contract first. If docs/rules/spec conflict, PDF wins.",
+      "migrationTrigger": "Sync local docs/rules/spec whenever button.pdf changes."
+    },
+    "types": {
+      "button": "$button",
+      "iconButton": "$icon-button",
+      "destructiveButton": "$destructive-button",
+      "destructiveIconButton": "$destructive-icon-button",
+      "iconButtonNeutralBase": "$icon-button-neutral-base"
+    },
+    "typeVariables": {
+      "button": ["primary", "secondary", "tertiary", "text-button"],
+      "iconButton": ["primary", "secondary", "base", "base-l"],
+      "destructiveButton": ["primary", "secondary", "text-button"],
+      "destructiveIconButton": ["primary", "secondary", "base", "base-l"],
+      "iconButtonNeutralBase": ["base", "base-l"]
+    },
+    "hierarchy": {
+      "button": ["primary", "secondary", "tertiary", "text-button"],
+      "destructiveButton": ["primary", "secondary", "text-button"],
+      "iconButton": ["primary", "secondary", "base", "base-l"],
+      "destructiveIconButton": ["primary", "secondary", "base", "base-l"],
+      "iconButtonNeutralBase": ["base", "base-l"]
+    },
+    "canonicalTerminology": {
+      "variantNames": ["primary", "secondary", "tertiary", "text-button", "base", "base-l"],
+      "stateNames": ["default", "hover", "pressed", "disabled"],
+      "surfaceNames": ["dark-surface", "light-surface"],
+      "rule": "Use these exact names in docs/rules/contracts; do not switch to camelCase or spaced labels."
+    },
+    "visualPolicy": {
+      "border": {
+        "rule": "No button variant uses border/stroke/outline as visual container.",
+        "appliesTo": [
+          "button.primary",
+          "button.secondary",
+          "button.tertiary",
+          "button.text-button",
+          "iconButton.primary",
+          "iconButton.secondary",
+          "iconButton.base",
+          "iconButton.base-l",
+          "iconButtonNeutralBase.base",
+          "iconButtonNeutralBase.base-l",
+          "destructiveButton.primary",
+          "destructiveButton.secondary",
+          "destructiveButton.text-button",
+          "destructiveIconButton.primary",
+          "destructiveIconButton.secondary",
+          "destructiveIconButton.base",
+          "destructiveIconButton.base-l"
+        ],
+        "cssExpectation": {
+          "border": "none",
+          "outline": "none (except focus ring token where applicable)",
+          "stroke": "none"
+        }
+      }
+    },
+    "anatomy": {
+      "button": {
+        "radius": "$rounded-s",
+        "label": "$text-button",
+        "paddingY": "$spacing-xs",
+        "paddingX": "$spacing-m"
+      },
+      "buttonWithIconLeft": {
+        "paddingLeft": "$spacing-s",
+        "paddingRight": "$spacing-m",
+        "gap": "$spacing-4xs",
+        "iconSize": "$icon-s"
+      },
+      "buttonWithIconRight": {
+        "paddingLeft": "$spacing-m",
+        "paddingRight": "$spacing-s",
+        "gap": "$spacing-4xs",
+        "iconSize": "$icon-s"
+      },
+      "iconButtonBase": {
+        "paddingX": "$spacing-2xs",
+        "paddingY": "$spacing-2xs",
+        "iconSize": "$icon-s"
+      },
+      "iconButtonBaseL": {
+        "paddingX": "$spacing-xs",
+        "paddingY": "$spacing-xs",
+        "iconSize": "$icon-l"
+      },
+      "iconButtonPrimarySecondary": {
+        "radius": "$rounded-full",
+        "paddingX": "$spacing-2xs",
+        "paddingY": "$spacing-2xs",
+        "iconSize": "$icon-s"
+      }
+    },
+    "status": {
+      "button": {
+        "primary": ["default", "hover", "pressed", "disabled"],
+        "secondary": ["default", "hover", "pressed", "disabled"],
+        "tertiary": ["default", "hover", "pressed", "disabled"],
+        "text-button": ["default", "hover", "pressed", "disabled"]
+      },
+      "destructiveButton": {
+        "primary": ["default", "hover", "pressed", "disabled"],
+        "secondary": ["default", "hover", "pressed", "disabled"],
+        "text-button": ["default", "hover", "pressed", "disabled"]
+      },
+      "iconButton": {
+        "primary": ["default", "hover", "pressed", "disabled"],
+        "secondary": ["default", "hover", "pressed", "disabled"],
+        "base": ["default", "hover", "pressed", "disabled"],
+        "base-l": ["default", "hover", "pressed", "disabled"]
+      },
+      "destructiveIconButton": {
+        "primary": ["default", "hover", "pressed", "disabled"],
+        "secondary": ["default", "hover", "pressed", "disabled"],
+        "base": ["default", "hover", "pressed", "disabled"],
+        "base-l": ["default", "hover", "pressed", "disabled"]
+      },
+      "iconButtonNeutralBase": {
+        "dark-surface": ["default", "hover", "pressed", "disabled"],
+        "light-surface": ["default", "hover", "pressed", "disabled"]
+      }
+    },
+    "implementationNotes": [
+      "Button with icon supports both left and right icon variants with asymmetric horizontal padding.",
+      "Icon Button uses circular shape for primary/secondary and simple base/base-l variants for neutral hierarchy.",
+      "Neutral Base Icon Button supports dark and light surface variants to preserve contrast in shared components (navbar, tables, pagination, dialog).",
+      "Not all button types expose all variables; enforce only the valid hierarchy for the selected type.",
+      "Disabled state is mandatory in all variants.",
+      "If product theme overrides color tokens, preserve hierarchy and anatomy before visual tweaks."
+    ],
+    "usageByHierarchy": {
+      "button.primary": {
+        "importance": "high",
+        "use": "Main action on a page/screen.",
+        "examples": ["Create Report", "Launch", "See All Segments"]
+      },
+      "button.secondary": {
+        "importance": "medium",
+        "use": "Secondary action that complements the main action.",
+        "examples": ["Close", "Actions Menu", "Back"]
+      },
+      "button.tertiary": {
+        "importance": "low",
+        "use": "Less frequent/optional actions.",
+        "examples": ["More information", "Help", "Contact us"]
+      },
+      "button.text-button": {
+        "importance": "contextual",
+        "use": "Low-emphasis action in dense/minimal UI.",
+        "examples": ["Read more", "I forgot my password", "View details"]
+      },
+      "iconButton.primary": {
+        "importance": "high",
+        "use": "Quick essential action that should stand out.",
+        "examples": ["Add new", "Send", "Favourite"]
+      },
+      "iconButton.secondary": {
+        "importance": "medium",
+        "use": "Supporting but important icon action.",
+        "examples": ["Edit", "More information", "Share"]
+      },
+      "iconButton.base": {
+        "importance": "low",
+        "use": "Quick utility action with low visual prominence.",
+        "examples": ["Download", "Delete report"]
+      },
+      "iconButton.base-l": {
+        "importance": "low-contextual",
+        "use": "Quick actions in dense shells such as navbar.",
+        "examples": ["Support", "Notifications"]
+      },
+      "destructiveButton.primary": {
+        "importance": "critical",
+        "use": "Irreversible destructive action requiring maximum attention.",
+        "examples": ["Delete account", "Delete file", "Report critical error"]
+      },
+      "destructiveButton.secondary": {
+        "importance": "high",
+        "use": "Important destructive action, less critical than primary.",
+        "examples": ["Delete entry", "Unsubscribe", "Undo changes"]
+      },
+      "destructiveButton.text-button": {
+        "importance": "contextual",
+        "use": "Minor destructive action in context.",
+        "examples": ["Delete comment", "Unlink account", "Report minor problem"]
+      },
+      "destructiveIconButton.primary": {
+        "importance": "critical",
+        "use": "Critical irreversible action with icon-only representation.",
+        "examples": ["Delete account", "Delete file", "Report critical error"]
+      },
+      "destructiveIconButton.secondary": {
+        "importance": "high",
+        "use": "Important but non-critical destructive icon action.",
+        "examples": ["Delete entry", "Unsubscribe"]
+      },
+      "destructiveIconButton.base/base-l": {
+        "importance": "contextual",
+        "use": "Minor contextual destructive actions in quick-action surfaces.",
+        "examples": ["Delete report from row actions"]
+      }
+    },
+    "safetyGuidance": [
+      "Request additional confirmation for critical destructive actions.",
+      "Ensure icon intent is explicit in destructive icon buttons.",
+      "Keep naming and hierarchy consistent to reduce accidental misuse."
+    ],
+    "blockingRules": [
+      "If required token or state mapping is missing, return BLOCKER.",
+      "If output skips any required state for requested variant, return FAIL.",
+      "Do not replace button hierarchy labels with custom naming.",
+      "Do not expose variables that are not part of the selected type.",
+      "If any button variant uses border/stroke/outline as container styling, return FAIL."
+    ]
+  }
+}

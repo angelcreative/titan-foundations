@@ -24,6 +24,11 @@ See:
 - [Logos y navbar](docs/logos-and-navbar.md) — especificación operativa de navbar por tema. Spec: [foundations/navbar.json](foundations/navbar.json).
 - [Copy y enlaces](docs/copy-and-links.md) — títulos, cabeceros y cuerpo siempre steel; color de tema solo para enlaces (evitar confundir cabeceros con links).
 - [Drawer](docs/drawer.md) — panel deslizante con overlay; header (título + X ghost) y body. Spec: [foundations/drawer.json](foundations/drawer.json).
+- [Button](docs/button.md) — contrato de Button/Icon Button (incluyendo destructivos y neutral base), anatomía y estados. Spec: [foundations/button.json](foundations/button.json).
+- [Dialog](docs/dialog.md) — contrato de dialog modal (ilustración opcional), anatomía, interacciones y estados. Spec: [foundations/dialog.json](foundations/dialog.json).
+- [Breadcrumb](docs/breadcrumb.md) — navegación jerárquica con semántica aria y reglas de overflow. Spec: [foundations/breadcrumb.json](foundations/breadcrumb.json).
+- [Tabs](docs/tabs.md) — navegación por secciones con estados y semántica aria de tabs. Spec: [foundations/tabs.json](foundations/tabs.json).
+- [Canonical terminology](docs/terminology.md) — glosario único de naming para specs/docs/rules/comando `/titan`.
 - [Menu y Select](docs/menu-and-select.md) — menús desplegables (y submenus) y Select; tokens completos; estructura React Aria. Specs: [foundations/menu.json](foundations/menu.json), [foundations/select.json](foundations/select.json).
 - [Grid](docs/grid.md) — grid 16 columnas para layout; N columnas = span N; contenido centrado max 1920px. Spec: [foundations/grid.json](foundations/grid.json).
 - [Template](docs/template.md) — navbar 100% + contenido max 1920px (responsive 1440, 1280); al pedir "layout" o "template" montar navbar y área con grid. Spec: [foundations/template.json](foundations/template.json).

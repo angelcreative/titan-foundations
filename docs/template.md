@@ -4,7 +4,7 @@ Al pedir un **template**, **layout** o similar, se monta: **navbar a ancho compl
 
 ## Estructura
 
-1. **Navbar** — implementar navbar híbrida (React Aria/titan-aria + tokens): 100% width (de lado a lado), LayoutGrid + logo según tema (`foundations/navbar.json`).
+1. **Navbar** — implementar navbar según `foundations/navbar.json` (source of truth: `titan-comp-doc/navbar.pdf`): 100% width, izquierda Change Product + lockup Anillo+Product Name por tema, derecha icon buttons neutrales + avatar + chevron de menu.
 
 2. **Contenedor de contenido** — Debajo de la navbar: centrado (margin: 0 auto), max-width: var(--layout-content-max-width) (1920px), padding horizontal var(--layout-content-pad-x). Dentro: grid de 16 columnas (ver docs/grid.md) para colocar cards, bloques, etc.
 

@@ -1,5 +1,5 @@
 ---
-description: Navbar Titan — 100% width; izquierda LayoutGrid + logo tema; derecha 5 icon buttons + avatar; NUNCA otros elementos
+description: Navbar Titan (PDF) — izquierda Change Product + lockup; derecha icon buttons + avatar + chevron
 globs: ["**/*navbar*", "**/*Navbar*", "**/layouts/**", "**/components/**/Header*", "**/assets/logos/**", "**/public/**"]
 alwaysApply: true
 ---
@@ -8,14 +8,17 @@ alwaysApply: true
 
 Cuando se pida **navbar** (o "navbar demand", "navbar insights", etc.):
 
-- **Precedencia obligatoria:** construir con base React Aria/titan-aria y tokens/foundations Titan.
+- **Source of truth obligatorio:** `titan-comp-doc/navbar.pdf` (reflejado en `foundations/navbar.json`).
+- **Canonical glossary obligatorio:** `docs/terminology.md`.
+- **Preflight obligatorio:** leer `foundations/navbar.json` y resolver: icono/library del change-product, lockup de marca por tema, orden de grupos, restricciones.
+- **Terminologia canonica obligatoria:** `left-group`, `right-group`, `change-product-button`, `brand-lockup`, `action-icon-buttons`, `user-avatar`, `user-menu-chevron-button`, `chevron-down`, `chevron-up`.
 - **Ancho:** 100% (de lado a lado). Nunca menos.
-- **En la navbar NUNCA se pone otro elemento** que no sea los indicados abajo.
+- **Alto de referencia:** 70px.
 
-## Izquierda (solo esto, en este orden)
+## Izquierda (orden fijo)
 
-1. **Icono grid** — Lucide: `Grip` (rejilla 9 puntos / app launcher). Siempre el primer elemento.
-2. **Logo** — `<img src="/assets/logos/{archivo}" />` donde {archivo} es el de **themeToLogo** para el tema:
+1. **Change Product | Icon Button** — Neutral Icon Button Base - L (`$icon-button-neutral-base-l`).
+2. **Anillo + Product Name (lockup)** — `<img src="/assets/logos/{archivo}" />` con mapping `themeToLogo`:
    - "navbar demand" → `logo-demand.svg`
    - "navbar insights" → `logo-insights.svg`
    - "navbar audiense" → `logo-audiense.svg`
@@ -23,23 +26,20 @@ Cuando se pida **navbar** (o "navbar demand", "navbar insights", etc.):
    - "navbar linkedin" → `logo-inkedin.svg`
    - "navbar tweetbinder" → `logo-tweetbinder.svg`
    - "navbar connect" → `logo-connect.svg`
-   Sin texto junto al logo; solo la imagen.
+   Sin texto junto al lockup.
 
-## Derecha (solo esto, en este orden)
+## Derecha (patron estructural)
 
-Siempre y nunca otra cosa: **5 icon buttons** (Lucide) + **avatar de usuario**:
+Siempre y nunca otra cosa:
 
-1. **Bell** — notificaciones
-2. **Handshake** — soporte / comunidad
-3. **CircleHelp** — ayuda
-4. **Settings** — configuración
-5. **Sparkles** — función destacada (puede llevar color/gradiente)
-6. **Avatar** — circular, fondo con letra (tokens Titan: `--avatar-bg`, `--avatar-size`, etc.), con **ChevronDown** a la derecha (dropdown).
+1. **Icon Buttons | Base Neutral** (set de acciones segun producto; no set global fijo en el PDF).
+2. **User Avatar** (40x40).
+3. **Boton chevron de menu de usuario**: `ChevronDown` cerrado, `ChevronUp` abierto.
 
-No añadir ni quitar iconos; no poner búsqueda, menús extra ni ningún otro elemento en la navbar.
+No añadir placeholders de marca. Si falta lockup/ruta de logo, devolver **BLOCKER** (no sustituir).
 
 ## Resumen
 
-- **100% width.** Izquierda: [Grip] [logo del tema]. Derecha: [Bell] [Handshake] [CircleHelp] [Settings] [Sparkles] [Avatar + ChevronDown]. **Nunca otro elemento.**
+- **100% width.** Izquierda: [Change Product] [Anillo + Product Name]. Derecha: [Icon Buttons neutrales] [Avatar] [Chevron menu]. Responsive por grupos, sin aumentar espaciado interno.
 
 Spec: `foundations/navbar.json`. Doc: `docs/logos-and-navbar.md`.

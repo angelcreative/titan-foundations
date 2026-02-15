@@ -1,5 +1,5 @@
 ---
-description: Menu, submenus y Select — usar tokens Titan y estructura React Aria (titan-aria)
+description: Menu, submenus y Select — usar tokens Titan y estructura react-aria-components
 globs: ["**/*[Mm]enu*", "**/*[Ss]elect*", "**/*Popover*", "**/*ListBox*"]
 alwaysApply: false
 ---
@@ -8,19 +8,27 @@ alwaysApply: false
 
 ## Precedencia obligatoria
 
-- Base obligatoria: `react-aria-components` para anatomía y accesibilidad.
-- Pintado obligatorio: tokens semánticos Titan y foundations.
-- Compatibilidad: usar wrappers de `titan-aria` cuando ya existan y eviten retrabajo.
+- Source of truth para **Menu**: `titan-comp-doc/menu.pdf` (despues `foundations/menu.json`, luego `docs/menu-and-select.md`).
+- Canonical glossary obligatorio: `docs/terminology.md`.
+- Si hay conflicto entre PDF y docs/rules locales: prevalece PDF.
+- Base obligatoria: `react-aria-components` para anatomia y accesibilidad.
+- Pintado obligatorio: tokens semanticos Titan y foundations.
 
 ## Menu (y submenus)
 
-- **Estructura:** MenuTrigger, Menu, MenuItem (react-aria-components / titan-aria). Submenus = mismo Menu/MenuItem anidado.
-- **Tokens:** Usar --menu-min-width, --menu-bg, --menu-color, --menu-radius, --menu-shadow para el contenedor; --menu-item-height, --menu-item-hover-bg, --menu-item-pressed-bg, --menu-item-selected-bg, --menu-item-disabled, --menu-item-icon para ítems. Destructivo: --menu-item-destructive-*.
-- **Submenus:** No hay tokens --submenu-*; heredan los del menú. Misma estructura Aria y mismas clases .react-aria-Menu / .react-aria-MenuItem.
+- **Preflight obligatorio:** resolver desde `foundations/menu.json` antes de generar (anatomia, sizing, estados, scroll, submenu y variantes).
+- **Terminologia canonica obligatoria:** estados `default`, `hover`, `pressed`, `selected`, `disabled`; variantes `search-item`, `profile-item`, `notifications-item`, `destructive-item`; `max-nesting-levels` para submenu.
+- **Anatomia:** contenedor + items (iconos/dividers opcionales).
+- **Sizing:** width 230-330, label box max 270, item height 40.
+- **Scroll:** max 5 items visibles (notifications: 3), scroll interno, nunca salir del viewport.
+- **Placement:** gap trigger-menu `$spacing-2xs`; aplicar collision/flip.
+- **Estados:** default/hover/pressed/selected/disabled para item standard.
+- **Submenus:** maximo 1 nivel; abrir hover o RightArrow/Enter; cerrar en select/blur.
+- **Destructive:** escala de error; no estado selected.
 - **Spec:** foundations/menu.json. Doc: docs/menu-and-select.md.
 
 ## Select
 
-- **Estructura:** Select, SelectValue, Button (trigger), Popover (data-slot="listbox"), ListBox, ListBoxItem (titan-aria).
+- **Estructura:** Select, SelectValue, Button (trigger), Popover (data-slot="listbox"), ListBox, ListBoxItem (react-aria-components).
 - **Tokens:** Trigger: --select-button-height, --select-button-bg, --select-button-color, --select-button-border. Popover: --select-popover-bg, --select-popover-color, --select-popover-shadow, --select-popover-radius. Ítems: --select-item-height, --select-item-focused-bg, --select-item-pressed-bg, --select-item-selected-bg (los colores vienen del tema).
 - **Spec:** foundations/select.json. Doc: docs/menu-and-select.md.

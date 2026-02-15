@@ -8,7 +8,7 @@ alwaysApply: true
 
 Cuando el usuario pida **"template"**, **"layout"**, **"hazme un layout"**, **"monta un template"** o similar:
 
-1. **Navbar** — Construir navbar híbrida con React Aria/titan-aria + tokens: ancho 100%, izquierda LayoutGrid + logo según tema (foundations/navbar.json, themeToLogo), derecha exactamente Bell, Handshake, CircleHelp, Settings, Sparkles + avatar (fondo con letra) con ChevronDown. En la navbar NUNCA otro elemento. Regla: .cursor/rules/navbar-logos.mdc.
+1. **Navbar** — Construir navbar según `foundations/navbar.json` (source: `titan-comp-doc/navbar.pdf`): ancho 100%, izquierda Change Product + Anillo+Product Name por tema, derecha icon buttons neutrales + avatar + chevron de menu. Si falta lockup/ruta de logo, devolver BLOCKER. Regla: .cursor/rules/navbar-logos.mdc.
 
 2. **Contenedor de contenido** — Debajo de la navbar: contenedor centrado (margin: 0 auto), max-width: var(--layout-content-max-width) (1920px), padding horizontal var(--layout-content-pad-x). Dentro: **grid de 16 columnas** (display: grid; grid-template-columns: repeat(16, 1fr); gap: var(--layout-grid-gap)) listo para recibir cards/bloques. Responsive: 1440px y 1280px con var(--layout-content-max-width-md) y var(--layout-content-max-width-sm).
 

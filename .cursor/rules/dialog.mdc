@@ -1,0 +1,51 @@
+---
+description: Dialog — modal with optional illustration, strict anatomy and a11y behavior
+globs: ["**/*dialog*", "**/*Dialog*", "**/*modal*", "**/*Modal*"]
+alwaysApply: true
+---
+
+# Dialog (Titan)
+
+When user asks for **dialog/modal**:
+
+- **Source of truth:** `foundations/dialog.json` and `docs/dialog.md`.
+- **Canonical glossary required:** `docs/terminology.md`.
+- **Preflight required:** resolve anatomy, token usage, interaction model, and required states before coding.
+- **Canonical terminology required:** `overlay`, `container`, `title`, `body`, `close-button`, `footer-actions`, states `default/hover/pressed/disabled/loading`, feedback `success/error/empty`.
+
+## Required anatomy
+
+- Overlay
+- Dialog container
+- Title
+- Body
+
+Optional:
+- Illustration
+- Close icon
+- Footer actions
+
+Illustration is optional and must not be forced.
+
+## Required behavior
+
+- Focus trap while open.
+- Return focus to trigger on close.
+- Keyboard close via `Escape` when allowed.
+- Overlay click close only when flow permits.
+- No viewport overflow; internal scroll for long body content.
+
+## Tokens
+
+Prefer dialog slot tokens from `titan.css`:
+- `--dialog-slot-bg`, `--dialog-slot-radius`, `--dialog-slot-shadow`
+- `--dialog-slot-pad`, `--dialog-slot-gap`, `--dialog-header-slot-gap`
+- `--dialog-title-slot-color`, `--dialog-body-slot-color`
+- `--dialog-close-slot-*`
+- `--overlay-backdrop`, focus tokens
+
+## Validation
+
+- Missing required anatomy -> **BLOCKER**
+- Missing required state coverage for actionable dialogs -> **FAIL**
+- Forcing illustration when not requested/needed -> **FAIL**

@@ -1,0 +1,50 @@
+{
+  "breadcrumb": {
+    "lifecycle": {
+      "status": "aria-primary",
+      "sourceOfTruth": "titan-comp-doc/breadcrumb.pdf",
+      "usageRule": "Implement Breadcrumb from PDF contract first. If docs/rules/spec conflict, PDF wins.",
+      "migrationTrigger": "Sync local docs/rules/spec whenever breadcrumb.pdf changes."
+    },
+    "description": "Breadcrumb shows current location hierarchy and allows step-back navigation.",
+    "canonicalTerminology": {
+      "partNames": ["breadcrumb-nav", "ordered-list", "item", "separator", "current-item", "overflow-ellipsis-item"],
+      "stateNames": ["default", "hover", "pressed", "focus-visible", "disabled"],
+      "rule": "Use canonical names in docs/rules/contracts; avoid alternate labels."
+    },
+    "structure": {
+      "required": ["nav[aria-label='Breadcrumb']", "ordered list", "items", "separators"],
+      "optional": ["home icon item", "ellipsis collapse item", "leading/trailing truncation behavior"],
+      "currentItemRule": "Last item is current page and is not interactive."
+    },
+    "tokens": {
+      "label": "var(--text-body)",
+      "labelMuted": "var(--text-muted)",
+      "labelLink": "var(--text-link)",
+      "labelLinkHover": "var(--text-link-hover)",
+      "separator": "var(--divider-strong)",
+      "focusRing": "var(--focus-ring)",
+      "focusOffset": "var(--focus-ring-offset)",
+      "itemGap": "var(--spacing-2xs)"
+    },
+    "interaction": {
+      "clickableItems": "All previous hierarchy items are interactive links/buttons.",
+      "currentItem": "Current location is read-only text with aria-current='page'.",
+      "keyboard": "Tab navigation only through interactive breadcrumb items.",
+      "overflow": "Collapse middle segments with ellipsis when space is insufficient."
+    },
+    "states": {
+      "interactiveItem": ["default", "hover", "pressed", "focus-visible", "disabled when applicable"],
+      "currentItem": ["default"]
+    },
+    "responsive": {
+      "rule": "On narrow widths, preserve first and last levels and collapse middle levels first.",
+      "ellipsisRule": "Collapsed segment can expand via menu/popover when requested by product flow."
+    },
+    "blockingRules": [
+      "If hierarchy/current item semantics cannot be satisfied, return BLOCKER.",
+      "If interactive breadcrumb states are missing, return FAIL.",
+      "Do not make current page item clickable."
+    ]
+  }
+}

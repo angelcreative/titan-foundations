@@ -9,7 +9,7 @@ Specs en JSON y convenciones para que implementaciones (o Cursor/MCP) puedan rep
 
 - **`table-borderless.json`** — Especificación de la tabla borderless: tokens de contenedor, celdas, separadores, hover, iconos de ordenación (Lucide) y menú de acciones (Editar / Clonar / Borrar). Ver [docs/table-borderless.md](../docs/table-borderless.md) para la documentación completa (tokens + reglas CSS + convención de iconos).
 
-- **`navbar.json`** — Navbar: a la izquierda icono 9 puntos (LayoutGrid) + logo según tema; a la derecha ítems + avatar (reutilizar tokens de avatar). Sin texto junto al logo. Ver [docs/logos-and-navbar.md](../docs/logos-and-navbar.md).
+- **`navbar.json`** — Navbar basada en PDF: izquierda Change Product + lockup Anillo+Product Name; derecha icon buttons neutrales + avatar + chevron. Ver [docs/logos-and-navbar.md](../docs/logos-and-navbar.md).
 
 - **`copy-and-links.json`** — Convención copy: títulos/cabeceros/cuerpo siempre steel; color de tema solo para enlaces. Ver [docs/copy-and-links.md](../docs/copy-and-links.md).
 
@@ -22,6 +22,14 @@ Specs en JSON y convenciones para que implementaciones (o Cursor/MCP) puedan rep
 - **`grid.json`** — Grid de layout 16 columnas; contenido centrado max 1920px; "N columnas" = span N. Ver [docs/grid.md](../docs/grid.md).
 
 - **`template.json`** — Template de página: navbar 100% width; debajo contenedor contenido centrado max 1920px (responsive 1440, 1280) con grid 16 cols; sidebar flotante; drawer overlay. Ver [docs/template.md](../docs/template.md).
+
+- **`button.json`** — Button, Icon Button y variantes destructivas/neutral-base; jerarquias, anatomia y estados obligatorios segun PDF. Ver [docs/button.md](../docs/button.md).
+
+- **`dialog.json`** — Contrato de Dialog (anatomia, tokens, interacciones, estados), con ilustracion opcional. Ver [docs/dialog.md](../docs/dialog.md).
+
+- **`breadcrumb.json`** — Breadcrumb jerarquico con semantica aria, separadores y reglas de overflow/responsive. Ver [docs/breadcrumb.md](../docs/breadcrumb.md).
+
+- **`tabs.json`** — Tabs para secciones hermanas: anatomia, estados (`default/hover/selected/disabled`), semantica aria y overflow responsive. Ver [docs/tabs.md](../docs/tabs.md).
 
 ## Uso
 

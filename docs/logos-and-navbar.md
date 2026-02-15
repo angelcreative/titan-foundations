@@ -1,57 +1,80 @@
-# Logos y navbar por tema
+# Navbar (source of truth: PDF)
 
-> Ownership policy: navbar se implementa con base React Aria/titan-aria y tokens/foundations Titan.  
-> Este documento y `foundations/navbar.json` son referencia operativa activa para mantener consistencia visual y de interacción.
+> Source of truth: `titan-comp-doc/navbar.pdf`  
+> Este documento traduce el contrato del PDF a reglas operativas para implementacion.
+> Canonical glossary: `docs/terminology.md` (mandatory naming).
 
-Los logos de producto viven en **`assets/logos/`**. Cada archivo es un SVG con nombre `logo-{tema}.svg`. No se usa texto junto al logo; solo la imagen según el tema activo.
+Terminologia canonica obligatoria:
+- grupos: `left-group`, `right-group`
+- izquierda: `change-product-button`, `brand-lockup`
+- derecha: `action-icon-buttons`, `user-avatar`, `user-menu-chevron-button`
+- estado de chevron: `chevron-down` (cerrado), `chevron-up` (abierto)
 
-## Regla de oro: en la navbar NUNCA se pone otro elemento
+## Estructura base
 
-La navbar tiene **ancho 100%** y **solo** los elementos especificados: izquierda (Grip + logo) y derecha (5 icon buttons + avatar con dropdown). No se añaden búsqueda, menús extra, texto "App", ni ningún otro elemento.
+La navbar se ubica arriba, ocupa **100%** de ancho y usa:
 
-## Izquierda de la navbar: icono 9 puntos + logo
+- **Background:** `color-white-900`
+- **Stroke:** `color-steel-100`
+- **Alto de referencia:** `70px` (derivado del lockup "Anillo + Product Name")
 
-- **Orden fijo (obligatorio):** primero el **icono de 9 puntos** (app launcher / waffle), luego el **logo**. El icono va siempre a la izquierda del logo; nunca al revés ni sin el icono.
-- Lucide: **`Grip`** (rejilla 3×3).
-- El logo se elige según el tema (`data-theme`); sin texto adicional.
+### Grupo izquierdo (orden fijo)
 
-## Mapeo tema → logo
+1. **Change Product | Icon Button**  
+   - Componente: Neutral Icon Button Base - L (`$icon-button-neutral-base-l`)
+   - Funcion: abrir flujo/pagina de cambio de producto.
+2. **Anillo + Product Name (lockup)**  
+   - Asset de marca con anillo + nombre del producto.
+   - Medida de referencia: `165px x 70px`.
+   - Puede funcionar como enlace a Home.
 
-| Tema (`data-theme` en `<html>`) | Archivo en `assets/logos/` |
-|---------------------------------|----------------------------|
+Los lockups de producto viven en `assets/logos/` y se sirven por `/assets/logos/`.
+Ruta esperada: `<img src="/assets/logos/{archivo}" />` (sin texto adicional junto al lockup).
+
+## Mapeo tema -> lockup
+
+| Tema (`data-theme`) | Archivo |
+| --- | --- |
 | `demand` | `logo-demand.svg` |
 | `audiense` | `logo-audiense.svg` |
-| `neutral` | `logo-audiense.svg` (mismo que audiense) |
+| `neutral` | `logo-audiense.svg` |
 | `insights` | `logo-insights.svg` |
 | `linkedin` | `logo-inkedin.svg` |
 | `tweetbinder` | `logo-tweetbinder.svg` |
 | `connect` | `logo-connect.svg` |
 
-## Derecha de la navbar: exactamente estos elementos (orden fijo)
+## Grupo derecho
 
-Siempre y nunca otra cosa, en este orden (Lucide para iconos):
+Composicion (en este orden estructural):
 
-1. **Bell** — Notificaciones  
-2. **Handshake** — Soporte / comunidad  
-3. **CircleHelp** — Ayuda  
-4. **Settings** — Configuración  
-5. **Sparkles** — Función destacada (puede llevar color)  
-6. **Avatar** — Avatar circular con fondo + letra; a la derecha **ChevronDown** (dropdown).
+1. **Icon Buttons | Base Neutral** (set de acciones segun producto, p.ej. ajustes/notificaciones).
+2. **User Avatar** (`40x40`).
+3. **Boton de chevron del menu de usuario**:
+   - cerrado: `ChevronDown`
+   - abierto: `ChevronUp`
 
-Avatar: reutilizar tokens Titan (`--avatar-bg`, `--avatar-size`, `--avatar-radius`, `--avatar-color`). Siempre fondo con letra; incluir ChevronDown para dropdown.
+No se fija un set universal de 5 iconos concretos en el PDF; se fija el patron de icon buttons neutrales + avatar + chevron de menu.
 
-## Convención navbar
+## Espaciado y tokens clave
 
-- **Ancho:** 100%.
-- **Izquierda:** [Grip] [Logo según tema]. Logo suele ser enlace al inicio (home). Sin texto junto al logo.
-- **Derecha:** exactamente los 5 icon buttons anteriores + avatar con ChevronDown. No añadir ni quitar elementos.
-- El tema lo define la app (p. ej. `html[data-theme="demand"]` → "navbar demand" → logo demand).
+- Left padding: `$spacing-l`
+- Right padding: `$spacing-xl`
+- Gap 1: `$spacing-4xs`
+- Gap 2: `$spacing-l`
+- Gap 3: `$spacing-3xs`
+- Bottom stroke: `$stroke-s`
+- Stroke color: `$color-steel-100`
 
-## Uso en la app
+## Responsive
 
-1. Leer el tema activo (`data-theme` o contexto de app).
-2. Resolver el archivo de logo con la tabla anterior.
-3. **Izquierda:** renderizar primero el botón/icono **Grip**, luego el logo con **`src="/assets/logos/{archivo}"`** donde {archivo} es el de themeToLogo (p. ej. tema demand → `/assets/logos/logo-demand.svg`). La app debe tener los SVG en `public/assets/logos/` (o la ruta equivalente que sirva en `/assets/logos/`).
-4. **Derecha:** renderizar en orden los 5 icon buttons (Bell, Handshake, CircleHelp, Settings, Sparkles) y el avatar con ChevronDown.
+- Baseline de diseño: `1440px`.
+- En viewports mayores o menores, se ajusta el espacio **entre** grupo izquierdo y derecho.
+- No incrementar espaciado interno dentro de cada grupo.
+- Por encima de `1920px`, la barra se expande en bordes manteniendo la posicion de los elementos internos.
 
-Spec en JSON: **`foundations/navbar.json`** (`leftOrder`, `rightOrder`, `rightSlot`, `themeToLogo`, `forbidden`).
+## Reglas de bloqueo
+
+- Si falta el lockup/ruta de logo para el tema solicitado: **BLOCKER** (no placeholder, no sustitucion textual).
+- Si hay conflicto entre PDF y docs/rules previas: prevalece PDF.
+
+Spec JSON: `foundations/navbar.json`.

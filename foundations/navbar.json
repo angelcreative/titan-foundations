@@ -1,17 +1,38 @@
 {
   "navbar": {
-    "description": "Navbar 100% width. Izquierda: LayoutGrid + logo según tema. Derecha: exactamente 5 icon buttons (Bell, Handshake, CircleHelp, Settings, Sparkles) + avatar (fondo con letra) con ChevronDown. En la navbar NUNCA se pone otro elemento.",
+    "sourceOfTruth": "titan-comp-doc/navbar.pdf",
+    "description": "NavBar superior para navegacion de producto. Contrato basado en PDF: izquierda con boton Change Product + lockup Anillo + Product Name; derecha con icon buttons de acciones + User Avatar + boton de chevron para desplegar menu de usuario.",
+    "canonicalTerminology": {
+      "groupNames": ["left-group", "right-group"],
+      "leftGroupItems": ["change-product-button", "brand-lockup"],
+      "rightGroupItems": ["action-icon-buttons", "user-avatar", "user-menu-chevron-button"],
+      "iconStateNames": ["chevron-down", "chevron-up"],
+      "rule": "Use canonical names in docs/rules/contracts; do not rename groups or items."
+    },
     "width": "100%",
-    "forbidden": "No añadir ni quitar elementos (búsqueda, menús extra, texto 'App', etc.). La navbar solo contiene lo especificado en leftOrder y rightOrder.",
-    "logoPosition": "left",
+    "height": "70px",
+    "baseViewport": "1440px",
+    "forbidden": "No usar placeholders de marca ni sustituir assets faltantes. Si falta lockup o ruta de logo, devolver BLOCKER.",
+    "structure": {
+      "leftGroup": ["changeProductButton", "brandLockup"],
+      "rightGroup": ["actionIconButtons", "userAvatar", "userMenuChevronButton"]
+    },
+    "leftOrder": ["changeProductButton", "brandLockup"],
     "logosPath": "assets/logos",
     "logoPublicPath": "/assets/logos",
-    "logoSrcRule": "Usar siempre <img src=\"/assets/logos/{archivo}\" /> donde {archivo} es themeToLogo[tema]. Ejemplo: tema demand → src=\"/assets/logos/logo-demand.svg\". No usar icono de sustitución ni texto junto al logo.",
-    "leftOrder": ["appLauncher", "logo"],
-    "appLauncherIcon": {
+    "brandLockup": {
+      "name": "Anillo + Product Name",
+      "size": "165x70",
+      "logoSrcRule": "Usar <img src=\"/assets/logos/{archivo}\" /> para el lockup de producto (anillo + nombre). No usar texto suelto ni icono de sustitucion.",
+      "stroke": "$stroke-s",
+      "strokeColor": "$color-steel-100"
+    },
+    "changeProductButton": {
+      "component": "Neutral Icon Button Base - L",
+      "token": "$icon-button-neutral-base-l",
       "library": "lucide-react",
       "name": "Grip",
-      "description": "Icono 9 puntos (waffle / app launcher); siempre el primer elemento a la izquierda"
+      "description": "Boton para cambiar de producto. El icono exacto puede variar por producto, pero debe ser icon button neutral grande."
     },
     "themeToLogo": {
       "demand": "logo-demand.svg",
@@ -22,15 +43,34 @@
       "tweetbinder": "logo-tweetbinder.svg",
       "connect": "logo-connect.svg"
     },
-    "rightOrder": ["notifications", "handshake", "help", "settings", "sparkles", "avatar"],
-    "rightSlot": [
-      { "id": "notifications", "library": "lucide-react", "name": "Bell", "description": "Notificaciones" },
-      { "id": "handshake", "library": "lucide-react", "name": "Handshake", "description": "Soporte / comunidad" },
-      { "id": "help", "library": "lucide-react", "name": "CircleHelp", "description": "Ayuda" },
-      { "id": "settings", "library": "lucide-react", "name": "Settings", "description": "Configuración" },
-      { "id": "sparkles", "library": "lucide-react", "name": "Sparkles", "description": "Función destacada (puede llevar color)" },
-      { "id": "avatar", "component": "avatar", "description": "Avatar circular con fondo + letra; ChevronDown a la derecha (dropdown). Reutilizar tokens --avatar-bg, --avatar-size, --avatar-radius, --avatar-color." }
-    ],
-    "avatar": "Reutilizar tokens Titan (--avatar-bg, --avatar-size, --avatar-radius, --avatar-color). Siempre fondo con letra; incluir ChevronDown para dropdown."
+    "actionIconButtons": {
+      "component": "Neutral Icon Button Base",
+      "token": "$icon-button-neutral-base",
+      "examples": ["ajustes", "notificaciones", "cambio de producto"],
+      "note": "Son botones de acciones basicas o triggers de menus desplegables."
+    },
+    "userAvatar": {
+      "size": "40x40",
+      "description": "Avatar de usuario. Puede usar foto real o inicial."
+    },
+    "userMenuChevronButton": {
+      "defaultIcon": "ChevronDown",
+      "expandedIcon": "ChevronUp",
+      "behavior": "Alterna segun estado del menu desplegable de usuario."
+    },
+    "tokens": {
+      "background": "color-white-900",
+      "strokeColor": "color-steel-100",
+      "leftPadding": "$spacing-l",
+      "rightPadding": "$spacing-xl",
+      "gap1": "$spacing-4xs",
+      "gap2": "$spacing-l",
+      "gap3": "$spacing-3xs",
+      "bottomStroke": "$stroke-s"
+    },
+    "responsive": {
+      "rule": "Mantener grupos izquierdo y derecho. Ajustar espacio entre grupos segun viewport sin aumentar espaciado interno.",
+      "over1920": "La barra se expande en bordes, manteniendo posicion de elementos internos."
+    }
   }
 }

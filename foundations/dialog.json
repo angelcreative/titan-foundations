@@ -1,0 +1,63 @@
+{
+  "dialog": {
+    "lifecycle": {
+      "status": "aria-primary",
+      "sourceOfTruth": "audiense zeroheight dialog page (captured) + titan-comp-doc/dialog source when available",
+      "usageRule": "Implement Dialog from source contract first. If docs/rules/spec conflict, source-of-truth wins.",
+      "migrationTrigger": "Sync local docs/rules/spec when dialog source updates."
+    },
+    "description": "Modal dialog for confirmational, informational or blocking tasks. Includes overlay, container, header/body/footer and optional illustration.",
+    "canonicalTerminology": {
+      "requiredParts": ["overlay", "container", "title", "body"],
+      "optionalParts": ["illustration", "close-button", "footer-actions", "divider-header", "divider-footer"],
+      "stateNames": ["default", "hover", "pressed", "disabled", "loading"],
+      "feedbackNames": ["success", "error", "empty"],
+      "rule": "Use canonical names in docs/rules/contracts; avoid aliases."
+    },
+    "structure": {
+      "required": ["overlay", "container", "title", "body"],
+      "optional": ["illustration", "closeButton", "footerActions", "dividerHeader", "dividerFooter"],
+      "illustrationRule": "Illustration is optional; never required for the component to be valid."
+    },
+    "tokens": {
+      "overlayBackdrop": "var(--overlay-backdrop)",
+      "background": "var(--dialog-slot-bg)",
+      "radius": "var(--dialog-slot-radius)",
+      "shadow": "var(--dialog-slot-shadow)",
+      "padding": "var(--dialog-slot-pad)",
+      "contentGap": "var(--dialog-slot-gap)",
+      "headerGap": "var(--dialog-header-slot-gap)",
+      "titleColor": "var(--dialog-title-slot-color)",
+      "bodyColor": "var(--dialog-body-slot-color)",
+      "closeRadius": "var(--dialog-close-slot-radius)",
+      "closeBgHover": "var(--dialog-close-slot-bg-hover)",
+      "closeBgActive": "var(--dialog-close-slot-bg-active)",
+      "closeIcon": "var(--dialog-close-slot-icon)",
+      "focusRing": "var(--focus-ring)",
+      "focusOffset": "var(--focus-ring-offset)"
+    },
+    "sizing": {
+      "widthBehavior": "Content-first with max width; never overflow viewport.",
+      "heightBehavior": "Use internal content scroll when body exceeds available height.",
+      "density": "Respect spacing tokens; do not hardcode px values when token exists."
+    },
+    "interaction": {
+      "open": ["trigger action", "programmatic"],
+      "close": ["primary/secondary action", "close button if present", "escape key", "overlay click when allowed"],
+      "focus": "Trap focus while open and return focus to trigger on close."
+    },
+    "states": {
+      "required": ["default", "hover", "pressed", "disabled where actionable", "loading where actionable"],
+      "feedback": ["success", "error", "empty informational state when no content payload"]
+    },
+    "actions": {
+      "order": "Primary action should be visually dominant; secondary/tertiary less prominent.",
+      "layout": "Footer actions can stack or align horizontally depending on width."
+    },
+    "blockingRules": [
+      "If required dialog anatomy cannot be satisfied, return BLOCKER.",
+      "If requested variant omits required state handling, return FAIL.",
+      "Do not force illustration; include only when context requires it."
+    ]
+  }
+}
