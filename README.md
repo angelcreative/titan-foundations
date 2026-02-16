@@ -28,6 +28,7 @@ See:
 - [Dialog](docs/dialog.md) — contrato de dialog modal (ilustración opcional), anatomía, interacciones y estados. Spec: [foundations/dialog.json](foundations/dialog.json).
 - [Breadcrumb](docs/breadcrumb.md) — navegación jerárquica con semántica aria y reglas de overflow. Spec: [foundations/breadcrumb.json](foundations/breadcrumb.json).
 - [Tabs](docs/tabs.md) — navegación por secciones con estados y semántica aria de tabs. Spec: [foundations/tabs.json](foundations/tabs.json).
+- [Pagination](docs/pagination.md) — navegación entre páginas de resultados con estados, variantes y semántica aria. Spec: [foundations/pagination.json](foundations/pagination.json).
 - [Canonical terminology](docs/terminology.md) — glosario único de naming para specs/docs/rules/comando `/titan`.
 - [Menu y Select](docs/menu-and-select.md) — menús desplegables (y submenus) y Select; tokens completos; estructura React Aria. Specs: [foundations/menu.json](foundations/menu.json), [foundations/select.json](foundations/select.json).
 - [Grid](docs/grid.md) — grid 16 columnas para layout; N columnas = span N; contenido centrado max 1920px. Spec: [foundations/grid.json](foundations/grid.json).

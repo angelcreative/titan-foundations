@@ -18,6 +18,7 @@ This inventory is the decision baseline to avoid two active sources of truth.
 | Dialog | `foundations/dialog.json`, `docs/dialog.md`, `.cursor/rules/dialog.mdc` | `AriaBase` | Keep modal contract with optional illustration and strict a11y behavior. |
 | Breadcrumb | `foundations/breadcrumb.json`, `docs/breadcrumb.md`, `.cursor/rules/breadcrumb.mdc` | `AriaBase` | Keep hierarchical navigation semantics and overflow rules consistent. |
 | Tabs | `foundations/tabs.json`, `docs/tabs.md`, `.cursor/rules/tabs.mdc` | `AriaBase` | Keep tablist semantics, single-selection and responsive overflow behavior. |
+| Pagination | `foundations/pagination.json`, `docs/pagination.md`, `.cursor/rules/pagination.mdc` | `AriaBase` | Keep paging semantics, single current page, and state clarity across dense and regular layouts. |
 | Drawer | `foundations/drawer.json`, `docs/drawer.md`, React Aria structure in `titan-aria` usage paths | `AriaBase` | Build with React Aria + Titan tokens; keep overlay behavior and state coverage. |
 | Menu | `foundations/menu.json`, `docs/menu-and-select.md`, `.cursor/rules/menu-and-select.mdc` | `AriaBase` | Keep React Aria structure and Titan token contract as primary. |
 | Select | `foundations/select.json`, `docs/menu-and-select.md`, `.cursor/rules/menu-and-select.mdc` | `AriaBase` | Keep React Aria structure and Titan token contract as primary. |
@@ -45,6 +46,7 @@ Track these operational files in each audit cycle to ensure they stay aligned:
 - Dialog: `foundations/dialog.json`, `docs/dialog.md`, `.cursor/rules/dialog.mdc`
 - Breadcrumb: `foundations/breadcrumb.json`, `docs/breadcrumb.md`, `.cursor/rules/breadcrumb.mdc`
 - Tabs: `foundations/tabs.json`, `docs/tabs.md`, `.cursor/rules/tabs.mdc`
+- Pagination: `foundations/pagination.json`, `docs/pagination.md`, `.cursor/rules/pagination.mdc`
 - Menu: `foundations/menu.json`, `docs/menu-and-select.md`, `.cursor/rules/menu-and-select.mdc`
 - Select: `foundations/select.json`, `docs/menu-and-select.md`, `.cursor/rules/menu-and-select.mdc`
 

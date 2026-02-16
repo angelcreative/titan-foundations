@@ -1,0 +1,87 @@
+{
+  "pagination": {
+    "lifecycle": {
+      "status": "aria-primary",
+      "sourceOfTruth": "audiense zeroheight pagination page (captured image reference) + titan.css pagination tokens",
+      "usageRule": "Implement Pagination from source contract first. If docs/rules/spec conflict, source-of-truth wins.",
+      "migrationTrigger": "Sync local docs/rules/spec whenever pagination source updates."
+    },
+    "description": "Pagination controls navigation across large result sets with previous/next and page items.",
+    "canonicalTerminology": {
+      "partNames": [
+        "pagination-container",
+        "pagination-nav",
+        "page-button",
+        "previous-button",
+        "next-button",
+        "ellipsis-item"
+      ],
+      "stateNames": ["default", "hover", "selected", "disabled"],
+      "densityNames": ["default-density", "compact-density"],
+      "variantNames": ["default-pagination", "simple-pagination"],
+      "rule": "Use canonical names in docs/rules/contracts; avoid aliases."
+    },
+    "structure": {
+      "required": ["pagination-container", "pagination-nav", "previous-button", "next-button", "page-button"],
+      "optional": ["first-button", "last-button", "ellipsis-item", "page-size-selector", "results-summary"],
+      "selectionRule": "Exactly one page-button is selected.",
+      "a11yRule": "Use nav landmark with aria-label and expose current page semantics."
+    },
+    "tokens": {
+      "color": "var(--pagination-slot-color)",
+      "height": "var(--pagination-slot-height)",
+      "radius": "var(--pagination-slot-radius)",
+      "paddingX": "var(--pagination-slot-pad-x)",
+      "pageHoverBackground": "var(--pagination-slot-page-hover-bg)",
+      "pageSelectedBackground": "var(--pagination-slot-page-active-bg)",
+      "focusRing": "var(--focus-ring)",
+      "focusOffset": "var(--focus-ring-offset)"
+    },
+    "interaction": {
+      "navigation": "Page selection via click or keyboard. Previous/next update current page by one step.",
+      "keyboard": "Tab navigates interactive controls; Enter/Space activate control.",
+      "focus": "Visible focus state is mandatory on all interactive controls.",
+      "disabled": "Previous disabled on first page; next disabled on last page."
+    },
+    "states": {
+      "pageButton": ["default", "hover", "selected", "disabled"],
+      "navButton": ["default", "hover", "disabled"]
+    },
+    "variants": {
+      "default-pagination": {
+        "description": "Previous/next controls with visible page-button range and optional ellipsis-item.",
+        "useCase": "Large lists where direct page jump is useful."
+      },
+      "simple-pagination": {
+        "description": "Compact previous/next control with reduced visible page range.",
+        "useCase": "Dense layouts or narrow containers."
+      }
+    },
+    "useCases": [
+      "Data tables with multiple pages.",
+      "Reporting lists with large result sets.",
+      "Any flow where users need stable position awareness across pages."
+    ],
+    "layout": {
+      "height": "36px",
+      "alignment": "Center-aligned row for controls with consistent spacing rhythm.",
+      "overflow": "Keep controls on one row where possible; collapse middle pages with ellipsis-item if needed."
+    },
+    "visualPolicy": {
+      "border": {
+        "rule": "Pagination controls follow Titan button visual policy: no border/stroke/outline as container styling.",
+        "cssExpectation": {
+          "border": "none",
+          "outline": "none (except focus ring token where applicable)",
+          "stroke": "none"
+        }
+      }
+    },
+    "blockingRules": [
+      "If required pagination anatomy or semantics cannot be satisfied, return BLOCKER.",
+      "If required states are missing, return FAIL.",
+      "If more than one page-button can be selected at once, return FAIL.",
+      "If pagination controls use border/stroke/outline as container styling, return FAIL."
+    ]
+  }
+}

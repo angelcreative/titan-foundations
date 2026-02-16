@@ -31,6 +31,8 @@ Specs en JSON y convenciones para que implementaciones (o Cursor/MCP) puedan rep
 
 - **`tabs.json`** — Tabs para secciones hermanas: anatomia, estados (`default/hover/selected/disabled`), semantica aria y overflow responsive. Ver [docs/tabs.md](../docs/tabs.md).
 
+- **`pagination.json`** — Pagination para listas/tablas multipagina: estructura, estados, variantes (`default-pagination`, `simple-pagination`) y reglas de accesibilidad. Ver [docs/pagination.md](../docs/pagination.md).
+
 ## Uso
 
 Al montar el repo de tokens, se puede indicar a Cursor (o al MCP): *“Para tablas tipo reportes, usa la spec `foundations/table-borderless.json` y los tokens documentados en `docs/table-borderless.md`.”*

@@ -56,3 +56,11 @@ Additional state names are component-specific (for example `selected`, `focus-vi
 
 - Parts: `tabs-container`, `tab-list`, `tab-trigger`, `tab-panel`
 - States: `default`, `hover`, `selected`, `disabled`
+
+## Pagination
+
+- Parts: `pagination-container`, `pagination-nav`, `page-button`, `previous-button`, `next-button`, `ellipsis-item`
+- States: `default`, `hover`, `selected`, `disabled`
+- Densities: `default-density`, `compact-density`
+- Variants: `default-pagination`, `simple-pagination`
+- Visual policy: no border/stroke/outline in pagination controls; `border: none`
