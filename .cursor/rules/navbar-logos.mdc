@@ -14,6 +14,7 @@ Cuando se pida **navbar** (o "navbar demand", "navbar insights", etc.):
 - **Terminologia canonica obligatoria:** `left-group`, `right-group`, `change-product-button`, `brand-lockup`, `action-icon-buttons`, `user-avatar`, `user-menu-chevron-button`, `chevron-down`, `chevron-up`.
 - **Ancho:** 100% (de lado a lado). Nunca menos.
 - **Alto de referencia:** 70px.
+- **Iconos (sin forzado de talla/trazo):** no imponer `strokeWidth={1.5}` ni contrato `16/20`; respetar el estilo definido por el componente/tema.
 
 ## Izquierda (orden fijo)
 
@@ -27,6 +28,7 @@ Cuando se pida **navbar** (o "navbar demand", "navbar insights", etc.):
    - "navbar tweetbinder" → `logo-tweetbinder.svg`
    - "navbar connect" → `logo-connect.svg`
    Sin texto junto al lockup.
+   Tamaño: `max-height: 30px; width: auto;`.
 
 ## Derecha (patron estructural)
 

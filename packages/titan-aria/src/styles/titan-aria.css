@@ -636,3 +636,63 @@
   gap: var(--spacing-2xs);
   margin-top: auto;
 }
+
+/* ========== Navbar (Titan PDF contract) ========== */
+.titan-Navbar {
+  width: 100%;
+  height: var(--navbar-height);
+  background: var(--navbar-slot-bg);
+  border-bottom: var(--stroke-s) solid var(--navbar-border-color);
+}
+.titan-Navbar-inner {
+  width: 100%;
+  max-width: var(--navbar-slot-max);
+  min-height: 100%;
+  margin: 0 auto;
+  padding: 0 var(--navbar-slot-pad-x) 0 var(--spacing-xl);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-l);
+}
+.titan-Navbar-left-group,
+.titan-Navbar-right-group {
+  display: inline-flex;
+  align-items: center;
+}
+.titan-Navbar-left-group {
+  gap: var(--spacing-4xs);
+}
+.titan-Navbar-right-group {
+  gap: var(--spacing-3xs);
+}
+.titan-Navbar-brand-lockup {
+  height: 36px;
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+}
+.titan-Navbar-brand-lockup img {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+}
+.titan-Navbar-avatar {
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.titan-Navbar-srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

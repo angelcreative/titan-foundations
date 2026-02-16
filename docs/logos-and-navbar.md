@@ -26,6 +26,7 @@ La navbar se ubica arriba, ocupa **100%** de ancho y usa:
 2. **Anillo + Product Name (lockup)**  
    - Asset de marca con anillo + nombre del producto.
    - Medida de referencia: `165px x 70px`.
+   - Regla visual operativa: en navbar el lockup no debe superar `30px` de alto (`max-height: 30px; width: auto;`).
    - Puede funcionar como enlace a Home.
 
 Los lockups de producto viven en `assets/logos/` y se sirven por `/assets/logos/`.
@@ -54,6 +55,7 @@ Composicion (en este orden estructural):
    - abierto: `ChevronUp`
 
 No se fija un set universal de 5 iconos concretos en el PDF; se fija el patron de icon buttons neutrales + avatar + chevron de menu.
+No forzar globalmente `strokeWidth={1.5}` ni contrato de tamano `16/20`; respetar el estilo del componente/tema.
 
 ## Espaciado y tokens clave
 

@@ -23,7 +23,9 @@
     "brandLockup": {
       "name": "Anillo + Product Name",
       "size": "165x70",
+      "maxHeightPx": 30,
       "logoSrcRule": "Usar <img src=\"/assets/logos/{archivo}\" /> para el lockup de producto (anillo + nombre). No usar texto suelto ni icono de sustitucion.",
+      "logoSizeRule": "El lockup en navbar no debe superar 30px de alto; usar width auto para mantener proporcion.",
       "stroke": "$stroke-s",
       "strokeColor": "$color-steel-100"
     },
@@ -47,7 +49,8 @@
       "component": "Neutral Icon Button Base",
       "token": "$icon-button-neutral-base",
       "examples": ["ajustes", "notificaciones", "cambio de producto"],
-      "note": "Son botones de acciones basicas o triggers de menus desplegables."
+      "note": "Son botones de acciones basicas o triggers de menus desplegables.",
+      "iconRenderRule": "No forzar globalmente strokeWidth=1.5 ni un contrato 16/20; usar el estilo del componente/tema."
     },
     "userAvatar": {
       "size": "40x40",

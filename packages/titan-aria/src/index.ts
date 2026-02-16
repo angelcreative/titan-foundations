@@ -7,6 +7,8 @@ export { Button } from './Button';
 export type { ButtonProps, ButtonVariant } from './Button';
 export { Icon } from './Icon';
 export type { IconProps, IconSize } from './Icon';
+export { Navbar } from './Navbar';
+export type { NavbarProps, NavbarStatus, NavbarTheme } from './Navbar';
 export {
   Card,
   CardHeader,
