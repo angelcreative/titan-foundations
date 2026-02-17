@@ -280,4 +280,18 @@ interface TitanTwoUpOneDownLayoutProps {
  */
 declare function TitanTwoUpOneDownLayout({ theme, userInitial, breadcrumbItems, breadcrumbCurrentLabel, leftTop, rightTop, bottom, }: TitanTwoUpOneDownLayoutProps): react_jsx_runtime.JSX.Element;
 
-export { TitanBorderlessTable, type TitanBorderlessTableProps, TitanBreadcrumb, type TitanBreadcrumbItem, type TitanBreadcrumbProps, TitanButton, type TitanButtonProps, type TitanButtonVariant, TitanCard, TitanCardGrid, type TitanCardGridProps, type TitanCardProps, type TitanCardSpan, TitanCheckboxField, type TitanCheckboxFieldProps, TitanDialog, type TitanDialogProps, TitanDrawer, type TitanDrawerProps, TitanFormControlsGroup, type TitanFormControlsGroupProps, TitanIconButton, type TitanIconButtonProps, type TitanIconButtonVariant, TitanInputField, type TitanInputFieldProps, TitanMenuDropdown, type TitanMenuOption, type TitanMenuProps, TitanNavbar, type TitanNavbarProps, type TitanNavbarTheme, TitanPagination, type TitanPaginationPage, type TitanPaginationProps, TitanPill, type TitanPillProps, TitanRadioGroupField, type TitanRadioGroupFieldProps, type TitanRadioOption, TitanSelect, type TitanSelectOption, type TitanSelectProps, TitanSwitchField, type TitanSwitchFieldProps, type TitanTabItem, type TitanTableColumn, type TitanTableRow, TitanTabs, type TitanTabsProps, TitanTag, type TitanTagProps, TitanTextareaField, type TitanTextareaFieldProps, type TitanToastItem, TitanToastRegion, type TitanToastRegionProps, type TitanToastVariant, TitanTooltip, type TitanTooltipProps, TitanTwoUpOneDownLayout, type TitanTwoUpOneDownLayoutProps, getToneStyle };
+interface TitanToggleItem {
+    id: string;
+    label: string;
+    icon?: ReactNode;
+}
+interface TitanToggleButtonGroupProps {
+    items: TitanToggleItem[];
+    selectedKey?: string;
+    defaultSelectedKey?: string;
+    onSelectionChange?: (key: string) => void;
+    ariaLabel?: string;
+}
+declare function TitanToggleButtonGroup({ items, selectedKey, defaultSelectedKey, onSelectionChange, ariaLabel, }: TitanToggleButtonGroupProps): react_jsx_runtime.JSX.Element;
+
+export { TitanBorderlessTable, type TitanBorderlessTableProps, TitanBreadcrumb, type TitanBreadcrumbItem, type TitanBreadcrumbProps, TitanButton, type TitanButtonProps, type TitanButtonVariant, TitanCard, TitanCardGrid, type TitanCardGridProps, type TitanCardProps, type TitanCardSpan, TitanCheckboxField, type TitanCheckboxFieldProps, TitanDialog, type TitanDialogProps, TitanDrawer, type TitanDrawerProps, TitanFormControlsGroup, type TitanFormControlsGroupProps, TitanIconButton, type TitanIconButtonProps, type TitanIconButtonVariant, TitanInputField, type TitanInputFieldProps, TitanMenuDropdown, type TitanMenuOption, type TitanMenuProps, TitanNavbar, type TitanNavbarProps, type TitanNavbarTheme, TitanPagination, type TitanPaginationPage, type TitanPaginationProps, TitanPill, type TitanPillProps, TitanRadioGroupField, type TitanRadioGroupFieldProps, type TitanRadioOption, TitanSelect, type TitanSelectOption, type TitanSelectProps, TitanSwitchField, type TitanSwitchFieldProps, type TitanTabItem, type TitanTableColumn, type TitanTableRow, TitanTabs, type TitanTabsProps, TitanTag, type TitanTagProps, TitanTextareaField, type TitanTextareaFieldProps, type TitanToastItem, TitanToastRegion, type TitanToastRegionProps, type TitanToastVariant, TitanToggleButtonGroup, type TitanToggleButtonGroupProps, type TitanToggleItem, TitanTooltip, type TitanTooltipProps, TitanTwoUpOneDownLayout, type TitanTwoUpOneDownLayoutProps, getToneStyle };

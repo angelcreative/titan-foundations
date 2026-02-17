@@ -572,6 +572,36 @@ function TitanTwoUpOneDownLayout({
     ] })
   ] });
 }
+
+// src/TitanToggleButtonGroup.tsx
+import { ToggleButton, ToggleButtonGroup } from "react-aria-components";
+import { jsx as jsx19, jsxs as jsxs17 } from "react/jsx-runtime";
+function TitanToggleButtonGroup({
+  items,
+  selectedKey,
+  defaultSelectedKey,
+  onSelectionChange,
+  ariaLabel = "Options"
+}) {
+  return /* @__PURE__ */ jsx19(
+    ToggleButtonGroup,
+    {
+      className: "toggle-button-group",
+      selectionMode: "single",
+      selectedKeys: selectedKey ? /* @__PURE__ */ new Set([selectedKey]) : void 0,
+      defaultSelectedKeys: defaultSelectedKey ? /* @__PURE__ */ new Set([defaultSelectedKey]) : void 0,
+      onSelectionChange: (keys) => {
+        const selected = [...keys][0];
+        if (selected && onSelectionChange) onSelectionChange(String(selected));
+      },
+      "aria-label": ariaLabel,
+      children: items.map((item) => /* @__PURE__ */ jsxs17(ToggleButton, { id: item.id, className: "toggle-button-item", children: [
+        item.icon && /* @__PURE__ */ jsx19("span", { className: "toggle-button-icon", children: item.icon }),
+        /* @__PURE__ */ jsx19("span", { children: item.label })
+      ] }, item.id))
+    }
+  );
+}
 export {
   TitanBorderlessTable,
   TitanBreadcrumb,
@@ -595,6 +625,7 @@ export {
   TitanTag,
   TitanTextareaField,
   TitanToastRegion,
+  TitanToggleButtonGroup,
   TitanTooltip,
   TitanTwoUpOneDownLayout,
   getToneStyle

@@ -54,3 +54,5 @@ export type {
 } from './TitanBorderlessTable'
 export { TitanTwoUpOneDownLayout } from './TitanTwoUpOneDownLayout'
 export type { TitanTwoUpOneDownLayoutProps } from './TitanTwoUpOneDownLayout'
+export { TitanToggleButtonGroup } from './TitanToggleButtonGroup'
+export type { TitanToggleItem, TitanToggleButtonGroupProps } from './TitanToggleButtonGroup'

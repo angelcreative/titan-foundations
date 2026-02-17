@@ -42,6 +42,7 @@ __export(index_exports, {
   TitanTag: () => TitanTag,
   TitanTextareaField: () => TitanTextareaField,
   TitanToastRegion: () => TitanToastRegion,
+  TitanToggleButtonGroup: () => TitanToggleButtonGroup,
   TitanTooltip: () => TitanTooltip,
   TitanTwoUpOneDownLayout: () => TitanTwoUpOneDownLayout,
   getToneStyle: () => getToneStyle
@@ -591,6 +592,36 @@ function TitanTwoUpOneDownLayout({
     ] })
   ] });
 }
+
+// src/TitanToggleButtonGroup.tsx
+var import_react_aria_components15 = require("react-aria-components");
+var import_jsx_runtime19 = require("react/jsx-runtime");
+function TitanToggleButtonGroup({
+  items,
+  selectedKey,
+  defaultSelectedKey,
+  onSelectionChange,
+  ariaLabel = "Options"
+}) {
+  return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+    import_react_aria_components15.ToggleButtonGroup,
+    {
+      className: "toggle-button-group",
+      selectionMode: "single",
+      selectedKeys: selectedKey ? /* @__PURE__ */ new Set([selectedKey]) : void 0,
+      defaultSelectedKeys: defaultSelectedKey ? /* @__PURE__ */ new Set([defaultSelectedKey]) : void 0,
+      onSelectionChange: (keys) => {
+        const selected = [...keys][0];
+        if (selected && onSelectionChange) onSelectionChange(String(selected));
+      },
+      "aria-label": ariaLabel,
+      children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_react_aria_components15.ToggleButton, { id: item.id, className: "toggle-button-item", children: [
+        item.icon && /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { className: "toggle-button-icon", children: item.icon }),
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { children: item.label })
+      ] }, item.id))
+    }
+  );
+}
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   TitanBorderlessTable,
@@ -615,6 +646,7 @@ function TitanTwoUpOneDownLayout({
   TitanTag,
   TitanTextareaField,
   TitanToastRegion,
+  TitanToggleButtonGroup,
   TitanTooltip,
   TitanTwoUpOneDownLayout,
   getToneStyle

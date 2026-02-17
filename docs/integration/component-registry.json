@@ -366,6 +366,23 @@
       "slots": ["leftTop", "rightTop", "bottom"],
       "composableWith": ["TitanBorderlessTable", "TitanInputField", "TitanButton"],
       "category": "layout"
+    },
+    "TitanToggleButtonGroup": {
+      "import": "import { TitanToggleButtonGroup } from 'titan-compositions'",
+      "description": "Segmented button group for single selection (radio behavior). Each item can have an optional icon. Wraps React Aria ToggleButtonGroup. Themed via Titan tokens.",
+      "props": {
+        "items": { "type": "TitanToggleItem[]", "required": true, "description": "Array of { id, label, icon? }. Icon is a ReactNode (e.g. Lucide icon wrapped in TitanTooltip)." },
+        "selectedKey": { "type": "string", "required": false, "description": "Controlled selected key" },
+        "defaultSelectedKey": { "type": "string", "required": false, "description": "Uncontrolled default selected key" },
+        "onSelectionChange": { "type": "(key: string) => void", "required": false },
+        "ariaLabel": { "type": "string", "default": "'Options'", "required": false }
+      },
+      "slots": ["items[].icon"],
+      "composableWith": ["TitanTooltip"],
+      "relatedTypes": {
+        "TitanToggleItem": { "id": "string", "label": "string", "icon?": "ReactNode" }
+      },
+      "category": "action"
     }
   },
   "utilities": {
@@ -381,13 +398,13 @@
       "Button", "Dialog", "Drawer", "Input (TextField)", "Textarea", "Checkbox",
       "RadioGroup", "Switch", "Select", "Menu", "Tabs", "Table", "Tooltip",
       "Toast", "Breadcrumb", "Navbar", "Pagination", "Pill/Badge", "Tag/Label",
-      "Card", "CardGrid", "PageLayout"
+      "Card", "CardGrid", "PageLayout", "ToggleButtonGroup"
     ],
     "fallbackToReactAria": [
       "DatePicker", "DateRangePicker", "ComboBox", "Slider", "NumberField",
       "SearchField", "Calendar", "RangeCalendar", "TimeField", "ColorPicker",
       "TagGroup", "DropZone", "FileTrigger", "Meter", "ProgressBar", "ListBox",
-      "GridList", "Tree", "Disclosure", "ToggleButton", "ColorField",
+      "GridList", "Tree", "Disclosure", "ColorField",
       "ColorSlider", "ColorSwatch", "ColorSwatchPicker", "ColorWheel"
     ],
     "fallbackInstructions": "For components in fallbackToReactAria: use the component from react-aria-components and style it with Titan CSS tokens from titan.css. Follow the same class naming conventions and token usage patterns visible in titan-compositions.css."

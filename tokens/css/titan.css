@@ -1843,6 +1843,21 @@
   --toggle-slot-selected-focus: var(--toggle-selected-border-focus);
 
   /* ====================================================================== */
+  /* COMPONENT: TOGGLE BUTTON GROUP                                          */
+  /* ====================================================================== */
+  --toggle-group-slot-bg: var(--tab-background);
+  --toggle-group-slot-border: var(--border-slot-default);
+  --toggle-group-slot-radius: var(--radius-slot-control);
+  --toggle-group-slot-pad: var(--spacing-2xs);
+
+  --toggle-group-slot-item-radius: var(--radius-slot-control);
+  --toggle-group-slot-item-color: var(--copy-slot-body);
+  --toggle-group-slot-item-bg-hover: var(--surface-slot-hover);
+  --toggle-group-slot-item-bg-selected: var(--color-white-900);
+  --toggle-group-slot-item-color-selected: var(--copy-slot-primary);
+  --toggle-group-slot-item-shadow-selected: var(--elevation-slot-1);
+
+  /* ====================================================================== */
   /* COMPONENT: TABS                                                         */
   /* ====================================================================== */
   --tabs-slot-bg: var(--tab-background);
