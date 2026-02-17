@@ -7,6 +7,7 @@
 .select-trigger,
 .select-item,
 .tab-trigger,
+.tab-trigger-vertical,
 .pagination-button,
 .drawer-close-button,
 .breadcrumb-link,
@@ -27,6 +28,7 @@
 .select-trigger[data-focus-visible],
 .select-item[data-focus-visible],
 .tab-trigger[data-focus-visible],
+.tab-trigger-vertical[data-focus-visible],
 .pagination-button[data-focus-visible],
 .drawer-close-button[data-focus-visible],
 .breadcrumb-link[data-focus-visible],
@@ -635,6 +637,57 @@
   font-size: var(--button-slot-font-size);
   line-height: var(--button-slot-line-height);
   color: var(--copy-slot-body);
+}
+
+/* --- Vertical tabs --- */
+
+.tabs-root-vertical {
+  grid-template-columns: auto 1fr;
+  gap: var(--spacing-m);
+}
+
+.tabs-list-vertical {
+  flex-direction: column;
+  gap: 0;
+  background: var(--card-slot-bg);
+  border: var(--card-slot-border-width) solid var(--card-slot-border);
+  border-radius: var(--card-slot-radius);
+  padding: var(--spacing-3xs) 0;
+  align-items: stretch;
+  min-width: 180px;
+}
+
+.tab-trigger-vertical {
+  border: none;
+  border-radius: 0;
+  border-right: 3px solid transparent;
+  background: transparent;
+  color: var(--tab-slot-color);
+  text-align: left;
+  padding: var(--spacing-s) var(--spacing-m);
+  font-size: var(--button-slot-font-size);
+  line-height: var(--button-slot-line-height);
+  font-weight: var(--button-slot-font-weight);
+  font-family: "Poppins", var(--font-audiense), sans-serif;
+}
+
+.tab-trigger-vertical[data-hovered] {
+  background: var(--tab-slot-bg-hover);
+}
+
+.tab-trigger-vertical[data-selected] {
+  background: transparent;
+  color: var(--tab-slot-color-selected);
+  border-right-color: var(--tab-slot-color-selected);
+  font-weight: var(--font-weight-500);
+}
+
+.tab-trigger-vertical[data-disabled] {
+  color: var(--tab-slot-color-disabled);
+}
+
+.tabs-root-vertical .tab-panel {
+  flex: 1;
 }
 
 .pagination-nav {

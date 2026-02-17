@@ -1,6 +1,6 @@
 {
   "name": "titan-compositions",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Reusable Titan page compositions built on React Aria + Titan tokens",
   "type": "module",
   "main": "./dist/index.cjs",

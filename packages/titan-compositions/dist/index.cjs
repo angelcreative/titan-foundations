@@ -275,19 +275,33 @@ function TitanTabs({
   items,
   defaultSelectedKey,
   overflow = false,
+  orientation = "horizontal",
   ariaLabel = "Tabs"
 }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_react_aria_components7.Tabs, { className: overflow ? "tabs-root tabs-root-overflow" : "tabs-root", defaultSelectedKey, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
-      import_react_aria_components7.TabList,
-      {
-        className: overflow ? "tabs-list tabs-list-scroll" : "tabs-list",
-        "aria-label": ariaLabel,
-        children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_react_aria_components7.Tab, { id: item.id, className: "tab-trigger", isDisabled: item.disabled, children: item.label }, item.id))
-      }
-    ),
-    items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_react_aria_components7.TabPanel, { id: item.id, className: "tab-panel", children: item.content }, item.id))
-  ] });
+  const isVertical = orientation === "vertical";
+  const rootClass = isVertical ? "tabs-root tabs-root-vertical" : overflow ? "tabs-root tabs-root-overflow" : "tabs-root";
+  const listClass = isVertical ? "tabs-list tabs-list-vertical" : overflow ? "tabs-list tabs-list-scroll" : "tabs-list";
+  return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(
+    import_react_aria_components7.Tabs,
+    {
+      className: rootClass,
+      defaultSelectedKey,
+      orientation,
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_react_aria_components7.TabList, { className: listClass, "aria-label": ariaLabel, children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
+          import_react_aria_components7.Tab,
+          {
+            id: item.id,
+            className: isVertical ? "tab-trigger tab-trigger-vertical" : "tab-trigger",
+            isDisabled: item.disabled,
+            children: item.label
+          },
+          item.id
+        )) }),
+        items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_react_aria_components7.TabPanel, { id: item.id, className: "tab-panel", children: item.content }, item.id))
+      ]
+    }
+  );
 }
 
 // src/TitanPagination.tsx

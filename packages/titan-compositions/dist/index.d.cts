@@ -121,9 +121,10 @@ interface TitanTabsProps {
     items: TitanTabItem[];
     defaultSelectedKey?: string;
     overflow?: boolean;
+    orientation?: 'horizontal' | 'vertical';
     ariaLabel?: string;
 }
-declare function TitanTabs({ items, defaultSelectedKey, overflow, ariaLabel, }: TitanTabsProps): react_jsx_runtime.JSX.Element;
+declare function TitanTabs({ items, defaultSelectedKey, overflow, orientation, ariaLabel, }: TitanTabsProps): react_jsx_runtime.JSX.Element;
 
 type TitanPaginationPage = number | 'ellipsis';
 interface TitanPaginationProps {

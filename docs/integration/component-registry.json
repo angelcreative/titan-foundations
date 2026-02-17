@@ -192,11 +192,12 @@
     },
     "TitanTabs": {
       "import": "import { TitanTabs } from 'titan-compositions'",
-      "description": "Tab list with panels. Wraps React Aria Tabs. Supports overflow scroll mode.",
+      "description": "Tab list with panels. Wraps React Aria Tabs. Supports horizontal (pill-style) and vertical (sidebar-style with right accent border) orientations, plus overflow scroll mode.",
       "props": {
         "items": { "type": "TitanTabItem[]", "required": true, "description": "Array of { id, label, content, disabled? }" },
         "defaultSelectedKey": { "type": "string", "required": false },
-        "overflow": { "type": "boolean", "default": "false", "required": false, "description": "Enables horizontal scroll when tabs overflow" },
+        "overflow": { "type": "boolean", "default": "false", "required": false, "description": "Enables horizontal scroll when tabs overflow (horizontal only)" },
+        "orientation": { "type": "'horizontal' | 'vertical'", "default": "'horizontal'", "required": false, "description": "Horizontal = pill tabs in a row. Vertical = sidebar tabs with right accent border." },
         "ariaLabel": { "type": "string", "default": "'Tabs'", "required": false }
       },
       "slots": [],
