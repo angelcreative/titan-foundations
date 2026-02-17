@@ -251,6 +251,19 @@
         "onUserMenu": { "type": "() => void", "required": false }
       },
       "slots": [],
+      "logoMap": {
+        "cdnBase": "https://cdn.jsdelivr.net/gh/angelcreative/titan-foundations@main/public/assets/logos",
+        "byTheme": {
+          "insights": "logo-insights.svg",
+          "audiense": "logo-audiense.svg",
+          "demand": "logo-demand.svg",
+          "neutral": "logo-audiense.svg",
+          "linkedin": "logo-inkedin.svg",
+          "tweetbinder": "logo-tweetbinder.svg",
+          "connect": "logo-connect.svg"
+        },
+        "usage": "<img src=\"{cdnBase}/{byTheme[theme]}\" alt=\"Product logo\" style=\"max-height: 30px; width: auto;\" />"
+      },
       "category": "shell"
     },
     "TitanCardGrid": {
