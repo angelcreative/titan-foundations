@@ -37,6 +37,9 @@ __export(index_exports, {
   TitanPill: () => TitanPill,
   TitanRadioGroupField: () => TitanRadioGroupField,
   TitanSelect: () => TitanSelect,
+  TitanSidebar: () => TitanSidebar,
+  TitanSidebarHeader: () => TitanSidebarHeader,
+  TitanSidebarItem: () => TitanSidebarItem,
   TitanSwitchField: () => TitanSwitchField,
   TitanTabs: () => TitanTabs,
   TitanTag: () => TitanTag,
@@ -622,6 +625,87 @@ function TitanToggleButtonGroup({
     }
   );
 }
+
+// src/TitanSidebar.tsx
+var import_react = require("react");
+var import_react_aria_components16 = require("react-aria-components");
+var import_lucide_react10 = require("lucide-react");
+var import_jsx_runtime20 = require("react/jsx-runtime");
+var SidebarContext = (0, import_react.createContext)({
+  collapsed: false,
+  activeId: null,
+  setActiveId: () => {
+  }
+});
+function TitanSidebar({
+  collapsed = false,
+  onToggle,
+  activeId: controlledActiveId,
+  defaultActiveId,
+  onActiveChange,
+  children
+}) {
+  const [uncontrolledActiveId, setUncontrolledActiveId] = (0, import_react.useState)(
+    defaultActiveId ?? null
+  );
+  const isControlled = controlledActiveId !== void 0;
+  const activeId = isControlled ? controlledActiveId : uncontrolledActiveId;
+  const setActiveId = (0, import_react.useCallback)(
+    (id) => {
+      if (!isControlled) setUncontrolledActiveId(id);
+      onActiveChange?.(id);
+    },
+    [isControlled, onActiveChange]
+  );
+  return /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(SidebarContext.Provider, { value: { collapsed, activeId, setActiveId }, children: /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(
+    "aside",
+    {
+      className: "titan-sidebar",
+      ...collapsed ? { "data-collapsed": "" } : {},
+      children: [
+        onToggle && /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+          import_react_aria_components16.Button,
+          {
+            className: "titan-sidebar-toggle",
+            onPress: onToggle,
+            "aria-label": collapsed ? "Expand sidebar" : "Collapse sidebar",
+            children: collapsed ? /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(import_lucide_react10.ChevronRight, {}) : /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(import_lucide_react10.ChevronLeft, {})
+          }
+        ),
+        children
+      ]
+    }
+  ) });
+}
+function TitanSidebarHeader({ children }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("div", { className: "titan-sidebar-header", children });
+}
+function TitanSidebarItem({
+  id,
+  icon: Icon,
+  onPress,
+  children
+}) {
+  const { collapsed, activeId, setActiveId } = (0, import_react.useContext)(SidebarContext);
+  const isActive = activeId === id;
+  return /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(
+    import_react_aria_components16.Button,
+    {
+      className: "titan-sidebar-item",
+      "data-active": isActive ? "true" : void 0,
+      "aria-current": isActive ? "page" : void 0,
+      "aria-label": collapsed && typeof children === "string" ? children : void 0,
+      onPress: () => {
+        setActiveId(id);
+        onPress?.();
+      },
+      children: [
+        Icon && /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(Icon, {}),
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("span", { className: "titan-sidebar-item-label", children })
+      ]
+    }
+  );
+}
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   TitanBorderlessTable,
@@ -641,6 +725,9 @@ function TitanToggleButtonGroup({
   TitanPill,
   TitanRadioGroupField,
   TitanSelect,
+  TitanSidebar,
+  TitanSidebarHeader,
+  TitanSidebarItem,
   TitanSwitchField,
   TitanTabs,
   TitanTag,

@@ -383,6 +383,25 @@
         "TitanToggleItem": { "id": "string", "label": "string", "icon?": "ReactNode" }
       },
       "category": "action"
+    },
+    "TitanSidebar": {
+      "import": "import { TitanSidebar, TitanSidebarHeader, TitanSidebarItem } from 'titan-compositions'",
+      "description": "Collapsible sidebar navigation with compound component pattern. Consumer composes headers and items freely. Wraps React Aria Button for items. Themed via Titan tokens.",
+      "props": {
+        "collapsed": { "type": "boolean", "default": "false", "description": "Sidebar in icon-only mode" },
+        "onToggle": { "type": "() => void", "required": false, "description": "Callback for expand/collapse chevron" },
+        "activeId": { "type": "string", "required": false, "description": "Controlled active item id" },
+        "defaultActiveId": { "type": "string", "required": false, "description": "Uncontrolled default active item id" },
+        "onActiveChange": { "type": "(id: string) => void", "required": false, "description": "Callback when active item changes" },
+        "children": { "type": "ReactNode", "required": true, "description": "TitanSidebarHeader and TitanSidebarItem children" }
+      },
+      "slots": ["children (TitanSidebarHeader, TitanSidebarItem, any ReactNode)"],
+      "composableWith": ["TitanTooltip", "TitanNavbar"],
+      "relatedTypes": {
+        "TitanSidebarHeaderProps": { "children": "ReactNode" },
+        "TitanSidebarItemProps": { "id": "string", "icon?": "ComponentType", "onPress?": "() => void", "children": "ReactNode" }
+      },
+      "category": "navigation"
     }
   },
   "utilities": {
@@ -398,7 +417,7 @@
       "Button", "Dialog", "Drawer", "Input (TextField)", "Textarea", "Checkbox",
       "RadioGroup", "Switch", "Select", "Menu", "Tabs", "Table", "Tooltip",
       "Toast", "Breadcrumb", "Navbar", "Pagination", "Pill/Badge", "Tag/Label",
-      "Card", "CardGrid", "PageLayout", "ToggleButtonGroup"
+      "Card", "CardGrid", "PageLayout", "ToggleButtonGroup", "Sidebar"
     ],
     "fallbackToReactAria": [
       "DatePicker", "DateRangePicker", "ComboBox", "Slider", "NumberField",

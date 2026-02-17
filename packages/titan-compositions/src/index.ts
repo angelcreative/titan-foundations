@@ -56,3 +56,9 @@ export { TitanTwoUpOneDownLayout } from './TitanTwoUpOneDownLayout'
 export type { TitanTwoUpOneDownLayoutProps } from './TitanTwoUpOneDownLayout'
 export { TitanToggleButtonGroup } from './TitanToggleButtonGroup'
 export type { TitanToggleItem, TitanToggleButtonGroupProps } from './TitanToggleButtonGroup'
+export { TitanSidebar, TitanSidebarHeader, TitanSidebarItem } from './TitanSidebar'
+export type {
+  TitanSidebarProps,
+  TitanSidebarHeaderProps,
+  TitanSidebarItemProps,
+} from './TitanSidebar'

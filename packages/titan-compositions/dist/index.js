@@ -602,6 +602,92 @@ function TitanToggleButtonGroup({
     }
   );
 }
+
+// src/TitanSidebar.tsx
+import {
+  createContext,
+  useContext,
+  useState,
+  useCallback
+} from "react";
+import { Button as Button11 } from "react-aria-components";
+import { ChevronLeft as ChevronLeft2, ChevronRight as ChevronRight4 } from "lucide-react";
+import { jsx as jsx20, jsxs as jsxs18 } from "react/jsx-runtime";
+var SidebarContext = createContext({
+  collapsed: false,
+  activeId: null,
+  setActiveId: () => {
+  }
+});
+function TitanSidebar({
+  collapsed = false,
+  onToggle,
+  activeId: controlledActiveId,
+  defaultActiveId,
+  onActiveChange,
+  children
+}) {
+  const [uncontrolledActiveId, setUncontrolledActiveId] = useState(
+    defaultActiveId ?? null
+  );
+  const isControlled = controlledActiveId !== void 0;
+  const activeId = isControlled ? controlledActiveId : uncontrolledActiveId;
+  const setActiveId = useCallback(
+    (id) => {
+      if (!isControlled) setUncontrolledActiveId(id);
+      onActiveChange?.(id);
+    },
+    [isControlled, onActiveChange]
+  );
+  return /* @__PURE__ */ jsx20(SidebarContext.Provider, { value: { collapsed, activeId, setActiveId }, children: /* @__PURE__ */ jsxs18(
+    "aside",
+    {
+      className: "titan-sidebar",
+      ...collapsed ? { "data-collapsed": "" } : {},
+      children: [
+        onToggle && /* @__PURE__ */ jsx20(
+          Button11,
+          {
+            className: "titan-sidebar-toggle",
+            onPress: onToggle,
+            "aria-label": collapsed ? "Expand sidebar" : "Collapse sidebar",
+            children: collapsed ? /* @__PURE__ */ jsx20(ChevronRight4, {}) : /* @__PURE__ */ jsx20(ChevronLeft2, {})
+          }
+        ),
+        children
+      ]
+    }
+  ) });
+}
+function TitanSidebarHeader({ children }) {
+  return /* @__PURE__ */ jsx20("div", { className: "titan-sidebar-header", children });
+}
+function TitanSidebarItem({
+  id,
+  icon: Icon,
+  onPress,
+  children
+}) {
+  const { collapsed, activeId, setActiveId } = useContext(SidebarContext);
+  const isActive = activeId === id;
+  return /* @__PURE__ */ jsxs18(
+    Button11,
+    {
+      className: "titan-sidebar-item",
+      "data-active": isActive ? "true" : void 0,
+      "aria-current": isActive ? "page" : void 0,
+      "aria-label": collapsed && typeof children === "string" ? children : void 0,
+      onPress: () => {
+        setActiveId(id);
+        onPress?.();
+      },
+      children: [
+        Icon && /* @__PURE__ */ jsx20(Icon, {}),
+        /* @__PURE__ */ jsx20("span", { className: "titan-sidebar-item-label", children })
+      ]
+    }
+  );
+}
 export {
   TitanBorderlessTable,
   TitanBreadcrumb,
@@ -620,6 +706,9 @@ export {
   TitanPill,
   TitanRadioGroupField,
   TitanSelect,
+  TitanSidebar,
+  TitanSidebarHeader,
+  TitanSidebarItem,
   TitanSwitchField,
   TitanTabs,
   TitanTag,
