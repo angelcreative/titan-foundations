@@ -79,6 +79,7 @@ html[data-theme="insights"] {
 	--tab-background: var(--color-white-900);
 	--tab-text: var(--color-steel-700);
 	--tab-text-selected: var(--color-blueberry-800);
+	--tab-border-selected: var(--color-blueberry-600);
 	--tab-selected-background: var(--color-blueberry-100);
 
 	/* Tooltip */

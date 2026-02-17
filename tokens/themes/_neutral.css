@@ -80,6 +80,7 @@ html[data-theme="neutral"] {
 	--tab-background: var(--color-white-900);
 	--tab-text: var(--color-black-700);
 	--tab-text-selected: var(--color-black-800);
+	--tab-border-selected: var(--color-black-600);
 	--tab-selected-background: var(--color-black-100);
 
 	/* Tooltip */

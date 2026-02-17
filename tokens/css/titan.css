@@ -1872,6 +1872,7 @@
   --tab-slot-bg-disabled: var(--tab-disabled-background, transparent);
   --tab-slot-color: var(--tab-text);
   --tab-slot-color-selected: var(--tab-text-selected);
+  --tab-slot-border-selected: var(--tab-border-selected, var(--tab-text-selected));
   --tab-slot-color-disabled: var(--tab-disabled-text, var(--color-disabled-400));
 
   /* ====================================================================== */
