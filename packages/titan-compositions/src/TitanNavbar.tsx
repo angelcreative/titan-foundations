@@ -28,10 +28,15 @@ const THEME_TO_LOGO: Record<TitanNavbarTheme, string> = {
   connect: 'logo-connect.svg',
 }
 
+const LOGO_CDN_BASE =
+  'https://cdn.jsdelivr.net/gh/angelcreative/titan-foundations@main/public/assets/logos'
+
 export interface TitanNavbarProps {
   theme?: TitanNavbarTheme
   userInitial?: string
   logoAlt?: string
+  /** Base path or URL for logo assets. Defaults to CDN. Pass "/assets/logos" for local. */
+  logoBasePath?: string
   onChangeProduct?: () => void
   onNotifications?: () => void
   onSupport?: () => void
@@ -50,6 +55,7 @@ export function TitanNavbar({
   theme = 'insights',
   userInitial = 'A',
   logoAlt = 'Product logo',
+  logoBasePath = LOGO_CDN_BASE,
   onChangeProduct,
   onNotifications,
   onSupport,
@@ -67,7 +73,7 @@ export function TitanNavbar({
           <Button className="icon-ghost navbar-icon-button" aria-label="Change product" onPress={onChangeProduct}>
             <Grip />
           </Button>
-          <img className="navbar-logo" src={`/assets/logos/${logoFile}`} alt={logoAlt} />
+          <img className="navbar-logo" src={`${logoBasePath}/${logoFile}`} alt={logoAlt} />
         </div>
 
         <div className="navbar-right-group">

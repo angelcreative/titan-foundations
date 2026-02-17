@@ -25,6 +25,8 @@ interface TitanNavbarProps {
     theme?: TitanNavbarTheme;
     userInitial?: string;
     logoAlt?: string;
+    /** Base path or URL for logo assets. Defaults to CDN. Pass "/assets/logos" for local. */
+    logoBasePath?: string;
     onChangeProduct?: () => void;
     onNotifications?: () => void;
     onSupport?: () => void;
@@ -38,7 +40,7 @@ interface TitanNavbarProps {
  * left: Grip + themed logo
  * right: Bell, Handshake, CircleHelp, Settings, Sparkles, avatar + chevron
  */
-declare function TitanNavbar({ theme, userInitial, logoAlt, onChangeProduct, onNotifications, onSupport, onHelp, onSettings, onFeaturedAction, onUserMenu, }: TitanNavbarProps): react_jsx_runtime.JSX.Element;
+declare function TitanNavbar({ theme, userInitial, logoAlt, logoBasePath, onChangeProduct, onNotifications, onSupport, onHelp, onSettings, onFeaturedAction, onUserMenu, }: TitanNavbarProps): react_jsx_runtime.JSX.Element;
 
 type TitanButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'link' | 'delete' | 'delete-secondary';
 type TitanIconButtonVariant = 'secondary' | 'ghost' | 'delete';

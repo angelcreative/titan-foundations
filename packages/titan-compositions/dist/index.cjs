@@ -79,10 +79,12 @@ var THEME_TO_LOGO = {
   tweetbinder: "logo-tweetbinder.svg",
   connect: "logo-connect.svg"
 };
+var LOGO_CDN_BASE = "https://cdn.jsdelivr.net/gh/angelcreative/titan-foundations@main/public/assets/logos";
 function TitanNavbar({
   theme = "insights",
   userInitial = "A",
   logoAlt = "Product logo",
+  logoBasePath = LOGO_CDN_BASE,
   onChangeProduct,
   onNotifications,
   onSupport,
@@ -95,7 +97,7 @@ function TitanNavbar({
   return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("header", { className: "navbar", role: "banner", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "navbar-inner", children: [
     /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "navbar-left-group", children: [
       /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_react_aria_components2.Button, { className: "icon-ghost navbar-icon-button", "aria-label": "Change product", onPress: onChangeProduct, children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_lucide_react2.Grip, {}) }),
-      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("img", { className: "navbar-logo", src: `/assets/logos/${logoFile}`, alt: logoAlt })
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("img", { className: "navbar-logo", src: `${logoBasePath}/${logoFile}`, alt: logoAlt })
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "navbar-right-group", children: [
       /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_react_aria_components2.Button, { className: "icon-ghost navbar-icon-button", "aria-label": "Notifications", onPress: onNotifications, children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_lucide_react2.Bell, {}) }),

@@ -242,6 +242,7 @@
         "theme": { "type": "'demand' | 'audiense' | 'neutral' | 'insights' | 'linkedin' | 'tweetbinder' | 'connect'", "default": "'insights'", "required": false },
         "userInitial": { "type": "string", "default": "'A'", "required": false },
         "logoAlt": { "type": "string", "default": "'Product logo'", "required": false },
+        "logoBasePath": { "type": "string", "default": "CDN URL (jsdelivr)", "required": false, "description": "Base path/URL for logo assets. Defaults to CDN. Pass '/assets/logos' for local." },
         "onChangeProduct": { "type": "() => void", "required": false },
         "onNotifications": { "type": "() => void", "required": false },
         "onSupport": { "type": "() => void", "required": false },
