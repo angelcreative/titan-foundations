@@ -129,16 +129,62 @@ var ICON_BUTTON_VARIANT_CLASS = {
   ghost: "icon-ghost",
   delete: "icon-delete"
 };
+var PILL_TONE_MAP = {
+  success: {
+    bg: "var(--pill-slot-success-bg)",
+    color: "var(--pill-slot-success-color)",
+    icon: "var(--pill-slot-success-icon-color)"
+  },
+  error: {
+    bg: "var(--pill-slot-error-bg)",
+    color: "var(--pill-slot-error-color)",
+    icon: "var(--pill-slot-error-icon-color)"
+  },
+  alert: {
+    bg: "var(--pill-slot-alert-bg)",
+    color: "var(--pill-slot-alert-color)",
+    icon: "var(--pill-slot-alert-icon-color)"
+  },
+  warning: {
+    bg: "var(--pill-slot-alert-bg)",
+    color: "var(--pill-slot-alert-color)",
+    icon: "var(--pill-slot-alert-icon-color)"
+  },
+  information: {
+    bg: "var(--pill-slot-information-bg)",
+    color: "var(--pill-slot-information-color)",
+    icon: "var(--pill-slot-information-icon-color)"
+  },
+  info: {
+    bg: "var(--pill-slot-information-bg)",
+    color: "var(--pill-slot-information-color)",
+    icon: "var(--pill-slot-information-icon-color)"
+  },
+  disabled: {
+    bg: "var(--pill-slot-disabled-bg)",
+    color: "var(--pill-slot-disabled-color)",
+    icon: "var(--pill-slot-disabled-color)"
+  }
+};
 function getToneStyle(tone, mode) {
   if (mode === "pill") {
+    const mapped = PILL_TONE_MAP[tone];
+    if (mapped) {
+      return {
+        "--pill-bg": mapped.bg,
+        "--pill-color": mapped.color,
+        "--pill-icon-color": mapped.icon
+      };
+    }
     return {
-      "--pill-bg": `var(--color-${tone}-100)`,
-      "--pill-color": `var(--color-${tone}-700)`
+      "--pill-bg": `var(--color-${tone}-100, var(--pill-slot-bg))`,
+      "--pill-color": `var(--color-${tone}-700, var(--pill-slot-color))`,
+      "--pill-icon-color": `var(--color-${tone}-600, var(--pill-slot-icon-color))`
     };
   }
   return {
-    "--tag-bg": `var(--color-${tone}-200)`,
-    "--tag-color": `var(--color-${tone}-600)`
+    "--tag-bg": `var(--color-${tone}-200, var(--pill-slot-bg))`,
+    "--tag-color": `var(--color-${tone}-600, var(--pill-slot-color))`
   };
 }
 function TitanButton({

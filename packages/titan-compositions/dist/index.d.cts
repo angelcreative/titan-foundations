@@ -58,6 +58,7 @@ interface TitanIconButtonProps extends Omit<ButtonProps, 'className' | 'children
 interface TitanToneStyle {
     '--pill-bg'?: string;
     '--pill-color'?: string;
+    '--pill-icon-color'?: string;
     '--tag-bg'?: string;
     '--tag-color'?: string;
 }

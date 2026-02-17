@@ -1037,6 +1037,7 @@
 .pill {
   --pill-bg: var(--pill-slot-bg);
   --pill-color: var(--pill-slot-color);
+  --pill-icon-color: var(--pill-slot-icon-color);
   min-height: calc(var(--button-slot-line-height) + (var(--spacing-3xs) * 2) + (var(--stroke-slot-width) * 2));
   border: none;
   border-radius: var(--pill-slot-radius);
@@ -1051,6 +1052,10 @@
   font-family: "Poppins", var(--font-audiense), sans-serif;
   background: var(--pill-bg);
   color: var(--pill-color);
+}
+
+.pill svg {
+  color: var(--pill-icon-color);
 }
 
 .pill-close {
