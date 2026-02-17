@@ -1,3 +1,43 @@
+/* Cursor pointer — all interactives */
+.btn,
+.icon-secondary,
+.icon-ghost,
+.icon-delete,
+.menu-item,
+.select-trigger,
+.select-item,
+.tab-trigger,
+.pagination-button,
+.drawer-close-button,
+.breadcrumb-link,
+.checkbox-root,
+.radio-root,
+.toggle-root,
+.navbar-icon-button,
+.navbar-chevron-button {
+  cursor: pointer;
+}
+
+/* No focus outlines — all interactives */
+.btn[data-focus-visible],
+.icon-secondary[data-focus-visible],
+.icon-ghost[data-focus-visible],
+.icon-delete[data-focus-visible],
+.menu-item[data-focus-visible],
+.select-trigger[data-focus-visible],
+.select-item[data-focus-visible],
+.tab-trigger[data-focus-visible],
+.pagination-button[data-focus-visible],
+.drawer-close-button[data-focus-visible],
+.breadcrumb-link[data-focus-visible],
+.checkbox-box[data-focus-visible],
+.radio-circle[data-focus-visible],
+.toggle-track[data-focus-visible],
+.textarea-field[data-focus-visible] {
+  outline: none;
+  box-shadow: none;
+}
+
 .page {
   max-width: var(--layout-content-max-width-sm);
   margin: 0 auto;
@@ -204,30 +244,70 @@
   background: var(--button-primary-slot-bg);
   color: var(--button-primary-slot-label);
 }
+.btn-primary[data-hovered] {
+  background: var(--button-primary-slot-bg-hover);
+}
+.btn-primary[data-pressed] {
+  background: var(--button-primary-slot-bg-active);
+}
 
 .btn-secondary {
   background: var(--button-secondary-slot-bg);
   color: var(--button-secondary-slot-label);
+}
+.btn-secondary[data-hovered] {
+  background: var(--button-secondary-slot-bg-hover);
+  color: var(--button-secondary-slot-label-hover);
+}
+.btn-secondary[data-pressed] {
+  background: var(--button-secondary-slot-bg-active);
+  color: var(--button-secondary-slot-label-active);
 }
 
 .btn-tertiary {
   background: var(--button-tertiary-slot-bg);
   color: var(--button-tertiary-slot-label);
 }
+.btn-tertiary[data-hovered] {
+  background: var(--button-tertiary-slot-bg-hover);
+  color: var(--button-tertiary-slot-label-hover);
+}
+.btn-tertiary[data-pressed] {
+  background: var(--button-tertiary-slot-bg-active);
+  color: var(--button-tertiary-slot-label-active);
+}
 
 .btn-link-text {
   background: var(--button-tertiary-slot-bg);
   color: var(--text-link);
+}
+.btn-link-text[data-hovered] {
+  background: var(--button-tertiary-slot-bg-hover);
+}
+.btn-link-text[data-pressed] {
+  background: var(--button-tertiary-slot-bg-active);
 }
 
 .btn-delete {
   background: var(--error-button-primary);
   color: var(--color-white-900);
 }
+.btn-delete[data-hovered] {
+  opacity: 0.85;
+}
+.btn-delete[data-pressed] {
+  opacity: 0.7;
+}
 
 .btn-delete-secondary {
   background: var(--background-error);
   color: var(--text-error-primary);
+}
+.btn-delete-secondary[data-hovered] {
+  opacity: 0.85;
+}
+.btn-delete-secondary[data-pressed] {
+  opacity: 0.7;
 }
 
 .icon-secondary,
@@ -244,10 +324,22 @@
   background: var(--button-icon-interactive-slot-bg);
   color: var(--button-icon-interactive-slot-icon);
 }
+.icon-secondary[data-hovered] {
+  background: var(--button-icon-interactive-slot-bg-hover);
+}
+.icon-secondary[data-pressed] {
+  background: var(--button-icon-interactive-slot-bg-active);
+}
 
 .icon-delete {
   background: var(--background-error);
   color: var(--text-error-primary);
+}
+.icon-delete[data-hovered] {
+  opacity: 0.85;
+}
+.icon-delete[data-pressed] {
+  opacity: 0.7;
 }
 
 .menu-popover {
@@ -1195,8 +1287,9 @@
 }
 
 .input-with-icons[data-focus-visible] {
-  border-color: var(--input-slot-border-focus-visible);
-  box-shadow: 0 0 0 var(--input-slot-focus-width) var(--input-slot-focus-color);
+  border-color: var(--input-slot-border-focus);
+  outline: none;
+  box-shadow: none;
 }
 
 .field-root[data-disabled] .input-with-icons {
