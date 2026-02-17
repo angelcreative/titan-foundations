@@ -120,4 +120,41 @@ Esta variante neutral unifica icon buttons base/base-l en componentes compartido
 - En acciones destructivas criticas, recomendar confirmacion adicional.
 - Si cualquier variante incluye borde/stroke/outline como contenedor visual: `FAIL`.
 
+## State Matrix (visible)
+
+En review deben ser visibles explicitamente:
+
+- `button`, `destructive-button`, `icon-button`, `destructive-icon-button`, `icon-button-neutral-base`:
+  - `default`
+  - `hover`
+  - `pressed`
+  - `disabled`
+  - `focus-visible`
+
+Regla adicional para icon-only interactivo:
+
+- Comportamiento visual por defecto de **secondary icon-button**.
+- Si no aplica un contrato mas estricto del componente, fallback: `background: var(--color-black-100)` y `border-radius: 9999px`.
+
+## Review Harness Requirements
+
+- Mostrar en una misma vista los estados visibles obligatorios por variante.
+- Incluir al menos:
+  - un button textual
+  - un button con icono
+  - un icon-only interactivo
+  - un caso disabled
+- Probar interaccion por teclado:
+  - foco visible con `Tab`
+  - activacion con `Enter` y `Space`
+- Verificar que icon-only tenga `aria-label`.
+
+## Common Implementation Traps
+
+- Usar borde como contenedor visual en lugar de la capa de fondo del variant.
+- Omitir `focus-visible` por depender solo de hover.
+- Mezclar jerarquias no validas (por ejemplo, `tertiary` en destructive).
+- Renderizar icon-only sin nombre accesible.
+- No aplicar fallback de icon-only (secondary o black-100 + full rounded).
+
 Spec JSON: `foundations/button.json`.

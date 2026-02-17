@@ -26,6 +26,41 @@
       "closeIcon": "var(--drawer-close-icon)",
       "closeSize": "var(--drawer-close-size)"
     },
-    "closeButton": "Ghost icon button: transparent bg, full rounded (9999px), X icon (Lucide X). data-slot=\"drawer-close\"."
+    "closeButton": "Ghost icon button: transparent bg, full rounded (9999px), X icon (Lucide X). data-slot=\"drawer-close\".",
+    "requiredStatesVisible": {
+      "overlay": ["default"],
+      "panel": ["open", "closing"],
+      "closeButton": ["default", "hover", "pressed", "focus-visible", "disabled when applicable"]
+    },
+    "interactionMatrix": [
+      { "event": "open-drawer", "from": "closed", "to": "open" },
+      { "event": "click-overlay", "from": "open", "to": "closing" },
+      { "event": "press-escape", "from": "open", "to": "closing" },
+      { "event": "click-close-button", "from": "open", "to": "closing" },
+      { "event": "focus-close-button", "from": "default", "to": "focus-visible" }
+    ],
+    "reviewScenarios": [
+      "Show drawer open state with overlay + header + body anatomy.",
+      "Show close button states (default/hover/pressed/focus-visible).",
+      "Show close behavior via overlay click and Escape key.",
+      "Show body scrolling while header remains structurally intact."
+    ],
+    "a11yAcceptance": [
+      "Drawer/dialog role is announced and labeled by title.",
+      "Focus is trapped while drawer is open and restored on close.",
+      "Escape closes drawer unless flow explicitly blocks it.",
+      "Overlay blocks interaction with background content."
+    ],
+    "failConditions": {
+      "fail": [
+        "Drawer misses required overlay + panel + header/body anatomy.",
+        "Close button states are not visibly rendered in review harness.",
+        "Close interaction (overlay/Escape/button) is incomplete."
+      ],
+      "blocker": [
+        "Missing semantic token mapping for drawer overlay/close states.",
+        "No focus trap or focus return behavior can be guaranteed."
+      ]
+    }
   }
 }

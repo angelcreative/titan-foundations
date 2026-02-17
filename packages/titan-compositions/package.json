@@ -1,0 +1,39 @@
+{
+  "name": "titan-compositions",
+  "version": "0.1.0",
+  "description": "Reusable Titan page compositions built on React Aria + Titan tokens",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./styles": "./dist/titan-compositions.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts && cp src/styles/titan-compositions.css dist/",
+    "dev": "tsup src/index.ts --watch --format cjs,esm --dts"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0",
+    "react-aria-components": ">=1.0.0",
+    "lucide-react": ">=0.460.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-aria-components": "^1.4.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
+  }
+}

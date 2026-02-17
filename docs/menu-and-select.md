@@ -157,4 +157,34 @@ Anatomia (PDF):
 
 Los temas definen los colores de ítem: `--select-listbox-item-focused-background`, `--select-listbox-item-pressed-background`, `--select-listbox-item-selected-background`.
 
+## State Matrix (visible)
+
+### Menu
+
+- Item standard: `default`, `hover`, `pressed`, `selected`, `disabled`, `focus-visible`.
+- Item destructivo: `default`, `hover`, `pressed`, `disabled`, `focus-visible` (sin `selected`).
+
+### Select
+
+- Trigger: `default`, `hover`, `pressed`, `disabled`, `focus-visible`.
+- ListBoxItem: `default`, `focused`, `pressed`, `selected`, `disabled`.
+
+## Review Harness Requirements
+
+- **Menu:** incluir trigger, lista de items estandar, item destructivo y (si aplica) submenu de 1 nivel.
+- **Menu overflow:** demostrar scroll interno al superar maximo visible.
+- **Select:** mostrar trigger cerrado + popover abierto con estados de item visibles.
+- Demostrar teclado:
+  - Menu: arrows + Enter/Space + Escape
+  - Select: abrir con teclado, navegar opciones, seleccionar y cerrar
+- Verificar disabled en trigger/item no es activable.
+
+## Common Implementation Traps
+
+- Abrir submenu mas de un nivel (rompe contrato).
+- Tratar item destructivo como selected.
+- No devolver foco al trigger tras cerrar Menu/Select.
+- No renderizar estado `focused` real en Select item (solo hover visual).
+- Omitir collision/flip y dejar popover fuera de viewport.
+
 **Spec:** `foundations/select.json`.

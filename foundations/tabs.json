@@ -58,6 +58,39 @@
       "If required tab semantics cannot be satisfied, return BLOCKER.",
       "If required states are missing, return FAIL.",
       "If selection behavior allows more than one active tab, return FAIL."
+    ],
+    "requiredStatesVisible": {
+      "tabTrigger": ["default", "hover", "selected", "disabled", "focus-visible"]
+    },
+    "interactionMatrix": [
+      { "event": "pointer-hover-tab", "from": "default", "to": "hover" },
+      { "event": "pointer-click-tab", "from": "default|hover", "to": "selected" },
+      { "event": "keyboard-arrow", "from": "focused-tab", "to": "next-or-prev-focused-tab" },
+      { "event": "enter-or-space", "from": "focused-tab", "to": "selected" },
+      { "event": "disable-tab", "from": "any", "to": "disabled" }
+    ],
+    "reviewScenarios": [
+      "Render tab list with visible default/hover/selected/disabled states.",
+      "Demonstrate keyboard arrows + Enter/Space selection behavior.",
+      "Demonstrate panel switching with only one visible active panel.",
+      "Demonstrate overflow behavior with horizontal scroll or controlled collapse."
+    ],
+    "a11yAcceptance": [
+      "Tablist exposes proper semantics and labels.",
+      "Each tab is associated with exactly one panel.",
+      "Selected tab is announced and disabled tabs are non-activatable.",
+      "Focus-visible is present during keyboard traversal."
+    ],
+    "failConditions": {
+      "fail": [
+        "Missing required visible tab states in review harness.",
+        "More than one tab selected in the same tablist.",
+        "Disabled tab can still be activated."
+      ],
+      "blocker": [
+        "Missing tablist/tab/panel semantics.",
+        "Missing semantic token mappings required for selected or disabled tab states."
+      ]
     ]
   }
 }

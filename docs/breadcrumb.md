@@ -67,4 +67,27 @@ Current item:
 - Clickable current item -> `FAIL`
 - Missing interactive state coverage -> `FAIL`
 
+## State Matrix (visible)
+
+- Interactive item: `default`, `hover`, `pressed`, `focus-visible`, `disabled` (si aplica).
+- Current item: `default` (no interactivo, `aria-current="page"`).
+- Overflow ellipsis item: `default`, `hover`, `focus-visible` (si es interactivo).
+
+## Review Harness Requirements
+
+- Renderizar breadcrumb con 4+ niveles y current-item correcto.
+- Mostrar estados visibles de item interactivo (incluyendo focus-visible).
+- Mostrar estrategia de overflow en ancho reducido:
+  - conservar primer y ultimo nivel
+  - colapsar niveles intermedios
+- Si hay ellipsis interactivo, demostrar expansion/descubrimiento de niveles colapsados.
+
+## Common Implementation Traps
+
+- Hacer clickable el current item.
+- No establecer `aria-current="page"` en el nivel actual.
+- No definir estrategia de overflow para rutas largas.
+- Permitir foco en elementos no interactivos.
+- Mezclar separadores/espaciados hardcode ignorando tokens.
+
 Spec: `foundations/breadcrumb.json`.

@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en" data-theme="insights">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Titan React Playground - Buttons</title>
+    <link rel="stylesheet" href="../tokens/css/titan.css" />
+    <link rel="stylesheet" href="../tokens/themes/_insights.css" />
+    <link rel="stylesheet" href="../tokens/themes/_audiense.css" />
+    <link rel="stylesheet" href="../tokens/themes/_demand.css" />
+    <link rel="stylesheet" href="../tokens/themes/_linkedin.css" />
+    <link rel="stylesheet" href="../tokens/themes/_tweetbinder.css" />
+    <link rel="stylesheet" href="../tokens/themes/_neutral.css" />
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: var(--font-audiense, "Poppins", sans-serif);
+        background: var(--surface-page, #f4f6f8);
+        color: var(--copy-primary, #1f2937);
+      }
+      .page {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 16px;
+        display: grid;
+        gap: 12px;
+      }
+      .card {
+        background: var(--surface-0, #fff);
+        border-radius: 12px;
+        padding: 14px;
+      }
+      .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+      .title { margin: 0 0 10px; font-size: 16px; }
+      .btn {
+        border: none;
+        border-radius: var(--button-slot-radius, 8px);
+        min-height: 40px;
+        padding: 0 16px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        font-size: var(--font-size-m, 16px);
+        font-weight: 500;
+      }
+      .btn-primary { background: var(--button-primary); color: var(--text-on-primary); }
+      .btn-primary.h { background: var(--button-primary-hover); }
+      .btn-primary.p { background: var(--button-primary-active); }
+      .btn-secondary { background: var(--button-secondary); color: var(--text-button-color); }
+      .btn-secondary.h { background: var(--button-tertiary-hover); }
+      .btn-secondary.p { background: var(--button-secondary-active); }
+      .btn-tertiary { background: transparent; color: var(--text-button-color); }
+      .btn-tertiary.h { background: var(--button-tertiary-hover); }
+      .btn-tertiary.p { background: var(--button-secondary-active); }
+      .btn-link {
+        border: none;
+        background: transparent;
+        color: var(--link-color);
+        padding: 0;
+        text-decoration: underline;
+        min-height: auto;
+      }
+      .btn-delete { background: var(--color-error-600); color: var(--text-on-primary); }
+      .btn-delete.h { background: var(--color-error-500); }
+      .btn-delete.p { background: var(--color-error-700); }
+      .btn-delete-secondary { background: var(--color-error-200); color: var(--text-error-primary); }
+      .btn-delete-secondary.h { background: var(--color-error-100); }
+      .btn-delete-secondary.p { background: var(--color-error-300); }
+      .dis {
+        background: var(--button-disabled) !important;
+        color: var(--copy-disabled) !important;
+        cursor: not-allowed;
+      }
+      .icon-secondary, .icon-ghost {
+        width: 40px;
+        height: 40px;
+        border: none;
+        border-radius: 9999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .icon-secondary {
+        background: var(--interactive-icon-button-bg, var(--button-secondary));
+        color: var(--interactive-icon-button-icon, var(--text-button-color));
+      }
+      .icon-secondary.h { background: var(--interactive-icon-button-bg-hover, var(--button-secondary-hover)); }
+      .icon-secondary.p { background: var(--interactive-icon-button-bg-active, var(--button-secondary-active)); }
+      .icon-secondary.dis {
+        color: var(--interactive-icon-button-icon-disabled, var(--copy-disabled)) !important;
+      }
+      .icon-ghost {
+        background: transparent;
+        color: var(--icon-slot-secondary, var(--copy-secondary));
+      }
+      .icon-ghost.h { background: var(--color-black-100); }
+      .icon-ghost.p { background: var(--color-black-200); }
+      .theme { margin-left: auto; }
+      .hint { font-size: 12px; color: var(--copy-tertiary); margin-top: 4px; }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="importmap">
+      {
+        "imports": {
+          "react": "https://esm.sh/react@18.2.0?dev&bundle",
+          "react/jsx-runtime": "https://esm.sh/react@18.2.0/jsx-runtime?dev&bundle",
+          "react-dom": "https://esm.sh/react-dom@18.2.0?dev&bundle",
+          "react-dom/client": "https://esm.sh/react-dom@18.2.0/client?dev&bundle"
+        }
+      }
+    </script>
+    <script type="module">
+      import React, { useEffect, useState } from "https://esm.sh/react@18.2.0?dev&bundle";
+      import { createRoot } from "https://esm.sh/react-dom@18.2.0/client?dev&bundle";
+      import { Button } from "https://esm.sh/react-aria-components@1.3.3?dev";
+
+      const e = React.createElement;
+      const themes = ["insights", "audiense", "neutral", "demand", "linkedin", "tweetbinder"];
+
+      function ButtonRow({ title, className }) {
+        return e(
+          "div",
+          { className: "row" },
+          e(Button, { className }, title),
+          e(Button, { className: className + " h" }, title + " hover"),
+          e(Button, { className: className + " p" }, title + " pressed"),
+          e(Button, { className: className + " dis", isDisabled: true }, title + " disabled")
+        );
+      }
+
+      function App() {
+        const [theme, setTheme] = useState("insights");
+
+        useEffect(() => {
+          document.documentElement.setAttribute("data-theme", theme);
+        }, [theme]);
+
+        return e(
+          "main",
+          { className: "page" },
+          e(
+            "section",
+            { className: "card" },
+            e(
+              "div",
+              { className: "row" },
+              e("h1", { className: "title" }, "React Buttons Playground (Phase 1)"),
+              e(
+                "select",
+                {
+                  className: "theme",
+                  value: theme,
+                  onChange: (ev) => setTheme(ev.target.value),
+                },
+                ...themes.map((t) => e("option", { key: t, value: t }, t))
+              )
+            ),
+            e(
+              "p",
+              { className: "hint" },
+              "Primary 600/500/700, Secondary 200/100/300, Tertiary transparent/100/300."
+            )
+          ),
+          e(
+            "section",
+            { className: "card" },
+            e("h2", { className: "title" }, "Primary / Secondary / Tertiary / Link"),
+            e(ButtonRow, { title: "Primary", className: "btn btn-primary" }),
+            e(ButtonRow, { title: "Secondary", className: "btn btn-secondary" }),
+            e(ButtonRow, { title: "Tertiary", className: "btn btn-tertiary" }),
+            e("div", { className: "row" }, e(Button, { className: "btn-link" }, "Link button"))
+          ),
+          e(
+            "section",
+            { className: "card" },
+            e("h2", { className: "title" }, "Delete / Delete secondary"),
+            e(ButtonRow, { title: "Delete", className: "btn btn-delete" }),
+            e(ButtonRow, { title: "Delete secondary", className: "btn btn-delete-secondary" })
+          ),
+          e(
+            "section",
+            { className: "card" },
+            e("h2", { className: "title" }, "Icon-only (secondary) + Icon ghost"),
+            e(
+              "div",
+              { className: "row" },
+              e(Button, { className: "icon-secondary", "aria-label": "Icon secondary default" }, "+"),
+              e(Button, { className: "icon-secondary h", "aria-label": "Icon secondary hover" }, "+"),
+              e(Button, { className: "icon-secondary p", "aria-label": "Icon secondary pressed" }, "+"),
+              e(Button, { className: "icon-secondary dis", isDisabled: true, "aria-label": "Icon secondary disabled" }, "🗑")
+            ),
+            e(
+              "div",
+              { className: "row" },
+              e(Button, { className: "icon-ghost", "aria-label": "Ghost default" }, "★"),
+              e(Button, { className: "icon-ghost h", "aria-label": "Ghost hover" }, "★"),
+              e(Button, { className: "icon-ghost p", "aria-label": "Ghost pressed" }, "★"),
+              e(Button, { className: "icon-ghost dis", isDisabled: true, "aria-label": "Ghost disabled" }, "★")
+            )
+          )
+        );
+      }
+
+      createRoot(document.getElementById("app")).render(e(App));
+    </script>
+  </body>
+</html>

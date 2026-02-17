@@ -1,0 +1,351 @@
+{
+  "$schema": "Titan composition patterns — real UI recipes extracted from Audiense/Demand/Insights/TweetBinder products for MCP code generation",
+  "version": "0.1.0",
+  "notes": [
+    "Each pattern includes: description, Titan components used, JSX template, layout guidance, and gaps (components that need React Aria + tokens fallback).",
+    "Charts are intentional slots — the MCP should leave a placeholder where a chart library renders.",
+    "All spacing uses Titan CSS custom properties (--spacing-*).",
+    "All patterns assume titan.css + theme CSS + titan-compositions/styles are loaded."
+  ],
+
+  "pagePatterns": {
+    "reportListPage": {
+      "id": "report-list-page",
+      "name": "Report List Page",
+      "description": "Navbar + page title + subtitle counter + primary CTA top-right + borderless table with typed columns (name with icon, type as pill/tag, date, status dot, avatar, access icon, 3-dot action menu with cascading submenu) + footer row count.",
+      "titanComponents": ["TitanNavbar", "TitanBorderlessTable", "TitanPill", "TitanTag", "TitanMenuDropdown", "TitanButton", "TitanIconButton"],
+      "jsx": "<>\n  <TitanNavbar theme=\"demand\" userInitial=\"A\" />\n  <main className=\"page\">\n    <section className=\"card\">\n      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>\n        <div>\n          <h1 style={{ margin: 0 }}>My reports</h1>\n          <p className=\"copy-secondary\">37 entities available</p>\n        </div>\n        <TitanButton variant=\"primary\" icon={<Plus />}>New report</TitanButton>\n      </div>\n      <TitanBorderlessTable\n        columns={[\n          { key: 'name', header: 'Report name' },\n          { key: 'type', header: 'Type', render: (row) => <TitanTag label={row.type} tone={row.typeTone} /> },\n          { key: 'created', header: 'Created' },\n          { key: 'status', header: 'Status', render: (row) => <span className=\"status-row\"><span className={`status-dot status-dot-${row.statusColor}`} />{row.status}</span> },\n          { key: 'owner', header: 'Owner', render: (row) => <span className=\"navbar-avatar\">{row.ownerInitial}</span> },\n          { key: 'actions', header: 'Actions', render: (row) => (\n            <TitanMenuDropdown iconOnly triggerIcon={<MoreVertical />} triggerLabel=\"Row actions\" placement=\"bottom end\" items={row.actionItems} />\n          )}\n        ]}\n        rows={rows}\n      />\n      <p className=\"copy-secondary\">4 reports created</p>\n    </section>\n  </main>\n</>",
+      "layout": "Single full-width card inside .page container. Table takes full width of card.",
+      "gaps": ["StatusDot (colored dot + label) — use inline span with background-color from Titan color tokens"]
+    },
+
+    "wizardStepLayout": {
+      "id": "wizard-step-layout",
+      "name": "Wizard Step Layout",
+      "description": "Back button (left) + centered title + Next/Launch CTA (right). Main content card below. Optional tabs for mode switching. Optional alternative path footer.",
+      "titanComponents": ["TitanButton", "TitanTabs", "TitanCard"],
+      "jsx": "<>\n  <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 'var(--spacing-m) var(--spacing-xl)' }}>\n    <TitanButton variant=\"link\" icon={<ArrowLeft />}>Back</TitanButton>\n    <h1 style={{ margin: 0 }}>Define your audience</h1>\n    <TitanButton variant=\"primary\" icon={<ArrowRight />}>Next</TitanButton>\n  </header>\n  <main className=\"page\">\n    <section className=\"card\">\n      {/* Main step content */}\n    </section>\n    <footer style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-m)', padding: 'var(--spacing-m) 0' }}>\n      <span className=\"copy-secondary\">OR</span>\n      <TitanSelect label=\"Select an audience\" options={audiences} />\n    </footer>\n  </main>\n</>",
+      "layout": "Sticky header row with 3-column flex (back | title | next). Content below in .page. Optional footer row.",
+      "gaps": []
+    },
+
+    "formSidebarStatusPage": {
+      "id": "form-sidebar-status-page",
+      "name": "Form + Sidebar Status Page",
+      "description": "Back + title + CTA header. 2-column layout (~10/16 main form + ~6/16 sidebar). Main: input with counter, textarea, grouped cards. Sidebar: progress status card + summary card.",
+      "titanComponents": ["TitanButton", "TitanInputField", "TitanTextareaField", "TitanCard", "TitanCardGrid"],
+      "jsx": "<>\n  <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 'var(--spacing-m) var(--spacing-xl)' }}>\n    <TitanButton variant=\"link\" icon={<ArrowLeft />}>Back</TitanButton>\n    <h1 style={{ margin: 0 }}>Define report</h1>\n    <TitanButton variant=\"primary\" icon={<ArrowRight />}>Launch report</TitanButton>\n  </header>\n  <main className=\"page\">\n    <TitanCardGrid>\n      <TitanCard span={12}>\n        <TitanInputField label=\"Name your report\" placeholder=\"Report name\" counter=\"0/70\" />\n        <section className=\"card\" style={{ marginTop: 'var(--spacing-m)' }}>\n          <h3>Add your entities (max: 37)</h3>\n          <p className=\"copy-secondary\">Description text...</p>\n          <TitanTextareaField placeholder=\"Write or paste your entities here...\" />\n          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 'var(--spacing-s)' }}>\n            <TitanButton variant=\"link\">Clear all</TitanButton>\n            <TitanButton variant=\"secondary\" isDisabled>Review Entities Information</TitanButton>\n          </div>\n        </section>\n      </TitanCard>\n      <TitanCard span={4}>\n        <h3>Entities Status</h3>\n        {/* ProgressSummary: progress bar + status counts */}\n        <h3 style={{ marginTop: 'var(--spacing-m)' }}>Report Summary</h3>\n        <p className=\"copy-secondary\">Entities in your report: 0</p>\n      </TitanCard>\n    </TitanCardGrid>\n  </main>\n</>",
+      "layout": "CardGrid 12+4 split. Left card holds stacked form sections. Right card holds status + summary.",
+      "gaps": ["ProgressBar with status counters — use React Aria ProgressBar + Titan tokens"]
+    },
+
+    "dashboardInsightsPage": {
+      "id": "dashboard-insights-page",
+      "name": "Dashboard Insights Page",
+      "description": "Analytics page with multiple cards in grid. Typically: row of 4 KPI cards (span 4 each), then wider data cards (span 8 or 16) with tables, bars, entity lists, charts.",
+      "titanComponents": ["TitanNavbar", "TitanBreadcrumb", "TitanCardGrid", "TitanCard", "TitanBorderlessTable", "TitanTooltip"],
+      "jsx": "<>\n  <TitanNavbar theme=\"insights\" userInitial=\"A\" />\n  <main className=\"page\">\n    <TitanBreadcrumb items={[{ id: 'home', label: 'Home' }, { id: 'reports', label: 'Reports' }]} currentLabel=\"Star Wars\" />\n    <TitanCardGrid>\n      <TitanCard span={4}>{/* KPI Summary Card */}</TitanCard>\n      <TitanCard span={4}>{/* KPI Summary Card */}</TitanCard>\n      <TitanCard span={4}>{/* KPI Summary Card */}</TitanCard>\n      <TitanCard span={4}>{/* KPI Summary Card */}</TitanCard>\n    </TitanCardGrid>\n    <TitanCardGrid>\n      <TitanCard span={8}>{/* Metric list or chart */}</TitanCard>\n      <TitanCard span={8}>{/* Ranking or chart */}</TitanCard>\n    </TitanCardGrid>\n    <TitanCardGrid>\n      <TitanCard span={16}>{/* Full-width table or chart */}</TitanCard>\n    </TitanCardGrid>\n  </main>\n</>",
+      "layout": "Multiple CardGrid rows. First row: 4x span-4. Subsequent rows: 2x span-8 or 1x span-16. Cards fill with data components or chart placeholders.",
+      "gaps": []
+    }
+  },
+
+  "cardPatterns": {
+    "kpiSummaryCard": {
+      "id": "kpi-summary-card",
+      "name": "KPI Summary Card",
+      "description": "Small card (span 4) with: title + info tooltip, subtitle, hero metric (big number + percentage), supporting detail rows. Variants: ranked list with score badges, icon + value, flag + country.",
+      "titanComponents": ["TitanCard", "TitanTooltip", "TitanIconButton"],
+      "jsx": "<TitanCard span={4}>\n  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3xs)' }}>\n    <h3 className=\"copy-secondary\" style={{ margin: 0, fontSize: 'var(--font-size-s)' }}>Top Entities</h3>\n    <TitanTooltip content=\"Based on cross-channel performance\">\n      <TitanIconButton variant=\"ghost\" aria-label=\"Info\"><Info size={14} /></TitanIconButton>\n    </TitanTooltip>\n  </div>\n  <p className=\"copy-secondary\" style={{ fontSize: 'var(--font-size-s)', margin: 0 }}>Based on the cross-channel performance</p>\n  <p style={{ fontSize: 'var(--font-size-xl)', fontWeight: 'var(--text-weight-semibold)', margin: 'var(--spacing-s) 0 0' }}>Star Wars Episode III</p>\n  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>\n    <span>Star Wars: Phantom Menace</span>\n    <span className=\"copy-secondary\">75</span>\n  </div>\n</TitanCard>",
+      "layout": "Always used inside TitanCardGrid as span={4}. Internal layout is vertical stack with flexbox rows for detail lines.",
+      "gaps": []
+    },
+
+    "entityListCard": {
+      "id": "entity-list-card",
+      "name": "Entity List Card",
+      "description": "Card with title + tooltip, subtitle, list of rows: [icon/flag] + [label] + chevron > + [bold detail text, truncated]. Optional horizontal divider separating subsections within the same card.",
+      "titanComponents": ["TitanCard", "TitanTooltip"],
+      "jsx": "<TitanCard span={16}>\n  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3xs)' }}>\n    <h3>Relevance per Country</h3>\n    <TitanTooltip content=\"Most relevant entities per country\">\n      <TitanIconButton variant=\"ghost\" aria-label=\"Info\"><Info size={14} /></TitanIconButton>\n    </TitanTooltip>\n  </div>\n  <p className=\"copy-secondary\">Most relevant entities per country</p>\n  <div style={{ display: 'grid', gap: 'var(--spacing-s)' }}>\n    {items.map(item => (\n      <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-s)' }}>\n        <span>{item.flag}</span>\n        <span className=\"copy-secondary\">{item.code}</span>\n        <ChevronRight size={14} className=\"copy-secondary\" />\n        <strong style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.entities}</strong>\n      </div>\n    ))}\n  </div>\n  {/* Optional divider between sections */}\n  <hr style={{ border: 'none', borderTop: 'var(--stroke-slot-width) solid var(--color-black-200)', margin: 'var(--spacing-m) 0' }} />\n  {/* Second subsection with same row pattern */}\n</TitanCard>",
+      "layout": "Full-width card (span 16) or half (span 8). Rows are flex with truncation on trailing text.",
+      "gaps": []
+    },
+
+    "metricListCardWithBars": {
+      "id": "metric-list-card-with-bars",
+      "name": "Metric List Card with Bars",
+      "description": "Card with title + tooltip. Each row: icon + category name, horizontal bar (colored segment + gray track) + percentage, secondary value (multiplier like 1.93x). Optional tinted header.",
+      "titanComponents": ["TitanCard", "TitanTooltip"],
+      "jsx": "<TitanCard span={8}>\n  <div className=\"card-header-tinted\" style={{ background: 'var(--color-teal-100)', padding: 'var(--spacing-s)', borderRadius: 'var(--card-slot-radius) var(--card-slot-radius) 0 0', margin: 'calc(var(--dialog-slot-pad) * -1)', marginBottom: 'var(--spacing-m)', display: 'flex', alignItems: 'center', gap: 'var(--spacing-3xs)' }}>\n    <h3 style={{ margin: 0 }}>Top Interests</h3>\n    <TitanTooltip content=\"Audience interest categories\"><TitanIconButton variant=\"ghost\" aria-label=\"Info\"><Info size={14} /></TitanIconButton></TitanTooltip>\n  </div>\n  {items.map(item => (\n    <div key={item.id} style={{ display: 'grid', gap: 'var(--spacing-3xs)', paddingBlock: 'var(--spacing-s)', borderBottom: 'var(--stroke-slot-width) solid var(--color-black-200)' }}>\n      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-s)' }}>\n        <Users size={16} />\n        <strong>{item.name}</strong>\n      </div>\n      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 'var(--spacing-m)' }}>\n        <div style={{ flex: 1 }}>\n          <span className=\"copy-secondary\" style={{ fontSize: 'var(--font-size-s)' }}>Penetration</span>\n          {/* ComparisonBar placeholder */}\n          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3xs)' }}>\n            <div style={{ flex: 1, height: 6, background: 'var(--color-black-200)', borderRadius: 3, overflow: 'hidden' }}>\n              <div style={{ width: item.penetration + '%', height: '100%', background: 'var(--color-teal-500)', borderRadius: 3 }} />\n            </div>\n            <span className=\"copy-secondary\" style={{ fontSize: 'var(--font-size-s)' }}>{item.penetration}%</span>\n          </div>\n        </div>\n        <div style={{ textAlign: 'right' }}>\n          <span className=\"copy-secondary\" style={{ fontSize: 'var(--font-size-s)' }}>Followers</span>\n          <p style={{ margin: 0 }}>&uarr; {item.multiplier}x</p>\n        </div>\n      </div>\n    </div>\n  ))}\n</TitanCard>",
+      "layout": "span 8 card. Internal list with separator borders. Each row is a 2-level stack: name row + metrics row.",
+      "gaps": ["ComparisonBar — inline div with background track + colored fill using Titan color tokens"]
+    },
+
+    "searchableDataCard": {
+      "id": "searchable-data-card",
+      "name": "Searchable Data Card with Table",
+      "description": "Card with title + tooltip, search input with leading icon, sortable table below with comparison bars and badge values.",
+      "titanComponents": ["TitanCard", "TitanTooltip", "TitanInputField", "TitanBorderlessTable"],
+      "jsx": "<TitanCard span={16}>\n  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3xs)' }}>\n    <h3>Schools</h3>\n    <TitanTooltip content=\"School distribution\"><TitanIconButton variant=\"ghost\" aria-label=\"Info\"><Info size={14} /></TitanIconButton></TitanTooltip>\n  </div>\n  <TitanInputField placeholder=\"Search a school\" leadingIcon={<Search />} style={{ maxWidth: 360, marginBottom: 'var(--spacing-m)' }} />\n  <TitanBorderlessTable\n    columns={[\n      { key: 'school', header: 'School' },\n      { key: 'penetration', header: 'Penetration', render: (row) => /* DualComparisonBar */ null },\n      { key: 'affinity', header: 'Affinity', render: (row) => <span className=\"copy-secondary\">{row.affinity}</span> }\n    ]}\n    rows={filteredRows}\n  />\n</TitanCard>",
+      "layout": "Full-width card. Search input at top with max-width. Table takes remaining space.",
+      "gaps": ["DualComparisonBar (two stacked bars for audience vs baseline) — inline divs with Titan color tokens"]
+    },
+
+    "comparisonTableCard": {
+      "id": "comparison-table-card",
+      "name": "Comparison Table Card",
+      "description": "Card with title + tooltip. Sortable table with: label column, dual comparison bars (audience vs baseline) + percentages, value badge column.",
+      "titanComponents": ["TitanCard", "TitanTooltip", "TitanBorderlessTable"],
+      "jsx": "<TitanCard span={16}>\n  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3xs)' }}>\n    <h3>Seniority</h3>\n    <TitanTooltip content=\"Seniority level distribution\"><TitanIconButton variant=\"ghost\" aria-label=\"Info\"><Info size={14} /></TitanIconButton></TitanTooltip>\n  </div>\n  <TitanBorderlessTable\n    columns={[\n      { key: 'level', header: 'Level' },\n      { key: 'penetration', header: 'Penetration', render: (row) => (\n        <div style={{ display: 'grid', gap: 2 }}>\n          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3xs)' }}>\n            <div style={{ flex: 1, height: 6, background: 'var(--color-black-200)', borderRadius: 3, overflow: 'hidden' }}>\n              <div style={{ width: row.audiencePct + '%', height: '100%', background: 'var(--color-ocean-500)', borderRadius: 3 }} />\n            </div>\n            <span className=\"copy-secondary\" style={{ fontSize: 'var(--font-size-s)', minWidth: 48 }}>{row.audiencePct}%</span>\n          </div>\n          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3xs)' }}>\n            <div style={{ flex: 1, height: 6, background: 'var(--color-black-200)', borderRadius: 3, overflow: 'hidden' }}>\n              <div style={{ width: row.baselinePct + '%', height: '100%', background: 'var(--color-ocean-200)', borderRadius: 3 }} />\n            </div>\n            <span className=\"copy-secondary\" style={{ fontSize: 'var(--font-size-s)', minWidth: 48 }}>{row.baselinePct}%</span>\n          </div>\n        </div>\n      )},\n      { key: 'affinity', header: 'Affinity', render: (row) => <span className=\"copy-secondary\">{row.affinity}</span> }\n    ]}\n    rows={rows}\n  />\n</TitanCard>",
+      "layout": "Full-width or span-16 card. Table with custom render columns for bars.",
+      "gaps": []
+    },
+
+    "distributionComparisonCard": {
+      "id": "distribution-comparison-card",
+      "name": "Distribution Comparison Card (x3 row)",
+      "description": "3 cards in a row (~5/16 each). Each: tinted title, description + 'Read more' link, sorted distribution table with dual comparison bars, legend with colored dots, 'Show full table' or 'Download' link at bottom.",
+      "titanComponents": ["TitanCard", "TitanCardGrid", "TitanButton"],
+      "jsx": "<TitanCardGrid>\n  {distributions.map(dist => (\n    <TitanCard key={dist.id} span={5}>\n      <h3 style={{ color: 'var(--color-ocean-700)' }}>{dist.title}</h3>\n      <p className=\"copy-secondary\">{dist.description} <TitanButton variant=\"link\">Read more</TitanButton></p>\n      <div style={{ display: 'grid', gap: 'var(--spacing-s)' }}>\n        {dist.rows.map(row => (\n          <div key={row.id}>\n            <strong>{row.label}</strong>\n            {/* DualComparisonBar for each audience */}\n          </div>\n        ))}\n      </div>\n      {/* Legend */}\n      <div style={{ display: 'flex', gap: 'var(--spacing-m)', marginTop: 'var(--spacing-s)' }}>\n        {dist.audiences.map(a => (\n          <span key={a.id} style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--spacing-4xs)', fontSize: 'var(--font-size-s)' }}>\n            <span style={{ width: 8, height: 8, borderRadius: '50%', background: a.color }} />\n            {a.name}\n          </span>\n        ))}\n      </div>\n      <TitanButton variant=\"link\" style={{ marginTop: 'var(--spacing-s)' }}>Show full table &rarr;</TitanButton>\n    </TitanCard>\n  ))}\n</TitanCardGrid>",
+      "layout": "CardGrid with 3x span-5 cards (or approximate). Note: 5+5+5=15 leaves 1 col gap, adjust with custom CSS or use 16-col fractions.",
+      "gaps": ["DualComparisonBar", "LegendRow (inline flex with colored dots)"]
+    },
+
+    "centeredInsightCard": {
+      "id": "centered-insight-card",
+      "name": "Centered Insight Card",
+      "description": "Card with centered layout: large icon top, title, centered description, horizontal divider, chart/visual placeholder below, legend.",
+      "titanComponents": ["TitanCard"],
+      "jsx": "<TitanCard span={8}>\n  <div style={{ display: 'grid', justifyItems: 'center', gap: 'var(--spacing-m)', textAlign: 'center' }}>\n    <CreditCard size={40} style={{ color: 'var(--copy-slot-secondary)' }} />\n    <h3 style={{ margin: 0 }}>Credit cards</h3>\n    <p className=\"copy-secondary\">Members of the audience that are likely to prefer using credit cards for shopping</p>\n    <hr style={{ width: '100%', border: 'none', borderTop: 'var(--stroke-slot-width) solid var(--color-black-200)' }} />\n    {/* Chart placeholder (donut charts) */}\n    <div style={{ display: 'flex', justifyContent: 'center', gap: 'var(--spacing-xl)' }}>\n      {/* Chart slots */}\n    </div>\n  </div>\n</TitanCard>",
+      "layout": "span 8 card. All content centered with grid justifyItems center.",
+      "gaps": []
+    },
+
+    "categoryComparisonCard": {
+      "id": "category-comparison-card",
+      "name": "Category Comparison Card",
+      "description": "Card with title, description + 'Read more' link, N categories laid out horizontally (2 or 3). Each category: icon + large label, comparison bars below. Shared legend at bottom.",
+      "titanComponents": ["TitanCard", "TitanButton"],
+      "jsx": "<TitanCard span={16}>\n  <h3 style={{ color: 'var(--color-ocean-700)' }}>Device</h3>\n  <p className=\"copy-secondary\">This graph shows the devices used by the audience. <TitanButton variant=\"link\">Read more</TitanButton></p>\n  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 'var(--spacing-xl)' }}>\n    {categories.map(cat => (\n      <div key={cat.id}>\n        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-s)', marginBottom: 'var(--spacing-s)' }}>\n          {cat.icon}\n          <strong style={{ fontSize: 'var(--font-size-l)' }}>{cat.label}</strong>\n        </div>\n        {/* DualComparisonBar for each audience */}\n      </div>\n    ))}\n  </div>\n  {/* Shared legend */}\n  <div style={{ display: 'flex', gap: 'var(--spacing-m)', marginTop: 'var(--spacing-m)' }}>\n    {audiences.map(a => (\n      <span key={a.id} style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--spacing-4xs)', fontSize: 'var(--font-size-s)' }}>\n        <span style={{ width: 8, height: 8, borderRadius: '50%', background: a.color }} />\n        {a.name}\n      </span>\n    ))}\n  </div>\n</TitanCard>",
+      "layout": "Full-width card. Internal grid columns (repeat 2 or 3). Legend row at bottom.",
+      "gaps": ["DualComparisonBar"]
+    }
+  },
+
+  "dialogPatterns": {
+    "includeExcludeFilterDialog": {
+      "id": "include-exclude-filter-dialog",
+      "name": "Include/Exclude Filter Dialog",
+      "description": "Dialog/panel with title + subtitle + close X. 2-column layout: 'Include any' (focused/highlighted border) and 'Exclude all'. Each column has a textarea. Footer with helper text + Cancel + Apply.",
+      "titanComponents": ["TitanDialog", "TitanTextareaField", "TitanButton"],
+      "jsx": "<TitanDialog\n  triggerLabel=\"Add filter\"\n  title=\"Biography\"\n  body={\n    <div>\n      <p className=\"copy-secondary\">Words that audience members use to describe themselves in their social media profiles</p>\n      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--spacing-m)', marginTop: 'var(--spacing-m)' }}>\n        <div>\n          <h4 style={{ color: 'var(--color-ocean-600)', margin: '0 0 var(--spacing-3xs)' }}>Include any</h4>\n          <TitanTextareaField placeholder=\"Examples: runner, music lover\" />\n        </div>\n        <div>\n          <h4 style={{ margin: '0 0 var(--spacing-3xs)' }}>Exclude all</h4>\n          <TitanTextareaField placeholder=\"Terms to exclude...\" />\n        </div>\n      </div>\n      <p className=\"copy-secondary\" style={{ fontSize: 'var(--font-size-s)', marginTop: 'var(--spacing-s)' }}>Use commas or hit enter to separate them</p>\n    </div>\n  }\n  leftAction={<TitanButton variant=\"secondary\">Cancel</TitanButton>}\n  rightAction={<TitanButton variant=\"primary\">Apply</TitanButton>}\n/>",
+      "layout": "Dialog body has 2-column grid. Each column contains a section header + textarea.",
+      "gaps": []
+    },
+
+    "confirmDeleteDialog": {
+      "id": "confirm-delete-dialog",
+      "name": "Confirm/Delete Dialog",
+      "description": "Simple confirmation dialog: centered title, body text, Cancel + Delete/Confirm action buttons.",
+      "titanComponents": ["TitanDialog", "TitanButton"],
+      "jsx": "<TitanDialog\n  triggerLabel=\"Delete report\"\n  title=\"Delete report?\"\n  body=\"This action cannot be undone. The report will be permanently removed.\"\n  leftAction={<TitanButton variant=\"secondary\">Cancel</TitanButton>}\n  rightAction={<TitanButton variant=\"delete\">Delete</TitanButton>}\n/>",
+      "layout": "Standard centered dialog layout.",
+      "gaps": []
+    },
+
+    "formInDialog": {
+      "id": "form-in-dialog",
+      "name": "Form in Dialog",
+      "description": "Dialog with form fields in the body: input fields, textareas, selects, checkboxes. Cancel + Save/Submit actions.",
+      "titanComponents": ["TitanDialog", "TitanInputField", "TitanTextareaField", "TitanSelect", "TitanCheckboxField", "TitanButton"],
+      "jsx": "<TitanDialog\n  triggerLabel=\"Create report\"\n  title=\"New report\"\n  body={\n    <form style={{ display: 'grid', gap: 'var(--spacing-m)', textAlign: 'left' }}>\n      <TitanInputField label=\"Report name\" placeholder=\"Enter report name\" isRequired />\n      <TitanSelect label=\"Report type\" options={[\n        { id: 'influencer', label: 'Influencer' },\n        { id: 'demand', label: 'Demand' }\n      ]} />\n      <TitanTextareaField label=\"Description\" placeholder=\"Add a description...\" />\n      <TitanCheckboxField label=\"Include all post types\" />\n    </form>\n  }\n  leftAction={<TitanButton variant=\"secondary\">Cancel</TitanButton>}\n  rightAction={<TitanButton variant=\"primary\">Create</TitanButton>}\n/>",
+      "layout": "Dialog body contains a form with vertical grid gap. Text-align left overrides dialog's centered default.",
+      "gaps": []
+    }
+  },
+
+  "formPatterns": {
+    "multiColumnTermBuilder": {
+      "id": "multi-column-term-builder",
+      "name": "Multi-Column Term Builder",
+      "description": "Tabs at top (Basic Query / Boolean Query). 3 column cards: 'Include ANY', 'Include ALL', 'Exclude ALL'. Each column has title + subtitle + pill input area with dismissable colored pills. Footer: helper text + 'Clear all' link.",
+      "titanComponents": ["TitanTabs", "TitanCard", "TitanCardGrid", "TitanPill", "TitanButton"],
+      "jsx": "<>\n  <TitanTabs\n    defaultSelectedKey=\"basic\"\n    items={[\n      { id: 'basic', label: 'Basic Query', content: (\n        <div>\n          <TitanCardGrid>\n            <TitanCard span={5}>\n              <h4>Include ANY of these Terms</h4>\n              <p className=\"copy-secondary\" style={{ fontSize: 'var(--font-size-s)' }}>Posts should contain ANY of the terms entered below:</p>\n              <div className=\"pill-input-area\" style={{ minHeight: 120, border: 'var(--input-slot-border-width) solid var(--input-slot-border)', borderRadius: 'var(--input-slot-radius)', padding: 'var(--spacing-s)', display: 'flex', flexWrap: 'wrap', gap: 'var(--spacing-3xs)', alignContent: 'flex-start' }}>\n                {includeAnyTerms.map(t => <TitanPill key={t.id} id={t.id} label={t.label} tone=\"ocean\" onDismiss={removeIncludeAny} />)}\n              </div>\n            </TitanCard>\n            <TitanCard span={5}>\n              <h4>Include ALL of these Terms</h4>\n              <p className=\"copy-secondary\" style={{ fontSize: 'var(--font-size-s)' }}>Posts should contain ALL of the terms:</p>\n              <div className=\"pill-input-area\" style={{ minHeight: 120, border: 'var(--input-slot-border-width) solid var(--input-slot-border)', borderRadius: 'var(--input-slot-radius)', padding: 'var(--spacing-s)', display: 'flex', flexWrap: 'wrap', gap: 'var(--spacing-3xs)', alignContent: 'flex-start' }}>\n                {includeAllTerms.map(t => <TitanPill key={t.id} id={t.id} label={t.label} tone=\"teal\" onDismiss={removeIncludeAll} />)}\n              </div>\n            </TitanCard>\n            <TitanCard span={5}>\n              <h4>Exclude ALL of these Terms</h4>\n              <p className=\"copy-secondary\" style={{ fontSize: 'var(--font-size-s)' }}>Posts shouldn't contain ANY of the terms:</p>\n              <div className=\"pill-input-area\" style={{ minHeight: 120, border: 'var(--input-slot-border-width) solid var(--input-slot-border)', borderRadius: 'var(--input-slot-radius)', padding: 'var(--spacing-s)', display: 'flex', flexWrap: 'wrap', gap: 'var(--spacing-3xs)', alignContent: 'flex-start' }}>\n                {excludeTerms.map(t => <TitanPill key={t.id} id={t.id} label={t.label} tone=\"mango\" onDismiss={removeExclude} />)}\n              </div>\n            </TitanCard>\n          </TitanCardGrid>\n          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-m)', marginTop: 'var(--spacing-m)' }}>\n            <p className=\"copy-secondary\" style={{ fontSize: 'var(--font-size-s)' }}>Separate terms with commas or press Enter.</p>\n          </div>\n          <TitanButton variant=\"link\" style={{ color: 'var(--text-error-primary)' }}>Clear all</TitanButton>\n        </div>\n      )},\n      { id: 'boolean', label: 'Boolean Query', content: <TitanTextareaField placeholder=\"Enter boolean query...\" /> }\n    ]}\n  />\n</>",
+      "layout": "Tabs with content. Basic tab: 3-column CardGrid (span 5 each). Each card contains a pill input area styled as a bordered box.",
+      "gaps": ["PillInputArea (textarea-like area that converts typed text into dismissable pills) — compose with TitanPill + input handling"]
+    },
+
+    "reportConfigurationForm": {
+      "id": "report-configuration-form",
+      "name": "Report Configuration Form",
+      "description": "Multi-column layout. Left: selectable cards stacked vertically (acts as visual radio). Center: radio group + number input + hint. Right: date select + date pickers + language select.",
+      "titanComponents": ["TitanCard", "TitanCardGrid", "TitanRadioGroupField", "TitanInputField", "TitanSelect"],
+      "jsx": "<TitanCardGrid>\n  <TitanCard span={4}>\n    <h3>Features</h3>\n    <p className=\"copy-secondary\">Indicate what you want to include in your report.</p>\n    <div style={{ display: 'grid', gap: 'var(--spacing-s)' }}>\n      {featureOptions.map(opt => (\n        <div\n          key={opt.id}\n          className={`selectable-card ${selected === opt.id ? 'selectable-card-selected' : ''}`}\n          style={{\n            border: 'var(--input-slot-border-width) solid ' + (selected === opt.id ? 'var(--color-ocean-500)' : 'var(--input-slot-border)'),\n            borderRadius: 'var(--input-slot-radius)',\n            padding: 'var(--spacing-m)',\n            cursor: 'pointer',\n            background: selected === opt.id ? 'var(--color-ocean-100)' : 'transparent'\n          }}\n          onClick={() => setSelected(opt.id)}\n        >\n          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3xs)' }}>\n            <Info size={14} />\n            <span>{opt.label}</span>\n          </div>\n        </div>\n      ))}\n    </div>\n  </TitanCard>\n  <TitanCard span={6}>\n    <TitanRadioGroupField\n      label=\"Post settings\"\n      options={[\n        { value: 'all', label: 'Include all of post count, posts and stats' },\n        { value: 'count', label: 'Include only the post count' }\n      ]}\n    />\n    <TitanInputField label=\"Set desired maximum posts count\" placeholder=\"35000\" hint=\"Up to 35000 post limit is available.\" style={{ marginTop: 'var(--spacing-m)' }} />\n  </TitanCard>\n  <TitanCard span={6}>\n    <h3>Date (optional)</h3>\n    <p className=\"copy-secondary\">Choose the start and end date</p>\n    <TitanSelect label=\"Period\" options={[{ id: 'last7', label: 'Last 7 days' }, { id: 'last30', label: 'Last 30 days' }, { id: 'custom', label: 'Custom' }]} />\n    {/* DatePicker From / To — React Aria DatePicker fallback */}\n    <div style={{ marginTop: 'var(--spacing-m)' }}>\n      <TitanSelect label=\"Language (optional)\" options={[{ id: 'any', label: 'Any' }, { id: 'en', label: 'English' }, { id: 'es', label: 'Spanish' }]} />\n    </div>\n  </TitanCard>\n</TitanCardGrid>",
+      "layout": "CardGrid with 4+6+6 split. Left card: stacked selectable cards. Center: radio + input. Right: selects + date pickers.",
+      "gaps": ["SelectableCard (card acting as radio with highlighted border) — inline styled div with conditional border/bg", "DatePicker — React Aria DatePicker + Titan tokens"]
+    },
+
+    "entityInputForm": {
+      "id": "entity-input-form",
+      "name": "Entity Input Form",
+      "description": "Card with title + constraint text, description, large textarea, 'Clear all' destructive link + 'Review' secondary button.",
+      "titanComponents": ["TitanCard", "TitanTextareaField", "TitanButton"],
+      "jsx": "<TitanCard span={12}>\n  <h3>Add your entities (max: 37)</h3>\n  <p className=\"copy-secondary\">Entities include individuals, brands, or intellectual property works whose market performance can be measured.</p>\n  <TitanTextareaField placeholder=\"Write or paste your entities here...\" style={{ marginTop: 'var(--spacing-m)' }} />\n  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'var(--spacing-s)' }}>\n    <TitanButton variant=\"link\" style={{ color: 'var(--text-error-primary)' }}>Clear all</TitanButton>\n    <TitanButton variant=\"secondary\" isDisabled>Review Entities Information</TitanButton>\n  </div>\n</TitanCard>",
+      "layout": "Wide card (span 12). Textarea + action row below.",
+      "gaps": []
+    },
+
+    "inlineFormCard": {
+      "id": "inline-form-card",
+      "name": "Inline Form in Card",
+      "description": "Card containing a simple form: input fields, selects, and action buttons — without a dialog wrapper. For settings or inline editing scenarios.",
+      "titanComponents": ["TitanCard", "TitanInputField", "TitanTextareaField", "TitanSelect", "TitanCheckboxField", "TitanSwitchField", "TitanButton"],
+      "jsx": "<TitanCard span={16}>\n  <h3>Settings</h3>\n  <form style={{ display: 'grid', gap: 'var(--spacing-m)' }}>\n    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--spacing-m)' }}>\n      <TitanInputField label=\"Workspace name\" placeholder=\"My workspace\" />\n      <TitanInputField label=\"Contact email\" placeholder=\"name@company.com\" />\n    </div>\n    <TitanTextareaField label=\"Description\" placeholder=\"Describe your workspace...\" />\n    <TitanSwitchField label=\"Enable notifications\" />\n    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--spacing-3xs)' }}>\n      <TitanButton variant=\"secondary\">Cancel</TitanButton>\n      <TitanButton variant=\"primary\">Save changes</TitanButton>\n    </div>\n  </form>\n</TitanCard>",
+      "layout": "Full-width card. Form inside with grid layout. Action buttons flex-end at bottom.",
+      "gaps": []
+    }
+  },
+
+  "microPatterns": {
+    "cardHeaderWithTooltip": {
+      "id": "card-header-with-tooltip",
+      "name": "Card Header with Tooltip",
+      "description": "Title text + info icon button that triggers a tooltip. Used in nearly every data card.",
+      "titanComponents": ["TitanTooltip", "TitanIconButton"],
+      "jsx": "<div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3xs)' }}>\n  <h3 style={{ margin: 0 }}>Card Title</h3>\n  <TitanTooltip content=\"Explanation of this data\">\n    <TitanIconButton variant=\"ghost\" aria-label=\"Info\"><Info size={14} /></TitanIconButton>\n  </TitanTooltip>\n</div>",
+      "layout": "Inline flex row. Title + icon button.",
+      "gaps": []
+    },
+
+    "dualBarComparisonRow": {
+      "id": "dual-bar-comparison-row",
+      "name": "Dual-Bar Comparison Row",
+      "description": "Two thin horizontal bars stacked (audience color + baseline color), each with percentage value. Used in tables and metric lists.",
+      "titanComponents": [],
+      "jsx": "<div style={{ display: 'grid', gap: 2 }}>\n  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3xs)' }}>\n    <div style={{ flex: 1, height: 6, background: 'var(--color-black-200)', borderRadius: 3, overflow: 'hidden' }}>\n      <div style={{ width: audiencePct + '%', height: '100%', background: 'var(--color-ocean-500)', borderRadius: 3 }} />\n    </div>\n    <span className=\"copy-secondary\" style={{ fontSize: 'var(--font-size-s)', minWidth: 48 }}>{audiencePct}%</span>\n  </div>\n  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3xs)' }}>\n    <div style={{ flex: 1, height: 6, background: 'var(--color-black-200)', borderRadius: 3, overflow: 'hidden' }}>\n      <div style={{ width: baselinePct + '%', height: '100%', background: 'var(--color-ocean-200)', borderRadius: 3 }} />\n    </div>\n    <span className=\"copy-secondary\" style={{ fontSize: 'var(--font-size-s)', minWidth: 48 }}>{baselinePct}%</span>\n  </div>\n</div>",
+      "layout": "Grid with 2px gap. Each bar is flex row: track div + percentage span.",
+      "gaps": [],
+      "note": "Colors can be parameterized: primary bar uses --color-ocean-500 or theme accent, secondary uses --color-ocean-200 or lighter variant."
+    },
+
+    "statusDotLabel": {
+      "id": "status-dot-label",
+      "name": "Status Dot + Label",
+      "description": "Colored circle + text label. Used in tables for status column (Finished, Processing, etc.) and in progress summaries.",
+      "titanComponents": [],
+      "jsx": "<span style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--spacing-4xs)' }}>\n  <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--color-teal-500)' }} />\n  <span>Finished</span>\n</span>",
+      "layout": "Inline flex. Dot is 8x8 circle. Color map: teal=success, tomato=error, mango=warning, ocean=info.",
+      "gaps": [],
+      "colorMap": {
+        "success": "var(--color-teal-500)",
+        "error": "var(--color-tomato-500)",
+        "warning": "var(--color-mango-500)",
+        "info": "var(--color-ocean-500)",
+        "neutral": "var(--color-black-400)"
+      }
+    },
+
+    "selectableCard": {
+      "id": "selectable-card",
+      "name": "Selectable Card (Visual Radio)",
+      "description": "Card with border that highlights on selection. Acts as a visual radio option. Contains icon + text. Selected state: accent border + light accent background.",
+      "titanComponents": [],
+      "jsx": "<div\n  role=\"radio\"\n  aria-checked={isSelected}\n  tabIndex={0}\n  style={{\n    border: 'var(--input-slot-border-width) solid ' + (isSelected ? 'var(--color-ocean-500)' : 'var(--input-slot-border)'),\n    borderRadius: 'var(--input-slot-radius)',\n    padding: 'var(--spacing-m)',\n    cursor: 'pointer',\n    background: isSelected ? 'var(--color-ocean-100)' : 'transparent',\n    transition: 'border-color var(--motion-fast) var(--motion-ease), background var(--motion-fast) var(--motion-ease)'\n  }}\n  onClick={onSelect}\n  onKeyDown={(e) => e.key === 'Enter' && onSelect()}\n>\n  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3xs)' }}>\n    <Info size={14} className=\"copy-secondary\" />\n    <span>{label}</span>\n  </div>\n</div>",
+      "layout": "Stacked vertically with gap. Border and background change on selection.",
+      "gaps": [],
+      "a11y": "Use role=radio + aria-checked + keyboard handler for accessibility."
+    },
+
+    "pillInputArea": {
+      "id": "pill-input-area",
+      "name": "Pill Tag Input Area",
+      "description": "Bordered area that acts like a textarea but renders terms as dismissable colored pills. User types terms separated by commas or Enter.",
+      "titanComponents": ["TitanPill"],
+      "jsx": "<div\n  className=\"pill-input-area\"\n  style={{\n    minHeight: 120,\n    border: 'var(--input-slot-border-width) solid var(--input-slot-border)',\n    borderRadius: 'var(--input-slot-radius)',\n    padding: 'var(--spacing-s)',\n    display: 'flex',\n    flexWrap: 'wrap',\n    gap: 'var(--spacing-3xs)',\n    alignContent: 'flex-start'\n  }}\n>\n  {terms.map(t => (\n    <TitanPill key={t.id} id={t.id} label={t.label} tone={tone} onDismiss={removeTerm} />\n  ))}\n  <input\n    type=\"text\"\n    placeholder={terms.length === 0 ? 'Type terms...' : ''}\n    style={{\n      border: 'none', outline: 'none', background: 'transparent',\n      fontSize: 'var(--font-size-m)', fontFamily: 'inherit',\n      flex: '1 1 120px', minWidth: 120\n    }}\n    onKeyDown={handleKeyDown}\n  />\n</div>",
+      "layout": "Flex wrap container with pills + inline hidden input. Min-height to maintain visual area.",
+      "gaps": [],
+      "note": "Tone parameter varies by column: 'ocean' for include-any, 'teal' for include-all, 'mango' for exclude."
+    },
+
+    "legendRow": {
+      "id": "legend-row",
+      "name": "Legend Row",
+      "description": "Row of colored dots + audience/series names. Used below comparison charts and bar visualizations.",
+      "titanComponents": [],
+      "jsx": "<div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--spacing-m)', marginTop: 'var(--spacing-s)' }}>\n  {audiences.map(a => (\n    <span key={a.id} style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--spacing-4xs)', fontSize: 'var(--font-size-s)', color: 'var(--copy-slot-secondary)' }}>\n      <span style={{ width: 8, height: 8, borderRadius: '50%', background: a.color, flexShrink: 0 }} />\n      {a.name}\n    </span>\n  ))}\n</div>",
+      "layout": "Flex wrap row. Each item is inline-flex with dot + text.",
+      "gaps": []
+    },
+
+    "progressSummary": {
+      "id": "progress-summary",
+      "name": "Progress Summary Card",
+      "description": "Progress bar + rows of status counts with colored indicators. Used in sidebar status panels.",
+      "titanComponents": [],
+      "jsx": "<div style={{ display: 'grid', gap: 'var(--spacing-s)' }}>\n  <div>\n    <p style={{ margin: '0 0 var(--spacing-3xs)', fontSize: 'var(--font-size-s)' }}>0 entities added</p>\n    {/* React Aria ProgressBar fallback */}\n    <div style={{ width: '100%', height: 6, background: 'var(--color-black-200)', borderRadius: 3, overflow: 'hidden' }}>\n      <div style={{ width: progress + '%', height: '100%', background: 'var(--color-teal-500)', borderRadius: 3 }} />\n    </div>\n  </div>\n  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--spacing-3xs)' }}>\n    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--spacing-4xs)', fontSize: 'var(--font-size-s)' }}>\n      <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--color-teal-500)' }} />\n      <strong>0</strong> valid\n    </span>\n    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--spacing-4xs)', fontSize: 'var(--font-size-s)' }}>\n      <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--color-tomato-500)' }} />\n      <strong>0</strong> exceeding\n    </span>\n    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--spacing-4xs)', fontSize: 'var(--font-size-s)' }}>\n      <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--color-black-400)' }} />\n      <strong>0</strong> duplicates\n    </span>\n    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--spacing-4xs)', fontSize: 'var(--font-size-s)' }}>\n      <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--color-mango-500)' }} />\n      <strong>0</strong> not found\n    </span>\n  </div>\n</div>",
+      "layout": "Grid stack: progress bar + 2x2 grid of status indicators.",
+      "gaps": ["ProgressBar — inline div or React Aria ProgressBar"]
+    },
+
+    "wizardHeader": {
+      "id": "wizard-header",
+      "name": "Back + Title + CTA Header",
+      "description": "Left: back arrow button. Center or left-aligned: page title. Right: primary CTA. Used as header for wizard steps and form pages.",
+      "titanComponents": ["TitanButton"],
+      "jsx": "<header style={{\n  display: 'flex',\n  justifyContent: 'space-between',\n  alignItems: 'center',\n  padding: 'var(--spacing-m) var(--spacing-xl)',\n  borderBottom: 'var(--stroke-slot-width) solid var(--color-black-200)'\n}}>\n  <TitanButton variant=\"link\" icon={<ArrowLeft />}>Back</TitanButton>\n  <h1 style={{ margin: 0, fontSize: 'var(--font-size-l)', fontWeight: 'var(--text-weight-semibold)' }}>Page Title</h1>\n  <TitanButton variant=\"primary\" icon={<ArrowRight />}>Next</TitanButton>\n</header>",
+      "layout": "Flex row with space-between. 3 zones: back (left), title (center), CTA (right). Optional bottom border.",
+      "gaps": []
+    },
+
+    "showMoreLink": {
+      "id": "show-more-link",
+      "name": "Show Full Table / Read More / Download Link",
+      "description": "Action link at the bottom of a truncated card to expand or navigate to full data.",
+      "titanComponents": ["TitanButton"],
+      "jsx": "<TitanButton variant=\"link\" style={{ marginTop: 'var(--spacing-s)' }}>Show full table &rarr;</TitanButton>",
+      "layout": "Placed at card footer. Variants: 'Show full table →', 'Read more', 'Download ↓'.",
+      "gaps": []
+    }
+  },
+
+  "gapsSummary": {
+    "description": "Components or patterns not covered by titan-compositions that the MCP should build with React Aria + Titan tokens as inline fallback.",
+    "items": [
+      {
+        "name": "ComparisonBar / DualComparisonBar",
+        "usage": "Schools, Seniority, Language, Bio, Age, Device, Content type, Top Interests, Ranking",
+        "fallback": "Inline div with background track (--color-black-200) + colored fill div. Height 6px, border-radius 3px. See dualBarComparisonRow micro-pattern."
+      },
+      {
+        "name": "StatusDot",
+        "usage": "Table status columns, progress summaries",
+        "fallback": "Inline span: 8x8 circle with border-radius 50% and background from Titan color tokens. See statusDotLabel micro-pattern."
+      },
+      {
+        "name": "SelectableCard",
+        "usage": "Report configuration forms (visual radio options)",
+        "fallback": "Div with role=radio, conditional border/background using --color-ocean-500/100. See selectableCard micro-pattern."
+      },
+      {
+        "name": "PillInputArea",
+        "usage": "Term builder columns (include any/all, exclude)",
+        "fallback": "Bordered flex-wrap container with TitanPill components + hidden inline input. See pillInputArea micro-pattern."
+      },
+      {
+        "name": "DatePicker",
+        "usage": "Report configuration forms (From/To date selection)",
+        "fallback": "React Aria DatePicker styled with Titan input tokens (--input-slot-*)."
+      },
+      {
+        "name": "ProgressBar",
+        "usage": "Sidebar status panels (entities added progress)",
+        "fallback": "React Aria ProgressBar or inline div with track + fill. See progressSummary micro-pattern."
+      },
+      {
+        "name": "LegendRow",
+        "usage": "Below comparison charts and bar visualizations",
+        "fallback": "Inline flex with 8x8 colored dots + text. See legendRow micro-pattern."
+      }
+    ]
+  }
+}

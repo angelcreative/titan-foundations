@@ -42,6 +42,42 @@
         "size": 16,
         "strokeWidth": 2
       }
+    },
+    "requiredStatesVisible": {
+      "sortableHeader": ["inactive", "hover", "asc", "desc", "focus-visible"],
+      "row": ["default", "hover", "selected when applicable"],
+      "actionsMenuItem": ["default", "hover", "pressed", "focus-visible", "destructive-hover"]
+    },
+    "interactionMatrix": [
+      { "event": "sort-click-1", "from": "inactive", "to": "asc" },
+      { "event": "sort-click-2", "from": "asc", "to": "desc" },
+      { "event": "sort-click-3", "from": "desc", "to": "inactive" },
+      { "event": "row-hover", "from": "default", "to": "hover" },
+      { "event": "open-actions-menu", "from": "closed", "to": "open" },
+      { "event": "menu-item-pointer-down", "from": "hover", "to": "pressed" }
+    ],
+    "reviewScenarios": [
+      "Show one table with at least one sortable column cycling inactive/asc/desc.",
+      "Show row hover state and optional selected-row state.",
+      "Open row actions menu and show default/hover/pressed + destructive hover state.",
+      "Validate table remains borderless with only horizontal separators."
+    ],
+    "a11yAcceptance": [
+      "Sortable headers expose sort state semantics.",
+      "Row actions menu is keyboard reachable and closable with Escape.",
+      "Focus-visible is present on sort controls and row action controls.",
+      "Destructive action is distinguishable by semantic error tokens."
+    ],
+    "failConditions": {
+      "fail": [
+        "Sort interaction does not alternate inactive/asc/desc in review harness.",
+        "Borderless contract is broken by container/cell borders.",
+        "Required table/menu states are missing in review harness."
+      ],
+      "blocker": [
+        "Missing token mapping for sortable states or action-menu destructive states.",
+        "Cannot render sortable headers with interactive controls."
+      ]
     }
   }
 }

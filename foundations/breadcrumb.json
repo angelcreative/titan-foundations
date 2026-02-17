@@ -45,6 +45,41 @@
       "If hierarchy/current item semantics cannot be satisfied, return BLOCKER.",
       "If interactive breadcrumb states are missing, return FAIL.",
       "Do not make current page item clickable."
+    ],
+    "requiredStatesVisible": {
+      "interactiveItem": ["default", "hover", "pressed", "focus-visible", "disabled when applicable"],
+      "currentItem": ["default"],
+      "overflowEllipsisItem": ["default", "hover", "focus-visible when interactive"]
+    },
+    "interactionMatrix": [
+      { "event": "pointer-hover-item", "from": "default", "to": "hover" },
+      { "event": "pointer-down-item", "from": "hover", "to": "pressed" },
+      { "event": "keyboard-focus-item", "from": "default", "to": "focus-visible" },
+      { "event": "activate-item", "from": "focus-visible|hover", "to": "navigate" },
+      { "event": "narrow-width", "from": "full-path", "to": "collapsed-middle-with-ellipsis" }
+    ],
+    "reviewScenarios": [
+      "Show breadcrumb with at least 4 levels and current-item semantics.",
+      "Demonstrate interactive item states (default/hover/pressed/focus-visible).",
+      "Demonstrate overflow strategy preserving first and last segment.",
+      "Demonstrate optional ellipsis item expansion behavior when interactive."
+    ],
+    "a11yAcceptance": [
+      "Breadcrumb nav uses aria-label='Breadcrumb'.",
+      "Current item exposes aria-current='page' and is not interactive.",
+      "Only interactive items are keyboard focus targets.",
+      "Overflow strategy preserves semantics and discoverability."
+    ],
+    "failConditions": {
+      "fail": [
+        "Current item is interactive or lacks aria-current='page'.",
+        "Overflow strategy is missing for long paths.",
+        "Required interactive states are not visible in review harness."
+      ],
+      "blocker": [
+        "Cannot provide breadcrumb landmark and current-item semantics.",
+        "Missing token mapping for interactive/focus states."
+      ]
     ]
   }
 }

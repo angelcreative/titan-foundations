@@ -215,4 +215,36 @@ html[data-theme="demand"] {
 	--input-element: var(--color-steel-600);
 	--input-element-error: var(--color-error-500);
 	--input-element-disabled: var(--color-disabled-200);
+
+	/* Review-state extensions */
+	--interactive-icon-button-bg: var(--button-secondary);
+	--interactive-icon-button-bg-hover: var(--button-secondary-hover);
+	--interactive-icon-button-bg-active: var(--button-secondary-active);
+	--interactive-icon-button-bg-fallback: var(--color-black-100);
+	--interactive-icon-button-radius: 9999px;
+	--interactive-icon-button-icon: var(--text-button-color);
+	--interactive-icon-button-icon-disabled: var(--color-disabled-400);
+
+	--select-listbox-item-disabled-background: transparent;
+	--select-listbox-item-disabled-color: var(--color-disabled-400);
+	--select-listbox-item-disabled-icon: var(--color-disabled-400);
+
+	--tab-hover-background: var(--tab-selected-background);
+	--tab-disabled-background: transparent;
+	--tab-disabled-text: var(--color-disabled-400);
+
+	--pagination-page-button-background-selected: var(--pagination-page-button-background-active);
+	--pagination-page-button-background-disabled: transparent;
+	--pagination-page-button-color-disabled: var(--color-disabled-400);
+
+	--drawer-close-icon-disabled: var(--color-disabled-400);
+
+	--table-sort-icon-default: var(--color-steel-500);
+	--table-sort-icon-hover: var(--text-secondary);
+	--table-sort-icon-active: var(--text-primary-active);
+	--table-action-item-hover-bg: var(--menu-item-hover);
+	--table-action-item-pressed-bg: var(--menu-item-pressed);
+	--table-action-item-icon: var(--menu-item-icon);
+	--table-action-item-destructive-color: var(--text-error-primary);
+	--table-action-item-destructive-hover-bg: var(--background-error);
 }

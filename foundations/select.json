@@ -32,6 +32,42 @@
         "bgSelected": "var(--select-item-selected-bg)"
       }
     },
-    "themes": "Cada tema define: --select-button-border, --select-button-color, --select-popover-color, --select-listbox-item-focused-background, --select-listbox-item-pressed-background, --select-listbox-item-selected-background."
+    "themes": "Cada tema define: --select-button-border, --select-button-color, --select-popover-color, --select-listbox-item-focused-background, --select-listbox-item-pressed-background, --select-listbox-item-selected-background.",
+    "requiredStatesVisible": {
+      "trigger": ["default", "hover", "pressed", "disabled", "focus-visible"],
+      "listItem": ["default", "focused", "pressed", "selected", "disabled"]
+    },
+    "interactionMatrix": [
+      { "event": "trigger-click-or-enter", "from": "closed", "to": "open" },
+      { "event": "trigger-escape-or-outside-click", "from": "open", "to": "closed" },
+      { "event": "pointer-hover-item", "from": "default", "to": "focused" },
+      { "event": "pointer-down-item", "from": "focused", "to": "pressed" },
+      { "event": "item-select", "from": "pressed", "to": "selected" },
+      { "event": "arrow-navigation", "from": "default", "to": "focused" },
+      { "event": "disable-control", "from": "any", "to": "disabled" }
+    ],
+    "reviewScenarios": [
+      "Show closed trigger states and open list item states in a single review harness.",
+      "Demonstrate selected item persistence after close/reopen.",
+      "Demonstrate disabled trigger and disabled item behavior.",
+      "Demonstrate keyboard open, arrow navigation, and Enter selection."
+    ],
+    "a11yAcceptance": [
+      "Trigger is labeled and keyboard operable.",
+      "Listbox items expose selected and disabled semantics.",
+      "Focus remains visible on trigger and option navigation.",
+      "Escape closes popover and returns focus to trigger."
+    ],
+    "failConditions": {
+      "fail": [
+        "Missing required visible states for trigger or list items.",
+        "Disabled and selected states are visually indistinguishable.",
+        "Keyboard navigation does not update focused option."
+      ],
+      "blocker": [
+        "Select cannot render trigger + popover + listbox anatomy.",
+        "Missing semantic tokens required for focused/pressed/selected/disabled list item states."
+      ]
+    }
   }
 }

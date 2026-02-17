@@ -78,4 +78,27 @@ Use semantic pagination tokens:
 - more than one selected page at once -> `FAIL`
 - border/stroke/outline as container styling -> `FAIL`
 
+## State Matrix (visible)
+
+- `page-button`: `default`, `hover`, `selected`, `disabled`, `focus-visible`.
+- `previous-button` y `next-button`: `default`, `hover`, `disabled`, `focus-visible`.
+
+## Review Harness Requirements
+
+- Mostrar en review:
+  - estado inicial (pagina 1 selected, previous disabled)
+  - estado intermedio (previous y next activos)
+  - estado final (last page selected, next disabled)
+- Incluir prueba de teclado (Tab + Enter/Space).
+- Incluir caso con muchas paginas y `ellipsis-item`.
+- Verificar `aria-current="page"` en pagina activa.
+
+## Common Implementation Traps
+
+- No sincronizar disabled de previous/next con limites reales.
+- Renderizar mas de una pagina como selected.
+- Usar border como contenedor visual del control.
+- No exponer `aria-current` en la pagina activa.
+- Omitir focus-visible en botones de paginacion.
+
 Spec: `foundations/pagination.json`.

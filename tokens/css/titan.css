@@ -1443,6 +1443,7 @@
   --navbar-slot-shadow: none;
   --navbar-slot-height: var(--layout-slot-navbar-height);
   --navbar-slot-max: var(--layout-slot-navbar-max);
+  --navbar-slot-logo-max-height: 30px;
   --navbar-slot-pad-x: var(--spacing-l);
   --navbar-slot-pad-y: var(--spacing-s);
 
@@ -1528,6 +1529,7 @@
   --drawer-close-slot-bg-hover: var(--surface-slot-hover);
   --drawer-close-slot-bg-active: var(--surface-slot-pressed);
   --drawer-close-slot-icon: var(--icon-slot-secondary);
+  --drawer-close-slot-icon-disabled: var(--drawer-close-icon-disabled, var(--color-disabled-400));
   --drawer-close-slot-size: var(--icon-box-m);
 
   /* ====================================================================== */
@@ -1633,6 +1635,16 @@
   --button-icon-slot-bg-active: var(--surface-slot-pressed);
   --button-icon-slot-icon: var(--icon-slot-secondary);
   --button-icon-slot-disabled-icon: var(--icon-slot-disabled);
+  --button-icon-slot-bg-disabled: transparent;
+
+  /* Interactive icon-only review contract: secondary behavior + fallback */
+  --button-icon-interactive-slot-bg: var(--interactive-icon-button-bg, var(--button-secondary));
+  --button-icon-interactive-slot-bg-hover: var(--interactive-icon-button-bg-hover, var(--button-secondary-hover));
+  --button-icon-interactive-slot-bg-active: var(--interactive-icon-button-bg-active, var(--button-secondary-active));
+  --button-icon-interactive-slot-bg-fallback: var(--interactive-icon-button-bg-fallback, var(--color-black-100));
+  --button-icon-interactive-slot-radius: var(--interactive-icon-button-radius, 9999px);
+  --button-icon-interactive-slot-icon: var(--interactive-icon-button-icon, var(--text-button-color));
+  --button-icon-interactive-slot-icon-disabled: var(--interactive-icon-button-icon-disabled, var(--color-disabled-400));
 
   /* Focus */
   --button-slot-focus-color: var(--focus-slot-color);
@@ -1745,8 +1757,11 @@
   --select-slot-item-bg-focused: var(--select-listbox-item-focused-background);
   --select-slot-item-bg-pressed: var(--select-listbox-item-pressed-background);
   --select-slot-item-bg-selected: var(--select-listbox-item-selected-background);
+  --select-slot-item-bg-disabled: var(--select-listbox-item-disabled-background, transparent);
   --select-slot-item-color: var(--copy-slot-body);
+  --select-slot-item-color-disabled: var(--select-listbox-item-disabled-color, var(--color-disabled-400));
   --select-slot-item-icon: var(--icon-slot-secondary);
+  --select-slot-item-icon-disabled: var(--select-listbox-item-disabled-icon, var(--color-disabled-400));
 
   /* ====================================================================== */
   /* COMPONENT: CHECKBOX                                                     */
@@ -1817,9 +1832,12 @@
   --tab-slot-height: 40px;
   --tab-slot-radius: var(--radius-slot-control);
   --tab-slot-bg: transparent;
+  --tab-slot-bg-hover: var(--tab-hover-background, var(--surface-slot-hover));
   --tab-slot-bg-selected: var(--tab-selected-background);
+  --tab-slot-bg-disabled: var(--tab-disabled-background, transparent);
   --tab-slot-color: var(--tab-text);
   --tab-slot-color-selected: var(--tab-text-selected);
+  --tab-slot-color-disabled: var(--tab-disabled-text, var(--color-disabled-400));
 
   /* ====================================================================== */
   /* COMPONENT: TABLE (borderless; th/td bottom only)                         */
@@ -1834,6 +1852,14 @@
   --table-slot-cell-border-bottom: var(--table-cell-border-bottom);
 
   --table-slot-row-hover-bg: var(--table-actionable-row-hover);
+  --table-slot-sort-icon-default: var(--table-sort-icon-default, var(--color-steel-500));
+  --table-slot-sort-icon-hover: var(--table-sort-icon-hover, var(--text-secondary));
+  --table-slot-sort-icon-active: var(--table-sort-icon-active, var(--text-primary-active));
+  --table-slot-action-item-hover-bg: var(--table-action-item-hover-bg, var(--menu-item-hover));
+  --table-slot-action-item-pressed-bg: var(--table-action-item-pressed-bg, var(--menu-item-pressed));
+  --table-slot-action-item-icon: var(--table-action-item-icon, var(--menu-item-icon));
+  --table-slot-action-item-destructive-color: var(--table-action-item-destructive-color, var(--text-error-primary));
+  --table-slot-action-item-destructive-hover-bg: var(--table-action-item-destructive-hover-bg, var(--background-error));
 
   --table-slot-cell-pad-y: var(--spacing-s);
   --table-slot-cell-pad-x: var(--spacing-m);
@@ -1847,6 +1873,9 @@
   --pagination-slot-pad-x: var(--spacing-s);
   --pagination-slot-page-hover-bg: var(--pagination-page-button-background-hover);
   --pagination-slot-page-active-bg: var(--pagination-page-button-background-active);
+  --pagination-slot-page-selected-bg: var(--pagination-page-button-background-selected, var(--pagination-page-button-background-active));
+  --pagination-slot-page-disabled-bg: var(--pagination-page-button-background-disabled, transparent);
+  --pagination-slot-page-disabled-color: var(--pagination-page-button-color-disabled, var(--color-disabled-400));
 
   /* ====================================================================== */
   /* COMPONENT: LINK                                                         */

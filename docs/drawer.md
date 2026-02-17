@@ -39,4 +39,29 @@ El botón cerrar es **ghost icon button**: sin borde, fondo transparente, border
 
 Se usa `ModalOverlay` + `Modal` + `Dialog` con `data-slot="drawer"` en el overlay. El header debe incluir un elemento con `data-slot="drawer-title"` y el botón de cerrar con `data-slot="drawer-close"`. El contenido va en un contenedor con `data-slot="drawer-body"`. Ver estilos en `titan-aria/styles` (bloque Drawer).
 
+## State Matrix (visible)
+
+- Overlay: `default`.
+- Panel: `open`, `closing`.
+- Close button: `default`, `hover`, `pressed`, `focus-visible`, `disabled` (si aplica al flujo).
+
+## Review Harness Requirements
+
+- Mostrar anatomia completa: overlay + panel + header + body.
+- Demostrar cierre por:
+  - click en overlay
+  - boton cerrar
+  - tecla `Escape`
+- Demostrar focus-visible en boton close.
+- Demostrar scroll de body sin romper header.
+- Verificar foco atrapado y foco devuelto al trigger al cerrar.
+
+## Common Implementation Traps
+
+- Omitir overlay o no bloquear interaccion con fondo.
+- Renderizar drawer sin header o sin boton close estructural.
+- No manejar `Escape` para cierre.
+- No implementar focus trap/focus return.
+- Usar colores hardcode en close/overlay cuando existen tokens.
+
 Spec JSON: **`foundations/drawer.json`**.

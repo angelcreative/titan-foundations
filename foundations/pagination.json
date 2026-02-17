@@ -82,6 +82,41 @@
       "If required states are missing, return FAIL.",
       "If more than one page-button can be selected at once, return FAIL.",
       "If pagination controls use border/stroke/outline as container styling, return FAIL."
+    ],
+    "requiredStatesVisible": {
+      "pageButton": ["default", "hover", "selected", "disabled", "focus-visible"],
+      "navButton": ["default", "hover", "disabled", "focus-visible"]
+    },
+    "interactionMatrix": [
+      { "event": "pointer-hover-page", "from": "default", "to": "hover" },
+      { "event": "pointer-click-page", "from": "default|hover", "to": "selected" },
+      { "event": "click-previous", "from": "selected", "to": "selected-previous-page" },
+      { "event": "click-next", "from": "selected", "to": "selected-next-page" },
+      { "event": "keyboard-focus", "from": "default", "to": "focus-visible" },
+      { "event": "enter-or-space", "from": "focus-visible", "to": "selected" }
+    ],
+    "reviewScenarios": [
+      "Render pagination with visible default/hover/selected/disabled states.",
+      "Demonstrate previous disabled on first page and next disabled on last page.",
+      "Demonstrate keyboard focus + activation for page and nav buttons.",
+      "Demonstrate long range with ellipsis-item behavior."
+    ],
+    "a11yAcceptance": [
+      "Pagination is wrapped in nav landmark with aria-label.",
+      "Current page exposes aria-current='page'.",
+      "Disabled controls are not activatable.",
+      "Focus-visible appears on all interactive controls."
+    ],
+    "failConditions": {
+      "fail": [
+        "Any required visible state is missing in review harness.",
+        "More than one page appears selected.",
+        "Previous/next disabled logic is incorrect at bounds."
+      ],
+      "blocker": [
+        "Missing pagination landmark/current-page semantics.",
+        "Missing semantic token mapping for hover/selected/disabled/focus states."
+      ]
     ]
   }
 }

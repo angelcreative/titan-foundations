@@ -128,3 +128,26 @@ Instrucción para Cursor: *“Al pedir una tabla, usa la spec de table.borderles
 - **Menú:** no cortarlo; contenedor de la tabla con `overflow: visible`.
 
 Con esto, cuando otro usuario pida “una tabla como la de reportes”, el Cursor que tenga este doc (y el JSON en `foundations/`) puede replicar la misma apariencia y comportamiento usando solo tokens y convenciones, sin un componente predefinido.
+
+## State Matrix (visible)
+
+- **Sort header:** `inactive`, `hover`, `asc`, `desc`, `focus-visible`.
+- **Row:** `default`, `hover`, `selected` (cuando aplique al flujo).
+- **Actions menu item:** `default`, `hover`, `pressed`, `focus-visible`.
+- **Destructive action item:** `hover` con tokens de error visibles.
+
+## Review Harness Requirements
+
+- Incluir al menos una columna sortable que alterne: `inactive -> asc -> desc -> inactive`.
+- Incluir menu de acciones por fila con `Pencil`, `Copy`, `Trash2`.
+- Mostrar hover de fila y verificar separadores horizontales (sin borde de caja/celda).
+- Probar teclado en sort y en menu de acciones.
+- Verificar estado destructivo con `--text-error-primary` (y opcional `--background-error`).
+
+## Common Implementation Traps
+
+- Sort que solo alterna `asc/desc` sin volver a `inactive`.
+- Aplicar borde de contenedor/celdas, rompiendo contrato borderless.
+- Usar iconos de sort/acciones no contractuales o con estados no distinguibles.
+- No exponer foco visible en controles de sort y acciones.
+- Cortar popovers por `overflow: hidden` del contenedor.

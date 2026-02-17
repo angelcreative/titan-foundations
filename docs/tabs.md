@@ -77,4 +77,29 @@ Avoid:
 - Missing required states -> `FAIL`
 - Multiple selected tabs in same group -> `FAIL`
 
+## State Matrix (visible)
+
+- `tab-trigger` requiere: `default`, `hover`, `selected`, `disabled`, `focus-visible`.
+- `tab-panel`: solo el panel activo visible; paneles inactivos ocultos.
+
+## Review Harness Requirements
+
+- Renderizar en una misma review:
+  - un tab default
+  - un tab hovered
+  - un tab selected
+  - un tab disabled
+  - un tab con foco visible
+- Probar interaccion teclado: arrows + Enter/Space.
+- Demostrar overflow strategy (scroll horizontal o colapso controlado).
+- Verificar semantica de asociacion tab <-> panel.
+
+## Common Implementation Traps
+
+- Permitir multiples tabs selected en el mismo tablist.
+- Ocultar visualmente un panel sin actualizar semantica activa.
+- No mostrar focus-visible en navegacion por teclado.
+- Tratar hover como selected (sin estado selected real).
+- Romper seleccion al aplicar overflow.
+
 Spec: `foundations/tabs.json`.

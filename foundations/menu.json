@@ -142,6 +142,43 @@
       "safeArea": "$spacing-5xs",
       "graphicSize": "16x16",
       "rule": "Center custom graphics and respect safe area."
+    },
+    "requiredStatesVisible": {
+      "menuItem": ["default", "hover", "pressed", "selected", "disabled", "focus-visible"],
+      "destructiveItem": ["default", "hover", "pressed", "disabled", "focus-visible"]
+    },
+    "interactionMatrix": [
+      { "event": "menu-open", "from": "closed", "to": "default" },
+      { "event": "pointer-hover-item", "from": "default", "to": "hover" },
+      { "event": "pointer-down-item", "from": "hover", "to": "pressed" },
+      { "event": "pointer-select-item", "from": "pressed", "to": "selected" },
+      { "event": "keyboard-focus-item", "from": "default", "to": "focus-visible" },
+      { "event": "enter-or-space-item", "from": "focus-visible", "to": "selected" },
+      { "event": "disable-item", "from": "any", "to": "disabled" }
+    ],
+    "reviewScenarios": [
+      "Open menu from trigger and show standard item states in one review harness.",
+      "Demonstrate submenu open/close by pointer and keyboard with one-level nesting.",
+      "Demonstrate destructive item states (without selected state).",
+      "Demonstrate overflow behavior with internal scroll (5 items default, 3 for notifications)."
+    ],
+    "a11yAcceptance": [
+      "Trigger is keyboard reachable and toggles menu.",
+      "Menu supports arrow key navigation and Enter/Space activation on items.",
+      "Disabled item is announced and not activatable.",
+      "Focus management returns to trigger on menu close."
+    ],
+    "failConditions": {
+      "fail": [
+        "Any required visible state is missing in review harness.",
+        "Submenu nesting exceeds one level.",
+        "Menu opens outside viewport without collision/flip handling.",
+        "Destructive item incorrectly exposes selected state."
+      ],
+      "blocker": [
+        "Menu anatomy cannot be composed with trigger + menu + items.",
+        "Missing semantic token mapping for hover/pressed/selected/disabled states."
+      ]
     }
   }
 }

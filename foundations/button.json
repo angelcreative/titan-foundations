@@ -218,6 +218,53 @@
       "Do not replace button hierarchy labels with custom naming.",
       "Do not expose variables that are not part of the selected type.",
       "If any button variant uses border/stroke/outline as container styling, return FAIL."
-    ]
+    ],
+    "requiredStatesVisible": {
+      "button": ["default", "hover", "pressed", "disabled", "focus-visible"],
+      "iconButton": ["default", "hover", "pressed", "disabled", "focus-visible"],
+      "destructiveButton": ["default", "hover", "pressed", "disabled", "focus-visible"],
+      "destructiveIconButton": ["default", "hover", "pressed", "disabled", "focus-visible"],
+      "iconButtonNeutralBase": ["default", "hover", "pressed", "disabled", "focus-visible"]
+    },
+    "interactionMatrix": [
+      { "event": "pointer-hover", "from": "default", "to": "hover" },
+      { "event": "pointer-down", "from": "hover", "to": "pressed" },
+      { "event": "pointer-up", "from": "pressed", "to": "hover" },
+      { "event": "keyboard-focus", "from": "default", "to": "focus-visible" },
+      { "event": "enter-or-space", "from": "focus-visible", "to": "pressed" },
+      { "event": "disable-control", "from": "any", "to": "disabled" }
+    ],
+    "reviewScenarios": [
+      "Render each requested variant in one harness with all required visible states.",
+      "Validate icon-only interactive controls use secondary behavior by default; if unavailable, fallback to black-100 background and full rounded.",
+      "Demonstrate keyboard interaction: focus-visible and activation with Enter/Space.",
+      "Demonstrate disabled control is non-interactive and visually distinct."
+    ],
+    "a11yAcceptance": [
+      "All interactive buttons have accessible name (visible text or aria-label).",
+      "Icon-only controls must include aria-label.",
+      "Focus-visible state is perceivable in keyboard navigation.",
+      "Disabled buttons are not activatable via pointer or keyboard."
+    ],
+    "failConditions": {
+      "fail": [
+        "Any required visible state is not rendered in review harness.",
+        "Interactive icon-only control does not follow secondary behavior and does not use fallback (black-100 + full rounded).",
+        "Focus-visible state missing for keyboard interaction.",
+        "Border/stroke/outline is used as visual container styling."
+      ],
+      "blocker": [
+        "Missing semantic token mapping required to express required states.",
+        "Missing variant contract needed by requested implementation."
+      ]
+    },
+    "interactiveIconOnlyPolicy": {
+      "defaultBehavior": "Match secondary icon-button visual behavior for the active theme.",
+      "fallbackBehavior": {
+        "background": "var(--color-black-100)",
+        "radius": "$rounded-full"
+      },
+      "rule": "Apply to icon-only interactive controls when no stricter component contract overrides it."
+    }
   }
 }
