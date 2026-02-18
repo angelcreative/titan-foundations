@@ -785,6 +785,12 @@ function App() {
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
 
+  useEffect(() => {
+    const lock = () => window.scrollTo(0, 0)
+    window.addEventListener('scroll', lock)
+    return () => window.removeEventListener('scroll', lock)
+  }, [])
+
   return (
     <>
       <TitanNavbar theme={theme} userInitial="A" />
