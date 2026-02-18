@@ -3,8 +3,8 @@ import react from '@vitejs/plugin-react'
 import { fileURLToPath } from 'node:url'
 
 // https://vite.dev/config/
-export default defineConfig({
-  base: '/titan-foundations/',
+export default defineConfig(({ command }) => ({
+  base: command === 'build' ? '/titan-foundations/' : '/',
   plugins: [react()],
   resolve: {
     dedupe: ['react', 'react-dom', 'react-aria-components', 'lucide-react'],
@@ -17,4 +17,4 @@ export default defineConfig({
       allow: [fileURLToPath(new URL('../..', import.meta.url))],
     },
   },
-})
+}))
