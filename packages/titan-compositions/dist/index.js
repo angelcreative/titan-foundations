@@ -444,36 +444,86 @@ import { Check } from "lucide-react";
 import { jsx as jsx14, jsxs as jsxs13 } from "react/jsx-runtime";
 function TitanCheckboxField({
   label,
+  name,
   isDisabled = false,
-  defaultSelected = false
+  isSelected,
+  defaultSelected = false,
+  onChange
 }) {
-  return /* @__PURE__ */ jsxs13(Checkbox, { className: "checkbox-root", isDisabled, defaultSelected, children: [
-    /* @__PURE__ */ jsx14("span", { className: "checkbox-box", children: /* @__PURE__ */ jsx14(Check, { className: "checkbox-mark" }) }),
-    /* @__PURE__ */ jsx14("span", { className: "choice-text", children: label })
-  ] });
+  return /* @__PURE__ */ jsxs13(
+    Checkbox,
+    {
+      className: "checkbox-root",
+      name,
+      isDisabled,
+      isSelected,
+      defaultSelected,
+      onChange,
+      children: [
+        /* @__PURE__ */ jsx14("span", { className: "checkbox-box", "aria-hidden": "true", children: /* @__PURE__ */ jsx14(Check, { className: "checkbox-mark" }) }),
+        /* @__PURE__ */ jsx14("span", { className: "choice-text", children: label })
+      ]
+    }
+  );
 }
 function TitanRadioGroupField({
   label,
+  name,
   options,
-  defaultValue
+  value,
+  defaultValue,
+  onChange
 }) {
-  return /* @__PURE__ */ jsxs13(RadioGroup, { className: "choice-group", defaultValue, children: [
-    /* @__PURE__ */ jsx14(Label2, { className: "choice-group-label", children: label }),
-    /* @__PURE__ */ jsx14("div", { className: "choice-list", children: options.map((option) => /* @__PURE__ */ jsxs13(Radio, { className: "radio-root", value: option.value, isDisabled: option.disabled, children: [
-      /* @__PURE__ */ jsx14("span", { className: "radio-box", children: /* @__PURE__ */ jsx14("span", { className: "radio-dot" }) }),
-      /* @__PURE__ */ jsx14("span", { className: "choice-text", children: option.label })
-    ] }, option.value)) })
-  ] });
+  return /* @__PURE__ */ jsxs13(
+    RadioGroup,
+    {
+      className: "choice-group",
+      name,
+      value,
+      defaultValue,
+      onChange,
+      children: [
+        /* @__PURE__ */ jsx14(Label2, { className: "choice-group-label", children: label }),
+        /* @__PURE__ */ jsx14("div", { className: "choice-list", children: options.map((option) => /* @__PURE__ */ jsxs13(
+          Radio,
+          {
+            className: "radio-root",
+            value: option.value,
+            isDisabled: option.disabled,
+            children: [
+              /* @__PURE__ */ jsx14("span", { className: "radio-box", "aria-hidden": "true", children: /* @__PURE__ */ jsx14("span", { className: "radio-dot" }) }),
+              /* @__PURE__ */ jsx14("span", { className: "choice-text", children: option.label })
+            ]
+          },
+          option.value
+        )) })
+      ]
+    }
+  );
 }
 function TitanSwitchField({
   label,
+  name,
   isDisabled = false,
-  defaultSelected = false
+  isSelected,
+  defaultSelected = false,
+  onChange
 }) {
-  return /* @__PURE__ */ jsxs13(Switch, { className: "switch-root", isDisabled, defaultSelected, children: [
-    /* @__PURE__ */ jsx14("span", { className: "choice-text", children: label }),
-    /* @__PURE__ */ jsx14("span", { className: "switch-track", children: /* @__PURE__ */ jsx14("span", { className: "switch-thumb" }) })
-  ] });
+  return /* @__PURE__ */ jsxs13(
+    Switch,
+    {
+      className: "switch-root",
+      name,
+      isDisabled,
+      isSelected,
+      defaultSelected,
+      onChange,
+      children: [
+        /* @__PURE__ */ jsx14("span", { className: "choice-text", children: label }),
+        /* @__PURE__ */ jsx14("span", { className: "switch-track", "aria-hidden": "true", children: /* @__PURE__ */ jsx14("span", { className: "switch-thumb" }) })
+      ]
+    }
+  );
 }
 function TitanFormControlsGroup({ children }) {
   return /* @__PURE__ */ jsx14("div", { className: "form-controls-grid", children });

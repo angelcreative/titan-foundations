@@ -476,36 +476,86 @@ var import_lucide_react9 = require("lucide-react");
 var import_jsx_runtime14 = require("react/jsx-runtime");
 function TitanCheckboxField({
   label,
+  name,
   isDisabled = false,
-  defaultSelected = false
+  isSelected,
+  defaultSelected = false,
+  onChange
 }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(import_react_aria_components13.Checkbox, { className: "checkbox-root", isDisabled, defaultSelected, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "checkbox-box", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_lucide_react9.Check, { className: "checkbox-mark" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "choice-text", children: label })
-  ] });
+  return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
+    import_react_aria_components13.Checkbox,
+    {
+      className: "checkbox-root",
+      name,
+      isDisabled,
+      isSelected,
+      defaultSelected,
+      onChange,
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "checkbox-box", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_lucide_react9.Check, { className: "checkbox-mark" }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "choice-text", children: label })
+      ]
+    }
+  );
 }
 function TitanRadioGroupField({
   label,
+  name,
   options,
-  defaultValue
+  value,
+  defaultValue,
+  onChange
 }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(import_react_aria_components13.RadioGroup, { className: "choice-group", defaultValue, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_react_aria_components13.Label, { className: "choice-group-label", children: label }),
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "choice-list", children: options.map((option) => /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(import_react_aria_components13.Radio, { className: "radio-root", value: option.value, isDisabled: option.disabled, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "radio-box", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "radio-dot" }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "choice-text", children: option.label })
-    ] }, option.value)) })
-  ] });
+  return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
+    import_react_aria_components13.RadioGroup,
+    {
+      className: "choice-group",
+      name,
+      value,
+      defaultValue,
+      onChange,
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_react_aria_components13.Label, { className: "choice-group-label", children: label }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "choice-list", children: options.map((option) => /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
+          import_react_aria_components13.Radio,
+          {
+            className: "radio-root",
+            value: option.value,
+            isDisabled: option.disabled,
+            children: [
+              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "radio-box", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "radio-dot" }) }),
+              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "choice-text", children: option.label })
+            ]
+          },
+          option.value
+        )) })
+      ]
+    }
+  );
 }
 function TitanSwitchField({
   label,
+  name,
   isDisabled = false,
-  defaultSelected = false
+  isSelected,
+  defaultSelected = false,
+  onChange
 }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(import_react_aria_components13.Switch, { className: "switch-root", isDisabled, defaultSelected, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "choice-text", children: label }),
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "switch-track", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "switch-thumb" }) })
-  ] });
+  return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
+    import_react_aria_components13.Switch,
+    {
+      className: "switch-root",
+      name,
+      isDisabled,
+      isSelected,
+      defaultSelected,
+      onChange,
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "choice-text", children: label }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "switch-track", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "switch-thumb" }) })
+      ]
+    }
+  );
 }
 function TitanFormControlsGroup({ children }) {
   return /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "form-controls-grid", children });

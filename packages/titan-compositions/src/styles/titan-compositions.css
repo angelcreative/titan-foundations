@@ -13,6 +13,7 @@
 .breadcrumb-link,
 .checkbox-root,
 .radio-root,
+.switch-root,
 .toggle-root,
 .navbar-icon-button,
 .navbar-chevron-button,
@@ -34,9 +35,9 @@
 .pagination-button[data-focus-visible],
 .drawer-close-button[data-focus-visible],
 .breadcrumb-link[data-focus-visible],
-.checkbox-box[data-focus-visible],
-.radio-circle[data-focus-visible],
-.toggle-track[data-focus-visible],
+.checkbox-root[data-focus-visible],
+.radio-root[data-focus-visible],
+.switch-root[data-focus-visible],
 .textarea-field[data-focus-visible],
 .titan-sidebar-toggle[data-focus-visible],
 .titan-sidebar-item[data-focus-visible] {
@@ -1196,6 +1197,77 @@
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-s);
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/*
+ * Override React Aria VisuallyHidden input — make it cover the full click area.
+ * Prevents browser focus-scroll from displacing content (the root cause of the
+ * white-screen bug when clicking checkboxes/radios/switches inside scrollable
+ * containers). The input sits at opacity 0 exactly where the user clicks, so
+ * native focus never triggers a scroll.
+ */
+.checkbox-root input[type="checkbox"],
+.radio-root input[type="radio"],
+.switch-root input[type="checkbox"] {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  opacity: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  clip: unset !important;
+  clip-path: none !important;
+  overflow: visible !important;
+  white-space: normal !important;
+  border: 0 !important;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.checkbox-root[data-disabled] input,
+.radio-root[data-disabled] input,
+.switch-root[data-disabled] input {
+  cursor: not-allowed;
+}
+
+/* Focus-visible rings (keyboard navigation) */
+.checkbox-root[data-focus-visible] .checkbox-box {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.radio-root[data-focus-visible] .radio-box {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.switch-root[data-focus-visible] .switch-track {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* Hover states */
+.checkbox-root[data-hovered]:not([data-disabled]) .checkbox-box {
+  border-color: var(--checkbox-slot-selected-border);
+}
+
+.radio-root[data-hovered]:not([data-disabled]) .radio-box {
+  border-color: var(--radio-slot-selected-border);
+}
+
+.switch-root[data-hovered]:not([data-disabled]) .switch-track {
+  filter: brightness(0.95);
+}
+
+/* Disabled states */
+.checkbox-root[data-disabled],
+.radio-root[data-disabled],
+.switch-root[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .checkbox-box {
@@ -1207,6 +1279,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  transition: border-color 150ms ease, background 150ms ease;
 }
 
 .checkbox-mark {
@@ -1216,6 +1289,7 @@
   stroke-width: var(--icon-stroke-m);
   opacity: 0;
   transform: scale(0.8);
+  transition: opacity 150ms ease, transform 150ms ease;
 }
 
 .checkbox-root[data-selected] .checkbox-box {
@@ -1237,6 +1311,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  transition: border-color 150ms ease;
 }
 
 .radio-dot {
@@ -1245,6 +1320,7 @@
   border-radius: var(--radio-slot-radius);
   background: var(--radio-slot-selected-border);
   transform: scale(0);
+  transition: transform 150ms ease;
 }
 
 .radio-root[data-selected] .radio-box {
@@ -1268,6 +1344,7 @@
   display: inline-flex;
   align-items: center;
   padding-inline: var(--stroke-slot-width);
+  transition: background 150ms ease;
 }
 
 .switch-thumb {
@@ -1276,6 +1353,7 @@
   border-radius: var(--toggle-slot-radius);
   background: var(--toggle-slot-ball-bg);
   transform: translateX(0);
+  transition: transform 150ms ease;
 }
 
 .switch-root[data-selected] .switch-track {

@@ -182,8 +182,11 @@ declare function TitanToastRegion({ toasts, onDismiss }: TitanToastRegionProps):
 
 interface TitanCheckboxFieldProps {
     label: string;
+    name?: string;
     isDisabled?: boolean;
+    isSelected?: boolean;
     defaultSelected?: boolean;
+    onChange?: (isSelected: boolean) => void;
 }
 interface TitanRadioOption {
     value: string;
@@ -192,17 +195,23 @@ interface TitanRadioOption {
 }
 interface TitanRadioGroupFieldProps {
     label: string;
+    name?: string;
     options: TitanRadioOption[];
+    value?: string;
     defaultValue?: string;
+    onChange?: (value: string) => void;
 }
 interface TitanSwitchFieldProps {
     label: string;
+    name?: string;
     isDisabled?: boolean;
+    isSelected?: boolean;
     defaultSelected?: boolean;
+    onChange?: (isSelected: boolean) => void;
 }
-declare function TitanCheckboxField({ label, isDisabled, defaultSelected, }: TitanCheckboxFieldProps): react_jsx_runtime.JSX.Element;
-declare function TitanRadioGroupField({ label, options, defaultValue, }: TitanRadioGroupFieldProps): react_jsx_runtime.JSX.Element;
-declare function TitanSwitchField({ label, isDisabled, defaultSelected, }: TitanSwitchFieldProps): react_jsx_runtime.JSX.Element;
+declare function TitanCheckboxField({ label, name, isDisabled, isSelected, defaultSelected, onChange, }: TitanCheckboxFieldProps): react_jsx_runtime.JSX.Element;
+declare function TitanRadioGroupField({ label, name, options, value, defaultValue, onChange, }: TitanRadioGroupFieldProps): react_jsx_runtime.JSX.Element;
+declare function TitanSwitchField({ label, name, isDisabled, isSelected, defaultSelected, onChange, }: TitanSwitchFieldProps): react_jsx_runtime.JSX.Element;
 interface TitanFormControlsGroupProps {
     children: ReactNode;
 }
