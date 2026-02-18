@@ -1,5 +1,8 @@
 import type { CSSProperties } from 'react'
 
+const LOADER_CDN_BASE =
+  'https://cdn.jsdelivr.net/gh/angelcreative/titan-foundations@main/public/assets/logos'
+
 export interface TitanLoaderProps {
   /** Width and height in px. Defaults to 120. */
   size?: number
@@ -9,6 +12,8 @@ export interface TitanLoaderProps {
   className?: string
   /** Inline style overrides. */
   style?: CSSProperties
+  /** Base path or URL for loader assets. Defaults to CDN. Pass "/assets/logos" for local. */
+  loaderBasePath?: string
 }
 
 export function TitanLoader({
@@ -16,6 +21,7 @@ export function TitanLoader({
   label = 'Loading…',
   className = '',
   style,
+  loaderBasePath = LOADER_CDN_BASE,
 }: TitanLoaderProps) {
   return (
     <div
@@ -26,7 +32,7 @@ export function TitanLoader({
     >
       <img
         className="titan-loader-img"
-        src="/assets/logos/loader-l.gif"
+        src={`${loaderBasePath}/loader-l.gif`}
         alt=""
         aria-hidden="true"
         width={size}

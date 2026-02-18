@@ -702,11 +702,13 @@ function TitanSidebarItem({
 
 // src/TitanLoader.tsx
 import { jsx as jsx21, jsxs as jsxs19 } from "react/jsx-runtime";
+var LOADER_CDN_BASE = "https://cdn.jsdelivr.net/gh/angelcreative/titan-foundations@main/public/assets/logos";
 function TitanLoader({
   size = 120,
   label = "Loading\u2026",
   className = "",
-  style
+  style,
+  loaderBasePath = LOADER_CDN_BASE
 }) {
   return /* @__PURE__ */ jsxs19(
     "div",
@@ -720,7 +722,7 @@ function TitanLoader({
           "img",
           {
             className: "titan-loader-img",
-            src: "/assets/logos/loader-l.gif",
+            src: `${loaderBasePath}/loader-l.gif`,
             alt: "",
             "aria-hidden": "true",
             width: size,
