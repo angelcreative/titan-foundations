@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { Key, ReactNode } from 'react'
 import {
   Button,
   Label,
@@ -21,6 +21,8 @@ export interface TitanSelectProps {
   label: string
   options: TitanSelectOption[]
   defaultSelectedKey?: string
+  selectedKey?: string
+  onSelectionChange?: (key: Key | null) => void
   isDisabled?: boolean
 }
 
@@ -28,10 +30,20 @@ export function TitanSelect({
   label,
   options,
   defaultSelectedKey,
+  selectedKey,
+  onSelectionChange,
   isDisabled = false,
 }: TitanSelectProps) {
+  const selectionProps = selectedKey !== undefined
+    ? { selectedKey, onSelectionChange }
+    : { defaultSelectedKey }
+
   return (
-    <Select className="select-root" defaultSelectedKey={defaultSelectedKey} isDisabled={isDisabled}>
+    <Select
+      className="select-root"
+      {...selectionProps}
+      isDisabled={isDisabled}
+    >
       <Label className="select-label">{label}</Label>
       <Button className="select-trigger">
         <SelectValue />

@@ -262,29 +262,40 @@ function TitanSelect({
   label,
   options,
   defaultSelectedKey,
+  selectedKey,
+  onSelectionChange,
   isDisabled = false
 }) {
-  return /* @__PURE__ */ jsxs6(Select, { className: "select-root", defaultSelectedKey, isDisabled, children: [
-    /* @__PURE__ */ jsx7(Label, { className: "select-label", children: label }),
-    /* @__PURE__ */ jsxs6(Button6, { className: "select-trigger", children: [
-      /* @__PURE__ */ jsx7(SelectValue, {}),
-      /* @__PURE__ */ jsx7("span", { className: "select-trigger-chevron", "aria-hidden": "true", children: /* @__PURE__ */ jsx7(ChevronDown3, {}) })
-    ] }),
-    /* @__PURE__ */ jsx7(Popover2, { className: "select-popover", placement: "bottom start", children: /* @__PURE__ */ jsx7(ListBox, { className: "select-list", children: options.map((option) => /* @__PURE__ */ jsx7(
-      ListBoxItem,
-      {
-        id: option.id,
-        className: "select-item",
-        isDisabled: option.disabled,
-        textValue: option.label,
-        children: /* @__PURE__ */ jsxs6("span", { className: "select-item-start", children: [
-          option.icon ? /* @__PURE__ */ jsx7("span", { className: "select-item-icon", children: option.icon }) : null,
-          /* @__PURE__ */ jsx7("span", { children: option.label })
-        ] })
-      },
-      option.id
-    )) }) })
-  ] });
+  const selectionProps = selectedKey !== void 0 ? { selectedKey, onSelectionChange } : { defaultSelectedKey };
+  return /* @__PURE__ */ jsxs6(
+    Select,
+    {
+      className: "select-root",
+      ...selectionProps,
+      isDisabled,
+      children: [
+        /* @__PURE__ */ jsx7(Label, { className: "select-label", children: label }),
+        /* @__PURE__ */ jsxs6(Button6, { className: "select-trigger", children: [
+          /* @__PURE__ */ jsx7(SelectValue, {}),
+          /* @__PURE__ */ jsx7("span", { className: "select-trigger-chevron", "aria-hidden": "true", children: /* @__PURE__ */ jsx7(ChevronDown3, {}) })
+        ] }),
+        /* @__PURE__ */ jsx7(Popover2, { className: "select-popover", placement: "bottom start", children: /* @__PURE__ */ jsx7(ListBox, { className: "select-list", children: options.map((option) => /* @__PURE__ */ jsx7(
+          ListBoxItem,
+          {
+            id: option.id,
+            className: "select-item",
+            isDisabled: option.disabled,
+            textValue: option.label,
+            children: /* @__PURE__ */ jsxs6("span", { className: "select-item-start", children: [
+              option.icon ? /* @__PURE__ */ jsx7("span", { className: "select-item-icon", children: option.icon }) : null,
+              /* @__PURE__ */ jsx7("span", { children: option.label })
+            ] })
+          },
+          option.id
+        )) }) })
+      ]
+    }
+  );
 }
 
 // src/TitanTabs.tsx

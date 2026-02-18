@@ -293,29 +293,40 @@ function TitanSelect({
   label,
   options,
   defaultSelectedKey,
+  selectedKey,
+  onSelectionChange,
   isDisabled = false
 }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(import_react_aria_components6.Select, { className: "select-root", defaultSelectedKey, isDisabled, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_react_aria_components6.Label, { className: "select-label", children: label }),
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(import_react_aria_components6.Button, { className: "select-trigger", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_react_aria_components6.SelectValue, {}),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: "select-trigger-chevron", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_lucide_react5.ChevronDown, {}) })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_react_aria_components6.Popover, { className: "select-popover", placement: "bottom start", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_react_aria_components6.ListBox, { className: "select-list", children: options.map((option) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
-      import_react_aria_components6.ListBoxItem,
-      {
-        id: option.id,
-        className: "select-item",
-        isDisabled: option.disabled,
-        textValue: option.label,
-        children: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("span", { className: "select-item-start", children: [
-          option.icon ? /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: "select-item-icon", children: option.icon }) : null,
-          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { children: option.label })
-        ] })
-      },
-      option.id
-    )) }) })
-  ] });
+  const selectionProps = selectedKey !== void 0 ? { selectedKey, onSelectionChange } : { defaultSelectedKey };
+  return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(
+    import_react_aria_components6.Select,
+    {
+      className: "select-root",
+      ...selectionProps,
+      isDisabled,
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_react_aria_components6.Label, { className: "select-label", children: label }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(import_react_aria_components6.Button, { className: "select-trigger", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_react_aria_components6.SelectValue, {}),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: "select-trigger-chevron", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_lucide_react5.ChevronDown, {}) })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_react_aria_components6.Popover, { className: "select-popover", placement: "bottom start", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_react_aria_components6.ListBox, { className: "select-list", children: options.map((option) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+          import_react_aria_components6.ListBoxItem,
+          {
+            id: option.id,
+            className: "select-item",
+            isDisabled: option.disabled,
+            textValue: option.label,
+            children: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("span", { className: "select-item-start", children: [
+              option.icon ? /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: "select-item-icon", children: option.icon }) : null,
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { children: option.label })
+            ] })
+          },
+          option.id
+        )) }) })
+      ]
+    }
+  );
 }
 
 // src/TitanTabs.tsx

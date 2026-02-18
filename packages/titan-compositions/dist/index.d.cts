@@ -1,5 +1,5 @@
 import * as react_jsx_runtime from 'react/jsx-runtime';
-import { ReactNode, CSSProperties, ComponentType } from 'react';
+import { ReactNode, CSSProperties, Key, ComponentType } from 'react';
 import { ButtonProps, TextFieldProps } from 'react-aria-components';
 
 interface TitanBreadcrumbItem {
@@ -108,9 +108,11 @@ interface TitanSelectProps {
     label: string;
     options: TitanSelectOption[];
     defaultSelectedKey?: string;
+    selectedKey?: string;
+    onSelectionChange?: (key: Key | null) => void;
     isDisabled?: boolean;
 }
-declare function TitanSelect({ label, options, defaultSelectedKey, isDisabled, }: TitanSelectProps): react_jsx_runtime.JSX.Element;
+declare function TitanSelect({ label, options, defaultSelectedKey, selectedKey, onSelectionChange, isDisabled, }: TitanSelectProps): react_jsx_runtime.JSX.Element;
 
 interface TitanTabItem {
     id: string;

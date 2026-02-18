@@ -2,8 +2,13 @@
   box-sizing: border-box;
 }
 
-body {
+html, body {
   margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
   font-family: "Poppins", var(--font-audiense), sans-serif;
   background: var(--color-black-100);
   color: var(--copy-slot-primary);
@@ -11,6 +16,9 @@ body {
 
 #root {
   width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .navbar {
@@ -18,6 +26,8 @@ body {
   height: var(--navbar-slot-height);
   background: var(--navbar-slot-bg);
   border-bottom: var(--stroke-slot-width) solid var(--navbar-slot-border);
+  flex-shrink: 0;
+  z-index: 100;
 }
 
 .navbar-inner {
@@ -225,13 +235,8 @@ label {
   font-weight: var(--text-weight-medium);
 }
 
-.theme-select {
-  min-height: var(--input-slot-height);
-  padding: var(--input-slot-pad-y) var(--input-slot-pad-x);
-  border-radius: var(--input-slot-radius);
-  border: var(--input-slot-border-width) solid var(--input-slot-border);
-  background: var(--input-slot-bg);
-  color: var(--input-slot-color);
+.theme-selector-card .select-root {
+  min-width: 200px;
 }
 
 .menu-popover {
@@ -1504,6 +1509,194 @@ label {
   align-items: center;
   gap: var(--spacing-3xs);
   margin-bottom: var(--spacing-s);
+}
+
+/* ── Showcase Layout ───────────────────────────────── */
+
+.app-layout {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.app-layout > .titan-sidebar {
+  position: sticky;
+  top: 0;
+  height: 100%;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.app-layout > .page {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+}
+
+.showcase-demo {
+  margin-bottom: var(--spacing-m);
+}
+
+.info-block {
+  text-align: left;
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+  color: var(--copy-slot-secondary);
+}
+
+.info-block h4 {
+  margin: var(--spacing-s) 0 var(--spacing-3xs);
+  font-size: var(--font-size-m);
+  font-weight: var(--text-weight-semibold);
+  color: var(--copy-slot-primary);
+}
+
+.info-block h4:first-child {
+  margin-top: 0;
+}
+
+.info-block p {
+  margin: 0 0 var(--spacing-3xs);
+}
+
+.info-block ul {
+  margin: 0 0 var(--spacing-3xs);
+  padding-left: var(--spacing-l);
+}
+
+.info-block li {
+  margin-bottom: var(--spacing-4xs);
+}
+
+.import-line {
+  display: block;
+  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+  font-size: 12px;
+  color: var(--copy-slot-body);
+  background: var(--color-black-100);
+  padding: var(--spacing-3xs) var(--spacing-s);
+  border-radius: var(--card-slot-radius);
+  margin-bottom: var(--spacing-3xs);
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+/* ── Sidebar demo ────────────────────────────────── */
+
+.sidebar-demo-wrap {
+  display: flex;
+  border: 1px solid var(--card-slot-border);
+  border-radius: var(--card-slot-radius);
+  overflow: hidden;
+  height: 280px;
+}
+
+.sidebar-demo-wrap .titan-sidebar {
+  height: 100%;
+  border-right: 1px solid var(--sidebar-slot-border);
+}
+
+.sidebar-demo-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-4xs);
+  color: var(--copy-slot-secondary);
+  font-size: var(--font-size-s);
+  background: var(--surface-slot-bg);
+}
+
+.sidebar-demo-content p {
+  margin: 0;
+}
+
+.code-block-wrap {
+  position: relative;
+}
+
+.code-copy-btn {
+  position: absolute;
+  top: var(--spacing-2xs);
+  right: var(--spacing-2xs);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-4xs);
+  padding: var(--spacing-4xs) var(--spacing-3xs);
+  border: 1px solid var(--card-slot-border);
+  border-radius: var(--card-slot-radius);
+  background: var(--surface-slot-bg);
+  color: var(--copy-slot-secondary);
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  z-index: 1;
+}
+
+.code-copy-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.code-copy-btn:hover {
+  background: var(--color-black-100);
+  color: var(--copy-slot-primary);
+}
+
+.code-copy-btn-done {
+  color: var(--button-primary-slot-bg);
+}
+
+.code-pre {
+  background: var(--color-black-100);
+  border-radius: var(--card-slot-radius);
+  padding: var(--spacing-m);
+  padding-top: var(--spacing-xl);
+  overflow-x: auto;
+  text-align: left;
+  margin: 0;
+}
+
+.code-pre code {
+  font-size: 12px;
+  line-height: 1.5;
+  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+  color: var(--copy-slot-body);
+  white-space: pre;
+}
+
+.token-group {
+  margin-bottom: var(--spacing-s);
+}
+
+.token-group:last-child {
+  margin-bottom: 0;
+}
+
+.token-group-label {
+  font-weight: var(--text-weight-semibold);
+  color: var(--copy-slot-primary);
+  margin-bottom: var(--spacing-4xs);
+  font-size: var(--font-size-s);
+}
+
+.token-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-4xs);
+}
+
+.token-var {
+  display: inline-block;
+  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+  font-size: 11px;
+  background: var(--color-black-100);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--copy-slot-body);
 }
 
 .btn,

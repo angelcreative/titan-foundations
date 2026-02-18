@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/titan-foundations/',
   plugins: [react()],
   resolve: {
     dedupe: ['react', 'react-dom', 'react-aria-components', 'lucide-react'],
