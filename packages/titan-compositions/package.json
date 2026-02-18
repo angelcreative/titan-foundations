@@ -1,6 +1,6 @@
 {
   "name": "titan-compositions",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "Reusable Titan page compositions built on React Aria + Titan tokens",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -25,7 +25,13 @@
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0",
     "react-aria-components": ">=1.0.0",
-    "lucide-react": ">=0.460.0"
+    "lucide-react": ">=0.460.0",
+    "@tabler/icons-react": ">=3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@tabler/icons-react": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@types/react": "^18.2.0",
