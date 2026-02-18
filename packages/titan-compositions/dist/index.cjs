@@ -31,6 +31,7 @@ __export(index_exports, {
   TitanFormControlsGroup: () => TitanFormControlsGroup,
   TitanIconButton: () => TitanIconButton,
   TitanInputField: () => TitanInputField,
+  TitanLoader: () => TitanLoader,
   TitanMenuDropdown: () => TitanMenuDropdown,
   TitanNavbar: () => TitanNavbar,
   TitanPagination: () => TitanPagination,
@@ -717,6 +718,40 @@ function TitanSidebarItem({
     }
   );
 }
+
+// src/TitanLoader.tsx
+var import_jsx_runtime21 = require("react/jsx-runtime");
+function TitanLoader({
+  size = 120,
+  label = "Loading\u2026",
+  className = "",
+  style
+}) {
+  return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
+    "div",
+    {
+      className: `titan-loader ${className}`.trim(),
+      role: "status",
+      "aria-label": label,
+      style,
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
+          "img",
+          {
+            className: "titan-loader-img",
+            src: "/assets/logos/loader-l.gif",
+            alt: "",
+            "aria-hidden": "true",
+            width: size,
+            height: size,
+            style: { width: size, height: size }
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("span", { className: "titan-loader-sr-only", children: label })
+      ]
+    }
+  );
+}
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   TitanBorderlessTable,
@@ -730,6 +765,7 @@ function TitanSidebarItem({
   TitanFormControlsGroup,
   TitanIconButton,
   TitanInputField,
+  TitanLoader,
   TitanMenuDropdown,
   TitanNavbar,
   TitanPagination,

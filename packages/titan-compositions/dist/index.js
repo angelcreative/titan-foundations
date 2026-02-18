@@ -699,6 +699,40 @@ function TitanSidebarItem({
     }
   );
 }
+
+// src/TitanLoader.tsx
+import { jsx as jsx21, jsxs as jsxs19 } from "react/jsx-runtime";
+function TitanLoader({
+  size = 120,
+  label = "Loading\u2026",
+  className = "",
+  style
+}) {
+  return /* @__PURE__ */ jsxs19(
+    "div",
+    {
+      className: `titan-loader ${className}`.trim(),
+      role: "status",
+      "aria-label": label,
+      style,
+      children: [
+        /* @__PURE__ */ jsx21(
+          "img",
+          {
+            className: "titan-loader-img",
+            src: "/assets/logos/loader-l.gif",
+            alt: "",
+            "aria-hidden": "true",
+            width: size,
+            height: size,
+            style: { width: size, height: size }
+          }
+        ),
+        /* @__PURE__ */ jsx21("span", { className: "titan-loader-sr-only", children: label })
+      ]
+    }
+  );
+}
 export {
   TitanBorderlessTable,
   TitanBreadcrumb,
@@ -711,6 +745,7 @@ export {
   TitanFormControlsGroup,
   TitanIconButton,
   TitanInputField,
+  TitanLoader,
   TitanMenuDropdown,
   TitanNavbar,
   TitanPagination,

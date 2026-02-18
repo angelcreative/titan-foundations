@@ -62,3 +62,5 @@ export type {
   TitanSidebarHeaderProps,
   TitanSidebarItemProps,
 } from './TitanSidebar'
+export { TitanLoader } from './TitanLoader'
+export type { TitanLoaderProps } from './TitanLoader'

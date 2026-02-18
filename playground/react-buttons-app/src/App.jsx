@@ -31,6 +31,7 @@ import {
   TextCursorInput,
   Hash,
   Navigation,
+  Loader2,
 } from 'lucide-react'
 import {
   TitanBorderlessTable,
@@ -59,6 +60,7 @@ import {
   TitanTextareaField,
   TitanToastRegion,
   TitanTooltip,
+  TitanLoader,
 } from 'titan-compositions'
 
 /* ------------------------------------------------------------------ */
@@ -101,6 +103,7 @@ const NAV_ITEMS = [
   { id: 'forms', label: 'Form Controls', icon: ToggleLeft },
   { id: 'inputs', label: 'Inputs', icon: TextCursorInput },
   { id: 'sidebar', label: 'Sidebar', icon: PanelLeft },
+  { id: 'loader', label: 'Loader', icon: Loader2 },
 ]
 
 /* ------------------------------------------------------------------ */
@@ -682,6 +685,21 @@ export function TitanTextareaField({ label, hint, counter, errorMessage, placeho
       )}
       {errorMessage && <FieldError className="field-error">{errorMessage}</FieldError>}
     </TextField>
+  )
+}`
+
+const CODE_LOADER = `export function TitanLoader({ size = 120, label = 'Loading…', className = '', style }) {
+  return (
+    <div className="titan-loader" role="status" aria-label={label} style={style}>
+      <img
+        className="titan-loader-img"
+        src="/assets/logos/loader-l.gif"
+        alt="" aria-hidden="true"
+        width={size} height={size}
+        style={{ width: size, height: size }}
+      />
+      <span className="titan-loader-sr-only">{label}</span>
+    </div>
   )
 }`
 
@@ -1412,6 +1430,41 @@ function App() {
             code={CODE_SIDEBAR}
           >
             <SidebarDemo />
+          </ShowcaseCard>
+
+          {/* ── 17. Loader ─────────────────────────────────── */}
+          <ShowcaseCard
+            id="loader"
+            title="Loader"
+            ariaImports="// No React Aria — pure HTML (div + img)"
+            ariaDesc="TitanLoader is a pure HTML component using the branded GIF loader. Uses role='status' and aria-label for screen reader announcements. The visible image is decorative (aria-hidden). A visually hidden span provides the accessible label."
+            ariaComponents={['None — pure HTML div + img']}
+            foundations={[
+              { category: 'Sizing', detail: 'Default 120×120px, configurable via size prop.' },
+              { category: 'Animation', detail: '300ms ease-out fade-in on mount via CSS keyframes.' },
+              { category: 'Asset', detail: '/assets/logos/loader-l.gif — branded animated loader.' },
+              { category: 'A11y', detail: 'role="status" for live region; aria-label for screen readers; sr-only text fallback.' },
+            ]}
+            tokenGroups={[
+              { label: 'Structure', tokens: ['display: flex', 'align-items: center', 'justify-content: center'] },
+              { label: 'Animation', tokens: ['animation: titan-loader-fade-in 300ms ease-out both'] },
+            ]}
+            code={CODE_LOADER}
+          >
+            <div style={{ display: 'flex', gap: '32px', alignItems: 'end' }}>
+              <div style={{ textAlign: 'center' }}>
+                <TitanLoader />
+                <p style={{ marginTop: 8, fontSize: 13, color: 'var(--copy-slot-secondary)' }}>120×120 (default)</p>
+              </div>
+              <div style={{ textAlign: 'center' }}>
+                <TitanLoader size={64} label="Loading data…" />
+                <p style={{ marginTop: 8, fontSize: 13, color: 'var(--copy-slot-secondary)' }}>64×64</p>
+              </div>
+              <div style={{ textAlign: 'center' }}>
+                <TitanLoader size={40} label="Loading…" />
+                <p style={{ marginTop: 8, fontSize: 13, color: 'var(--copy-slot-secondary)' }}>40×40</p>
+              </div>
+            </div>
           </ShowcaseCard>
 
         </main>
