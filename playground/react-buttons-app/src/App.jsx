@@ -155,6 +155,236 @@ function CodeBlock({ code }) {
   )
 }
 
+/* ------------------------------------------------------------------ */
+/*  Setup Guide                                                        */
+/* ------------------------------------------------------------------ */
+
+const MCP_CONFIG = `{
+  "mcpServers": {
+    "titands": {
+      "url": "https://mcp-remote-worker.titands.workers.dev/sse"
+    }
+  }
+}`
+
+const RULE_SENIOR_UX = `senior-ux-ui-designer
+
+You are a senior UX/UI designer specialized in SaaS dashboards, reporting flows, tables, filters, and data visualization.
+
+Primary goal: improve UX clarity, information architecture, and interaction design (not code quality by default).
+
+Defaults:
+- Start simple, then add progressive disclosure for complexity.
+- Always cover: empty state, loading state, error state, success feedback.
+- Prefer familiar SaaS patterns (Jakob's Law) unless there's a strong reason not to.
+- Justify key decisions using Laws of UX (Jakob, Hick, Fitts, Miller, Proximity, Common Region).
+- Ask at most 1–2 clarifying questions only if the task is ambiguous.
+
+When proposing UI:
+- Provide at least 2 alternatives when designing a screen/flow.
+- Describe: hierarchy (what users see 1st/2nd/3rd), layout structure, and interactions.
+- Be explicit about trade-offs (density vs scannability, power vs simplicity).
+- Accessibility is default: WCAG 2.1 AA mindset (keyboard, focus, labels, contrast, target sizes).
+
+Assume users are non-technical SaaS users who value speed, confidence, and clarity.`
+
+const CMD_REFINE_UI = `# refine-ui
+
+You are a senior SaaS UI/UX designer specializing in visual refinement and interface elegance.
+
+Your task is to refine the visual quality of an existing interface WITHOUT changing its layout, structure, or interaction model.
+
+This is NOT a redesign.
+
+────────────────────────
+GOAL
+────────────────────────
+
+Improve perceived quality, elegance, and visual hierarchy by:
+- Reducing visual heaviness
+- Softening typography and color usage
+- Improving rhythm, spacing, and emphasis
+- Making the UI feel calmer, more premium, and more intentional
+
+────────────────────────
+STRICT CONSTRAINTS
+────────────────────────
+
+DO NOT:
+- Change layout or grid
+- Add or remove components
+- Change IA or flows
+- Introduce new patterns
+- Redesign cards, tables, or charts
+
+ONLY:
+- Adjust typography hierarchy
+- Adjust font weights
+- Adjust font sizes (especially large numbers)
+- Adjust color intensity (neutrals, secondary text)
+- Adjust spacing, padding, and density
+- Adjust visual emphasis and contrast balance
+
+────────────────────────
+FOCUS AREAS
+────────────────────────
+
+1. Typography
+- Identify where bold is overused
+- Suggest lighter weights or mixed emphasis
+- Reduce oversized numerals if they dominate
+- Improve hierarchy using size + weight, not color alone
+
+2. Color & Contrast
+- Detect overly strong neutral shades
+- Suggest softer gray ramps for secondary information
+- Reduce unnecessary high-contrast text
+- Preserve accessibility while lowering visual noise
+
+3. Density & Rhythm
+- Identify cramped areas
+- Suggest micro-spacing improvements
+- Improve vertical rhythm inside cards
+- Make content breathe without growing components
+
+4. Visual Hierarchy
+- Clarify what should be primary vs secondary
+- Reduce competing focal points
+- Apply "less but clearer" emphasis
+
+────────────────────────
+OUTPUT FORMAT
+────────────────────────
+
+Return:
+
+1. Quick Diagnosis — Why the UI feels heavy or unrefined
+2. Refinement Suggestions — Bullet-pointed, grouped by Typography / Color / Spacing
+3. Before → After Examples — Practical terms (e.g. "Metrics from 32px bold → 24px semibold")
+4. Design Principles Applied — Reference Laws of UX (Aesthetic-Usability, Prägnanz, Visual Hierarchy)
+
+Keep it concise, actionable, and design-focused. This is a polish pass, not a critique.`
+
+const CMD_UX_BRAINSTORM = `# ux-brainstorm
+
+You are in SaaS UX/UI design mode.
+
+Task:
+- Ask at most 2 clarifying questions only if necessary.
+- Propose 3 options:
+  A) Simple & familiar
+  B) Balanced & optimized (recommended)
+  C) Advanced (only if clearly justified)
+
+For each option include:
+- Core idea
+- Information hierarchy (what users see first, second, third)
+- Layout structure (ASCII wireframe)
+- Key interactions
+- States: empty, loading, error, success
+- Trade-offs (clarity vs power, density vs scannability)
+
+Context:
+[USER INPUT]`
+
+const CMD_UX_REDESIGN = `# ux-redesign
+
+Propose 2–3 fundamentally different layout or information architecture alternatives
+for the same SaaS UI.
+
+For each alternative:
+- Core principle
+- ASCII wireframe
+- Information hierarchy
+- Key interactions
+- Pros / cons
+- When this layout is better than the current one
+
+Input:
+[UI description or @files]`
+
+const CMD_USER_STORIES = `# user-stories
+
+Convert this validated SaaS UX flow into small, vertical user stories
+using the Hamburger method.
+
+Output:
+- User stories (As a…, I want…, so that…)
+- Acceptance criteria
+- Clear scope boundaries
+
+Input:
+[Flow description]`
+
+function SetupGuide() {
+  return (
+    <div className="setup-guide">
+      <h1>How to set up Titan</h1>
+      <p className="setup-intro">Everything you need to start designing with Titan in Cursor. No coding required.</p>
+
+      {/* ── 1. Install MCP ── */}
+      <section className="setup-section">
+        <h2>1. Install the Titan MCP</h2>
+        <p>The MCP (Model Context Protocol) connects Cursor to the Titan Design System. It gives the AI full knowledge of components, tokens, patterns, and rules.</p>
+        <ol className="setup-steps">
+          <li>Open <strong>Cursor → Settings → Cursor Settings</strong></li>
+          <li>Go to the <strong>MCP</strong> tab</li>
+          <li>Click <strong>+ Add new global MCP server</strong></li>
+          <li>Paste this configuration and save:</li>
+        </ol>
+        <CodeBlock code={MCP_CONFIG} />
+      </section>
+
+      {/* ── 2. Using /titan ── */}
+      <section className="setup-section">
+        <h2>2. Using /titan</h2>
+        <p>Once the MCP is installed, type <code>/titan</code> in Cursor chat to invoke the Titan Design System. The AI will automatically use Titan components, tokens, and patterns.</p>
+        <h3>Check for updates</h3>
+        <p>Ask the AI to verify it has the latest version of the design system:</p>
+        <CodeBlock code={'/titan "check for new versions"'} />
+        <p>This ensures you always work with the most up-to-date components and tokens.</p>
+      </section>
+
+      {/* ── 3. Cursor Commands ── */}
+      <section className="setup-section">
+        <h2>3. Cursor Commands</h2>
+        <p>Add these as custom commands in Cursor. Go to <strong>Cursor → Settings → Cursor Settings → Commands</strong>, create a new <code>.md</code> file for each, and paste the content.</p>
+
+        <div className="setup-command">
+          <h3><code>/refine-ui</code></h3>
+          <p>Polish an existing interface without changing layout or structure. Improves typography, color balance, spacing, and visual hierarchy. Use it after building a screen to make it feel more premium.</p>
+          <CodeBlock code={CMD_REFINE_UI} />
+        </div>
+
+        <div className="setup-command">
+          <h3><code>/ux-brainstorm</code></h3>
+          <p>Get 3 design alternatives (simple, balanced, advanced) for any screen or flow. Each option includes layout wireframes, hierarchy, interactions, and all states.</p>
+          <CodeBlock code={CMD_UX_BRAINSTORM} />
+        </div>
+
+        <div className="setup-command">
+          <h3><code>/ux-redesign</code></h3>
+          <p>Propose fundamentally different layout alternatives for the same UI. Each alternative includes wireframe, hierarchy, pros/cons, and when to use it.</p>
+          <CodeBlock code={CMD_UX_REDESIGN} />
+        </div>
+
+        <div className="setup-command">
+          <h3><code>/user-stories</code></h3>
+          <p>Convert a validated UX flow into small, vertical user stories with acceptance criteria and scope boundaries.</p>
+          <CodeBlock code={CMD_USER_STORIES} />
+        </div>
+      </section>
+
+      {/* ── 4. Cursor Rule ── */}
+      <section className="setup-section">
+        <h2>4. Cursor Rule</h2>
+        <p>Add this as a User Rule in <strong>Cursor → Settings → Cursor Settings → Rules</strong>. It sets the AI to think like a senior UX designer for every conversation.</p>
+        <CodeBlock code={RULE_SENIOR_UX} />
+      </section>
+    </div>
+  )
+}
+
 const DEMO_SIDEBAR_ITEMS = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'users', label: 'Users', icon: User },
@@ -774,6 +1004,7 @@ export function TitanSidebarItem({ id, icon: Icon, onPress, children }) {
 /* ------------------------------------------------------------------ */
 
 function App() {
+  const [activeView, setActiveView] = useState('components')
   const [theme, setTheme] = useState('insights')
   const [pills, setPills] = useState(INITIAL_PILL_ITEMS)
   const [toasts, setToasts] = useState([])
@@ -839,6 +1070,22 @@ function App() {
 
   return (
     <>
+      <div className="app-top-nav">
+        <button
+          className={`app-top-tab${activeView === 'components' ? ' app-top-tab-active' : ''}`}
+          onClick={() => setActiveView('components')}
+        >Components</button>
+        <button
+          className={`app-top-tab${activeView === 'setup' ? ' app-top-tab-active' : ''}`}
+          onClick={() => setActiveView('setup')}
+        >How to set up Titan</button>
+      </div>
+
+      {activeView === 'setup' ? (
+        <main className="page setup-page">
+          <SetupGuide />
+        </main>
+      ) : (
       <div className="app-layout">
         <TitanSidebar
           collapsed={sidebarCollapsed}
@@ -1554,6 +1801,7 @@ function App() {
 
         </main>
       </div>
+      )}
     </>
   )
 }
