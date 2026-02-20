@@ -23,6 +23,7 @@ __export(index_exports, {
   TitanBorderlessTable: () => TitanBorderlessTable,
   TitanBreadcrumb: () => TitanBreadcrumb,
   TitanButton: () => TitanButton,
+  TitanCalendar: () => TitanCalendar,
   TitanCard: () => TitanCard,
   TitanCardGrid: () => TitanCardGrid,
   TitanCheckboxField: () => TitanCheckboxField,
@@ -1062,11 +1063,156 @@ function TitanProgressBar({
     }
   );
 }
+
+// src/TitanCalendar.tsx
+var import_react3 = require("react");
+var import_react_aria_components19 = require("react-aria-components");
+var import_date = require("@internationalized/date");
+var import_jsx_runtime24 = require("react/jsx-runtime");
+var ChevronLeft4 = () => /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("svg", { width: "16", height: "16", viewBox: "0 0 16 16", fill: "none", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("path", { d: "M10 12L6 8l4-4", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }) });
+var ChevronRight6 = () => /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("svg", { width: "16", height: "16", viewBox: "0 0 16 16", fill: "none", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("path", { d: "M6 4l4 4-4 4", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }) });
+var SelectChevron = () => /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("svg", { className: "calendar-select-chevron", width: "12", height: "12", viewBox: "0 0 12 12", fill: "none", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("path", { d: "M3 4.5L6 7.5L9 4.5", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" }) });
+function TitanCalendar({
+  defaultValue,
+  value,
+  onChange,
+  showTime = false,
+  defaultHour = 1,
+  defaultMinute = 0,
+  onTimeChange,
+  minValue,
+  maxValue,
+  isDisabled = false,
+  className = ""
+}) {
+  const tz = (0, import_date.getLocalTimeZone)();
+  const initial = value ?? defaultValue ?? (0, import_date.today)(tz);
+  const [focusedDate, setFocusedDate] = (0, import_react3.useState)(initial);
+  const [hour, setHour] = (0, import_react3.useState)(defaultHour);
+  const [minute, setMinute] = (0, import_react3.useState)(defaultMinute);
+  const months = (0, import_react3.useMemo)(() => {
+    const fmt = new Intl.DateTimeFormat(void 0, { month: "long" });
+    return Array.from({ length: 12 }, (_, i) => ({
+      value: i + 1,
+      label: fmt.format(new Date(2024, i, 1))
+    }));
+  }, []);
+  const years = (0, import_react3.useMemo)(() => {
+    const y = (0, import_date.today)(tz).year;
+    return Array.from({ length: 201 }, (_, i) => y - 100 + i);
+  }, [tz]);
+  return /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { className: `calendar-wrapper ${className}`.trim(), children: [
+    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
+      import_react_aria_components19.Calendar,
+      {
+        "aria-label": "Calendar",
+        focusedValue: focusedDate,
+        onFocusChange: setFocusedDate,
+        defaultValue,
+        value,
+        onChange,
+        minValue,
+        maxValue,
+        isDisabled,
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("header", { className: "calendar-header", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_react_aria_components19.Button, { slot: "previous", className: "calendar-nav-btn", children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(ChevronLeft4, {}) }),
+            /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { className: "calendar-selects", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { className: "calendar-select-wrap", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
+                  "select",
+                  {
+                    className: "calendar-select",
+                    value: focusedDate.month,
+                    onChange: (e) => setFocusedDate(focusedDate.set({ month: +e.target.value })),
+                    children: months.map((m) => /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("option", { value: m.value, children: m.label }, m.value))
+                  }
+                ),
+                /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(SelectChevron, {})
+              ] }),
+              /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { className: "calendar-select-wrap", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
+                  "select",
+                  {
+                    className: "calendar-select calendar-select-year",
+                    value: focusedDate.year,
+                    onChange: (e) => setFocusedDate(focusedDate.set({ year: +e.target.value })),
+                    children: years.map((y) => /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("option", { value: y, children: y }, y))
+                  }
+                ),
+                /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(SelectChevron, {})
+              ] })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_react_aria_components19.Button, { slot: "next", className: "calendar-nav-btn", children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(ChevronRight6, {}) })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_react_aria_components19.CalendarGrid, { className: "calendar-grid", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_react_aria_components19.CalendarGridHeader, { children: (day) => /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_react_aria_components19.CalendarHeaderCell, { className: "calendar-header-cell" }) }),
+            /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_react_aria_components19.CalendarGridBody, { children: (date) => /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_react_aria_components19.CalendarCell, { date, className: "calendar-cell" }) })
+          ] })
+        ]
+      }
+    ),
+    showTime && /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { className: "calendar-time", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { className: "calendar-time-field", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("label", { className: "calendar-time-label", children: "Hour" }),
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
+          "input",
+          {
+            type: "text",
+            inputMode: "numeric",
+            className: "calendar-time-input",
+            value: String(hour).padStart(2, "0"),
+            onChange: (e) => {
+              const raw = e.target.value.replace(/\D/g, "");
+              if (raw === "") {
+                setHour(0);
+                onTimeChange?.(0, minute);
+                return;
+              }
+              const n = Math.min(23, parseInt(raw, 10));
+              if (!isNaN(n)) {
+                setHour(n);
+                onTimeChange?.(n, minute);
+              }
+            }
+          }
+        )
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { className: "calendar-time-separator", children: ":" }),
+      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { className: "calendar-time-field", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("label", { className: "calendar-time-label", children: "Minute" }),
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
+          "input",
+          {
+            type: "text",
+            inputMode: "numeric",
+            className: "calendar-time-input",
+            value: String(minute).padStart(2, "0"),
+            onChange: (e) => {
+              const raw = e.target.value.replace(/\D/g, "");
+              if (raw === "") {
+                setMinute(0);
+                onTimeChange?.(hour, 0);
+                return;
+              }
+              const n = Math.min(59, parseInt(raw, 10));
+              if (!isNaN(n)) {
+                setMinute(n);
+                onTimeChange?.(hour, n);
+              }
+            }
+          }
+        )
+      ] })
+    ] })
+  ] });
+}
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   TitanBorderlessTable,
   TitanBreadcrumb,
   TitanButton,
+  TitanCalendar,
   TitanCard,
   TitanCardGrid,
   TitanCheckboxField,

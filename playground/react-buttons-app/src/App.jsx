@@ -35,6 +35,7 @@ import {
   Loader2,
   SlidersHorizontal,
   BarChart3,
+  CalendarDays,
 } from 'lucide-react'
 import {
   TitanBorderlessTable,
@@ -67,7 +68,9 @@ import {
   TitanSlider,
   TitanRangeSlider,
   TitanProgressBar,
+  TitanCalendar,
 } from 'titan-compositions'
+import { today, getLocalTimeZone } from '@internationalized/date'
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
@@ -113,6 +116,7 @@ const NAV_ITEMS = [
   { id: 'loader', label: 'Loader', icon: Loader2 },
   { id: 'slider', label: 'Slider', icon: SlidersHorizontal },
   { id: 'progress', label: 'Progress Bar', icon: BarChart3 },
+  { id: 'calendar', label: 'Calendar', icon: CalendarDays },
 ]
 
 /* ------------------------------------------------------------------ */
@@ -1018,6 +1022,41 @@ export function TitanProgressBar({ label, value = 0, minValue = 0, maxValue = 10
         </>
       )}
     </ProgressBar>
+  )
+}`
+
+const CODE_CALENDAR = `import { Calendar, CalendarGrid, CalendarGridHeader, CalendarGridBody, CalendarHeaderCell, CalendarCell, Button } from 'react-aria-components'
+import { today, getLocalTimeZone } from '@internationalized/date'
+
+export function TitanCalendar({ defaultValue, value, onChange, showTime = false, isDisabled, className = '' }) {
+  const [focusedDate, setFocusedDate] = useState(value ?? defaultValue ?? today(getLocalTimeZone()))
+
+  const months = useMemo(() => {
+    const fmt = new Intl.DateTimeFormat(undefined, { month: 'long' })
+    return Array.from({ length: 12 }, (_, i) => ({ value: i + 1, label: fmt.format(new Date(2024, i, 1)) }))
+  }, [])
+
+  return (
+    <div className="calendar-wrapper">
+      <Calendar focusedValue={focusedDate} onFocusChange={setFocusedDate} value={value} onChange={onChange} isDisabled={isDisabled}>
+        <header className="calendar-header">
+          <Button slot="previous" className="calendar-nav-btn">‹</Button>
+          <div className="calendar-selects">
+            <select value={focusedDate.month} onChange={(e) => setFocusedDate(focusedDate.set({ month: +e.target.value }))}>
+              {months.map(m => <option key={m.value} value={m.value}>{m.label}</option>)}
+            </select>
+            <select value={focusedDate.year} onChange={(e) => setFocusedDate(focusedDate.set({ year: +e.target.value }))}>
+              {years.map(y => <option key={y} value={y}>{y}</option>)}
+            </select>
+          </div>
+          <Button slot="next" className="calendar-nav-btn">›</Button>
+        </header>
+        <CalendarGrid className="calendar-grid">
+          <CalendarGridHeader>{(day) => <CalendarHeaderCell className="calendar-header-cell" />}</CalendarGridHeader>
+          <CalendarGridBody>{(date) => <CalendarCell date={date} className="calendar-cell" />}</CalendarGridBody>
+        </CalendarGrid>
+      </Calendar>
+    </div>
   )
 }`
 
@@ -1948,6 +1987,40 @@ function App() {
               <TitanProgressBar label="Complete" value={100} />
               <TitanProgressBar label="Starting…" value={5} />
               <TitanProgressBar value={60} showValue={false} />
+            </div>
+          </ShowcaseCard>
+
+          {/* ── 20. Calendar ───────────────────────────────── */}
+          <ShowcaseCard
+            id="calendar"
+            title="Calendar"
+            ariaImports="import { Calendar, CalendarGrid, CalendarGridHeader, CalendarGridBody, CalendarHeaderCell, CalendarCell, Button } from 'react-aria-components'"
+            ariaDesc="Calendar provides a fully accessible date picker grid with keyboard navigation (arrow keys, Page Up/Down for months, Home/End), ARIA grid pattern, and automatic locale-aware day names and month formatting."
+            ariaComponents={['Calendar', 'CalendarGrid', 'CalendarGridHeader', 'CalendarGridBody', 'CalendarHeaderCell', 'CalendarCell', 'Button (prev/next)']}
+            foundations={[
+              { category: 'Navigation', detail: 'Month/year dropdown selects + prev/next arrow buttons.' },
+              { category: 'Grid', detail: '7-column grid with locale-aware weekday headers.' },
+              { category: 'Selection', detail: 'Selected day uses theme accent color (button-primary-slot-bg).' },
+              { category: 'States', detail: 'Hover, focus-visible ring, outside-month dimmed, disabled, unavailable (strikethrough).' },
+              { category: 'Time', detail: 'Optional hour/minute inputs below the calendar grid via showTime prop.' },
+            ]}
+            tokenGroups={[
+              { label: 'Container', tokens: ['--calendar-slot-bg', '--calendar-slot-border', '--calendar-slot-radius', '--calendar-slot-shadow'] },
+              { label: 'Cell', tokens: ['--calendar-slot-cell-size', '--calendar-slot-cell-radius', '--calendar-slot-cell-selected-bg', '--calendar-slot-cell-selected-color'] },
+              { label: 'Navigation', tokens: ['--calendar-slot-nav-size', '--calendar-slot-nav-hover-bg'] },
+              { label: 'Time', tokens: ['--calendar-slot-time-border', '--calendar-slot-time-radius', '--calendar-slot-time-bg'] },
+            ]}
+            code={CODE_CALENDAR}
+          >
+            <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap', alignItems: 'flex-start' }}>
+              <div>
+                <p style={{ margin: '0 0 8px', fontSize: 13, fontWeight: 500, color: 'var(--copy-slot-secondary)' }}>Date only</p>
+                <TitanCalendar defaultValue={today(getLocalTimeZone())} />
+              </div>
+              <div>
+                <p style={{ margin: '0 0 8px', fontSize: 13, fontWeight: 500, color: 'var(--copy-slot-secondary)' }}>With time</p>
+                <TitanCalendar showTime defaultValue={today(getLocalTimeZone())} />
+              </div>
             </div>
           </ShowcaseCard>
 

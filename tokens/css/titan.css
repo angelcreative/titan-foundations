@@ -2247,6 +2247,44 @@
   --progress-slot-value-color: var(--copy-slot-secondary);
 
   /* ====================================================================== */
+  /* COMPONENT: CALENDAR                                                    */
+  /* ====================================================================== */
+  --calendar-slot-bg: var(--surface-slot-bg);
+  --calendar-slot-border: var(--card-slot-border);
+  --calendar-slot-radius: var(--radius-slot-card);
+  --calendar-slot-shadow: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.08));
+  --calendar-slot-padding: var(--spacing-l);
+
+  --calendar-slot-nav-size: 32px;
+  --calendar-slot-nav-radius: var(--rounded-full);
+  --calendar-slot-nav-color: var(--copy-slot-body);
+  --calendar-slot-nav-hover-bg: var(--color-black-100);
+
+  --calendar-slot-select-bg: var(--surface-slot-bg);
+  --calendar-slot-select-border: var(--input-border);
+  --calendar-slot-select-radius: var(--radius-slot-control);
+  --calendar-slot-select-color: var(--copy-slot-body);
+
+  --calendar-slot-header-color: var(--copy-slot-secondary);
+  --calendar-slot-header-weight: var(--font-weight-600);
+
+  --calendar-slot-cell-size: 40px;
+  --calendar-slot-cell-radius: var(--rounded-full);
+  --calendar-slot-cell-color: var(--copy-slot-body);
+  --calendar-slot-cell-hover-bg: var(--color-black-100);
+  --calendar-slot-cell-selected-bg: var(--button-primary-slot-bg);
+  --calendar-slot-cell-selected-color: var(--color-white-900);
+  --calendar-slot-cell-today-border: var(--button-primary-slot-bg);
+  --calendar-slot-cell-outside-color: var(--copy-slot-disabled);
+  --calendar-slot-cell-disabled-color: var(--color-disabled-300);
+
+  --calendar-slot-time-border: var(--input-border);
+  --calendar-slot-time-radius: var(--radius-slot-control);
+  --calendar-slot-time-bg: var(--surface-slot-bg);
+  --calendar-slot-time-color: var(--copy-slot-body);
+  --calendar-slot-time-label-color: var(--copy-slot-secondary);
+
+  /* ====================================================================== */
   /* COMPONENT: TEXT FIELD (alias to INPUT for newer API)                    */
   /* ====================================================================== */
   --textfield-height: var(--input-height);

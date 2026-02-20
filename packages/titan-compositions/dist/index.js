@@ -1073,10 +1073,166 @@ function TitanProgressBar({
     }
   );
 }
+
+// src/TitanCalendar.tsx
+import { useMemo, useState as useState2 } from "react";
+import {
+  Button as Button12,
+  Calendar,
+  CalendarCell,
+  CalendarGrid,
+  CalendarGridBody,
+  CalendarGridHeader,
+  CalendarHeaderCell
+} from "react-aria-components";
+import {
+  today,
+  getLocalTimeZone
+} from "@internationalized/date";
+import { jsx as jsx24, jsxs as jsxs22 } from "react/jsx-runtime";
+var ChevronLeft4 = () => /* @__PURE__ */ jsx24("svg", { width: "16", height: "16", viewBox: "0 0 16 16", fill: "none", "aria-hidden": "true", children: /* @__PURE__ */ jsx24("path", { d: "M10 12L6 8l4-4", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }) });
+var ChevronRight6 = () => /* @__PURE__ */ jsx24("svg", { width: "16", height: "16", viewBox: "0 0 16 16", fill: "none", "aria-hidden": "true", children: /* @__PURE__ */ jsx24("path", { d: "M6 4l4 4-4 4", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }) });
+var SelectChevron = () => /* @__PURE__ */ jsx24("svg", { className: "calendar-select-chevron", width: "12", height: "12", viewBox: "0 0 12 12", fill: "none", "aria-hidden": "true", children: /* @__PURE__ */ jsx24("path", { d: "M3 4.5L6 7.5L9 4.5", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" }) });
+function TitanCalendar({
+  defaultValue,
+  value,
+  onChange,
+  showTime = false,
+  defaultHour = 1,
+  defaultMinute = 0,
+  onTimeChange,
+  minValue,
+  maxValue,
+  isDisabled = false,
+  className = ""
+}) {
+  const tz = getLocalTimeZone();
+  const initial = value ?? defaultValue ?? today(tz);
+  const [focusedDate, setFocusedDate] = useState2(initial);
+  const [hour, setHour] = useState2(defaultHour);
+  const [minute, setMinute] = useState2(defaultMinute);
+  const months = useMemo(() => {
+    const fmt = new Intl.DateTimeFormat(void 0, { month: "long" });
+    return Array.from({ length: 12 }, (_, i) => ({
+      value: i + 1,
+      label: fmt.format(new Date(2024, i, 1))
+    }));
+  }, []);
+  const years = useMemo(() => {
+    const y = today(tz).year;
+    return Array.from({ length: 201 }, (_, i) => y - 100 + i);
+  }, [tz]);
+  return /* @__PURE__ */ jsxs22("div", { className: `calendar-wrapper ${className}`.trim(), children: [
+    /* @__PURE__ */ jsxs22(
+      Calendar,
+      {
+        "aria-label": "Calendar",
+        focusedValue: focusedDate,
+        onFocusChange: setFocusedDate,
+        defaultValue,
+        value,
+        onChange,
+        minValue,
+        maxValue,
+        isDisabled,
+        children: [
+          /* @__PURE__ */ jsxs22("header", { className: "calendar-header", children: [
+            /* @__PURE__ */ jsx24(Button12, { slot: "previous", className: "calendar-nav-btn", children: /* @__PURE__ */ jsx24(ChevronLeft4, {}) }),
+            /* @__PURE__ */ jsxs22("div", { className: "calendar-selects", children: [
+              /* @__PURE__ */ jsxs22("div", { className: "calendar-select-wrap", children: [
+                /* @__PURE__ */ jsx24(
+                  "select",
+                  {
+                    className: "calendar-select",
+                    value: focusedDate.month,
+                    onChange: (e) => setFocusedDate(focusedDate.set({ month: +e.target.value })),
+                    children: months.map((m) => /* @__PURE__ */ jsx24("option", { value: m.value, children: m.label }, m.value))
+                  }
+                ),
+                /* @__PURE__ */ jsx24(SelectChevron, {})
+              ] }),
+              /* @__PURE__ */ jsxs22("div", { className: "calendar-select-wrap", children: [
+                /* @__PURE__ */ jsx24(
+                  "select",
+                  {
+                    className: "calendar-select calendar-select-year",
+                    value: focusedDate.year,
+                    onChange: (e) => setFocusedDate(focusedDate.set({ year: +e.target.value })),
+                    children: years.map((y) => /* @__PURE__ */ jsx24("option", { value: y, children: y }, y))
+                  }
+                ),
+                /* @__PURE__ */ jsx24(SelectChevron, {})
+              ] })
+            ] }),
+            /* @__PURE__ */ jsx24(Button12, { slot: "next", className: "calendar-nav-btn", children: /* @__PURE__ */ jsx24(ChevronRight6, {}) })
+          ] }),
+          /* @__PURE__ */ jsxs22(CalendarGrid, { className: "calendar-grid", children: [
+            /* @__PURE__ */ jsx24(CalendarGridHeader, { children: (day) => /* @__PURE__ */ jsx24(CalendarHeaderCell, { className: "calendar-header-cell" }) }),
+            /* @__PURE__ */ jsx24(CalendarGridBody, { children: (date) => /* @__PURE__ */ jsx24(CalendarCell, { date, className: "calendar-cell" }) })
+          ] })
+        ]
+      }
+    ),
+    showTime && /* @__PURE__ */ jsxs22("div", { className: "calendar-time", children: [
+      /* @__PURE__ */ jsxs22("div", { className: "calendar-time-field", children: [
+        /* @__PURE__ */ jsx24("label", { className: "calendar-time-label", children: "Hour" }),
+        /* @__PURE__ */ jsx24(
+          "input",
+          {
+            type: "text",
+            inputMode: "numeric",
+            className: "calendar-time-input",
+            value: String(hour).padStart(2, "0"),
+            onChange: (e) => {
+              const raw = e.target.value.replace(/\D/g, "");
+              if (raw === "") {
+                setHour(0);
+                onTimeChange?.(0, minute);
+                return;
+              }
+              const n = Math.min(23, parseInt(raw, 10));
+              if (!isNaN(n)) {
+                setHour(n);
+                onTimeChange?.(n, minute);
+              }
+            }
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsx24("span", { className: "calendar-time-separator", children: ":" }),
+      /* @__PURE__ */ jsxs22("div", { className: "calendar-time-field", children: [
+        /* @__PURE__ */ jsx24("label", { className: "calendar-time-label", children: "Minute" }),
+        /* @__PURE__ */ jsx24(
+          "input",
+          {
+            type: "text",
+            inputMode: "numeric",
+            className: "calendar-time-input",
+            value: String(minute).padStart(2, "0"),
+            onChange: (e) => {
+              const raw = e.target.value.replace(/\D/g, "");
+              if (raw === "") {
+                setMinute(0);
+                onTimeChange?.(hour, 0);
+                return;
+              }
+              const n = Math.min(59, parseInt(raw, 10));
+              if (!isNaN(n)) {
+                setMinute(n);
+                onTimeChange?.(hour, n);
+              }
+            }
+          }
+        )
+      ] })
+    ] })
+  ] });
+}
 export {
   TitanBorderlessTable,
   TitanBreadcrumb,
   TitanButton,
+  TitanCalendar,
   TitanCard,
   TitanCardGrid,
   TitanCheckboxField,
