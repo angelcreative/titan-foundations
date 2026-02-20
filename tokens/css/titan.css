@@ -2249,7 +2249,7 @@
   /* ====================================================================== */
   /* COMPONENT: CALENDAR                                                    */
   /* ====================================================================== */
-  --calendar-slot-bg: var(--surface-slot-bg);
+  --calendar-slot-bg: var(--surface-0, #fff);
   --calendar-slot-border: var(--card-slot-border);
   --calendar-slot-radius: var(--radius-slot-card);
   --calendar-slot-shadow: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.08));
@@ -2260,7 +2260,7 @@
   --calendar-slot-nav-color: var(--copy-slot-body);
   --calendar-slot-nav-hover-bg: var(--color-black-100);
 
-  --calendar-slot-select-bg: var(--surface-slot-bg);
+  --calendar-slot-select-bg: var(--surface-0, #fff);
   --calendar-slot-select-border: var(--input-border);
   --calendar-slot-select-radius: var(--radius-slot-control);
   --calendar-slot-select-color: var(--copy-slot-body);
@@ -2269,7 +2269,7 @@
   --calendar-slot-header-weight: var(--font-weight-600);
 
   --calendar-slot-cell-size: 40px;
-  --calendar-slot-cell-radius: var(--rounded-full);
+  --calendar-slot-cell-radius: 8px;
   --calendar-slot-cell-color: var(--copy-slot-body);
   --calendar-slot-cell-hover-bg: var(--color-black-100);
   --calendar-slot-cell-selected-bg: var(--button-primary-slot-bg);
@@ -2280,7 +2280,7 @@
 
   --calendar-slot-time-border: var(--input-border);
   --calendar-slot-time-radius: var(--radius-slot-control);
-  --calendar-slot-time-bg: var(--surface-slot-bg);
+  --calendar-slot-time-bg: var(--surface-0, #fff);
   --calendar-slot-time-color: var(--copy-slot-body);
   --calendar-slot-time-label-color: var(--copy-slot-secondary);
 

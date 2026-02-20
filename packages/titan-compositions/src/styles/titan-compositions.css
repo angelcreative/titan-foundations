@@ -2136,7 +2136,7 @@
   margin: 0;
   padding: var(--spacing-3xs) 0;
   list-style: none;
-  background: var(--calendar-slot-bg);
+  background: var(--calendar-slot-bg, #fff);
   border: 1px solid var(--calendar-slot-border);
   border-radius: var(--calendar-slot-select-radius);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
