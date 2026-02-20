@@ -26,13 +26,26 @@ body {
   overflow: hidden;
 }
 
-/* ── Top navigation tabs ─────────────────────────────────────────────── */
+/* ── Top bar (title + tabs) ──────────────────────────────────────────── */
+.app-top-bar {
+  flex-shrink: 0;
+  background: var(--surface-slot-bg);
+  border-bottom: 1px solid var(--divider-strong);
+}
+
+.app-top-title {
+  margin: 0;
+  padding: var(--spacing-m) var(--spacing-xl) 0;
+  font-size: var(--font-size-l);
+  line-height: var(--font-leading-l);
+  font-weight: var(--text-weight-semibold);
+  color: var(--copy-slot-primary);
+}
+
 .app-top-nav {
   display: flex;
   gap: 0;
-  border-bottom: 1px solid var(--divider-strong);
-  background: var(--surface-slot-bg);
-  flex-shrink: 0;
+  padding: 0 var(--spacing-xl);
 }
 
 .app-top-tab {

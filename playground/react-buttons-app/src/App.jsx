@@ -1070,7 +1070,9 @@ function App() {
 
   return (
     <>
-      <div className="app-top-nav">
+      <div className="app-top-bar">
+        <h1 className="app-top-title">Titan Design System MCP</h1>
+        <div className="app-top-nav">
         <button
           className={`app-top-tab${activeView === 'components' ? ' app-top-tab-active' : ''}`}
           onClick={() => setActiveView('components')}
@@ -1079,6 +1081,7 @@ function App() {
           className={`app-top-tab${activeView === 'setup' ? ' app-top-tab-active' : ''}`}
           onClick={() => setActiveView('setup')}
         >How to set up Titan</button>
+        </div>
       </div>
 
       {activeView === 'setup' ? (
