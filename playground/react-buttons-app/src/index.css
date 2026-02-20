@@ -35,7 +35,7 @@ body {
 
 .app-top-title {
   margin: 0;
-  padding: var(--spacing-m) var(--spacing-xl) 0;
+  padding: 64px var(--spacing-xl) 64px;
   font-size: var(--font-size-l);
   line-height: var(--font-leading-l);
   font-weight: var(--text-weight-semibold);
