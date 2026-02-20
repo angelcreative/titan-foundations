@@ -15,11 +15,11 @@ html[data-theme="insights"] {
 	--border-interactive: var(--color-blueberry-300);
 
 	/* Text */
-	--text-disabled: var(--color-disabled-400);
+	--text-disabled: var(--color-disabled-500);
 	--text-error-primary: var(--color-error-600);
 	--text-error-primary-active: var(--color-error-800);
 	--text-error-primary-hover: var(--color-error-700);
-	--text-icon-disabled: var(--color-disabled-400);
+	--text-icon-disabled: var(--color-disabled-500);
 	--text-icon-on-color: var(--color-black-100);
 	--text-icon-secondary: var(--color-blueberry-600);
 	--text-icon-secondary-active: var(--color-blueberry-400);
@@ -59,7 +59,7 @@ html[data-theme="insights"] {
 	--text-on-button-primary: var(--text-on-primary);
 	--text-button-color: var(--color-blueberry-600);
 	--text-button-hover-color: var(--color-blueberry-500);
-	--text-button-active-color: var(--color-blueberry-400);
+	--text-button-active-color: var(--color-blueberry-700);
 	--text-button-neutral-color: var(--color-steel-900);
 	--text-button-neutral-hover-color: var(--color-steel-800);
 	--text-button-neutral-active-color: var(--color-steel-700);
@@ -98,7 +98,7 @@ html[data-theme="insights"] {
 	--checkbox-selected-border: var(--color-blueberry-600);
 	--checkbox-selected-background: var(--color-blueberry-600);
 	--checkbox-selected-background-hover: var(--color-blueberry-500);
-	--checkbox-selected-background-disabled: var(--color-disabled-200);
+	--checkbox-selected-background-disabled: var(--color-disabled-300);
 
 	/* Radio */
 	--radio-button-size: 20px;
@@ -107,7 +107,7 @@ html[data-theme="insights"] {
 	--radio-button-border-focus: var(--color-information-600);
 	--radio-button-border-disabled: var(--color-disabled-200);
 	--radio-button-border-error: var(--color-error-600);
-	--radio-button-disabled: var(--color-disabled-400);
+	--radio-button-disabled: var(--color-disabled-500);
 	--radio-button-selected-border: var(--color-blueberry-600);
 	--radio-button-selected-border-hover: var(--color-blueberry-500);
 	--radio-button-alert-message-color: var(--color-error-600);
@@ -117,6 +117,9 @@ html[data-theme="insights"] {
 	--pagination-color: var(--color-steel-900);
 	--pagination-page-button-background-hover: var(--color-steel-10);
 	--pagination-page-button-background-active: var(--color-steel-40);
+
+	/* Select / Menu trigger chevron: same shade as menu button (brand) */
+	--select-slot-chevron: var(--text-button-color);
 
 	/* Menu */
 	--menu-min-width: 230px;
@@ -128,8 +131,8 @@ html[data-theme="insights"] {
 	--menu-item-hover: var(--color-steel-100);
 	--menu-item-pressed: var(--color-steel-200);
 	--menu-item-selected: var(--color-steel-300);
-	--menu-item-disabled: var(--color-disabled-400);
-	--menu-item-disabled-icon: var(--color-disabled-400);
+	--menu-item-disabled: var(--color-disabled-500);
+	--menu-item-disabled-icon: var(--color-disabled-500);
 	--menu-item-icon: var(--color-steel-700);
 	--menu-destructive-item-hover: var(--color-error-100);
 	--menu-destructive-item-pressed: var(--color-error-200);
@@ -158,8 +161,8 @@ html[data-theme="insights"] {
 	--button-group-selected-icon-color: var(--color-blueberry-700);
 	--button-group-selected-background: var(--color-blueberry-100);
 	--button-group-selected-color: var(--color-blueberry-800);
-	--button-group-disabled-color: var(--color-disabled-400);
-	--button-group-disabled-icon-color: var(--color-disabled-300);
+	--button-group-disabled-color: var(--color-disabled-500);
+	--button-group-disabled-icon-color: var(--color-disabled-400);
 
 	/* Label */
 	--label-color: var(--color-steel-800);
@@ -182,10 +185,10 @@ html[data-theme="insights"] {
 	/* Link */
 	--link-color: var(--color-blueberry-700);
 	--link-visited-color: var(--color-blueberry-900);
-	--link-disabled-color: var(--color-disabled-400);
+	--link-disabled-color: var(--color-disabled-500);
 	--link-icon-color: var(--color-blueberry-600);
 	--link-visited-icon-color: var(--color-blueberry-800);
-	--link-disabled-icon-color: var(--color-disabled-300);
+	--link-disabled-icon-color: var(--color-disabled-400);
 
 	/* Toggle */
 	--toggle-color: var(--color-steel-900);
@@ -201,21 +204,21 @@ html[data-theme="insights"] {
 	/* Text Input */
 	--input-placeholder-text: var(--color-steel-400);
 	--input-field-text: var(--color-steel-800);
-	--input-disabled-text: var(--color-disabled-200);
+	--input-disabled-text: var(--color-disabled-500);
 	--input-background: var(--color-white-900);
 	--input-stroke: var(--color-steel-300);
 	--input-stroke-hover: var(--color-blueberry-600);
 	--input-stroke-focus: var(--color-steel-800);
 	--input-stroke-focus-visible: var(--color-information-600);
 	--input-stroke-error: var(--color-error-700);
-	--input-stroke-disabled: var(--color-disabled-200);
+	--input-stroke-disabled: var(--color-disabled-500);
 	--input-icon: var(--color-steel-300);
 	--input-icon-focus: var(--color-steel-700);
 	--input-icon-error: var(--color-error-400);
-	--input-icon-disabled: var(--color-disabled-200);
+	--input-icon-disabled: var(--color-disabled-500);
 	--input-element: var(--color-steel-600);
 	--input-element-error: var(--color-error-500);
-	--input-element-disabled: var(--color-disabled-200);
+	--input-element-disabled: var(--color-disabled-500);
 
 	/* Review-state extensions */
 	--interactive-icon-button-bg: var(--button-secondary);
@@ -224,21 +227,21 @@ html[data-theme="insights"] {
 	--interactive-icon-button-bg-fallback: var(--color-black-100);
 	--interactive-icon-button-radius: 9999px;
 	--interactive-icon-button-icon: var(--text-button-color);
-	--interactive-icon-button-icon-disabled: var(--color-disabled-400);
+	--interactive-icon-button-icon-disabled: var(--color-disabled-500);
 
 	--select-listbox-item-disabled-background: transparent;
-	--select-listbox-item-disabled-color: var(--color-disabled-400);
-	--select-listbox-item-disabled-icon: var(--color-disabled-400);
+	--select-listbox-item-disabled-color: var(--color-disabled-500);
+	--select-listbox-item-disabled-icon: var(--color-disabled-500);
 
 	--tab-hover-background: var(--color-blueberry-100);
 	--tab-disabled-background: transparent;
-	--tab-disabled-text: var(--color-disabled-400);
+	--tab-disabled-text: var(--color-disabled-500);
 
 	--pagination-page-button-background-selected: var(--pagination-page-button-background-active);
 	--pagination-page-button-background-disabled: transparent;
-	--pagination-page-button-color-disabled: var(--color-disabled-400);
+	--pagination-page-button-color-disabled: var(--color-disabled-500);
 
-	--drawer-close-icon-disabled: var(--color-disabled-400);
+	--drawer-close-icon-disabled: var(--color-disabled-500);
 
 	--table-sort-icon-default: var(--color-steel-500);
 	--table-sort-icon-hover: var(--text-secondary);

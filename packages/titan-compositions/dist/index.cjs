@@ -49,7 +49,10 @@ __export(index_exports, {
   TitanToggleButtonGroup: () => TitanToggleButtonGroup,
   TitanTooltip: () => TitanTooltip,
   TitanTwoUpOneDownLayout: () => TitanTwoUpOneDownLayout,
-  getToneStyle: () => getToneStyle
+  getToneStyle: () => getToneStyle,
+  registerFallbackIcons: () => registerFallbackIcons,
+  renderIconNode: () => renderIconNode,
+  resolveIcon: () => resolveIcon
 });
 module.exports = __toCommonJS(index_exports);
 
@@ -441,15 +444,50 @@ function TitanDialog({
 // src/TitanTooltip.tsx
 var import_react_aria_components11 = require("react-aria-components");
 var import_jsx_runtime12 = require("react/jsx-runtime");
+function toAriaPlacement(p) {
+  return p.replace(/\s+/, "-");
+}
+function TooltipContent({
+  content,
+  title,
+  body
+}) {
+  const useTitleBody = title != null || body != null;
+  if (useTitleBody) {
+    return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_jsx_runtime12.Fragment, { children: [
+      title != null && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { className: "tooltip-title", children: title }),
+      body != null && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { className: "tooltip-body", children: body })
+    ] });
+  }
+  return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_jsx_runtime12.Fragment, { children: content });
+}
 function TitanTooltip({
   content,
+  title,
+  body,
   children,
   delay = 0,
-  closeDelay = 0
+  closeDelay = 0,
+  placement = "top",
+  shouldFlip = true
 }) {
+  const hasContent = content != null || title != null || body != null;
+  if (!hasContent) return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_jsx_runtime12.Fragment, { children });
   return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_react_aria_components11.TooltipTrigger, { delay, closeDelay, children: [
     children,
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_react_aria_components11.Tooltip, { className: "tooltip-box", children: content })
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
+      import_react_aria_components11.Tooltip,
+      {
+        className: "tooltip-box",
+        placement: toAriaPlacement(placement),
+        shouldFlip,
+        offset: 8,
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_react_aria_components11.OverlayArrow, { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("svg", { width: 10, height: 6, viewBox: "0 0 10 6", "aria-hidden": true, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("path", { d: "M0 0 L5 6 L10 0 Z", fill: "var(--tooltip-slot-bg)" }) }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(TooltipContent, { content, title, body })
+        ]
+      }
+    )
   ] });
 }
 
@@ -689,11 +727,103 @@ function TitanToggleButtonGroup({
 }
 
 // src/TitanSidebar.tsx
-var import_react = require("react");
+var import_react2 = require("react");
 var import_react_aria_components16 = require("react-aria-components");
+var import_lucide_react11 = require("lucide-react");
+
+// src/icons/renderIconNode.tsx
+var import_react = require("react");
+
+// src/icons/normalizeIconName.ts
+function normalizeIconName(name) {
+  const trimmed = name.trim();
+  if (!trimmed) return "";
+  return trimmed.replace(/\s+/g, "-").replace(/([a-z])([A-Z])/g, "$1-$2").replace(/([A-Z])([A-Z][a-z])/g, "$1-$2").toLowerCase().replace(/[^a-z0-9-]/g, "");
+}
+var ALIASES = {
+  "empty-box": "box",
+  "emptybox": "box",
+  "caja-vacia": "box",
+  "inbox": "inbox",
+  "threads": "threads"
+};
+function resolveIconAlias(normalized) {
+  return ALIASES[normalized] ?? normalized;
+}
+
+// src/icons/lucideRegistry.ts
 var import_lucide_react10 = require("lucide-react");
+var LUCIDE_REGISTRY = {
+  "bell": import_lucide_react10.Bell,
+  "bell-ring": import_lucide_react10.BellRing,
+  "box": import_lucide_react10.Box,
+  "check": import_lucide_react10.Check,
+  "chevron-down": import_lucide_react10.ChevronDown,
+  "chevron-left": import_lucide_react10.ChevronLeft,
+  "chevron-right": import_lucide_react10.ChevronRight,
+  "circle-help": import_lucide_react10.CircleHelp,
+  "grip": import_lucide_react10.Grip,
+  "handshake": import_lucide_react10.Handshake,
+  "hash": import_lucide_react10.Hash,
+  "info": import_lucide_react10.Info,
+  "layers": import_lucide_react10.Layers,
+  "layout-dashboard": import_lucide_react10.LayoutDashboard,
+  "list-filter": import_lucide_react10.ListFilter,
+  "loader": import_lucide_react10.Loader2,
+  "loader-2": import_lucide_react10.Loader2,
+  "message-square": import_lucide_react10.MessageSquare,
+  "mouse-pointer-click": import_lucide_react10.MousePointerClick,
+  "navigation": import_lucide_react10.Navigation,
+  "panel-left": import_lucide_react10.PanelLeft,
+  "panel-right": import_lucide_react10.PanelRight,
+  "search": import_lucide_react10.Search,
+  "settings": import_lucide_react10.Settings,
+  "sparkles": import_lucide_react10.Sparkles,
+  "tag": import_lucide_react10.Tag,
+  "text-cursor-input": import_lucide_react10.TextCursorInput,
+  "toggle-left": import_lucide_react10.ToggleLeft,
+  "type": import_lucide_react10.Type,
+  "x": import_lucide_react10.X
+};
+
+// src/icons/resolveIcon.ts
+var fallbackRegistry = {};
+function registerFallbackIcons(map) {
+  for (const [key, component] of Object.entries(map)) {
+    const normalized = normalizeIconName(key);
+    if (normalized) fallbackRegistry[normalized] = component;
+  }
+}
+function resolveIcon(name) {
+  const normalized = normalizeIconName(name);
+  if (!normalized) return null;
+  const canonical = resolveIconAlias(normalized);
+  const fromLucide = LUCIDE_REGISTRY[canonical];
+  if (fromLucide) return fromLucide;
+  const fromFallback = fallbackRegistry[canonical] ?? fallbackRegistry[normalized];
+  if (fromFallback) return fromFallback;
+  return null;
+}
+
+// src/icons/renderIconNode.tsx
+function isComponentType(value) {
+  return typeof value === "function" || typeof value === "object" && value !== null && "$$typeof" in value;
+}
+function renderIconNode(icon, props) {
+  if (icon == null) return null;
+  if (typeof icon === "string") {
+    const Resolved = resolveIcon(icon);
+    if (Resolved) return (0, import_react.createElement)(Resolved, props ?? {});
+    return null;
+  }
+  if ((0, import_react.isValidElement)(icon)) return icon;
+  if (isComponentType(icon)) return (0, import_react.createElement)(icon, props ?? {});
+  return icon;
+}
+
+// src/TitanSidebar.tsx
 var import_jsx_runtime20 = require("react/jsx-runtime");
-var SidebarContext = (0, import_react.createContext)({
+var SidebarContext = (0, import_react2.createContext)({
   collapsed: false,
   activeId: null,
   setActiveId: () => {
@@ -707,12 +837,12 @@ function TitanSidebar({
   onActiveChange,
   children
 }) {
-  const [uncontrolledActiveId, setUncontrolledActiveId] = (0, import_react.useState)(
+  const [uncontrolledActiveId, setUncontrolledActiveId] = (0, import_react2.useState)(
     defaultActiveId ?? null
   );
   const isControlled = controlledActiveId !== void 0;
   const activeId = isControlled ? controlledActiveId : uncontrolledActiveId;
-  const setActiveId = (0, import_react.useCallback)(
+  const setActiveId = (0, import_react2.useCallback)(
     (id) => {
       if (!isControlled) setUncontrolledActiveId(id);
       onActiveChange?.(id);
@@ -731,7 +861,7 @@ function TitanSidebar({
             className: "titan-sidebar-toggle",
             onPress: onToggle,
             "aria-label": collapsed ? "Expand sidebar" : "Collapse sidebar",
-            children: collapsed ? /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(import_lucide_react10.ChevronRight, {}) : /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(import_lucide_react10.ChevronLeft, {})
+            children: collapsed ? /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(import_lucide_react11.ChevronRight, {}) : /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(import_lucide_react11.ChevronLeft, {})
           }
         ),
         children
@@ -744,11 +874,11 @@ function TitanSidebarHeader({ children }) {
 }
 function TitanSidebarItem({
   id,
-  icon: Icon,
+  icon,
   onPress,
   children
 }) {
-  const { collapsed, activeId, setActiveId } = (0, import_react.useContext)(SidebarContext);
+  const { collapsed, activeId, setActiveId } = (0, import_react2.useContext)(SidebarContext);
   const isActive = activeId === id;
   return /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(
     import_react_aria_components16.Button,
@@ -762,7 +892,7 @@ function TitanSidebarItem({
         onPress?.();
       },
       children: [
-        Icon && /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(Icon, {}),
+        icon ? renderIconNode(icon) : null,
         /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("span", { className: "titan-sidebar-item-label", children })
       ]
     }
@@ -835,5 +965,8 @@ function TitanLoader({
   TitanToggleButtonGroup,
   TitanTooltip,
   TitanTwoUpOneDownLayout,
-  getToneStyle
+  getToneStyle,
+  registerFallbackIcons,
+  renderIconNode,
+  resolveIcon
 });

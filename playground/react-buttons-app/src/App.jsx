@@ -21,6 +21,7 @@ import {
   ToggleLeft,
   Table2,
   PanelLeft,
+  PanelTop,
   MousePointerClick,
   ChevronDown,
   ListFilter,
@@ -87,6 +88,7 @@ const INITIAL_PILL_ITEMS = [
 ]
 
 const NAV_ITEMS = [
+  { id: 'navbar', label: 'Navbar', icon: PanelTop },
   { id: 'breadcrumb', label: 'Breadcrumb', icon: Navigation },
   { id: 'cardgrid', label: 'Card Grid + Table', icon: LayoutDashboard },
   { id: 'buttons', label: 'Buttons', icon: MousePointerClick },
@@ -703,6 +705,27 @@ const CODE_LOADER = `export function TitanLoader({ size = 120, label = 'Loading�
   )
 }`
 
+const CODE_NAVBAR = `import { Button } from 'react-aria-components'
+import { Bell, ChevronDown, CircleHelp, Grip, Handshake, Settings, Sparkles } from 'lucide-react'
+
+export function TitanNavbar({ theme = 'insights', userInitial = 'A', logoAlt, logoBasePath, onChangeProduct, onNotifications, onSupport, onHelp, onSettings, onFeaturedAction, onUserMenu }) {
+  const logoFile = THEME_TO_LOGO[theme]
+  return (
+    <header className="navbar" role="banner">
+      <div className="navbar-inner">
+        <div className="navbar-left-group">
+          <Button className="icon-ghost navbar-icon-button" aria-label="Change product" onPress={onChangeProduct}><Grip /></Button>
+          <img className="navbar-logo" src={\`\${logoBasePath}/\${logoFile}\`} alt={logoAlt} />
+        </div>
+        <div className="navbar-right-group">
+          <Button className="icon-ghost navbar-icon-button" aria-label="Notifications" onPress={onNotifications}><Bell /></Button>
+          {/* ... Handshake, CircleHelp, Settings, Sparkles, avatar + chevron ... */}
+        </div>
+      </div>
+    </header>
+  )
+}`
+
 const CODE_SIDEBAR = `import { createContext, useContext, useState, useCallback } from 'react'
 import { Button } from 'react-aria-components'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
@@ -756,6 +779,7 @@ function App() {
   const [toasts, setToasts] = useState([])
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const toastIdRef = useRef(0)
+  const mainScrollRef = useRef(null)
 
   const tableRows = useMemo(
     () => [
@@ -796,7 +820,11 @@ function App() {
   }
 
   function scrollTo(sectionId) {
-    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    const main = mainScrollRef.current
+    const section = document.getElementById(sectionId)
+    if (!main || !section || !main.contains(section)) return
+    const top = section.getBoundingClientRect().top - main.getBoundingClientRect().top + main.scrollTop
+    main.scrollTo({ top, behavior: 'smooth' })
   }
 
   useEffect(() => {
@@ -811,13 +839,11 @@ function App() {
 
   return (
     <>
-      <TitanNavbar theme={theme} userInitial="A" />
-
       <div className="app-layout">
         <TitanSidebar
           collapsed={sidebarCollapsed}
           onToggle={() => setSidebarCollapsed((c) => !c)}
-          defaultActiveId="breadcrumb"
+          defaultActiveId="navbar"
           onActiveChange={scrollTo}
         >
           <TitanSidebarHeader>Components</TitanSidebarHeader>
@@ -828,10 +854,10 @@ function App() {
           ))}
         </TitanSidebar>
 
-        <main className="page">
-          {/* Theme selector */}
+        <main ref={mainScrollRef} className="page">
+          {/* Page title + theme */}
           <section className="card theme-selector-card">
-            <h1>Titan Compositions</h1>
+            <h1>Titan</h1>
             <TitanSelect
               label="Theme"
               options={THEMES.map((t) => ({ id: t, label: t }))}
@@ -839,6 +865,31 @@ function App() {
               onSelectionChange={(key) => setTheme(String(key))}
             />
           </section>
+
+          {/* ── Navbar (composition) ───────────────────────── */}
+          <ShowcaseCard
+            id="navbar"
+            title="Navbar"
+            ariaImports="import { Button } from 'react-aria-components'"
+            ariaDesc="TitanNavbar is a top bar composition: logo + nav actions (notifications, help, settings, etc.) and user menu. Themed via theme prop; logo path configurable."
+            ariaComponents={['Button']}
+            foundations={[
+              { category: 'Sizing', detail: '--navbar-slot-height, --layout-navbar-width, --navbar-slot-logo-max-height.' },
+              { category: 'Surface', detail: '--navbar-slot-bg, --navbar-slot-border.' },
+              { category: 'Spacing', detail: '--navbar-slot-pad-x, --navbar-slot-pad-y.' },
+              { category: 'Typography', detail: 'Logo and actions use button/icon tokens.' },
+            ]}
+            tokenGroups={[
+              { label: 'Container', tokens: ['--navbar-slot-bg', '--navbar-slot-border', '--navbar-slot-height', '--layout-navbar-width'] },
+              { label: 'Logo', tokens: ['--navbar-slot-logo-max-height'] },
+              { label: 'Padding', tokens: ['--navbar-slot-pad-x', '--navbar-slot-pad-y'] },
+            ]}
+            code={CODE_NAVBAR}
+          >
+            <div className="navbar-demo-wrap">
+              <TitanNavbar theme={theme} userInitial="A" />
+            </div>
+          </ShowcaseCard>
 
           {/* ── 1. Breadcrumb ──────────────────────────────── */}
           <ShowcaseCard
@@ -944,6 +995,13 @@ function App() {
               <TitanIconButton variant="secondary" aria-label="Add"><Plus /></TitanIconButton>
               <TitanIconButton variant="ghost" aria-label="Star"><Star /></TitanIconButton>
               <TitanIconButton variant="delete" aria-label="Delete"><Trash2 /></TitanIconButton>
+            </div>
+            <div className="row" style={{ marginTop: 'var(--spacing-s)' }}>
+              <span style={{ fontSize: 'var(--font-size-s)', color: 'var(--copy-slot-secondary)', marginRight: 'var(--spacing-s)' }}>Disabled:</span>
+              <TitanButton variant="primary" isDisabled>Primary</TitanButton>
+              <TitanButton variant="secondary" isDisabled>Secondary</TitanButton>
+              <TitanButton variant="tertiary" isDisabled>Tertiary</TitanButton>
+              <TitanIconButton variant="secondary" aria-label="Add (disabled)" isDisabled><Plus /></TitanIconButton>
             </div>
           </ShowcaseCard>
 
@@ -1101,6 +1159,15 @@ function App() {
                   { id: 'integrations', label: 'Integrations', icon: <Settings />, disabled: true },
                 ]}
               />
+              <TitanSelect
+                label="Disabled select"
+                defaultSelectedKey="one"
+                isDisabled
+                options={[
+                  { id: 'one', label: 'Option one' },
+                  { id: 'two', label: 'Option two' },
+                ]}
+              />
             </div>
           </ShowcaseCard>
 
@@ -1136,6 +1203,20 @@ function App() {
                 { id: 'disabled', label: 'Disabled', content: 'Disabled panel content', disabled: true },
               ]}
             />
+            <div style={{ marginTop: 'var(--spacing-xl)' }}>
+              <h4 style={{ marginBottom: 'var(--spacing-s)', color: 'var(--copy-slot-secondary)' }}>Vertical</h4>
+              <TitanTabs
+                orientation="vertical"
+                defaultSelectedKey="influential"
+                ariaLabel="Section navigation"
+                items={[
+                  { id: 'shared', label: 'Shared', content: 'Shared section content' },
+                  { id: 'influential', label: 'Influential', content: 'Influential section content' },
+                  { id: 'overview-v', label: 'Overview', content: 'Overview section content' },
+                  { id: 'settings', label: 'Settings', content: 'Settings section content' },
+                ]}
+              />
+            </div>
           </ShowcaseCard>
 
           {/* ── 9. Pagination ──────────────────────────────── */}
@@ -1262,6 +1343,9 @@ function App() {
               </TitanTooltip>
               <TitanTooltip content="Helpful context in a tooltip">
                 <TitanIconButton variant="ghost" aria-label="Info"><Info /></TitanIconButton>
+              </TitanTooltip>
+              <TitanTooltip title="Title" body="Something happened">
+                <TitanIconButton variant="ghost" aria-label="Example"><AlertCircle /></TitanIconButton>
               </TitanTooltip>
             </div>
           </ShowcaseCard>
@@ -1402,6 +1486,7 @@ function App() {
                 errorMessage="Enter a valid business email."
                 isInvalid
               />
+              <TitanInputField label="Disabled input" placeholder="Cannot edit" isDisabled defaultValue="Disabled value" />
             </div>
           </ShowcaseCard>
 

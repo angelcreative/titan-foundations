@@ -647,7 +647,7 @@
   --text-body: var(--color-steel-800);
   --text-muted: var(--color-steel-600);
   --text-subtle: var(--color-steel-500);
-  --text-disabled: var(--color-disabled-400);
+  --text-disabled: var(--color-disabled-500);
 
   --text-on-surface: var(--color-steel-900);
   --text-on-inverse: var(--color-white-900);
@@ -664,7 +664,7 @@
   --icon-primary: var(--color-steel-800);
   --icon-secondary: var(--color-steel-700);
   --icon-muted: var(--color-steel-600);
-  --icon-disabled: var(--color-disabled-400);
+  --icon-disabled: var(--color-disabled-500);
   --icon-on-color: var(--color-white-900);
 
   /* Lucide icon defaults (size / box / stroke) */
@@ -938,13 +938,13 @@
   --copy-primary: var(--color-steel-900);
   --copy-secondary: var(--color-steel-800);
   --copy-muted: var(--color-steel-600);
-  --copy-disabled: var(--color-disabled-400);
+  --copy-disabled: var(--color-disabled-500);
 
   /* Icons default: STEEL */
   --icon-primary: var(--color-steel-800);
   --icon-secondary: var(--color-steel-700);
   --icon-muted: var(--color-steel-600);
-  --icon-disabled: var(--color-disabled-400);
+  --icon-disabled: var(--color-disabled-500);
   --icon-on-color: var(--color-white-900);
 
   /* Base typography */
@@ -1427,7 +1427,7 @@
   --icon-slot-primary: var(--color-steel-800);
   --icon-slot-secondary: var(--color-steel-700);
   --icon-slot-muted: var(--color-steel-600);
-  --icon-slot-disabled: var(--color-disabled-400);
+  --icon-slot-disabled: var(--color-disabled-500);
   --icon-slot-on-color: var(--color-white-900);
 
   /* ====================================================================== */
@@ -1436,7 +1436,7 @@
   --copy-slot-title: var(--color-steel-900);
   --copy-slot-body: var(--color-steel-800);
   --copy-slot-muted: var(--color-steel-600);
-  --copy-slot-disabled: var(--color-disabled-400);
+  --copy-slot-disabled: var(--color-disabled-500);
 
   /* ====================================================================== */
   /* LAYOUT (slots)                                                          */
@@ -1466,6 +1466,7 @@
   --navbar-slot-logo-max-height: 30px;
   --navbar-slot-pad-x: var(--spacing-l);
   --navbar-slot-pad-y: var(--spacing-s);
+  --navbar-slot-icon-size: 20px;
 
   --navbar-item-slot-height: 40px;
   --navbar-item-slot-radius: var(--radius-slot-control);
@@ -1549,7 +1550,7 @@
   --drawer-close-slot-bg-hover: var(--surface-slot-hover);
   --drawer-close-slot-bg-active: var(--surface-slot-pressed);
   --drawer-close-slot-icon: var(--icon-slot-secondary);
-  --drawer-close-slot-icon-disabled: var(--drawer-close-icon-disabled, var(--color-disabled-400));
+  --drawer-close-slot-icon-disabled: var(--drawer-close-icon-disabled, var(--color-disabled-500));
   --drawer-close-slot-size: var(--icon-box-m);
 
   /* ====================================================================== */
@@ -1664,7 +1665,7 @@
   --button-icon-interactive-slot-bg-fallback: var(--interactive-icon-button-bg-fallback, var(--color-black-100));
   --button-icon-interactive-slot-radius: var(--interactive-icon-button-radius, 9999px);
   --button-icon-interactive-slot-icon: var(--interactive-icon-button-icon, var(--text-button-color));
-  --button-icon-interactive-slot-icon-disabled: var(--interactive-icon-button-icon-disabled, var(--color-disabled-400));
+  --button-icon-interactive-slot-icon-disabled: var(--interactive-icon-button-icon-disabled, var(--color-disabled-500));
 
   /* Focus */
   --button-slot-focus-color: var(--focus-slot-color);
@@ -1763,6 +1764,8 @@
   --select-slot-button-pad-x: var(--spacing-m);
   --select-slot-button-gap: var(--spacing-3xs);
   --select-slot-chevron: var(--icon-slot-muted);
+  --select-slot-button-color-open: var(--text-button-active-color);
+  --select-slot-chevron-open: var(--text-button-active-color);
 
   --select-slot-popover-bg: var(--color-white-900);
   --select-slot-popover-color: var(--select-popover-color);
@@ -1779,15 +1782,15 @@
   --select-slot-item-bg-selected: var(--select-listbox-item-selected-background);
   --select-slot-item-bg-disabled: var(--select-listbox-item-disabled-background, transparent);
   --select-slot-item-color: var(--copy-slot-body);
-  --select-slot-item-color-disabled: var(--select-listbox-item-disabled-color, var(--color-disabled-400));
+  --select-slot-item-color-disabled: var(--select-listbox-item-disabled-color, var(--color-disabled-500));
   --select-slot-item-icon: var(--icon-slot-secondary);
-  --select-slot-item-icon-disabled: var(--select-listbox-item-disabled-icon, var(--color-disabled-400));
+  --select-slot-item-icon-disabled: var(--select-listbox-item-disabled-icon, var(--color-disabled-500));
 
   /* ====================================================================== */
   /* COMPONENT: CHECKBOX                                                     */
   /* ====================================================================== */
   --checkbox-slot-size: 20px;
-  --checkbox-slot-radius: var(--radius-slot-control);
+  --checkbox-slot-radius: var(--rounded-xs);
   --checkbox-slot-bg: var(--checkbox-background);
   --checkbox-slot-check: var(--checkbox-checkmark);
 
@@ -1873,7 +1876,7 @@
   --tab-slot-color: var(--tab-text);
   --tab-slot-color-selected: var(--tab-text-selected);
   --tab-slot-border-selected: var(--tab-border-selected, var(--tab-text-selected));
-  --tab-slot-color-disabled: var(--tab-disabled-text, var(--color-disabled-400));
+  --tab-slot-color-disabled: var(--tab-disabled-text, var(--color-disabled-500));
 
   /* ====================================================================== */
   /* COMPONENT: TABLE (borderless; th/td bottom only)                         */
@@ -1911,7 +1914,7 @@
   --pagination-slot-page-active-bg: var(--pagination-page-button-background-active);
   --pagination-slot-page-selected-bg: var(--pagination-page-button-background-selected, var(--pagination-page-button-background-active));
   --pagination-slot-page-disabled-bg: var(--pagination-page-button-background-disabled, transparent);
-  --pagination-slot-page-disabled-color: var(--pagination-page-button-color-disabled, var(--color-disabled-400));
+  --pagination-slot-page-disabled-color: var(--pagination-page-button-color-disabled, var(--color-disabled-500));
 
   /* ====================================================================== */
   /* COMPONENT: LINK                                                         */
@@ -2213,7 +2216,7 @@
   --sidebar-slot-header-font-size: var(--font-size-xs);
   --sidebar-slot-header-font-weight: var(--font-weight-600);
 
-  --sidebar-slot-icon-size: 20px;
+  --sidebar-slot-icon-size: var(--icon-size-m);
 
   /* ====================================================================== */
   /* COMPONENT: TEXT FIELD (alias to INPUT for newer API)                    */

@@ -1,6 +1,7 @@
 import * as react_jsx_runtime from 'react/jsx-runtime';
 import { ReactNode, CSSProperties, Key, ComponentType } from 'react';
 import { ButtonProps, TextFieldProps } from 'react-aria-components';
+import { LucideIcon } from 'lucide-react';
 
 interface TitanBreadcrumbItem {
     id: string;
@@ -158,13 +159,23 @@ interface TitanDialogProps {
 }
 declare function TitanDialog({ triggerLabel, title, body, leftAction, rightAction, }: TitanDialogProps): react_jsx_runtime.JSX.Element;
 
+type TitanTooltipPlacement = 'top' | 'top start' | 'top end' | 'bottom' | 'bottom start' | 'bottom end' | 'left' | 'left start' | 'left end' | 'right' | 'right start' | 'right end';
 interface TitanTooltipProps {
-    content: ReactNode;
+    /** Single content (body only). Use when no title/body variant is needed. */
+    content?: ReactNode;
+    /** Title line (bold, prominent). Use with body for the title+body variant. */
+    title?: ReactNode;
+    /** Body text (below title). Use with title for the title+body variant. */
+    body?: ReactNode;
     children: ReactNode;
     delay?: number;
     closeDelay?: number;
+    /** Preferred placement; defaults to "top". Tooltip flips to stay in viewport when shouldFlip is true. */
+    placement?: TitanTooltipPlacement;
+    /** Flip placement when there is not enough space; default true. */
+    shouldFlip?: boolean;
 }
-declare function TitanTooltip({ content, children, delay, closeDelay, }: TitanTooltipProps): react_jsx_runtime.JSX.Element;
+declare function TitanTooltip({ content, title, body, children, delay, closeDelay, placement, shouldFlip, }: TitanTooltipProps): react_jsx_runtime.JSX.Element;
 
 type TitanToastVariant = 'success' | 'error' | 'info' | 'warning';
 interface TitanToastItem {
@@ -322,13 +333,14 @@ interface TitanSidebarHeaderProps {
 declare function TitanSidebarHeader({ children }: TitanSidebarHeaderProps): react_jsx_runtime.JSX.Element;
 interface TitanSidebarItemProps {
     id: string;
+    /** Icon: component (e.g. from lucide-react) or string name (resolved Lucide first, then fallback if registered). */
     icon?: ComponentType<{
         className?: string;
-    }>;
+    }> | string;
     onPress?: () => void;
     children: ReactNode;
 }
-declare function TitanSidebarItem({ id, icon: Icon, onPress, children, }: TitanSidebarItemProps): react_jsx_runtime.JSX.Element;
+declare function TitanSidebarItem({ id, icon, onPress, children, }: TitanSidebarItemProps): react_jsx_runtime.JSX.Element;
 
 interface TitanLoaderProps {
     /** Width and height in px. Defaults to 120. */
@@ -344,4 +356,35 @@ interface TitanLoaderProps {
 }
 declare function TitanLoader({ size, label, className, style, loaderBasePath, }: TitanLoaderProps): react_jsx_runtime.JSX.Element;
 
-export { TitanBorderlessTable, type TitanBorderlessTableProps, TitanBreadcrumb, type TitanBreadcrumbItem, type TitanBreadcrumbProps, TitanButton, type TitanButtonProps, type TitanButtonVariant, TitanCard, TitanCardGrid, type TitanCardGridProps, type TitanCardProps, type TitanCardSpan, TitanCheckboxField, type TitanCheckboxFieldProps, TitanDialog, type TitanDialogProps, TitanDrawer, type TitanDrawerProps, TitanFormControlsGroup, type TitanFormControlsGroupProps, TitanIconButton, type TitanIconButtonProps, type TitanIconButtonVariant, TitanInputField, type TitanInputFieldProps, TitanLoader, type TitanLoaderProps, TitanMenuDropdown, type TitanMenuOption, type TitanMenuProps, TitanNavbar, type TitanNavbarProps, type TitanNavbarTheme, TitanPagination, type TitanPaginationPage, type TitanPaginationProps, TitanPill, type TitanPillProps, TitanRadioGroupField, type TitanRadioGroupFieldProps, type TitanRadioOption, TitanSelect, type TitanSelectOption, type TitanSelectProps, TitanSidebar, TitanSidebarHeader, type TitanSidebarHeaderProps, TitanSidebarItem, type TitanSidebarItemProps, type TitanSidebarProps, TitanSwitchField, type TitanSwitchFieldProps, type TitanTabItem, type TitanTableColumn, type TitanTableRow, TitanTabs, type TitanTabsProps, TitanTag, type TitanTagProps, TitanTextareaField, type TitanTextareaFieldProps, type TitanToastItem, TitanToastRegion, type TitanToastRegionProps, type TitanToastVariant, TitanToggleButtonGroup, type TitanToggleButtonGroupProps, type TitanToggleItem, TitanTooltip, type TitanTooltipProps, TitanTwoUpOneDownLayout, type TitanTwoUpOneDownLayoutProps, getToneStyle };
+type IconComponent = LucideIcon;
+
+/**
+ * Register fallback icons (e.g. from @tabler/icons-react) for names not in Lucide.
+ * Call once at app init if you want Tabler fallback:
+ *   import { registerFallbackIcons } from 'titan-compositions'
+ *   import { IconBrandThreads } from '@tabler/icons-react'
+ *   registerFallbackIcons({ threads: IconBrandThreads })
+ */
+declare function registerFallbackIcons(map: Record<string, ComponentType<{
+    className?: string;
+}>>): void;
+/**
+ * Resolve icon by name: Lucide first, then fallback (e.g. Tabler).
+ * Returns the component or null if not found.
+ * Names are normalized to kebab-case; aliases (e.g. "empty-box" -> "box") are applied.
+ */
+declare function resolveIcon(name: string): IconComponent | ComponentType<{
+    className?: string;
+}> | null;
+
+interface RenderIconProps {
+    className?: string;
+}
+/**
+ * Render icon from either a string name (resolved via Lucide then fallback)
+ * or a component / ReactNode. Used internally by components that accept icon prop.
+ * Does not change behavior when icon is already a component or node.
+ */
+declare function renderIconNode(icon: ReactNode | ComponentType<RenderIconProps> | string | undefined, props?: RenderIconProps): ReactNode;
+
+export { type IconComponent, type RenderIconProps, TitanBorderlessTable, type TitanBorderlessTableProps, TitanBreadcrumb, type TitanBreadcrumbItem, type TitanBreadcrumbProps, TitanButton, type TitanButtonProps, type TitanButtonVariant, TitanCard, TitanCardGrid, type TitanCardGridProps, type TitanCardProps, type TitanCardSpan, TitanCheckboxField, type TitanCheckboxFieldProps, TitanDialog, type TitanDialogProps, TitanDrawer, type TitanDrawerProps, TitanFormControlsGroup, type TitanFormControlsGroupProps, TitanIconButton, type TitanIconButtonProps, type TitanIconButtonVariant, TitanInputField, type TitanInputFieldProps, TitanLoader, type TitanLoaderProps, TitanMenuDropdown, type TitanMenuOption, type TitanMenuProps, TitanNavbar, type TitanNavbarProps, type TitanNavbarTheme, TitanPagination, type TitanPaginationPage, type TitanPaginationProps, TitanPill, type TitanPillProps, TitanRadioGroupField, type TitanRadioGroupFieldProps, type TitanRadioOption, TitanSelect, type TitanSelectOption, type TitanSelectProps, TitanSidebar, TitanSidebarHeader, type TitanSidebarHeaderProps, TitanSidebarItem, type TitanSidebarItemProps, type TitanSidebarProps, TitanSwitchField, type TitanSwitchFieldProps, type TitanTabItem, type TitanTableColumn, type TitanTableRow, TitanTabs, type TitanTabsProps, TitanTag, type TitanTagProps, TitanTextareaField, type TitanTextareaFieldProps, type TitanToastItem, TitanToastRegion, type TitanToastRegionProps, type TitanToastVariant, TitanToggleButtonGroup, type TitanToggleButtonGroupProps, type TitanToggleItem, TitanTooltip, type TitanTooltipPlacement, type TitanTooltipProps, TitanTwoUpOneDownLayout, type TitanTwoUpOneDownLayoutProps, getToneStyle, registerFallbackIcons, renderIconNode, resolveIcon };

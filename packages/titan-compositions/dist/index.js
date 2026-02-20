@@ -407,17 +407,52 @@ function TitanDialog({
 }
 
 // src/TitanTooltip.tsx
-import { Tooltip, TooltipTrigger } from "react-aria-components";
-import { jsx as jsx12, jsxs as jsxs11 } from "react/jsx-runtime";
+import { OverlayArrow, Tooltip, TooltipTrigger } from "react-aria-components";
+import { Fragment as Fragment2, jsx as jsx12, jsxs as jsxs11 } from "react/jsx-runtime";
+function toAriaPlacement(p) {
+  return p.replace(/\s+/, "-");
+}
+function TooltipContent({
+  content,
+  title,
+  body
+}) {
+  const useTitleBody = title != null || body != null;
+  if (useTitleBody) {
+    return /* @__PURE__ */ jsxs11(Fragment2, { children: [
+      title != null && /* @__PURE__ */ jsx12("span", { className: "tooltip-title", children: title }),
+      body != null && /* @__PURE__ */ jsx12("span", { className: "tooltip-body", children: body })
+    ] });
+  }
+  return /* @__PURE__ */ jsx12(Fragment2, { children: content });
+}
 function TitanTooltip({
   content,
+  title,
+  body,
   children,
   delay = 0,
-  closeDelay = 0
+  closeDelay = 0,
+  placement = "top",
+  shouldFlip = true
 }) {
+  const hasContent = content != null || title != null || body != null;
+  if (!hasContent) return /* @__PURE__ */ jsx12(Fragment2, { children });
   return /* @__PURE__ */ jsxs11(TooltipTrigger, { delay, closeDelay, children: [
     children,
-    /* @__PURE__ */ jsx12(Tooltip, { className: "tooltip-box", children: content })
+    /* @__PURE__ */ jsxs11(
+      Tooltip,
+      {
+        className: "tooltip-box",
+        placement: toAriaPlacement(placement),
+        shouldFlip,
+        offset: 8,
+        children: [
+          /* @__PURE__ */ jsx12(OverlayArrow, { children: /* @__PURE__ */ jsx12("svg", { width: 10, height: 6, viewBox: "0 0 10 6", "aria-hidden": true, children: /* @__PURE__ */ jsx12("path", { d: "M0 0 L5 6 L10 0 Z", fill: "var(--tooltip-slot-bg)" }) }) }),
+          /* @__PURE__ */ jsx12(TooltipContent, { content, title, body })
+        ]
+      }
+    )
   ] });
 }
 
@@ -611,7 +646,7 @@ function TitanBorderlessTable({ columns, rows }) {
 }
 
 // src/TitanTwoUpOneDownLayout.tsx
-import { Fragment as Fragment2, jsx as jsx18, jsxs as jsxs16 } from "react/jsx-runtime";
+import { Fragment as Fragment3, jsx as jsx18, jsxs as jsxs16 } from "react/jsx-runtime";
 function TitanTwoUpOneDownLayout({
   theme = "insights",
   userInitial = "A",
@@ -621,7 +656,7 @@ function TitanTwoUpOneDownLayout({
   rightTop,
   bottom
 }) {
-  return /* @__PURE__ */ jsxs16(Fragment2, { children: [
+  return /* @__PURE__ */ jsxs16(Fragment3, { children: [
     /* @__PURE__ */ jsx18(TitanNavbar, { theme, userInitial }),
     /* @__PURE__ */ jsxs16("main", { className: "page", children: [
       /* @__PURE__ */ jsx18("section", { className: "card", children: /* @__PURE__ */ jsx18(TitanBreadcrumb, { items: breadcrumbItems, currentLabel: breadcrumbCurrentLabel }) }),
@@ -672,7 +707,129 @@ import {
   useCallback
 } from "react";
 import { Button as Button11 } from "react-aria-components";
-import { ChevronLeft as ChevronLeft2, ChevronRight as ChevronRight4 } from "lucide-react";
+import { ChevronLeft as ChevronLeft3, ChevronRight as ChevronRight5 } from "lucide-react";
+
+// src/icons/renderIconNode.tsx
+import { createElement, isValidElement } from "react";
+
+// src/icons/normalizeIconName.ts
+function normalizeIconName(name) {
+  const trimmed = name.trim();
+  if (!trimmed) return "";
+  return trimmed.replace(/\s+/g, "-").replace(/([a-z])([A-Z])/g, "$1-$2").replace(/([A-Z])([A-Z][a-z])/g, "$1-$2").toLowerCase().replace(/[^a-z0-9-]/g, "");
+}
+var ALIASES = {
+  "empty-box": "box",
+  "emptybox": "box",
+  "caja-vacia": "box",
+  "inbox": "inbox",
+  "threads": "threads"
+};
+function resolveIconAlias(normalized) {
+  return ALIASES[normalized] ?? normalized;
+}
+
+// src/icons/lucideRegistry.ts
+import {
+  Bell as Bell2,
+  BellRing,
+  Box,
+  Check as Check2,
+  ChevronDown as ChevronDown4,
+  ChevronLeft as ChevronLeft2,
+  ChevronRight as ChevronRight4,
+  CircleHelp as CircleHelp2,
+  Grip as Grip2,
+  Handshake as Handshake2,
+  Hash,
+  Info,
+  Layers,
+  LayoutDashboard,
+  ListFilter,
+  Loader2,
+  MessageSquare,
+  MousePointerClick,
+  Navigation,
+  PanelLeft,
+  PanelRight,
+  Search,
+  Settings as Settings2,
+  Sparkles as Sparkles2,
+  Tag,
+  TextCursorInput,
+  ToggleLeft,
+  Type,
+  X as X4
+} from "lucide-react";
+var LUCIDE_REGISTRY = {
+  "bell": Bell2,
+  "bell-ring": BellRing,
+  "box": Box,
+  "check": Check2,
+  "chevron-down": ChevronDown4,
+  "chevron-left": ChevronLeft2,
+  "chevron-right": ChevronRight4,
+  "circle-help": CircleHelp2,
+  "grip": Grip2,
+  "handshake": Handshake2,
+  "hash": Hash,
+  "info": Info,
+  "layers": Layers,
+  "layout-dashboard": LayoutDashboard,
+  "list-filter": ListFilter,
+  "loader": Loader2,
+  "loader-2": Loader2,
+  "message-square": MessageSquare,
+  "mouse-pointer-click": MousePointerClick,
+  "navigation": Navigation,
+  "panel-left": PanelLeft,
+  "panel-right": PanelRight,
+  "search": Search,
+  "settings": Settings2,
+  "sparkles": Sparkles2,
+  "tag": Tag,
+  "text-cursor-input": TextCursorInput,
+  "toggle-left": ToggleLeft,
+  "type": Type,
+  "x": X4
+};
+
+// src/icons/resolveIcon.ts
+var fallbackRegistry = {};
+function registerFallbackIcons(map) {
+  for (const [key, component] of Object.entries(map)) {
+    const normalized = normalizeIconName(key);
+    if (normalized) fallbackRegistry[normalized] = component;
+  }
+}
+function resolveIcon(name) {
+  const normalized = normalizeIconName(name);
+  if (!normalized) return null;
+  const canonical = resolveIconAlias(normalized);
+  const fromLucide = LUCIDE_REGISTRY[canonical];
+  if (fromLucide) return fromLucide;
+  const fromFallback = fallbackRegistry[canonical] ?? fallbackRegistry[normalized];
+  if (fromFallback) return fromFallback;
+  return null;
+}
+
+// src/icons/renderIconNode.tsx
+function isComponentType(value) {
+  return typeof value === "function" || typeof value === "object" && value !== null && "$$typeof" in value;
+}
+function renderIconNode(icon, props) {
+  if (icon == null) return null;
+  if (typeof icon === "string") {
+    const Resolved = resolveIcon(icon);
+    if (Resolved) return createElement(Resolved, props ?? {});
+    return null;
+  }
+  if (isValidElement(icon)) return icon;
+  if (isComponentType(icon)) return createElement(icon, props ?? {});
+  return icon;
+}
+
+// src/TitanSidebar.tsx
 import { jsx as jsx20, jsxs as jsxs18 } from "react/jsx-runtime";
 var SidebarContext = createContext({
   collapsed: false,
@@ -712,7 +869,7 @@ function TitanSidebar({
             className: "titan-sidebar-toggle",
             onPress: onToggle,
             "aria-label": collapsed ? "Expand sidebar" : "Collapse sidebar",
-            children: collapsed ? /* @__PURE__ */ jsx20(ChevronRight4, {}) : /* @__PURE__ */ jsx20(ChevronLeft2, {})
+            children: collapsed ? /* @__PURE__ */ jsx20(ChevronRight5, {}) : /* @__PURE__ */ jsx20(ChevronLeft3, {})
           }
         ),
         children
@@ -725,7 +882,7 @@ function TitanSidebarHeader({ children }) {
 }
 function TitanSidebarItem({
   id,
-  icon: Icon,
+  icon,
   onPress,
   children
 }) {
@@ -743,7 +900,7 @@ function TitanSidebarItem({
         onPress?.();
       },
       children: [
-        Icon && /* @__PURE__ */ jsx20(Icon, {}),
+        icon ? renderIconNode(icon) : null,
         /* @__PURE__ */ jsx20("span", { className: "titan-sidebar-item-label", children })
       ]
     }
@@ -815,5 +972,8 @@ export {
   TitanToggleButtonGroup,
   TitanTooltip,
   TitanTwoUpOneDownLayout,
-  getToneStyle
+  getToneStyle,
+  registerFallbackIcons,
+  renderIconNode,
+  resolveIcon
 };

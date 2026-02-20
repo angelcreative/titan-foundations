@@ -8,6 +8,7 @@ import {
 } from 'react'
 import { Button } from 'react-aria-components'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { renderIconNode } from './icons/renderIconNode'
 
 /* ------------------------------------------------------------------ */
 /*  Context                                                            */
@@ -102,14 +103,15 @@ export function TitanSidebarHeader({ children }: TitanSidebarHeaderProps) {
 
 export interface TitanSidebarItemProps {
   id: string
-  icon?: ComponentType<{ className?: string }>
+  /** Icon: component (e.g. from lucide-react) or string name (resolved Lucide first, then fallback if registered). */
+  icon?: ComponentType<{ className?: string }> | string
   onPress?: () => void
   children: ReactNode
 }
 
 export function TitanSidebarItem({
   id,
-  icon: Icon,
+  icon,
   onPress,
   children,
 }: TitanSidebarItemProps) {
@@ -127,7 +129,7 @@ export function TitanSidebarItem({
         onPress?.()
       }}
     >
-      {Icon && <Icon />}
+      {icon ? renderIconNode(icon) : null}
       <span className="titan-sidebar-item-label">{children}</span>
     </Button>
   )

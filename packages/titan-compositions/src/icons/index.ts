@@ -1,0 +1,6 @@
+export { normalizeIconName, resolveIconAlias } from './normalizeIconName'
+export { LUCIDE_REGISTRY } from './lucideRegistry'
+export type { IconComponent } from './lucideRegistry'
+export { resolveIcon, registerFallbackIcons } from './resolveIcon'
+export { renderIconNode } from './renderIconNode'
+export type { RenderIconProps } from './renderIconNode'

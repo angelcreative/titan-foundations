@@ -174,6 +174,13 @@
   margin-left: var(--spacing-l);
 }
 
+.navbar .icon-ghost svg,
+.navbar .navbar-chevron-button svg {
+  width: var(--navbar-slot-icon-size);
+  height: var(--navbar-slot-icon-size);
+  stroke-width: var(--icon-stroke-m);
+}
+
 .navbar-avatar {
   width: var(--avatar-slot-size);
   height: var(--avatar-slot-size);
@@ -215,6 +222,13 @@
   background: var(--button-icon-slot-bg-active);
 }
 
+.btn[data-disabled],
+.icon-secondary[data-disabled],
+.icon-ghost[data-disabled],
+.icon-delete[data-disabled] {
+  cursor: not-allowed;
+}
+
 .btn,
 .icon-secondary,
 .icon-ghost,
@@ -226,6 +240,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--button-slot-gap);
+  width: fit-content;
   font-size: var(--button-slot-font-size);
   line-height: var(--button-slot-line-height);
   font-weight: var(--button-slot-font-weight);
@@ -317,6 +332,65 @@
   opacity: 0.7;
 }
 
+.btn-primary[data-disabled],
+.btn-primary[data-disabled][data-hovered],
+.btn-primary[data-disabled][data-pressed] {
+  background: var(--button-primary-slot-disabled-bg);
+  color: var(--button-primary-slot-disabled-label);
+}
+.btn-secondary[data-disabled],
+.btn-secondary[data-disabled][data-hovered],
+.btn-secondary[data-disabled][data-pressed] {
+  background: var(--button-secondary-slot-disabled-bg);
+  color: var(--button-secondary-slot-disabled-label);
+}
+.btn-tertiary[data-disabled],
+.btn-tertiary[data-disabled][data-hovered],
+.btn-tertiary[data-disabled][data-pressed] {
+  background: var(--button-tertiary-slot-disabled-bg);
+  color: var(--button-tertiary-slot-disabled-label);
+}
+.btn-link-text[data-disabled],
+.btn-link-text[data-disabled][data-hovered],
+.btn-link-text[data-disabled][data-pressed] {
+  color: var(--button-tertiary-slot-disabled-label);
+}
+.btn-delete[data-disabled],
+.btn-delete[data-disabled][data-hovered],
+.btn-delete[data-disabled][data-pressed] {
+  background: var(--button-primary-slot-disabled-bg);
+  color: var(--button-primary-slot-disabled-label);
+  opacity: 1;
+}
+.btn-delete-secondary[data-disabled],
+.btn-delete-secondary[data-disabled][data-hovered],
+.btn-delete-secondary[data-disabled][data-pressed] {
+  background: var(--button-secondary-slot-disabled-bg);
+  color: var(--button-secondary-slot-disabled-label);
+  opacity: 1;
+}
+
+.icon-secondary[data-disabled],
+.icon-secondary[data-disabled][data-hovered],
+.icon-secondary[data-disabled][data-pressed] {
+  background: var(--button-icon-slot-bg-disabled);
+  color: var(--button-icon-interactive-slot-icon-disabled);
+}
+.icon-ghost[data-disabled],
+.icon-ghost[data-disabled][data-hovered],
+.icon-ghost[data-disabled][data-pressed],
+.icon-delete[data-disabled],
+.icon-delete[data-disabled][data-hovered],
+.icon-delete[data-disabled][data-pressed] {
+  background: var(--button-icon-slot-bg-disabled);
+  color: var(--button-icon-slot-disabled-icon);
+}
+.icon-delete[data-disabled],
+.icon-delete[data-disabled][data-hovered],
+.icon-delete[data-disabled][data-pressed] {
+  opacity: 1;
+}
+
 .icon-secondary,
 .icon-ghost,
 .icon-delete {
@@ -383,7 +457,15 @@
 .menu-trigger-chevron {
   display: inline-flex;
   align-items: center;
-  color: var(--menu-item-slot-icon);
+  color: var(--button-secondary-slot-label);
+}
+
+.menu-trigger-button[data-hovered] .menu-trigger-chevron {
+  color: var(--button-secondary-slot-label-hover);
+}
+
+.menu-trigger-button[data-pressed] .menu-trigger-chevron {
+  color: var(--button-secondary-slot-label-active);
 }
 
 .menu-trigger-chevron svg {
@@ -444,6 +526,10 @@
 
 .menu-item[data-disabled] {
   color: var(--menu-item-slot-disabled);
+  cursor: not-allowed;
+}
+.menu-item[data-disabled] .menu-item-icon {
+  color: var(--menu-item-slot-disabled-icon);
 }
 
 .menu-item.menu-item-destructive {
@@ -498,6 +584,27 @@
   display: inline-flex;
   align-items: center;
   color: var(--select-slot-chevron);
+}
+
+.select-trigger[data-pressed] {
+  color: var(--select-slot-button-color-open);
+}
+
+.select-trigger[data-pressed] .select-trigger-chevron {
+  color: var(--select-slot-chevron-open);
+}
+
+.select-trigger[data-disabled],
+.select-trigger[data-disabled][data-hovered],
+.select-trigger[data-disabled][data-pressed] {
+  background: var(--button-secondary-slot-disabled-bg);
+  color: var(--button-secondary-slot-disabled-label);
+  cursor: not-allowed;
+}
+.select-trigger[data-disabled] .select-trigger-chevron,
+.select-trigger[data-disabled][data-hovered] .select-trigger-chevron,
+.select-trigger[data-disabled][data-pressed] .select-trigger-chevron {
+  color: var(--button-secondary-slot-disabled-label);
 }
 
 .select-trigger-chevron svg {
@@ -574,6 +681,10 @@
 .select-item[data-disabled] {
   background: var(--select-slot-item-bg-disabled);
   color: var(--select-slot-item-color-disabled);
+  cursor: not-allowed;
+}
+.select-item[data-disabled] .select-item-icon {
+  color: var(--select-slot-item-icon-disabled);
 }
 
 .tabs-root {
@@ -612,6 +723,7 @@
   align-items: center;
   justify-content: center;
   gap: var(--spacing-4xs);
+  width: fit-content;
   font-size: var(--button-slot-font-size);
   line-height: var(--button-slot-line-height);
   font-weight: var(--button-slot-font-weight);
@@ -632,6 +744,7 @@
   background: var(--tab-slot-bg-disabled);
   color: var(--tab-slot-color-disabled);
   border-color: var(--border-slot-default);
+  cursor: not-allowed;
 }
 
 .tab-panel {
@@ -668,10 +781,13 @@
   border-radius: 0;
   border-right: 3px solid transparent;
   margin-right: -2px;
+  display: flex;
+  width: 100%;
   background: transparent;
   color: var(--tab-slot-color);
+  justify-content: flex-start;
   text-align: left;
-  padding: var(--spacing-s) var(--spacing-m);
+  padding: var(--spacing-m) var(--spacing-xl);
   font-size: var(--button-slot-font-size);
   line-height: var(--button-slot-line-height);
   font-weight: var(--button-slot-font-weight);
@@ -683,7 +799,7 @@
 }
 
 .tab-trigger-vertical[data-selected] {
-  background: var(--color-black-100);
+  background: var(--tab-slot-bg-hover);
   color: var(--tab-slot-color-selected);
   border-right-color: var(--tab-slot-border-selected);
   font-weight: var(--font-weight-500);
@@ -691,6 +807,7 @@
 
 .tab-trigger-vertical[data-disabled] {
   color: var(--tab-slot-color-disabled);
+  cursor: not-allowed;
 }
 
 .tabs-root-vertical .tab-panel {
@@ -800,6 +917,7 @@
 .pagination-button[data-disabled] {
   background: var(--pagination-slot-page-disabled-bg);
   color: var(--pagination-slot-page-disabled-color);
+  cursor: not-allowed;
 }
 
 .pagination-ellipsis {
@@ -944,14 +1062,74 @@
 }
 
 .tooltip-box {
+  position: relative;
   background: var(--tooltip-slot-bg);
   color: var(--tooltip-slot-color);
   border-radius: var(--tooltip-slot-radius);
   box-shadow: var(--tooltip-slot-shadow);
-  padding: var(--tooltip-slot-pad-y) var(--tooltip-slot-pad-x);
+  padding: var(--spacing-s) var(--spacing-m);
   font-size: var(--font-size-s);
   line-height: var(--font-leading-s);
   font-weight: var(--text-weight-medium);
+  max-width: 240px;
+}
+
+/* Tooltip arrow (caret) — fill matches tooltip bg; rotation by placement (data-placement is on .tooltip-box) */
+.tooltip-box .react-aria-OverlayArrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tooltip-box .react-aria-OverlayArrow svg {
+  display: block;
+  flex-shrink: 0;
+}
+
+.tooltip-box[data-placement="top"] .react-aria-OverlayArrow svg,
+.tooltip-box[data-placement="top-start"] .react-aria-OverlayArrow svg,
+.tooltip-box[data-placement="top-end"] .react-aria-OverlayArrow svg {
+  transform: rotate(0deg);
+}
+
+.tooltip-box[data-placement="bottom"] .react-aria-OverlayArrow svg,
+.tooltip-box[data-placement="bottom-start"] .react-aria-OverlayArrow svg,
+.tooltip-box[data-placement="bottom-end"] .react-aria-OverlayArrow svg {
+  transform: rotate(180deg);
+}
+
+.tooltip-box[data-placement="left"] .react-aria-OverlayArrow svg,
+.tooltip-box[data-placement="left-start"] .react-aria-OverlayArrow svg,
+.tooltip-box[data-placement="left-end"] .react-aria-OverlayArrow svg {
+  transform: rotate(-90deg);
+}
+
+.tooltip-box[data-placement="right"] .react-aria-OverlayArrow svg,
+.tooltip-box[data-placement="right-start"] .react-aria-OverlayArrow svg,
+.tooltip-box[data-placement="right-end"] .react-aria-OverlayArrow svg {
+  transform: rotate(90deg);
+}
+
+/* Title + body variant */
+.tooltip-title {
+  display: block;
+  font-size: var(--font-size-s);
+  font-weight: var(--text-weight-semibold);
+  line-height: var(--font-leading-s);
+  color: var(--tooltip-slot-color);
+  margin-bottom: var(--spacing-4xs);
+}
+
+.tooltip-title:last-child {
+  margin-bottom: 0;
+}
+
+.tooltip-body {
+  display: block;
+  font-size: var(--font-size-s);
+  font-weight: var(--text-weight-regular);
+  line-height: var(--font-leading-s);
+  color: var(--tooltip-slot-color);
 }
 
 .toast-region {
@@ -1266,8 +1444,24 @@
 .checkbox-root[data-disabled],
 .radio-root[data-disabled],
 .switch-root[data-disabled] {
-  opacity: 0.5;
+  opacity: 0.75;
   cursor: not-allowed;
+}
+.checkbox-root[data-disabled] .checkbox-box {
+  border-color: var(--checkbox-slot-border-disabled);
+}
+.checkbox-root[data-disabled][data-selected] .checkbox-box {
+  background: var(--checkbox-slot-selected-bg-disabled);
+  border-color: var(--checkbox-slot-border-disabled);
+}
+.radio-root[data-disabled] .radio-box {
+  border-color: var(--radio-slot-border-disabled);
+}
+.radio-root[data-disabled][data-selected] .radio-box::after {
+  background: var(--radio-slot-disabled);
+}
+.switch-root[data-disabled] .switch-track {
+  background: var(--toggle-slot-disabled-bg) !important;
 }
 
 .checkbox-box {
@@ -1286,7 +1480,7 @@
   width: var(--icon-size-s);
   height: var(--icon-size-s);
   color: var(--checkbox-slot-check);
-  stroke-width: var(--icon-stroke-m);
+  stroke-width: 3;
   opacity: 0;
   transform: scale(0.8);
   transition: opacity 150ms ease, transform 150ms ease;
@@ -1495,6 +1689,20 @@
 .field-root[data-disabled] .input-with-icons {
   background: var(--input-slot-disabled-bg);
   border-color: var(--input-slot-border-disabled);
+}
+.field-root[data-disabled] > .input-field,
+.field-root[data-disabled] > .textarea-field {
+  background: var(--input-slot-disabled-bg);
+  border-color: var(--input-slot-border-disabled);
+}
+.field-root[data-disabled] .input-field,
+.field-root[data-disabled] .textarea-field {
+  color: var(--input-slot-disabled-color);
+  cursor: not-allowed;
+}
+.field-root[data-disabled] .input-leading-icon,
+.field-root[data-disabled] .input-trailing-icon {
+  color: var(--input-slot-icon-disabled);
 }
 
 .field-root[data-invalid] .input-field,
