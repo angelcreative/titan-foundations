@@ -418,3 +418,27 @@ h2 {
 .setup-command p {
   margin-bottom: var(--spacing-3xs);
 }
+
+/* ── FAQ list ── */
+.setup-faq-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-s);
+}
+
+.setup-faq-list li {
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+  color: var(--copy-slot-secondary);
+  padding: var(--spacing-s);
+  border: 1px solid var(--card-slot-border);
+  border-radius: var(--card-slot-radius);
+  background: var(--surface-slot-bg);
+}
+
+.setup-faq-list li strong {
+  color: var(--copy-slot-primary);
+}

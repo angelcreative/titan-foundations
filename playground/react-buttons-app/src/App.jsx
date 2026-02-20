@@ -322,6 +322,19 @@ function SetupGuide() {
       <h1>How to set up Titan</h1>
       <p className="setup-intro">Everything you need to start designing with Titan in Cursor. No coding required.</p>
 
+      {/* ── FAQ ── */}
+      <section className="setup-section setup-faq">
+        <h2>What can you ask /titan?</h2>
+        <p>Once installed, you can ask the AI anything about Titan. Here are some examples:</p>
+        <ul className="setup-faq-list">
+          <li><strong>"Build a settings page with sidebar navigation, form fields, and a save button"</strong> — Generates a full page layout using Titan components and tokens.</li>
+          <li><strong>"Show me all available button variants and when to use each one"</strong> — Returns the component registry with props, states, and usage guidance.</li>
+          <li><strong>"Create a report list page with filters, table, and pagination"</strong> — Combines multiple compositions into a real SaaS pattern.</li>
+          <li><strong>"Review this UI and check it follows Titan tokens and patterns"</strong> — Validates your code against the design system rules.</li>
+          <li><strong>"Bootstrap a new Vite + React project with Titan theme insights"</strong> — Returns ready-to-paste setup snippets (fonts, CSS links, theme config).</li>
+        </ul>
+      </section>
+
       {/* ── 1. Install MCP ── */}
       <section className="setup-section">
         <h2>1. Install the Titan MCP</h2>
