@@ -1075,7 +1075,7 @@ function TitanProgressBar({
 }
 
 // src/TitanCalendar.tsx
-import { useMemo, useState as useState2 } from "react";
+import { useCallback as useCallback2, useEffect, useMemo, useRef, useState as useState2 } from "react";
 import {
   Button as Button12,
   Calendar,
@@ -1092,7 +1092,64 @@ import {
 import { jsx as jsx24, jsxs as jsxs22 } from "react/jsx-runtime";
 var ChevronLeft4 = () => /* @__PURE__ */ jsx24("svg", { width: "16", height: "16", viewBox: "0 0 16 16", fill: "none", "aria-hidden": "true", children: /* @__PURE__ */ jsx24("path", { d: "M10 12L6 8l4-4", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }) });
 var ChevronRight6 = () => /* @__PURE__ */ jsx24("svg", { width: "16", height: "16", viewBox: "0 0 16 16", fill: "none", "aria-hidden": "true", children: /* @__PURE__ */ jsx24("path", { d: "M6 4l4 4-4 4", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }) });
-var SelectChevron = () => /* @__PURE__ */ jsx24("svg", { className: "calendar-select-chevron", width: "12", height: "12", viewBox: "0 0 12 12", fill: "none", "aria-hidden": "true", children: /* @__PURE__ */ jsx24("path", { d: "M3 4.5L6 7.5L9 4.5", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" }) });
+var ChevronDown5 = () => /* @__PURE__ */ jsx24("svg", { width: "12", height: "12", viewBox: "0 0 12 12", fill: "none", "aria-hidden": "true", children: /* @__PURE__ */ jsx24("path", { d: "M3 4.5L6 7.5L9 4.5", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" }) });
+function CalendarDropdown({
+  options,
+  value,
+  onChange,
+  className = ""
+}) {
+  const [open, setOpen] = useState2(false);
+  const ref = useRef(null);
+  const listRef = useRef(null);
+  const selected = options.find((o) => o.value === value);
+  const close = useCallback2(() => setOpen(false), []);
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) close();
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open, close]);
+  useEffect(() => {
+    if (open && listRef.current) {
+      const active = listRef.current.querySelector('[data-active="true"]');
+      if (active) active.scrollIntoView({ block: "nearest" });
+    }
+  }, [open]);
+  return /* @__PURE__ */ jsxs22("div", { className: `cal-dropdown ${className}`.trim(), ref, children: [
+    /* @__PURE__ */ jsxs22(
+      "button",
+      {
+        type: "button",
+        className: "cal-dropdown-trigger",
+        onClick: () => setOpen(!open),
+        "aria-haspopup": "listbox",
+        "aria-expanded": open,
+        children: [
+          /* @__PURE__ */ jsx24("span", { children: selected?.label ?? "" }),
+          /* @__PURE__ */ jsx24(ChevronDown5, {})
+        ]
+      }
+    ),
+    open && /* @__PURE__ */ jsx24("ul", { className: "cal-dropdown-menu", role: "listbox", ref: listRef, children: options.map((o) => /* @__PURE__ */ jsx24(
+      "li",
+      {
+        role: "option",
+        "aria-selected": o.value === value,
+        "data-active": o.value === value ? "true" : void 0,
+        className: `cal-dropdown-item${o.value === value ? " cal-dropdown-item-active" : ""}`,
+        onClick: () => {
+          onChange(o.value);
+          close();
+        },
+        children: o.label
+      },
+      o.value
+    )) })
+  ] });
+}
 function TitanCalendar({
   defaultValue,
   value,
@@ -1122,6 +1179,10 @@ function TitanCalendar({
     const y = today(tz).year;
     return Array.from({ length: 201 }, (_, i) => y - 100 + i);
   }, [tz]);
+  const yearOptions = useMemo(
+    () => years.map((y) => ({ value: y, label: String(y) })),
+    [years]
+  );
   return /* @__PURE__ */ jsxs22("div", { className: `calendar-wrapper ${className}`.trim(), children: [
     /* @__PURE__ */ jsxs22(
       Calendar,
@@ -1139,30 +1200,23 @@ function TitanCalendar({
           /* @__PURE__ */ jsxs22("header", { className: "calendar-header", children: [
             /* @__PURE__ */ jsx24(Button12, { slot: "previous", className: "calendar-nav-btn", children: /* @__PURE__ */ jsx24(ChevronLeft4, {}) }),
             /* @__PURE__ */ jsxs22("div", { className: "calendar-selects", children: [
-              /* @__PURE__ */ jsxs22("div", { className: "calendar-select-wrap", children: [
-                /* @__PURE__ */ jsx24(
-                  "select",
-                  {
-                    className: "calendar-select",
-                    value: focusedDate.month,
-                    onChange: (e) => setFocusedDate(focusedDate.set({ month: +e.target.value })),
-                    children: months.map((m) => /* @__PURE__ */ jsx24("option", { value: m.value, children: m.label }, m.value))
-                  }
-                ),
-                /* @__PURE__ */ jsx24(SelectChevron, {})
-              ] }),
-              /* @__PURE__ */ jsxs22("div", { className: "calendar-select-wrap", children: [
-                /* @__PURE__ */ jsx24(
-                  "select",
-                  {
-                    className: "calendar-select calendar-select-year",
-                    value: focusedDate.year,
-                    onChange: (e) => setFocusedDate(focusedDate.set({ year: +e.target.value })),
-                    children: years.map((y) => /* @__PURE__ */ jsx24("option", { value: y, children: y }, y))
-                  }
-                ),
-                /* @__PURE__ */ jsx24(SelectChevron, {})
-              ] })
+              /* @__PURE__ */ jsx24(
+                CalendarDropdown,
+                {
+                  options: months,
+                  value: focusedDate.month,
+                  onChange: (m) => setFocusedDate(focusedDate.set({ month: m }))
+                }
+              ),
+              /* @__PURE__ */ jsx24(
+                CalendarDropdown,
+                {
+                  className: "cal-dropdown-year",
+                  options: yearOptions,
+                  value: focusedDate.year,
+                  onChange: (y) => setFocusedDate(focusedDate.set({ year: y }))
+                }
+              )
             ] }),
             /* @__PURE__ */ jsx24(Button12, { slot: "next", className: "calendar-nav-btn", children: /* @__PURE__ */ jsx24(ChevronRight6, {}) })
           ] }),

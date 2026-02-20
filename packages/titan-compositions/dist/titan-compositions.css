@@ -1954,19 +1954,20 @@
   height: var(--slider-slot-thumb-size);
   border-radius: var(--slider-slot-thumb-radius);
   background: var(--slider-slot-thumb-bg);
-  border: var(--slider-slot-thumb-border-width) solid var(--slider-slot-thumb-border);
+  border: none;
   box-shadow: var(--slider-slot-thumb-shadow);
   top: 50%;
   cursor: grab;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition: box-shadow 0.15s, transform 0.12s;
 }
 
 .slider-thumb[data-dragging] {
   cursor: grabbing;
+  transform: scale(1.08);
 }
 
 .slider-thumb[data-hovered] {
-  border-color: var(--slider-slot-thumb-border-hover);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(0, 0, 0, 0.06);
 }
 
 .slider-thumb[data-focus-visible] {
@@ -1975,9 +1976,9 @@
 }
 
 .slider-root[data-disabled] .slider-thumb {
-  border-color: var(--slider-slot-disabled-thumb-border);
   cursor: not-allowed;
-  box-shadow: none;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06);
+  background: var(--color-black-200);
 }
 
 /* ====================================================================== */
@@ -2040,7 +2041,7 @@
   font-family: "Poppins", var(--font-audiense), sans-serif;
 }
 
-/* ── Header: nav + month/year selects ────────────────────────────────── */
+/* ── Header: nav + dropdowns ─────────────────────────────────────────── */
 
 .calendar-header {
   display: flex;
@@ -2086,14 +2087,16 @@
   justify-content: center;
 }
 
-.calendar-select-wrap {
+/* ── Custom dropdown (month/year) ────────────────────────────────────── */
+
+.cal-dropdown {
   position: relative;
-  display: inline-flex;
-  align-items: center;
 }
 
-.calendar-select {
-  appearance: none;
+.cal-dropdown-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
   background: var(--calendar-slot-select-bg);
   border: 1px solid var(--calendar-slot-select-border);
   border-radius: var(--calendar-slot-select-radius);
@@ -2102,25 +2105,66 @@
   font-size: var(--font-size-s);
   font-weight: var(--font-weight-500);
   line-height: var(--font-leading-s);
-  padding: var(--spacing-3xs) var(--spacing-xl) var(--spacing-3xs) var(--spacing-s);
+  padding: var(--spacing-3xs) var(--spacing-s);
   cursor: pointer;
-  min-width: 0;
+  white-space: nowrap;
+  transition: border-color 0.15s;
 }
 
-.calendar-select:focus-visible {
+.cal-dropdown-trigger:hover {
+  border-color: var(--input-border-hover);
+}
+
+.cal-dropdown-trigger:focus-visible {
   outline: none;
   box-shadow: 0 0 0 var(--button-slot-focus-width) var(--button-slot-focus-color);
 }
 
-.calendar-select-year {
-  width: 80px;
+.cal-dropdown-trigger svg {
+  flex-shrink: 0;
+  color: var(--copy-slot-secondary);
 }
 
-.calendar-select-chevron {
+.cal-dropdown-menu {
   position: absolute;
-  right: var(--spacing-xs);
-  pointer-events: none;
-  color: var(--copy-slot-secondary);
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 50;
+  min-width: 100%;
+  max-height: 240px;
+  overflow-y: auto;
+  margin: 0;
+  padding: var(--spacing-3xs) 0;
+  list-style: none;
+  background: var(--calendar-slot-bg);
+  border: 1px solid var(--calendar-slot-border);
+  border-radius: var(--calendar-slot-select-radius);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+  overscroll-behavior: contain;
+}
+
+.cal-dropdown-item {
+  padding: var(--spacing-xs) var(--spacing-m);
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+  color: var(--copy-slot-body);
+  cursor: pointer;
+  transition: background 0.1s;
+  white-space: nowrap;
+}
+
+.cal-dropdown-item:hover {
+  background: var(--calendar-slot-cell-hover-bg);
+}
+
+.cal-dropdown-item-active {
+  font-weight: var(--font-weight-600);
+  background: var(--color-black-100);
+}
+
+.cal-dropdown-year .cal-dropdown-menu {
+  right: 0;
+  left: auto;
 }
 
 /* ── Grid ────────────────────────────────────────────────────────────── */

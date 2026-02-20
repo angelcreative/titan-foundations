@@ -2225,16 +2225,16 @@
   --slider-slot-track-radius: var(--rounded-full);
   --slider-slot-track-bg: var(--color-black-200);
   --slider-slot-track-fill: var(--button-primary-slot-bg);
-  --slider-slot-thumb-size: 20px;
+  --slider-slot-thumb-size: 24px;
   --slider-slot-thumb-bg: var(--color-white-900);
-  --slider-slot-thumb-border: var(--button-primary-slot-bg);
-  --slider-slot-thumb-border-width: 2px;
+  --slider-slot-thumb-border: transparent;
+  --slider-slot-thumb-border-width: 0px;
   --slider-slot-thumb-radius: var(--rounded-full);
-  --slider-slot-thumb-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  --slider-slot-thumb-shadow: 0 1px 4px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.04);
   --slider-slot-thumb-bg-hover: var(--color-white-900);
-  --slider-slot-thumb-border-hover: var(--button-primary-slot-bg-hover);
+  --slider-slot-thumb-border-hover: transparent;
   --slider-slot-disabled-track-fill: var(--color-disabled-300);
-  --slider-slot-disabled-thumb-border: var(--color-disabled-400);
+  --slider-slot-disabled-thumb-border: transparent;
 
   /* ====================================================================== */
   /* COMPONENT: PROGRESS BAR                                                */

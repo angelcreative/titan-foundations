@@ -397,13 +397,9 @@ interface TitanProgressBarProps {
 declare function TitanProgressBar({ label, value, minValue, maxValue, showValue, formatOptions, className, }: TitanProgressBarProps): react_jsx_runtime.JSX.Element;
 
 interface TitanCalendarProps {
-    /** Uncontrolled default selected date */
     defaultValue?: CalendarDate;
-    /** Controlled selected date */
     value?: CalendarDate;
-    /** Fires when the user selects a date */
     onChange?: (date: CalendarDate) => void;
-    /** Show hour/minute inputs below the grid */
     showTime?: boolean;
     defaultHour?: number;
     defaultMinute?: number;

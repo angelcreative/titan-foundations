@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   Button,
   Calendar,
@@ -19,13 +19,9 @@ export type { CalendarDate } from '@internationalized/date'
 /* ── Props ─────────────────────────────────────────────────────────── */
 
 export interface TitanCalendarProps {
-  /** Uncontrolled default selected date */
   defaultValue?: CalendarDate
-  /** Controlled selected date */
   value?: CalendarDate
-  /** Fires when the user selects a date */
   onChange?: (date: CalendarDate) => void
-  /** Show hour/minute inputs below the grid */
   showTime?: boolean
   defaultHour?: number
   defaultMinute?: number
@@ -36,7 +32,7 @@ export interface TitanCalendarProps {
   className?: string
 }
 
-/* ── Chevron icons ─────────────────────────────────────────────────── */
+/* ── Icons ─────────────────────────────────────────────────────────── */
 
 const ChevronLeft = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -50,11 +46,82 @@ const ChevronRight = () => (
   </svg>
 )
 
-const SelectChevron = () => (
-  <svg className="calendar-select-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+const ChevronDown = () => (
+  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
     <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 )
+
+/* ── CalendarDropdown (internal) ───────────────────────────────────── */
+
+interface DropdownOption { value: number; label: string }
+
+function CalendarDropdown({
+  options,
+  value,
+  onChange,
+  className = '',
+}: {
+  options: DropdownOption[]
+  value: number
+  onChange: (v: number) => void
+  className?: string
+}) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  const listRef = useRef<HTMLUListElement>(null)
+
+  const selected = options.find((o) => o.value === value)
+
+  const close = useCallback(() => setOpen(false), [])
+
+  useEffect(() => {
+    if (!open) return
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) close()
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [open, close])
+
+  useEffect(() => {
+    if (open && listRef.current) {
+      const active = listRef.current.querySelector('[data-active="true"]') as HTMLElement
+      if (active) active.scrollIntoView({ block: 'nearest' })
+    }
+  }, [open])
+
+  return (
+    <div className={`cal-dropdown ${className}`.trim()} ref={ref}>
+      <button
+        type="button"
+        className="cal-dropdown-trigger"
+        onClick={() => setOpen(!open)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+      >
+        <span>{selected?.label ?? ''}</span>
+        <ChevronDown />
+      </button>
+      {open && (
+        <ul className="cal-dropdown-menu" role="listbox" ref={listRef}>
+          {options.map((o) => (
+            <li
+              key={o.value}
+              role="option"
+              aria-selected={o.value === value}
+              data-active={o.value === value ? 'true' : undefined}
+              className={`cal-dropdown-item${o.value === value ? ' cal-dropdown-item-active' : ''}`}
+              onClick={() => { onChange(o.value); close() }}
+            >
+              {o.label}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
 
 /* ── Component ─────────────────────────────────────────────────────── */
 
@@ -91,6 +158,11 @@ export function TitanCalendar({
     return Array.from({ length: 201 }, (_, i) => y - 100 + i)
   }, [tz])
 
+  const yearOptions = useMemo(
+    () => years.map((y) => ({ value: y, label: String(y) })),
+    [years],
+  )
+
   return (
     <div className={`calendar-wrapper ${className}`.trim()}>
       <Calendar
@@ -110,30 +182,17 @@ export function TitanCalendar({
           </Button>
 
           <div className="calendar-selects">
-            <div className="calendar-select-wrap">
-              <select
-                className="calendar-select"
-                value={focusedDate.month}
-                onChange={(e) => setFocusedDate(focusedDate.set({ month: +e.target.value }))}
-              >
-                {months.map((m) => (
-                  <option key={m.value} value={m.value}>{m.label}</option>
-                ))}
-              </select>
-              <SelectChevron />
-            </div>
-            <div className="calendar-select-wrap">
-              <select
-                className="calendar-select calendar-select-year"
-                value={focusedDate.year}
-                onChange={(e) => setFocusedDate(focusedDate.set({ year: +e.target.value }))}
-              >
-                {years.map((y) => (
-                  <option key={y} value={y}>{y}</option>
-                ))}
-              </select>
-              <SelectChevron />
-            </div>
+            <CalendarDropdown
+              options={months}
+              value={focusedDate.month}
+              onChange={(m) => setFocusedDate(focusedDate.set({ month: m }))}
+            />
+            <CalendarDropdown
+              className="cal-dropdown-year"
+              options={yearOptions}
+              value={focusedDate.year}
+              onChange={(y) => setFocusedDate(focusedDate.set({ year: y }))}
+            />
           </div>
 
           <Button slot="next" className="calendar-nav-btn">

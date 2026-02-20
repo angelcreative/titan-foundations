@@ -1071,7 +1071,64 @@ var import_date = require("@internationalized/date");
 var import_jsx_runtime24 = require("react/jsx-runtime");
 var ChevronLeft4 = () => /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("svg", { width: "16", height: "16", viewBox: "0 0 16 16", fill: "none", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("path", { d: "M10 12L6 8l4-4", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }) });
 var ChevronRight6 = () => /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("svg", { width: "16", height: "16", viewBox: "0 0 16 16", fill: "none", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("path", { d: "M6 4l4 4-4 4", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }) });
-var SelectChevron = () => /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("svg", { className: "calendar-select-chevron", width: "12", height: "12", viewBox: "0 0 12 12", fill: "none", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("path", { d: "M3 4.5L6 7.5L9 4.5", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" }) });
+var ChevronDown5 = () => /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("svg", { width: "12", height: "12", viewBox: "0 0 12 12", fill: "none", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("path", { d: "M3 4.5L6 7.5L9 4.5", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" }) });
+function CalendarDropdown({
+  options,
+  value,
+  onChange,
+  className = ""
+}) {
+  const [open, setOpen] = (0, import_react3.useState)(false);
+  const ref = (0, import_react3.useRef)(null);
+  const listRef = (0, import_react3.useRef)(null);
+  const selected = options.find((o) => o.value === value);
+  const close = (0, import_react3.useCallback)(() => setOpen(false), []);
+  (0, import_react3.useEffect)(() => {
+    if (!open) return;
+    const handler = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) close();
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open, close]);
+  (0, import_react3.useEffect)(() => {
+    if (open && listRef.current) {
+      const active = listRef.current.querySelector('[data-active="true"]');
+      if (active) active.scrollIntoView({ block: "nearest" });
+    }
+  }, [open]);
+  return /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { className: `cal-dropdown ${className}`.trim(), ref, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
+      "button",
+      {
+        type: "button",
+        className: "cal-dropdown-trigger",
+        onClick: () => setOpen(!open),
+        "aria-haspopup": "listbox",
+        "aria-expanded": open,
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { children: selected?.label ?? "" }),
+          /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(ChevronDown5, {})
+        ]
+      }
+    ),
+    open && /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("ul", { className: "cal-dropdown-menu", role: "listbox", ref: listRef, children: options.map((o) => /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
+      "li",
+      {
+        role: "option",
+        "aria-selected": o.value === value,
+        "data-active": o.value === value ? "true" : void 0,
+        className: `cal-dropdown-item${o.value === value ? " cal-dropdown-item-active" : ""}`,
+        onClick: () => {
+          onChange(o.value);
+          close();
+        },
+        children: o.label
+      },
+      o.value
+    )) })
+  ] });
+}
 function TitanCalendar({
   defaultValue,
   value,
@@ -1101,6 +1158,10 @@ function TitanCalendar({
     const y = (0, import_date.today)(tz).year;
     return Array.from({ length: 201 }, (_, i) => y - 100 + i);
   }, [tz]);
+  const yearOptions = (0, import_react3.useMemo)(
+    () => years.map((y) => ({ value: y, label: String(y) })),
+    [years]
+  );
   return /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { className: `calendar-wrapper ${className}`.trim(), children: [
     /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
       import_react_aria_components19.Calendar,
@@ -1118,30 +1179,23 @@ function TitanCalendar({
           /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("header", { className: "calendar-header", children: [
             /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_react_aria_components19.Button, { slot: "previous", className: "calendar-nav-btn", children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(ChevronLeft4, {}) }),
             /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { className: "calendar-selects", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { className: "calendar-select-wrap", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
-                  "select",
-                  {
-                    className: "calendar-select",
-                    value: focusedDate.month,
-                    onChange: (e) => setFocusedDate(focusedDate.set({ month: +e.target.value })),
-                    children: months.map((m) => /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("option", { value: m.value, children: m.label }, m.value))
-                  }
-                ),
-                /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(SelectChevron, {})
-              ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { className: "calendar-select-wrap", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
-                  "select",
-                  {
-                    className: "calendar-select calendar-select-year",
-                    value: focusedDate.year,
-                    onChange: (e) => setFocusedDate(focusedDate.set({ year: +e.target.value })),
-                    children: years.map((y) => /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("option", { value: y, children: y }, y))
-                  }
-                ),
-                /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(SelectChevron, {})
-              ] })
+              /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
+                CalendarDropdown,
+                {
+                  options: months,
+                  value: focusedDate.month,
+                  onChange: (m) => setFocusedDate(focusedDate.set({ month: m }))
+                }
+              ),
+              /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
+                CalendarDropdown,
+                {
+                  className: "cal-dropdown-year",
+                  options: yearOptions,
+                  value: focusedDate.year,
+                  onChange: (y) => setFocusedDate(focusedDate.set({ year: y }))
+                }
+              )
             ] }),
             /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_react_aria_components19.Button, { slot: "next", className: "calendar-nav-btn", children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(ChevronRight6, {}) })
           ] }),
