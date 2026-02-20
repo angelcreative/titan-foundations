@@ -36,11 +36,14 @@ __export(index_exports, {
   TitanNavbar: () => TitanNavbar,
   TitanPagination: () => TitanPagination,
   TitanPill: () => TitanPill,
+  TitanProgressBar: () => TitanProgressBar,
   TitanRadioGroupField: () => TitanRadioGroupField,
+  TitanRangeSlider: () => TitanRangeSlider,
   TitanSelect: () => TitanSelect,
   TitanSidebar: () => TitanSidebar,
   TitanSidebarHeader: () => TitanSidebarHeader,
   TitanSidebarItem: () => TitanSidebarItem,
+  TitanSlider: () => TitanSlider,
   TitanSwitchField: () => TitanSwitchField,
   TitanTabs: () => TitanTabs,
   TitanTag: () => TitanTag,
@@ -934,6 +937,131 @@ function TitanLoader({
     }
   );
 }
+
+// src/TitanSlider.tsx
+var import_react_aria_components17 = require("react-aria-components");
+var import_jsx_runtime22 = require("react/jsx-runtime");
+function TitanSlider({
+  label,
+  defaultValue = 50,
+  minValue = 0,
+  maxValue = 100,
+  step = 1,
+  isDisabled = false,
+  showOutput = true,
+  onChange,
+  formatOptions,
+  className = ""
+}) {
+  return /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+    import_react_aria_components17.Slider,
+    {
+      className: `slider-root ${className}`.trim(),
+      defaultValue,
+      minValue,
+      maxValue,
+      step,
+      isDisabled,
+      onChange,
+      formatOptions,
+      children: [
+        (label || showOutput) && /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { className: "slider-header", children: [
+          label && /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(import_react_aria_components17.Label, { className: "slider-label", children: label }),
+          showOutput && /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(import_react_aria_components17.SliderOutput, { className: "slider-output" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(import_react_aria_components17.SliderTrack, { className: "slider-track", children: ({ state }) => /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(import_jsx_runtime22.Fragment, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+            "div",
+            {
+              className: "slider-track-fill",
+              style: { width: `${state.getThumbPercent(0) * 100}%` }
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(import_react_aria_components17.SliderThumb, { className: "slider-thumb", index: 0 })
+        ] }) })
+      ]
+    }
+  );
+}
+function TitanRangeSlider({
+  label,
+  defaultValue = [20, 80],
+  minValue = 0,
+  maxValue = 100,
+  step = 1,
+  isDisabled = false,
+  showOutput = true,
+  onChange,
+  formatOptions,
+  className = ""
+}) {
+  return /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+    import_react_aria_components17.Slider,
+    {
+      className: `slider-root slider-root-range ${className}`.trim(),
+      defaultValue,
+      minValue,
+      maxValue,
+      step,
+      isDisabled,
+      onChange,
+      formatOptions,
+      children: [
+        (label || showOutput) && /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { className: "slider-header", children: [
+          label && /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(import_react_aria_components17.Label, { className: "slider-label", children: label }),
+          showOutput && /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(import_react_aria_components17.SliderOutput, { className: "slider-output" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(import_react_aria_components17.SliderTrack, { className: "slider-track", children: ({ state }) => {
+          const left = state.getThumbPercent(0) * 100;
+          const right = state.getThumbPercent(1) * 100;
+          return /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(import_jsx_runtime22.Fragment, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+              "div",
+              {
+                className: "slider-track-fill",
+                style: { left: `${left}%`, width: `${right - left}%` }
+              }
+            ),
+            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(import_react_aria_components17.SliderThumb, { className: "slider-thumb", index: 0 }),
+            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(import_react_aria_components17.SliderThumb, { className: "slider-thumb", index: 1 })
+          ] });
+        } })
+      ]
+    }
+  );
+}
+
+// src/TitanProgressBar.tsx
+var import_react_aria_components18 = require("react-aria-components");
+var import_jsx_runtime23 = require("react/jsx-runtime");
+function TitanProgressBar({
+  label,
+  value = 0,
+  minValue = 0,
+  maxValue = 100,
+  showValue = true,
+  formatOptions,
+  className = ""
+}) {
+  const percent = (value - minValue) / (maxValue - minValue) * 100;
+  return /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
+    import_react_aria_components18.ProgressBar,
+    {
+      className: `progress-root ${className}`.trim(),
+      value,
+      minValue,
+      maxValue,
+      formatOptions,
+      children: ({ valueText }) => /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_jsx_runtime23.Fragment, { children: [
+        (label || showValue) && /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { className: "progress-header", children: [
+          label && /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_react_aria_components18.Label, { className: "progress-label", children: label }),
+          showValue && /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("span", { className: "progress-value", children: valueText })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("div", { className: "progress-track", children: /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("div", { className: "progress-fill", style: { width: `${percent}%` } }) })
+      ] })
+    }
+  );
+}
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   TitanBorderlessTable,
@@ -952,11 +1080,14 @@ function TitanLoader({
   TitanNavbar,
   TitanPagination,
   TitanPill,
+  TitanProgressBar,
   TitanRadioGroupField,
+  TitanRangeSlider,
   TitanSelect,
   TitanSidebar,
   TitanSidebarHeader,
   TitanSidebarItem,
+  TitanSlider,
   TitanSwitchField,
   TitanTabs,
   TitanTag,

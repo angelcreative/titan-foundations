@@ -33,6 +33,8 @@ import {
   Hash,
   Navigation,
   Loader2,
+  SlidersHorizontal,
+  BarChart3,
 } from 'lucide-react'
 import {
   TitanBorderlessTable,
@@ -62,6 +64,9 @@ import {
   TitanToastRegion,
   TitanTooltip,
   TitanLoader,
+  TitanSlider,
+  TitanRangeSlider,
+  TitanProgressBar,
 } from 'titan-compositions'
 
 /* ------------------------------------------------------------------ */
@@ -106,6 +111,8 @@ const NAV_ITEMS = [
   { id: 'inputs', label: 'Inputs', icon: TextCursorInput },
   { id: 'sidebar', label: 'Sidebar', icon: PanelLeft },
   { id: 'loader', label: 'Loader', icon: Loader2 },
+  { id: 'slider', label: 'Slider', icon: SlidersHorizontal },
+  { id: 'progress', label: 'Progress Bar', icon: BarChart3 },
 ]
 
 /* ------------------------------------------------------------------ */
@@ -945,6 +952,72 @@ const CODE_LOADER = `export function TitanLoader({ size = 120, label = 'Loading�
       />
       <span className="titan-loader-sr-only">{label}</span>
     </div>
+  )
+}`
+
+const CODE_SLIDER = `import { Slider, SliderThumb, SliderTrack, SliderOutput, Label } from 'react-aria-components'
+
+export function TitanSlider({ label, defaultValue = 50, minValue = 0, maxValue = 100, step = 1, isDisabled, showOutput = true, onChange }) {
+  return (
+    <Slider className="slider-root" defaultValue={defaultValue} minValue={minValue} maxValue={maxValue} step={step} isDisabled={isDisabled} onChange={onChange}>
+      <div className="slider-header">
+        {label && <Label className="slider-label">{label}</Label>}
+        {showOutput && <SliderOutput className="slider-output" />}
+      </div>
+      <SliderTrack className="slider-track">
+        {({ state }) => (
+          <>
+            <div className="slider-track-fill" style={{ width: state.getThumbPercent(0) * 100 + '%' }} />
+            <SliderThumb className="slider-thumb" index={0} />
+          </>
+        )}
+      </SliderTrack>
+    </Slider>
+  )
+}`
+
+const CODE_RANGE_SLIDER = `export function TitanRangeSlider({ label, defaultValue = [20, 80], minValue = 0, maxValue = 100, step = 1, isDisabled, showOutput = true, onChange }) {
+  return (
+    <Slider className="slider-root slider-root-range" defaultValue={defaultValue} minValue={minValue} maxValue={maxValue} step={step} isDisabled={isDisabled} onChange={onChange}>
+      <div className="slider-header">
+        {label && <Label className="slider-label">{label}</Label>}
+        {showOutput && <SliderOutput className="slider-output" />}
+      </div>
+      <SliderTrack className="slider-track">
+        {({ state }) => {
+          const left = state.getThumbPercent(0) * 100
+          const right = state.getThumbPercent(1) * 100
+          return (
+            <>
+              <div className="slider-track-fill" style={{ left: left + '%', width: (right - left) + '%' }} />
+              <SliderThumb className="slider-thumb" index={0} />
+              <SliderThumb className="slider-thumb" index={1} />
+            </>
+          )
+        }}
+      </SliderTrack>
+    </Slider>
+  )
+}`
+
+const CODE_PROGRESS = `import { ProgressBar, Label } from 'react-aria-components'
+
+export function TitanProgressBar({ label, value = 0, minValue = 0, maxValue = 100, showValue = true }) {
+  const percent = ((value - minValue) / (maxValue - minValue)) * 100
+  return (
+    <ProgressBar className="progress-root" value={value} minValue={minValue} maxValue={maxValue}>
+      {({ valueText }) => (
+        <>
+          <div className="progress-header">
+            {label && <Label className="progress-label">{label}</Label>}
+            {showValue && <span className="progress-value">{valueText}</span>}
+          </div>
+          <div className="progress-track">
+            <div className="progress-fill" style={{ width: percent + '%' }} />
+          </div>
+        </>
+      )}
+    </ProgressBar>
   )
 }`
 
@@ -1812,6 +1885,69 @@ function App() {
                 <TitanLoader size={40} label="Loading…" />
                 <p style={{ marginTop: 8, fontSize: 13, color: 'var(--copy-slot-secondary)' }}>40×40</p>
               </div>
+            </div>
+          </ShowcaseCard>
+
+          {/* ── 18. Slider ─────────────────────────────────── */}
+          <ShowcaseCard
+            id="slider"
+            title="Slider"
+            ariaImports="import { Slider, SliderThumb, SliderTrack, SliderOutput, Label } from 'react-aria-components'"
+            ariaDesc="Slider provides accessible range input with keyboard navigation (arrow keys, Home/End), ARIA valuemin/valuemax/valuenow, and label association. Supports single and multi-thumb (range) modes."
+            ariaComponents={['Slider', 'SliderTrack', 'SliderThumb', 'SliderOutput', 'Label']}
+            foundations={[
+              { category: 'Track', detail: '4px height, rounded full, color-black-200 background.' },
+              { category: 'Fill', detail: 'Theme primary color (button-primary-slot-bg).' },
+              { category: 'Thumb', detail: '20px circle, white bg, 2px theme border, subtle shadow.' },
+              { category: 'States', detail: 'Hover border change, focus-visible ring, disabled grey fill + border.' },
+              { category: 'Range', detail: 'Multi-thumb variant fills only between the two thumbs.' },
+            ]}
+            tokenGroups={[
+              { label: 'Track', tokens: ['--slider-slot-track-height', '--slider-slot-track-bg', '--slider-slot-track-fill', '--slider-slot-track-radius'] },
+              { label: 'Thumb', tokens: ['--slider-slot-thumb-size', '--slider-slot-thumb-bg', '--slider-slot-thumb-border', '--slider-slot-thumb-radius', '--slider-slot-thumb-shadow'] },
+              { label: 'Disabled', tokens: ['--slider-slot-disabled-track-fill', '--slider-slot-disabled-thumb-border'] },
+            ]}
+            code={CODE_SLIDER + '\n\n' + CODE_RANGE_SLIDER}
+          >
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 32, maxWidth: 400, width: '100%' }}>
+              <TitanSlider label="Volume" defaultValue={50} />
+              <TitanSlider label="Brightness" defaultValue={75} step={5} />
+              <TitanSlider label="Disabled" defaultValue={30} isDisabled />
+              <div style={{ borderTop: '1px solid var(--divider-strong)', paddingTop: 24 }}>
+                <p style={{ margin: '0 0 12px', fontSize: 13, fontWeight: 500, color: 'var(--copy-slot-secondary)' }}>Range (multi-thumb)</p>
+                <TitanRangeSlider label="Price range" defaultValue={[20, 80]} />
+                <div style={{ marginTop: 16 }}>
+                  <TitanRangeSlider label="Disabled range" defaultValue={[30, 70]} isDisabled />
+                </div>
+              </div>
+            </div>
+          </ShowcaseCard>
+
+          {/* ── 19. Progress Bar ───────────────────────────── */}
+          <ShowcaseCard
+            id="progress"
+            title="Progress Bar"
+            ariaImports="import { ProgressBar, Label } from 'react-aria-components'"
+            ariaDesc="ProgressBar provides an accessible determinate progress indicator with role='progressbar', aria-valuemin/max/now, and optional label association."
+            ariaComponents={['ProgressBar', 'Label']}
+            foundations={[
+              { category: 'Track', detail: '8px height, rounded full, color-black-200 background.' },
+              { category: 'Fill', detail: 'Theme primary color (button-primary-slot-bg), smooth width transition.' },
+              { category: 'Labels', detail: 'Optional label and percentage value display.' },
+            ]}
+            tokenGroups={[
+              { label: 'Track', tokens: ['--progress-slot-track-height', '--progress-slot-track-bg', '--progress-slot-track-radius'] },
+              { label: 'Fill', tokens: ['--progress-slot-fill-bg'] },
+              { label: 'Typography', tokens: ['--progress-slot-label-color', '--progress-slot-value-color'] },
+            ]}
+            code={CODE_PROGRESS}
+          >
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 400, width: '100%' }}>
+              <TitanProgressBar label="Upload progress" value={72} />
+              <TitanProgressBar label="Storage used" value={45} />
+              <TitanProgressBar label="Complete" value={100} />
+              <TitanProgressBar label="Starting…" value={5} />
+              <TitanProgressBar value={60} showValue={false} />
             </div>
           </ShowcaseCard>
 

@@ -1887,3 +1887,140 @@
   white-space: nowrap;
   border: 0;
 }
+
+/* ====================================================================== */
+/* SLIDER                                                                  */
+/* ====================================================================== */
+
+.slider-root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3xs);
+  width: 100%;
+  touch-action: none;
+}
+
+.slider-root[data-disabled] {
+  opacity: 1;
+}
+
+.slider-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.slider-label {
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+  font-weight: var(--text-weight-medium);
+  color: var(--copy-slot-body);
+}
+
+.slider-output {
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+  color: var(--copy-slot-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.slider-track {
+  position: relative;
+  height: var(--slider-slot-track-height);
+  background: var(--slider-slot-track-bg);
+  border-radius: var(--slider-slot-track-radius);
+  cursor: pointer;
+}
+
+.slider-root[data-disabled] .slider-track {
+  cursor: not-allowed;
+}
+
+.slider-track-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--slider-slot-track-fill);
+  border-radius: var(--slider-slot-track-radius);
+}
+
+.slider-root[data-disabled] .slider-track-fill {
+  background: var(--slider-slot-disabled-track-fill);
+}
+
+.slider-thumb {
+  width: var(--slider-slot-thumb-size);
+  height: var(--slider-slot-thumb-size);
+  border-radius: var(--slider-slot-thumb-radius);
+  background: var(--slider-slot-thumb-bg);
+  border: var(--slider-slot-thumb-border-width) solid var(--slider-slot-thumb-border);
+  box-shadow: var(--slider-slot-thumb-shadow);
+  top: 50%;
+  cursor: grab;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.slider-thumb[data-dragging] {
+  cursor: grabbing;
+}
+
+.slider-thumb[data-hovered] {
+  border-color: var(--slider-slot-thumb-border-hover);
+}
+
+.slider-thumb[data-focus-visible] {
+  outline: none;
+  box-shadow: var(--slider-slot-thumb-shadow), 0 0 0 var(--button-slot-focus-width) var(--button-slot-focus-color);
+}
+
+.slider-root[data-disabled] .slider-thumb {
+  border-color: var(--slider-slot-disabled-thumb-border);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ====================================================================== */
+/* PROGRESS BAR                                                            */
+/* ====================================================================== */
+
+.progress-root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3xs);
+  width: 100%;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.progress-label {
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+  font-weight: var(--text-weight-medium);
+  color: var(--progress-slot-label-color);
+}
+
+.progress-value {
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+  color: var(--progress-slot-value-color);
+  font-variant-numeric: tabular-nums;
+}
+
+.progress-track {
+  height: var(--progress-slot-track-height);
+  background: var(--progress-slot-track-bg);
+  border-radius: var(--progress-slot-track-radius);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--progress-slot-fill-bg);
+  border-radius: var(--progress-slot-track-radius);
+  transition: width 0.3s ease;
+}

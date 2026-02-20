@@ -942,6 +942,137 @@ function TitanLoader({
     }
   );
 }
+
+// src/TitanSlider.tsx
+import {
+  Label as Label4,
+  Slider,
+  SliderOutput,
+  SliderThumb,
+  SliderTrack
+} from "react-aria-components";
+import { Fragment as Fragment4, jsx as jsx22, jsxs as jsxs20 } from "react/jsx-runtime";
+function TitanSlider({
+  label,
+  defaultValue = 50,
+  minValue = 0,
+  maxValue = 100,
+  step = 1,
+  isDisabled = false,
+  showOutput = true,
+  onChange,
+  formatOptions,
+  className = ""
+}) {
+  return /* @__PURE__ */ jsxs20(
+    Slider,
+    {
+      className: `slider-root ${className}`.trim(),
+      defaultValue,
+      minValue,
+      maxValue,
+      step,
+      isDisabled,
+      onChange,
+      formatOptions,
+      children: [
+        (label || showOutput) && /* @__PURE__ */ jsxs20("div", { className: "slider-header", children: [
+          label && /* @__PURE__ */ jsx22(Label4, { className: "slider-label", children: label }),
+          showOutput && /* @__PURE__ */ jsx22(SliderOutput, { className: "slider-output" })
+        ] }),
+        /* @__PURE__ */ jsx22(SliderTrack, { className: "slider-track", children: ({ state }) => /* @__PURE__ */ jsxs20(Fragment4, { children: [
+          /* @__PURE__ */ jsx22(
+            "div",
+            {
+              className: "slider-track-fill",
+              style: { width: `${state.getThumbPercent(0) * 100}%` }
+            }
+          ),
+          /* @__PURE__ */ jsx22(SliderThumb, { className: "slider-thumb", index: 0 })
+        ] }) })
+      ]
+    }
+  );
+}
+function TitanRangeSlider({
+  label,
+  defaultValue = [20, 80],
+  minValue = 0,
+  maxValue = 100,
+  step = 1,
+  isDisabled = false,
+  showOutput = true,
+  onChange,
+  formatOptions,
+  className = ""
+}) {
+  return /* @__PURE__ */ jsxs20(
+    Slider,
+    {
+      className: `slider-root slider-root-range ${className}`.trim(),
+      defaultValue,
+      minValue,
+      maxValue,
+      step,
+      isDisabled,
+      onChange,
+      formatOptions,
+      children: [
+        (label || showOutput) && /* @__PURE__ */ jsxs20("div", { className: "slider-header", children: [
+          label && /* @__PURE__ */ jsx22(Label4, { className: "slider-label", children: label }),
+          showOutput && /* @__PURE__ */ jsx22(SliderOutput, { className: "slider-output" })
+        ] }),
+        /* @__PURE__ */ jsx22(SliderTrack, { className: "slider-track", children: ({ state }) => {
+          const left = state.getThumbPercent(0) * 100;
+          const right = state.getThumbPercent(1) * 100;
+          return /* @__PURE__ */ jsxs20(Fragment4, { children: [
+            /* @__PURE__ */ jsx22(
+              "div",
+              {
+                className: "slider-track-fill",
+                style: { left: `${left}%`, width: `${right - left}%` }
+              }
+            ),
+            /* @__PURE__ */ jsx22(SliderThumb, { className: "slider-thumb", index: 0 }),
+            /* @__PURE__ */ jsx22(SliderThumb, { className: "slider-thumb", index: 1 })
+          ] });
+        } })
+      ]
+    }
+  );
+}
+
+// src/TitanProgressBar.tsx
+import { Label as Label5, ProgressBar } from "react-aria-components";
+import { Fragment as Fragment5, jsx as jsx23, jsxs as jsxs21 } from "react/jsx-runtime";
+function TitanProgressBar({
+  label,
+  value = 0,
+  minValue = 0,
+  maxValue = 100,
+  showValue = true,
+  formatOptions,
+  className = ""
+}) {
+  const percent = (value - minValue) / (maxValue - minValue) * 100;
+  return /* @__PURE__ */ jsx23(
+    ProgressBar,
+    {
+      className: `progress-root ${className}`.trim(),
+      value,
+      minValue,
+      maxValue,
+      formatOptions,
+      children: ({ valueText }) => /* @__PURE__ */ jsxs21(Fragment5, { children: [
+        (label || showValue) && /* @__PURE__ */ jsxs21("div", { className: "progress-header", children: [
+          label && /* @__PURE__ */ jsx23(Label5, { className: "progress-label", children: label }),
+          showValue && /* @__PURE__ */ jsx23("span", { className: "progress-value", children: valueText })
+        ] }),
+        /* @__PURE__ */ jsx23("div", { className: "progress-track", children: /* @__PURE__ */ jsx23("div", { className: "progress-fill", style: { width: `${percent}%` } }) })
+      ] })
+    }
+  );
+}
 export {
   TitanBorderlessTable,
   TitanBreadcrumb,
@@ -959,11 +1090,14 @@ export {
   TitanNavbar,
   TitanPagination,
   TitanPill,
+  TitanProgressBar,
   TitanRadioGroupField,
+  TitanRangeSlider,
   TitanSelect,
   TitanSidebar,
   TitanSidebarHeader,
   TitanSidebarItem,
+  TitanSlider,
   TitanSwitchField,
   TitanTabs,
   TitanTag,
