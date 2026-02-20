@@ -2222,14 +2222,14 @@
   /* COMPONENT: SLIDER                                                      */
   /* ====================================================================== */
   --slider-slot-track-height: 4px;
-  --slider-slot-track-radius: var(--rounded-full);
+  --slider-slot-track-radius: 9999px;
   --slider-slot-track-bg: var(--color-black-200);
   --slider-slot-track-fill: var(--button-primary-slot-bg);
   --slider-slot-thumb-size: 24px;
   --slider-slot-thumb-bg: var(--color-white-900);
   --slider-slot-thumb-border: transparent;
   --slider-slot-thumb-border-width: 0px;
-  --slider-slot-thumb-radius: var(--rounded-full);
+  --slider-slot-thumb-radius: 9999px;
   --slider-slot-thumb-shadow: 0 1px 4px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.04);
   --slider-slot-thumb-bg-hover: var(--color-white-900);
   --slider-slot-thumb-border-hover: transparent;
@@ -2240,7 +2240,7 @@
   /* COMPONENT: PROGRESS BAR                                                */
   /* ====================================================================== */
   --progress-slot-track-height: 8px;
-  --progress-slot-track-radius: var(--rounded-full);
+  --progress-slot-track-radius: 9999px;
   --progress-slot-track-bg: var(--color-black-200);
   --progress-slot-fill-bg: var(--button-primary-slot-bg);
   --progress-slot-label-color: var(--copy-slot-body);
@@ -2256,7 +2256,7 @@
   --calendar-slot-padding: var(--spacing-l);
 
   --calendar-slot-nav-size: 32px;
-  --calendar-slot-nav-radius: var(--rounded-full);
+  --calendar-slot-nav-radius: 9999px;
   --calendar-slot-nav-color: var(--copy-slot-body);
   --calendar-slot-nav-hover-bg: var(--color-black-100);
 

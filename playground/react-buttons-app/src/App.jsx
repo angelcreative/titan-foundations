@@ -1221,7 +1221,6 @@ function App() {
           defaultActiveId="navbar"
           onActiveChange={scrollTo}
         >
-          <TitanSidebarHeader>Components</TitanSidebarHeader>
           {NAV_ITEMS.map((nav) => (
             <TitanSidebarItem key={nav.id} id={nav.id} icon={nav.icon}>
               {nav.label}

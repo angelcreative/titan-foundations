@@ -2188,8 +2188,6 @@
 .calendar-cell {
   width: var(--calendar-slot-cell-size);
   height: var(--calendar-slot-cell-size);
-  text-align: center;
-  vertical-align: middle;
   font-size: var(--font-size-s);
   color: var(--calendar-slot-cell-color);
   border-radius: var(--calendar-slot-cell-radius);
@@ -2197,6 +2195,9 @@
   padding: 0;
   outline: none;
   transition: background 0.12s, color 0.12s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .calendar-cell[data-hovered] {
