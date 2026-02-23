@@ -173,7 +173,7 @@ function CodeBlock({ code }) {
 const MCP_CONFIG = `{
   "mcpServers": {
     "titands": {
-      "url": "https://mcp-remote-worker.titands.workers.dev/sse"
+      "url": "https://mcp-remote-worker.titands.workers.dev/mcp"
     }
   }
 }`
@@ -327,83 +327,212 @@ Output:
 Input:
 [Flow description]`
 
+const CLAUDE_CODE_CMD = `claude mcp add titands --transport http https://mcp-remote-worker.titands.workers.dev/mcp`
+
+const WHAT_CAN_YOU_ASK = [
+  { ask: 'Build a settings page with sidebar navigation, form fields, and a save button', result: 'Generates a full page layout using Titan components and tokens' },
+  { ask: 'Create a login form with the Demand theme', result: 'Builds a themed form using composition patterns' },
+  { ask: 'Show me all available button variants and when to use each one', result: 'Returns component details: props, states, slots' },
+  { ask: 'Create a report list page with filters, table, and pagination', result: 'Combines multiple compositions into a real SaaS pattern' },
+  { ask: 'Review this code and check it follows Titan rules', result: 'Validates against design system rules and auto-rewrites spacing' },
+  { ask: 'Bootstrap a new Vite + React project with the insights theme', result: 'Returns ready-to-paste setup: fonts, CSS links, theme config' },
+  { ask: 'Sync the latest Titan foundations data', result: 'Refreshes components, patterns, and tokens from the repo' },
+]
+
+const AVAILABLE_TOOLS = [
+  { tool: 'titan_setup', purpose: 'Auto-setup project: npm install + write skill files', progressive: '—' },
+  { tool: 'titan_syncFromGithub', purpose: 'Refresh live data from the titan-foundations repo', progressive: '—' },
+  { tool: 'titan_getTheme', purpose: 'Resolve theme, get bootstrap snippets or full CSS', progressive: 'include=summary|bootstrap|css|all' },
+  { tool: 'titan_getOverview', purpose: 'Architecture, workflow, available components/patterns', progressive: "Lightweight summary by default; include='full' for details" },
+  { tool: 'titan_getComponentRegistry', purpose: 'Know WHAT components exist', progressive: "Names only by default; component='X' for full props/slots" },
+  { tool: 'titan_getCompositionPattern', purpose: 'Know HOW to combine components into screens', progressive: "Compact index by default; pattern='X' for full JSX recipe" },
+  { tool: 'titan_validateAndRewrite', purpose: 'Validate code against Titan rules + auto-rewrite spacing', progressive: '—' },
+  { tool: 'titan_getFoundations', purpose: 'Foundation tokens + semantic token categories', progressive: '—' },
+]
+
+const SUPPORTED_THEMES = [
+  { theme: 'insights', product: 'Default. Used when no theme is specified.' },
+  { theme: 'audiense', product: 'Audiense core' },
+  { theme: 'demand', product: 'Demand product' },
+  { theme: 'linkedin', product: 'LinkedIn integration' },
+  { theme: 'tweetbinder', product: 'TweetBinder' },
+  { theme: 'digital', product: 'Digital product' },
+  { theme: 'neutral', product: 'Neutral / white-label' },
+  { theme: 'default', product: 'Generic fallback' },
+]
+
+const TROUBLESHOOTING = [
+  { problem: 'MCP shows "failed" or "not authenticated"', solution: 'Check the URL ends in /mcp (not /sse). No auth is required.' },
+  { problem: 'Components seem outdated', solution: 'Ask: "Sync the latest Titan foundations data"' },
+  { problem: "AI doesn't use Titan tokens", solution: 'Ask: "Review this code and check it follows Titan rules"' },
+  { problem: "Claude Code can't connect", solution: 'Run claude mcp add titands --transport http https://mcp-remote-worker.titands.workers.dev/mcp' },
+]
+
 function SetupGuide() {
   return (
     <div className="setup-guide">
-      <h1>How to set up Titan</h1>
-      <p className="setup-intro">Everything you need to start designing with Titan in Cursor. No coding required.</p>
+      <h1>Titan Design System MCP</h1>
 
-      {/* ── FAQ ── */}
-      <section className="setup-section setup-faq">
-        <h2>What can you ask /titan?</h2>
-        <p>Once installed, you can ask the AI anything about Titan. Here are some examples:</p>
-        <ul className="setup-faq-list">
-          <li><strong>"Build a settings page with sidebar navigation, form fields, and a save button"</strong> — Generates a full page layout using Titan components and tokens.</li>
-          <li><strong>"Show me all available button variants and when to use each one"</strong> — Returns the component registry with props, states, and usage guidance.</li>
-          <li><strong>"Create a report list page with filters, table, and pagination"</strong> — Combines multiple compositions into a real SaaS pattern.</li>
-          <li><strong>"Review this UI and check it follows Titan tokens and patterns"</strong> — Validates your code against the design system rules.</li>
-          <li><strong>"Bootstrap a new Vite + React project with Titan theme insights"</strong> — Returns ready-to-paste setup snippets (fonts, CSS links, theme config).</li>
-        </ul>
+      {/* ── What is this? ── */}
+      <section className="setup-section">
+        <h2>What is this?</h2>
+        <p>The Titan MCP connects your AI editor (Cursor or Claude Code) to the Titan Design System. It gives the AI full knowledge of components, tokens, patterns, themes, and validation rules — so you can build UIs by just describing what you want.</p>
       </section>
 
-      {/* ── 1. Install MCP ── */}
+      {/* ── 1. Install ── */}
       <section className="setup-section">
-        <h2>1. Install the Titan MCP</h2>
-        <p>The MCP (Model Context Protocol) connects Cursor to the Titan Design System. It gives the AI full knowledge of components, tokens, patterns, and rules.</p>
+        <h2>1. Install</h2>
+
+        <h3>Cursor</h3>
         <ol className="setup-steps">
           <li>Open <strong>Cursor → Settings → Cursor Settings</strong></li>
           <li>Go to the <strong>MCP</strong> tab</li>
           <li>Click <strong>+ Add new global MCP server</strong></li>
-          <li>Paste this configuration and save:</li>
+          <li>Paste this and save:</li>
         </ol>
         <CodeBlock code={MCP_CONFIG} />
+
+        <h3>Claude Code</h3>
+        <p>Run this in your terminal:</p>
+        <CodeBlock code={CLAUDE_CODE_CMD} />
       </section>
 
-      {/* ── 2. Using /titan ── */}
+      {/* ── 2. First-time setup ── */}
       <section className="setup-section">
-        <h2>2. Using /titan</h2>
-        <p>Once the MCP is installed, type <code>/titan</code> in Cursor chat to invoke the Titan Design System. The AI will automatically use Titan components, tokens, and patterns.</p>
-        <h3>Check for updates</h3>
-        <p>Ask the AI to verify it has the latest version of the design system:</p>
-        <CodeBlock code={'/titan "check for new versions"'} />
-        <p>This ensures you always work with the most up-to-date components and tokens.</p>
+        <h2>2. First-time setup</h2>
+        <p>After installing the MCP, ask the AI to set up your project:</p>
+        <CodeBlock code={'"Set up this project for Titan"'} />
+        <p>This runs <code>titan_setup</code>, which automatically:</p>
+        <ul className="setup-auto-list">
+          <li>Installs npm dependencies (<code>titan-compositions</code>, <code>react-aria-components</code>, <code>lucide-react</code>, <code>@tabler/icons-react</code>)</li>
+          <li>Writes local skill files so the AI has offline Titan knowledge</li>
+        </ul>
       </section>
 
-      {/* ── 3. Cursor Commands ── */}
+      {/* ── 3. What can you ask? ── */}
       <section className="setup-section">
-        <h2>3. Cursor Commands</h2>
-        <p>Add these as custom commands in Cursor. Go to <strong>Cursor → Settings → Cursor Settings → Commands</strong>, create a new <code>.md</code> file for each, and paste the content.</p>
+        <h2>3. What can you ask?</h2>
+        <table className="setup-table">
+          <thead>
+            <tr>
+              <th>What you say</th>
+              <th>What happens</th>
+            </tr>
+          </thead>
+          <tbody>
+            {WHAT_CAN_YOU_ASK.map((row, i) => (
+              <tr key={i}>
+                <td>"{row.ask}"</td>
+                <td>{row.result}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      {/* ── 4. Available tools (8) ── */}
+      <section className="setup-section">
+        <h2>4. Available tools (8)</h2>
+        <p>The MCP exposes these tools. You don't need to call them directly — the AI uses them automatically. But knowing them helps you understand what's possible.</p>
+        <table className="setup-table">
+          <thead>
+            <tr>
+              <th>Tool</th>
+              <th>Purpose</th>
+              <th>Progressive?</th>
+            </tr>
+          </thead>
+          <tbody>
+            {AVAILABLE_TOOLS.map((row, i) => (
+              <tr key={i}>
+                <td><code>{row.tool}</code></td>
+                <td>{row.purpose}</td>
+                <td>{row.progressive}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p className="setup-note">Progressive means the tool returns a lightweight response by default to save context, and full details only when requested. The AI handles this automatically.</p>
+      </section>
+
+      {/* ── 5. Cursor Commands ── */}
+      <section className="setup-section">
+        <h2>5. Cursor commands</h2>
+        <p>Add these as custom commands in <strong>Cursor → Settings → Cursor Settings → Commands</strong>. Create a new <code>.md</code> file for each and paste the content.</p>
 
         <div className="setup-command">
           <h3><code>/refine-ui</code></h3>
-          <p>Polish an existing interface without changing layout or structure. Improves typography, color balance, spacing, and visual hierarchy. Use it after building a screen to make it feel more premium.</p>
+          <p>Polish an existing interface without changing layout or structure. Improves typography, color balance, spacing, and visual hierarchy.</p>
           <CodeBlock code={CMD_REFINE_UI} />
         </div>
 
         <div className="setup-command">
           <h3><code>/ux-brainstorm</code></h3>
-          <p>Get 3 design alternatives (simple, balanced, advanced) for any screen or flow. Each option includes layout wireframes, hierarchy, interactions, and all states.</p>
+          <p>Get 3 design alternatives (simple, balanced, advanced) for any screen or flow.</p>
           <CodeBlock code={CMD_UX_BRAINSTORM} />
         </div>
 
         <div className="setup-command">
           <h3><code>/ux-redesign</code></h3>
-          <p>Propose fundamentally different layout alternatives for the same UI. Each alternative includes wireframe, hierarchy, pros/cons, and when to use it.</p>
+          <p>Propose fundamentally different layout alternatives for the same UI.</p>
           <CodeBlock code={CMD_UX_REDESIGN} />
         </div>
 
         <div className="setup-command">
           <h3><code>/user-stories</code></h3>
-          <p>Convert a validated UX flow into small, vertical user stories with acceptance criteria and scope boundaries.</p>
+          <p>Convert a validated UX flow into small, vertical user stories.</p>
           <CodeBlock code={CMD_USER_STORIES} />
         </div>
       </section>
 
-      {/* ── 4. Cursor Rule ── */}
+      {/* ── 6. Cursor Rule ── */}
       <section className="setup-section">
-        <h2>4. Cursor Rule</h2>
-        <p>Add this as a User Rule in <strong>Cursor → Settings → Cursor Settings → Rules</strong>. It sets the AI to think like a senior UX designer for every conversation.</p>
+        <h2>6. Cursor user rule</h2>
+        <p>Add this as a User Rule in <strong>Cursor → Settings → Cursor Settings → Rules</strong>.</p>
         <CodeBlock code={RULE_SENIOR_UX} />
+      </section>
+
+      {/* ── 7. Supported themes ── */}
+      <section className="setup-section">
+        <h2>7. Supported themes</h2>
+        <table className="setup-table">
+          <thead>
+            <tr>
+              <th>Theme</th>
+              <th>Product</th>
+            </tr>
+          </thead>
+          <tbody>
+            {SUPPORTED_THEMES.map((row, i) => (
+              <tr key={i}>
+                <td><code>{row.theme}</code></td>
+                <td>{row.product}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p className="setup-note">To use a specific theme, just mention it in your prompt: "Build a dashboard with the demand theme".</p>
+      </section>
+
+      {/* ── Troubleshooting ── */}
+      <section className="setup-section">
+        <h2>Troubleshooting</h2>
+        <table className="setup-table">
+          <thead>
+            <tr>
+              <th>Problem</th>
+              <th>Solution</th>
+            </tr>
+          </thead>
+          <tbody>
+            {TROUBLESHOOTING.map((row, i) => (
+              <tr key={i}>
+                <td>{row.problem}</td>
+                <td>{row.solution}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </section>
     </div>
   )

@@ -442,3 +442,50 @@ h2 {
 .setup-faq-list li strong {
   color: var(--copy-slot-primary);
 }
+
+.setup-auto-list {
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+  padding-left: var(--spacing-m);
+  margin: var(--spacing-3xs) 0 0;
+}
+
+.setup-auto-list li {
+  margin-bottom: var(--spacing-4xs);
+}
+
+.setup-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+  margin: var(--spacing-3xs) 0 var(--spacing-s);
+}
+
+.setup-table th,
+.setup-table td {
+  text-align: left;
+  padding: var(--spacing-3xs) var(--spacing-2xs);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.setup-table th {
+  font-weight: var(--text-weight-semibold);
+  color: var(--copy-slot-primary);
+  background: var(--surface-secondary);
+}
+
+.setup-table td {
+  color: var(--copy-slot-secondary);
+}
+
+.setup-table td code {
+  font-family: "Menlo", "Monaco", "Courier New", monospace;
+  font-size: 12px;
+}
+
+.setup-note {
+  font-size: var(--font-size-xs, 12px);
+  color: var(--copy-slot-tertiary);
+  margin-top: var(--spacing-4xs);
+}
