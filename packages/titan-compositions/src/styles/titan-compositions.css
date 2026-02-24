@@ -22,27 +22,12 @@
   cursor: pointer;
 }
 
-/* No focus outlines — all interactives */
-.btn[data-focus-visible],
-.icon-secondary[data-focus-visible],
-.icon-ghost[data-focus-visible],
-.icon-delete[data-focus-visible],
-.menu-item[data-focus-visible],
-.select-trigger[data-focus-visible],
-.select-item[data-focus-visible],
-.tab-trigger[data-focus-visible],
-.tab-trigger-vertical[data-focus-visible],
-.pagination-button[data-focus-visible],
-.drawer-close-button[data-focus-visible],
-.breadcrumb-link[data-focus-visible],
-.checkbox-root[data-focus-visible],
-.radio-root[data-focus-visible],
-.switch-root[data-focus-visible],
-.textarea-field[data-focus-visible],
-.titan-sidebar-toggle[data-focus-visible],
-.titan-sidebar-item[data-focus-visible] {
-  outline: none;
-  box-shadow: none;
+/* No focus outlines — kill all focus rings globally */
+*:focus,
+*:focus-visible,
+*[data-focus-visible] {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .page {
@@ -1059,10 +1044,6 @@
   background: var(--toggle-group-slot-item-bg-selected);
 }
 
-.toggle-button-item[data-focus-visible] {
-  outline: none;
-  box-shadow: none;
-}
 
 .toggle-button-icon {
   display: inline-flex;
@@ -1613,21 +1594,6 @@
   cursor: not-allowed;
 }
 
-/* Focus-visible rings (keyboard navigation) */
-.checkbox-root[data-focus-visible] .checkbox-box {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: var(--focus-ring-offset);
-}
-
-.radio-root[data-focus-visible] .radio-box {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: var(--focus-ring-offset);
-}
-
-.switch-root[data-focus-visible] .switch-track {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: var(--focus-ring-offset);
-}
 
 /* Hover states */
 .checkbox-root[data-hovered]:not([data-disabled]) .checkbox-box {
@@ -1882,11 +1848,6 @@
   border-color: var(--input-slot-border-focus);
 }
 
-.input-with-icons[data-focus-visible] {
-  border-color: var(--input-slot-border-focus);
-  outline: none;
-  box-shadow: none;
-}
 
 .field-root[data-disabled] .input-with-icons {
   background: var(--input-slot-disabled-bg);
@@ -2172,10 +2133,6 @@
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(0, 0, 0, 0.06);
 }
 
-.slider-thumb[data-focus-visible] {
-  outline: none;
-  box-shadow: var(--slider-slot-thumb-shadow), 0 0 0 var(--button-slot-focus-width) var(--button-slot-focus-color);
-}
 
 .slider-root[data-disabled] .slider-thumb {
   cursor: not-allowed;
@@ -2272,10 +2229,6 @@
   background: var(--calendar-slot-nav-hover-bg);
 }
 
-.calendar-nav-btn[data-focus-visible] {
-  outline: none;
-  box-shadow: 0 0 0 var(--button-slot-focus-width) var(--button-slot-focus-color);
-}
 
 .calendar-nav-btn[data-disabled] {
   opacity: 0.4;
@@ -2317,10 +2270,6 @@
   border-color: var(--input-border-hover);
 }
 
-.cal-dropdown-trigger:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 var(--button-slot-focus-width) var(--button-slot-focus-color);
-}
 
 .cal-dropdown-trigger svg {
   flex-shrink: 0;
@@ -2417,9 +2366,6 @@
   font-weight: var(--font-weight-600);
 }
 
-.calendar-cell[data-focus-visible] {
-  box-shadow: inset 0 0 0 2px var(--calendar-slot-cell-selected-bg);
-}
 
 .calendar-cell[data-outside-month] {
   color: var(--calendar-slot-cell-outside-color);
@@ -2474,10 +2420,6 @@
   outline: none;
 }
 
-.calendar-time-input:focus-visible {
-  box-shadow: 0 0 0 var(--button-slot-focus-width) var(--button-slot-focus-color);
-  border-color: var(--input-border-focus-visible);
-}
 
 .calendar-time-separator {
   font-size: var(--font-size-l);
