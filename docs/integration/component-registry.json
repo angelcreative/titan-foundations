@@ -7,7 +7,8 @@
     "react >=18.0.0",
     "react-dom >=18.0.0",
     "react-aria-components >=1.0.0",
-    "lucide-react >=0.460.0"
+    "lucide-react >=0.460.0",
+    "@internationalized/date >=3.0.0"
   ],
   "themeSetup": {
     "tokens": "tokens/css/titan.css",
@@ -402,6 +403,92 @@
         "TitanSidebarItemProps": { "id": "string", "icon?": "ComponentType", "onPress?": "() => void", "children": "ReactNode" }
       },
       "category": "navigation"
+    },
+    "TitanCalendar": {
+      "import": "import { TitanCalendar } from 'titan-compositions'",
+      "description": "Date calendar with month/year dropdown selectors and optional time inputs (hour + minute). Wraps React Aria Calendar.",
+      "props": {
+        "defaultValue": { "type": "CalendarDate", "required": false, "description": "Initial date (uncontrolled)" },
+        "value": { "type": "CalendarDate", "required": false, "description": "Selected date (controlled)" },
+        "onChange": { "type": "(date: CalendarDate) => void", "required": false },
+        "showTime": { "type": "boolean", "default": "false", "required": false, "description": "Show hour/minute inputs below the calendar" },
+        "defaultHour": { "type": "number", "default": "1", "required": false },
+        "defaultMinute": { "type": "number", "default": "0", "required": false },
+        "onTimeChange": { "type": "(hour: number, minute: number) => void", "required": false },
+        "minValue": { "type": "CalendarDate", "required": false },
+        "maxValue": { "type": "CalendarDate", "required": false },
+        "isDisabled": { "type": "boolean", "default": "false", "required": false },
+        "className": { "type": "string", "required": false }
+      },
+      "slots": [],
+      "relatedTypes": {
+        "CalendarDate": "Import from @internationalized/date (re-exported by titan-compositions)"
+      },
+      "category": "form"
+    },
+    "TitanLoader": {
+      "import": "import { TitanLoader } from 'titan-compositions'",
+      "description": "Animated loading indicator using the Titan branded GIF. Renders with role='status' for accessibility.",
+      "props": {
+        "size": { "type": "number", "default": "120", "required": false, "description": "Width and height in px" },
+        "label": { "type": "string", "default": "'Loading…'", "required": false, "description": "Accessible label for screen readers" },
+        "className": { "type": "string", "required": false },
+        "style": { "type": "CSSProperties", "required": false },
+        "loaderBasePath": { "type": "string", "default": "CDN URL (jsdelivr)", "required": false, "description": "Base path/URL for loader assets. Defaults to CDN. Pass '/assets/logos' for local." }
+      },
+      "slots": [],
+      "category": "feedback"
+    },
+    "TitanProgressBar": {
+      "import": "import { TitanProgressBar } from 'titan-compositions'",
+      "description": "Determinate progress bar with optional label and value display. Wraps React Aria ProgressBar.",
+      "props": {
+        "label": { "type": "string", "required": false },
+        "value": { "type": "number", "default": "0", "required": false },
+        "minValue": { "type": "number", "default": "0", "required": false },
+        "maxValue": { "type": "number", "default": "100", "required": false },
+        "showValue": { "type": "boolean", "default": "true", "required": false, "description": "Show percentage text next to label" },
+        "formatOptions": { "type": "Intl.NumberFormatOptions", "required": false },
+        "className": { "type": "string", "required": false }
+      },
+      "slots": [],
+      "category": "feedback"
+    },
+    "TitanSlider": {
+      "import": "import { TitanSlider } from 'titan-compositions'",
+      "description": "Single-thumb slider for numeric value selection. Wraps React Aria Slider.",
+      "props": {
+        "label": { "type": "string", "required": false },
+        "defaultValue": { "type": "number", "default": "50", "required": false },
+        "minValue": { "type": "number", "default": "0", "required": false },
+        "maxValue": { "type": "number", "default": "100", "required": false },
+        "step": { "type": "number", "default": "1", "required": false },
+        "isDisabled": { "type": "boolean", "default": "false", "required": false },
+        "showOutput": { "type": "boolean", "default": "true", "required": false, "description": "Show current value next to label" },
+        "onChange": { "type": "(value: number) => void", "required": false },
+        "formatOptions": { "type": "Intl.NumberFormatOptions", "required": false },
+        "className": { "type": "string", "required": false }
+      },
+      "slots": [],
+      "category": "form"
+    },
+    "TitanRangeSlider": {
+      "import": "import { TitanRangeSlider } from 'titan-compositions'",
+      "description": "Dual-thumb range slider for selecting a numeric range. Wraps React Aria Slider with two thumbs.",
+      "props": {
+        "label": { "type": "string", "required": false },
+        "defaultValue": { "type": "[number, number]", "default": "[20, 80]", "required": false },
+        "minValue": { "type": "number", "default": "0", "required": false },
+        "maxValue": { "type": "number", "default": "100", "required": false },
+        "step": { "type": "number", "default": "1", "required": false },
+        "isDisabled": { "type": "boolean", "default": "false", "required": false },
+        "showOutput": { "type": "boolean", "default": "true", "required": false, "description": "Show current range next to label" },
+        "onChange": { "type": "(value: number[]) => void", "required": false },
+        "formatOptions": { "type": "Intl.NumberFormatOptions", "required": false },
+        "className": { "type": "string", "required": false }
+      },
+      "slots": [],
+      "category": "form"
     }
   },
   "utilities": {
@@ -417,12 +504,13 @@
       "Button", "Dialog", "Drawer", "Input (TextField)", "Textarea", "Checkbox",
       "RadioGroup", "Switch", "Select", "Menu", "Tabs", "Table", "Tooltip",
       "Toast", "Breadcrumb", "Navbar", "Pagination", "Pill/Badge", "Tag/Label",
-      "Card", "CardGrid", "PageLayout", "ToggleButtonGroup", "Sidebar"
+      "Card", "CardGrid", "PageLayout", "ToggleButtonGroup", "Sidebar",
+      "Calendar", "Loader", "ProgressBar", "Slider", "RangeSlider"
     ],
     "fallbackToReactAria": [
-      "DatePicker", "DateRangePicker", "ComboBox", "Slider", "NumberField",
-      "SearchField", "Calendar", "RangeCalendar", "TimeField", "ColorPicker",
-      "TagGroup", "DropZone", "FileTrigger", "Meter", "ProgressBar", "ListBox",
+      "DatePicker", "DateRangePicker", "ComboBox", "NumberField",
+      "SearchField", "RangeCalendar", "TimeField", "ColorPicker",
+      "TagGroup", "DropZone", "FileTrigger", "Meter", "ListBox",
       "GridList", "Tree", "Disclosure", "ColorField",
       "ColorSlider", "ColorSwatch", "ColorSwatchPicker", "ColorWheel"
     ],
