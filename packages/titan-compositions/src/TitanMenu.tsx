@@ -8,7 +8,7 @@ import {
   Separator,
   SubmenuTrigger,
 } from 'react-aria-components'
-import { ChevronDown, ChevronRight } from 'lucide-react'
+import { ChevronDown, ChevronRight, Plus, AlertCircle } from 'lucide-react'
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -62,7 +62,9 @@ export interface TitanSearchMenuProps {
   placement?: 'bottom start' | 'bottom end'
   items: TitanMenuSearchOption[]
   query?: string
+  emptyIcon?: ReactNode
   emptyLabel?: string
+  addNewIcon?: ReactNode
   addNewLabel?: string
   onAction?: (id: string) => void
   onAddNew?: () => void
@@ -211,12 +213,16 @@ export function TitanSearchMenu({
   placement = 'bottom start',
   items,
   query,
+  emptyIcon,
   emptyLabel = 'This entity is not in our Database, add it here to request it.',
+  addNewIcon,
   addNewLabel = 'Add New',
   onAction,
   onAddNew,
 }: TitanSearchMenuProps) {
   const hasResults = items.length > 0
+  const resolvedAddIcon = addNewIcon ?? <Plus />
+  const resolvedEmptyIcon = emptyIcon ?? <AlertCircle />
 
   return (
     <MenuTrigger>
@@ -260,12 +266,7 @@ export function TitanSearchMenu({
                     onAction={() => onAddNew()}
                   >
                     <span className="menu-item-start">
-                      <span className="menu-item-icon">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                          <line x1="10" y1="5" x2="10" y2="15" />
-                          <line x1="5" y1="10" x2="15" y2="10" />
-                        </svg>
-                      </span>
+                      <span className="menu-item-icon">{resolvedAddIcon}</span>
                       <span className="menu-item-label">{addNewLabel}</span>
                     </span>
                   </MenuItem>
@@ -274,16 +275,16 @@ export function TitanSearchMenu({
             </>
           ) : (
             <>
-              <div className="menu-item-info" role="status">
-                <span className="menu-item-icon">
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="10" cy="10" r="7" />
-                    <line x1="10" y1="7" x2="10" y2="10" />
-                    <circle cx="10" cy="13" r="0.5" fill="currentColor" />
-                  </svg>
+              <MenuItem
+                className="menu-item menu-item-info"
+                textValue={emptyLabel}
+                isDisabled
+              >
+                <span className="menu-item-start">
+                  <span className="menu-item-icon">{resolvedEmptyIcon}</span>
+                  <span>{emptyLabel}</span>
                 </span>
-                <span>{emptyLabel}</span>
-              </div>
+              </MenuItem>
               {onAddNew && (
                 <>
                   <Separator className="menu-divider" />
@@ -293,12 +294,7 @@ export function TitanSearchMenu({
                     onAction={() => onAddNew()}
                   >
                     <span className="menu-item-start">
-                      <span className="menu-item-icon">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                          <line x1="10" y1="5" x2="10" y2="15" />
-                          <line x1="5" y1="10" x2="15" y2="10" />
-                        </svg>
-                      </span>
+                      <span className="menu-item-icon">{resolvedAddIcon}</span>
                       <span className="menu-item-label">{addNewLabel}</span>
                     </span>
                   </MenuItem>
@@ -436,15 +432,21 @@ export function TitanNotificationsMenu({
               )}
             </>
           ) : (
-            <div className="menu-item-info" role="status">
-              {emptyIcon && (
-                <span className="menu-item-icon">{emptyIcon}</span>
-              )}
-              <span className="menu-item-notification-content">
-                <span style={{ fontWeight: 'var(--text-weight-medium)' }}>{emptyTitle}</span>
-                <span>{emptyMessage}</span>
+            <MenuItem
+              className="menu-item menu-item-info menu-item-notification"
+              textValue={`${emptyTitle} ${emptyMessage}`}
+              isDisabled
+            >
+              <span className="menu-item-start">
+                {emptyIcon && (
+                  <span className="menu-item-icon">{emptyIcon}</span>
+                )}
+                <span className="menu-item-notification-content">
+                  <span>{emptyTitle}</span>
+                  <span>{emptyMessage}</span>
+                </span>
               </span>
-            </div>
+            </MenuItem>
           )}
         </Menu>
       </Popover>

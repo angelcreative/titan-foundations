@@ -126,7 +126,9 @@ interface TitanSearchMenuProps {
     placement?: 'bottom start' | 'bottom end';
     items: TitanMenuSearchOption[];
     query?: string;
+    emptyIcon?: ReactNode;
     emptyLabel?: string;
+    addNewIcon?: ReactNode;
     addNewLabel?: string;
     onAction?: (id: string) => void;
     onAddNew?: () => void;
@@ -153,7 +155,7 @@ interface TitanNotificationsMenuProps {
     onMarkAll?: () => void;
 }
 declare function TitanMenuDropdown({ triggerLabel, triggerIcon, iconOnly, placement, items, onAction, }: TitanMenuProps): react_jsx_runtime.JSX.Element;
-declare function TitanSearchMenu({ triggerLabel, triggerIcon, iconOnly, placement, items, query, emptyLabel, addNewLabel, onAction, onAddNew, }: TitanSearchMenuProps): react_jsx_runtime.JSX.Element;
+declare function TitanSearchMenu({ triggerLabel, triggerIcon, iconOnly, placement, items, query, emptyIcon, emptyLabel, addNewIcon, addNewLabel, onAction, onAddNew, }: TitanSearchMenuProps): react_jsx_runtime.JSX.Element;
 declare function TitanProfileMenu({ triggerLabel, triggerIcon, iconOnly, placement, items, onAction, }: TitanProfileMenuProps): react_jsx_runtime.JSX.Element;
 declare function TitanNotificationsMenu({ triggerIcon, triggerLabel, placement, notifications, emptyIcon, emptyTitle, emptyMessage, markAllLabel, markAllIcon, onAction, onMarkAll, }: TitanNotificationsMenuProps): react_jsx_runtime.JSX.Element;
 

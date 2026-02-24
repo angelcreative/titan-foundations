@@ -314,12 +314,16 @@ function TitanSearchMenu({
   placement = "bottom start",
   items,
   query,
+  emptyIcon,
   emptyLabel = "This entity is not in our Database, add it here to request it.",
+  addNewIcon,
   addNewLabel = "Add New",
   onAction,
   onAddNew
 }) {
   const hasResults = items.length > 0;
+  const resolvedAddIcon = addNewIcon ?? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_lucide_react4.Plus, {});
+  const resolvedEmptyIcon = emptyIcon ?? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_lucide_react4.AlertCircle, {});
   return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_react_aria_components5.MenuTrigger, { children: [
     iconOnly ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react_aria_components5.Button, { className: "icon-ghost menu-trigger-icon-ghost", "aria-label": triggerLabel, children: triggerIcon }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_react_aria_components5.Button, { className: "btn btn-secondary menu-trigger-button", children: [
       triggerLabel,
@@ -348,24 +352,25 @@ function TitanSearchMenu({
             textValue: addNewLabel,
             onAction: () => onAddNew(),
             children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("span", { className: "menu-item-start", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-icon", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("svg", { width: "20", height: "20", viewBox: "0 0 20 20", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("line", { x1: "10", y1: "5", x2: "10", y2: "15" }),
-                /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("line", { x1: "5", y1: "10", x2: "15", y2: "10" })
-              ] }) }),
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-icon", children: resolvedAddIcon }),
               /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-label", children: addNewLabel })
             ] })
           }
         )
       ] })
     ] }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_jsx_runtime6.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "menu-item-info", role: "status", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-icon", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("svg", { width: "20", height: "20", viewBox: "0 0 20 20", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("circle", { cx: "10", cy: "10", r: "7" }),
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("line", { x1: "10", y1: "7", x2: "10", y2: "10" }),
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("circle", { cx: "10", cy: "13", r: "0.5", fill: "currentColor" })
-        ] }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: emptyLabel })
-      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+        import_react_aria_components5.MenuItem,
+        {
+          className: "menu-item menu-item-info",
+          textValue: emptyLabel,
+          isDisabled: true,
+          children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("span", { className: "menu-item-start", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-icon", children: resolvedEmptyIcon }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: emptyLabel })
+          ] })
+        }
+      ),
       onAddNew && /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_jsx_runtime6.Fragment, { children: [
         /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react_aria_components5.Separator, { className: "menu-divider" }),
         /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
@@ -375,10 +380,7 @@ function TitanSearchMenu({
             textValue: addNewLabel,
             onAction: () => onAddNew(),
             children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("span", { className: "menu-item-start", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-icon", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("svg", { width: "20", height: "20", viewBox: "0 0 20 20", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("line", { x1: "10", y1: "5", x2: "10", y2: "15" }),
-                /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("line", { x1: "5", y1: "10", x2: "15", y2: "10" })
-              ] }) }),
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-icon", children: resolvedAddIcon }),
               /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-label", children: addNewLabel })
             ] })
           }
@@ -479,13 +481,21 @@ function TitanNotificationsMenu({
           }
         )
       ] })
-    ] }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "menu-item-info", role: "status", children: [
-      emptyIcon && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-icon", children: emptyIcon }),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("span", { className: "menu-item-notification-content", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { style: { fontWeight: "var(--text-weight-medium)" }, children: emptyTitle }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: emptyMessage })
-      ] })
-    ] }) }) })
+    ] }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+      import_react_aria_components5.MenuItem,
+      {
+        className: "menu-item menu-item-info menu-item-notification",
+        textValue: `${emptyTitle} ${emptyMessage}`,
+        isDisabled: true,
+        children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("span", { className: "menu-item-start", children: [
+          emptyIcon && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-icon", children: emptyIcon }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("span", { className: "menu-item-notification-content", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: emptyTitle }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: emptyMessage })
+          ] })
+        ] })
+      }
+    ) }) })
   ] });
 }
 

@@ -198,7 +198,7 @@ import {
   Separator,
   SubmenuTrigger
 } from "react-aria-components";
-import { ChevronDown as ChevronDown2, ChevronRight as ChevronRight2 } from "lucide-react";
+import { ChevronDown as ChevronDown2, ChevronRight as ChevronRight2, Plus, AlertCircle } from "lucide-react";
 import { Fragment, jsx as jsx6, jsxs as jsxs5 } from "react/jsx-runtime";
 function highlightMatch(text, query) {
   if (!query || !query.trim()) return text;
@@ -265,12 +265,16 @@ function TitanSearchMenu({
   placement = "bottom start",
   items,
   query,
+  emptyIcon,
   emptyLabel = "This entity is not in our Database, add it here to request it.",
+  addNewIcon,
   addNewLabel = "Add New",
   onAction,
   onAddNew
 }) {
   const hasResults = items.length > 0;
+  const resolvedAddIcon = addNewIcon ?? /* @__PURE__ */ jsx6(Plus, {});
+  const resolvedEmptyIcon = emptyIcon ?? /* @__PURE__ */ jsx6(AlertCircle, {});
   return /* @__PURE__ */ jsxs5(MenuTrigger, { children: [
     iconOnly ? /* @__PURE__ */ jsx6(Button5, { className: "icon-ghost menu-trigger-icon-ghost", "aria-label": triggerLabel, children: triggerIcon }) : /* @__PURE__ */ jsxs5(Button5, { className: "btn btn-secondary menu-trigger-button", children: [
       triggerLabel,
@@ -299,24 +303,25 @@ function TitanSearchMenu({
             textValue: addNewLabel,
             onAction: () => onAddNew(),
             children: /* @__PURE__ */ jsxs5("span", { className: "menu-item-start", children: [
-              /* @__PURE__ */ jsx6("span", { className: "menu-item-icon", children: /* @__PURE__ */ jsxs5("svg", { width: "20", height: "20", viewBox: "0 0 20 20", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", children: [
-                /* @__PURE__ */ jsx6("line", { x1: "10", y1: "5", x2: "10", y2: "15" }),
-                /* @__PURE__ */ jsx6("line", { x1: "5", y1: "10", x2: "15", y2: "10" })
-              ] }) }),
+              /* @__PURE__ */ jsx6("span", { className: "menu-item-icon", children: resolvedAddIcon }),
               /* @__PURE__ */ jsx6("span", { className: "menu-item-label", children: addNewLabel })
             ] })
           }
         )
       ] })
     ] }) : /* @__PURE__ */ jsxs5(Fragment, { children: [
-      /* @__PURE__ */ jsxs5("div", { className: "menu-item-info", role: "status", children: [
-        /* @__PURE__ */ jsx6("span", { className: "menu-item-icon", children: /* @__PURE__ */ jsxs5("svg", { width: "20", height: "20", viewBox: "0 0 20 20", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round", children: [
-          /* @__PURE__ */ jsx6("circle", { cx: "10", cy: "10", r: "7" }),
-          /* @__PURE__ */ jsx6("line", { x1: "10", y1: "7", x2: "10", y2: "10" }),
-          /* @__PURE__ */ jsx6("circle", { cx: "10", cy: "13", r: "0.5", fill: "currentColor" })
-        ] }) }),
-        /* @__PURE__ */ jsx6("span", { children: emptyLabel })
-      ] }),
+      /* @__PURE__ */ jsx6(
+        MenuItem,
+        {
+          className: "menu-item menu-item-info",
+          textValue: emptyLabel,
+          isDisabled: true,
+          children: /* @__PURE__ */ jsxs5("span", { className: "menu-item-start", children: [
+            /* @__PURE__ */ jsx6("span", { className: "menu-item-icon", children: resolvedEmptyIcon }),
+            /* @__PURE__ */ jsx6("span", { children: emptyLabel })
+          ] })
+        }
+      ),
       onAddNew && /* @__PURE__ */ jsxs5(Fragment, { children: [
         /* @__PURE__ */ jsx6(Separator, { className: "menu-divider" }),
         /* @__PURE__ */ jsx6(
@@ -326,10 +331,7 @@ function TitanSearchMenu({
             textValue: addNewLabel,
             onAction: () => onAddNew(),
             children: /* @__PURE__ */ jsxs5("span", { className: "menu-item-start", children: [
-              /* @__PURE__ */ jsx6("span", { className: "menu-item-icon", children: /* @__PURE__ */ jsxs5("svg", { width: "20", height: "20", viewBox: "0 0 20 20", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", children: [
-                /* @__PURE__ */ jsx6("line", { x1: "10", y1: "5", x2: "10", y2: "15" }),
-                /* @__PURE__ */ jsx6("line", { x1: "5", y1: "10", x2: "15", y2: "10" })
-              ] }) }),
+              /* @__PURE__ */ jsx6("span", { className: "menu-item-icon", children: resolvedAddIcon }),
               /* @__PURE__ */ jsx6("span", { className: "menu-item-label", children: addNewLabel })
             ] })
           }
@@ -430,13 +432,21 @@ function TitanNotificationsMenu({
           }
         )
       ] })
-    ] }) : /* @__PURE__ */ jsxs5("div", { className: "menu-item-info", role: "status", children: [
-      emptyIcon && /* @__PURE__ */ jsx6("span", { className: "menu-item-icon", children: emptyIcon }),
-      /* @__PURE__ */ jsxs5("span", { className: "menu-item-notification-content", children: [
-        /* @__PURE__ */ jsx6("span", { style: { fontWeight: "var(--text-weight-medium)" }, children: emptyTitle }),
-        /* @__PURE__ */ jsx6("span", { children: emptyMessage })
-      ] })
-    ] }) }) })
+    ] }) : /* @__PURE__ */ jsx6(
+      MenuItem,
+      {
+        className: "menu-item menu-item-info menu-item-notification",
+        textValue: `${emptyTitle} ${emptyMessage}`,
+        isDisabled: true,
+        children: /* @__PURE__ */ jsxs5("span", { className: "menu-item-start", children: [
+          emptyIcon && /* @__PURE__ */ jsx6("span", { className: "menu-item-icon", children: emptyIcon }),
+          /* @__PURE__ */ jsxs5("span", { className: "menu-item-notification-content", children: [
+            /* @__PURE__ */ jsx6("span", { children: emptyTitle }),
+            /* @__PURE__ */ jsx6("span", { children: emptyMessage })
+          ] })
+        ] })
+      }
+    ) }) })
   ] });
 }
 
