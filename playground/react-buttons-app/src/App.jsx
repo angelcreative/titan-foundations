@@ -44,6 +44,8 @@ import {
   FileText,
 } from 'lucide-react'
 import {
+  TitanBadge,
+  TitanBadgeAnchor,
   TitanBorderlessTable,
   TitanBreadcrumb,
   TitanButton,
@@ -1424,13 +1426,43 @@ function App() {
             ]}
             code={CODE_BREADCRUMB}
           >
-            <TitanBreadcrumb
-              items={[
-                { id: 'home', label: 'Home' },
-                { id: 'creator', label: 'Creator discovery' },
-              ]}
-              currentLabel="Campaigns"
-            />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '100%' }}>
+              <div>
+                <div style={{ fontSize: '12px', color: '#888', marginBottom: 4 }}>Standard (3 items)</div>
+                <TitanBreadcrumb
+                  items={[
+                    { id: 'home', label: 'Home' },
+                    { id: 'creator', label: 'Creator discovery' },
+                  ]}
+                  currentLabel="Campaigns"
+                />
+              </div>
+              <div>
+                <div style={{ fontSize: '12px', color: '#888', marginBottom: 4 }}>Collapsed (7 items, max 5 visible)</div>
+                <TitanBreadcrumb
+                  items={[
+                    { id: 'home', label: 'Home' },
+                    { id: 'dashboard', label: 'Dashboard' },
+                    { id: 'projects', label: 'Projects' },
+                    { id: 'alpha', label: 'Alpha' },
+                    { id: 'settings', label: 'Settings' },
+                    { id: 'general', label: 'General' },
+                  ]}
+                  currentLabel="Notifications"
+                  maxVisible={5}
+                />
+              </div>
+              <div>
+                <div style={{ fontSize: '12px', color: '#888', marginBottom: 4 }}>With disabled item</div>
+                <TitanBreadcrumb
+                  items={[
+                    { id: 'home', label: 'Home' },
+                    { id: 'archive', label: 'Archive', disabled: true },
+                  ]}
+                  currentLabel="Old reports"
+                />
+              </div>
+            </div>
           </ShowcaseCard>
 
           {/* ── 2. Card Grid + Table ───────────────────────── */}
@@ -1570,6 +1602,53 @@ function App() {
               {TAG_ITEMS.map((item) => (
                 <TitanTag key={item.tone} label={item.label} tone={item.tone} />
               ))}
+            </div>
+          </ShowcaseCard>
+
+          {/* ── Badge ────────────────────────────────────────── */}
+          <ShowcaseCard
+            id="badge"
+            title="Badge"
+            ariaImports="// No React Aria — pure HTML <span>"
+            ariaDesc="Badge is a non-interactive counter displayed over an icon or element. TitanBadgeAnchor positions the badge at the top-right corner of its child."
+            ariaComponents={['None — pure HTML span']}
+            foundations={[
+              { category: 'Color', detail: '--badge-slot-bg (pomegranate-600 red); --badge-slot-color (white).' },
+              { category: 'Sizing', detail: 'min-width 18px; padding controlled by --badge-slot-pad-x / --badge-slot-pad-y; --badge-slot-radius for rounded corners.' },
+              { category: 'Typography', detail: '--badge-slot-font-size (body-s); --badge-slot-font-weight (600 semibold).' },
+              { category: 'Position', detail: '--badge-slot-offset for top-right displacement when used inside TitanBadgeAnchor.' },
+            ]}
+            tokenGroups={[
+              { label: 'Badge', tokens: ['--badge-slot-bg', '--badge-slot-color', '--badge-slot-radius', '--badge-slot-pad-x', '--badge-slot-pad-y', '--badge-slot-font-size', '--badge-slot-font-weight', '--badge-slot-offset'] },
+            ]}
+            code={`import { TitanBadge, TitanBadgeAnchor } from 'titan-compositions'
+
+<TitanBadge count={5} />
+<TitanBadgeAnchor count={3}>
+  <TitanIconButton icon={<Bell />} variant="ghost" ariaLabel="Notifications" />
+</TitanBadgeAnchor>`}
+          >
+            <div className="row" style={{ gap: '24px', alignItems: 'center' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+                <TitanBadge count={3} />
+                <span style={{ fontSize: 'var(--font-size-s)', color: '#888' }}>count=3</span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+                <TitanBadge count={128} max={99} />
+                <span style={{ fontSize: 'var(--font-size-s)', color: '#888' }}>99+</span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+                <TitanBadgeAnchor count={5}>
+                  <TitanIconButton icon={<Bell />} variant="ghost" ariaLabel="Notifications" />
+                </TitanBadgeAnchor>
+                <span style={{ fontSize: 'var(--font-size-s)', color: '#888' }}>Anchor + icon</span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+                <TitanBadgeAnchor count={0}>
+                  <TitanIconButton icon={<Bell />} variant="ghost" ariaLabel="Notifications" />
+                </TitanBadgeAnchor>
+                <span style={{ fontSize: 'var(--font-size-s)', color: '#888' }}>count=0 (hidden)</span>
+              </div>
             </div>
           </ShowcaseCard>
 
@@ -2044,6 +2123,13 @@ function App() {
                 placeholder="Add a short summary..."
                 hint="Keep it short and clear for dashboard readers."
                 counter="0/240"
+              />
+              <TitanTextareaField
+                label="Notes (with icons)"
+                placeholder="Write your notes here..."
+                leadingIcon={<FileText />}
+                onClear={() => alert('Clear!')}
+                autoExpand
               />
               <TitanInputField placeholder="Search creators..." leadingIcon={<Search />} />
               <TitanInputField

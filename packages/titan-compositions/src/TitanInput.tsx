@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { type ReactNode, useCallback, useRef } from 'react'
 import {
   FieldError,
   Group,
@@ -9,6 +9,7 @@ import {
   TextField,
   type TextFieldProps,
 } from 'react-aria-components'
+import { X } from 'lucide-react'
 
 export interface TitanInputFieldProps extends Omit<TextFieldProps, 'children'> {
   label?: string
@@ -25,6 +26,9 @@ export interface TitanTextareaFieldProps extends Omit<TextFieldProps, 'children'
   label?: string
   hint?: string
   counter?: string
+  leadingIcon?: ReactNode
+  onClear?: () => void
+  autoExpand?: boolean
   errorMessage?: string
   placeholder?: string
   className?: string
@@ -82,15 +86,57 @@ export function TitanTextareaField({
   label,
   hint,
   counter,
+  leadingIcon,
+  onClear,
+  autoExpand = false,
   errorMessage,
   placeholder,
   className = 'field-root',
   ...props
 }: TitanTextareaFieldProps) {
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  const handleInput = useCallback(() => {
+    if (!autoExpand || !textareaRef.current) return
+    const el = textareaRef.current
+    el.style.height = 'auto'
+    el.style.height = `${el.scrollHeight}px`
+  }, [autoExpand])
+
+  const hasIcons = !!(leadingIcon || onClear)
+
+  const containerClass = [
+    'textarea-with-icons',
+    leadingIcon ? 'textarea-with-icons-left' : '',
+    onClear ? 'textarea-with-icons-right' : '',
+  ].filter(Boolean).join(' ')
+
   return (
     <TextField className={className} {...props}>
       {label ? <Label className="field-label">{label}</Label> : null}
-      <TextArea className="textarea-field" placeholder={placeholder} />
+      {hasIcons ? (
+        <Group className={containerClass}>
+          {leadingIcon ? <span className="textarea-leading-icon">{leadingIcon}</span> : null}
+          <TextArea
+            ref={textareaRef}
+            className="textarea-field"
+            placeholder={placeholder}
+            onInput={handleInput}
+          />
+          {onClear ? (
+            <button type="button" className="textarea-clear-icon" onClick={onClear} aria-label="Clear">
+              <X />
+            </button>
+          ) : null}
+        </Group>
+      ) : (
+        <TextArea
+          ref={textareaRef}
+          className="textarea-field"
+          placeholder={placeholder}
+          onInput={handleInput}
+        />
+      )}
       {hint || counter ? (
         <div className="field-help-row">
           {hint ? (

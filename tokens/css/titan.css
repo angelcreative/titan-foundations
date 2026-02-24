@@ -1972,6 +1972,20 @@
   --pill-slot-disabled-color: var(--pill-disabled-color);
 
   /* ====================================================================== */
+  /* COMPONENT: BADGE (notification count)                                   */
+  /* ====================================================================== */
+  --badge-slot-bg: var(--color-pomegranate-600);
+  --badge-slot-color: var(--color-white-900);
+  --badge-slot-radius: var(--rounded-xs);
+  --badge-slot-pad-x: var(--spacing-3xs);
+  --badge-slot-pad-y: var(--spacing-5xs);
+  --badge-slot-pad-right-overflow: var(--spacing-4xs);
+  --badge-slot-font-size: var(--font-size-s);
+  --badge-slot-font-weight: var(--font-weight-600);
+  --badge-slot-line-height: var(--font-leading-s);
+  --badge-slot-offset: var(--spacing-5xs);
+
+  /* ====================================================================== */
   /* COMPONENT: AVATAR                                                       */
   /* ====================================================================== */
   --avatar-slot-bg: var(--avatar-background);

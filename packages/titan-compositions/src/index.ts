@@ -1,3 +1,5 @@
+export { TitanBadge, TitanBadgeAnchor } from './TitanBadge'
+export type { TitanBadgeProps, TitanBadgeAnchorProps } from './TitanBadge'
 export { TitanBreadcrumb } from './TitanBreadcrumb'
 export type { TitanBreadcrumbItem, TitanBreadcrumbProps } from './TitanBreadcrumb'
 export { TitanNavbar } from './TitanNavbar'

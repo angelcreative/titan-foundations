@@ -23,6 +23,29 @@
     "activation": "<html data-theme=\"insights\">"
   },
   "components": {
+    "TitanBadge": {
+      "import": "import { TitanBadge, TitanBadgeAnchor } from 'titan-compositions'",
+      "description": "Notification count badge. TitanBadge renders the count pill; TitanBadgeAnchor positions it at the top-right corner of any child element.",
+      "props": {
+        "count": { "type": "number", "required": true, "description": "Notification count. Hidden when 0." },
+        "max": { "type": "number", "required": false, "default": "99", "description": "Maximum displayed count. Exceeding shows 'max+'." }
+      },
+      "slots": [],
+      "composableWith": ["TitanIconButton", "TitanNotificationsMenu"],
+      "category": "feedback"
+    },
+    "TitanBadgeAnchor": {
+      "import": "import { TitanBadgeAnchor } from 'titan-compositions'",
+      "description": "Wrapper that positions a TitanBadge at the top-right corner of its child element (typically an icon button).",
+      "props": {
+        "count": { "type": "number", "required": true },
+        "max": { "type": "number", "required": false, "default": "99" },
+        "children": { "type": "ReactNode", "required": true, "description": "Element to anchor the badge to" }
+      },
+      "slots": ["children"],
+      "composableWith": ["TitanIconButton"],
+      "category": "feedback"
+    },
     "TitanButton": {
       "import": "import { TitanButton } from 'titan-compositions'",
       "description": "Standard button with 6 visual variants. Wraps React Aria Button.",
@@ -98,19 +121,22 @@
     },
     "TitanTextareaField": {
       "import": "import { TitanTextareaField } from 'titan-compositions'",
-      "description": "Multi-line text input with optional label, hint, counter, and error. Wraps React Aria TextField + TextArea.",
+      "description": "Multi-line text input with optional label, hint, counter, leading icon, clear button, auto-expand, and error. Wraps React Aria TextField + TextArea.",
       "props": {
         "label": { "type": "string", "required": false },
         "placeholder": { "type": "string", "required": false },
         "hint": { "type": "string", "required": false },
         "counter": { "type": "string", "required": false },
+        "leadingIcon": { "type": "ReactNode", "required": false, "description": "Icon displayed at the start of the textarea" },
+        "onClear": { "type": "() => void", "required": false, "description": "Callback when clear button is pressed. Shows an X icon when provided." },
+        "autoExpand": { "type": "boolean", "required": false, "default": "false", "description": "Textarea grows vertically as content increases" },
         "errorMessage": { "type": "string", "required": false },
         "isInvalid": { "type": "boolean", "required": false },
         "isDisabled": { "type": "boolean", "required": false },
         "isRequired": { "type": "boolean", "required": false },
         "className": { "type": "string", "required": false }
       },
-      "slots": [],
+      "slots": ["leadingIcon"],
       "category": "form"
     },
     "TitanCheckboxField": {
@@ -225,16 +251,18 @@
     },
     "TitanBreadcrumb": {
       "import": "import { TitanBreadcrumb } from 'titan-compositions'",
-      "description": "Breadcrumb navigation with clickable ancestors and non-interactive current item. Wraps React Aria Breadcrumbs.",
+      "description": "Breadcrumb navigation with clickable ancestors and non-interactive current item. Supports collapse (ellipsis dropdown) when items exceed maxVisible. Wraps React Aria Breadcrumbs.",
       "props": {
         "items": { "type": "TitanBreadcrumbItem[]", "required": true, "description": "Ancestor breadcrumb items" },
         "currentLabel": { "type": "string", "required": true, "description": "Current page label (rendered as non-interactive with aria-current='page')" },
+        "maxVisible": { "type": "number", "required": false, "default": "5", "description": "Max visible items before collapse. Middle items collapse into an ellipsis dropdown." },
         "ariaLabel": { "type": "string", "default": "'Breadcrumb'", "required": false }
       },
       "slots": [],
       "relatedTypes": {
-        "TitanBreadcrumbItem": { "id": "string", "label": "string", "onPress?": "() => void" }
+        "TitanBreadcrumbItem": { "id": "string", "label": "string", "icon?": "ReactNode", "selected?": "boolean", "disabled?": "boolean", "onPress?": "() => void" }
       },
+      "composableWith": ["TitanMenuDropdown"],
       "category": "navigation"
     },
     "TitanNavbar": {
@@ -503,8 +531,8 @@
     "coveredByTitan": [
       "Button", "Dialog", "Drawer", "Input (TextField)", "Textarea", "Checkbox",
       "RadioGroup", "Switch", "Select", "Menu", "Tabs", "Table", "Tooltip",
-      "Toast", "Breadcrumb", "Navbar", "Pagination", "Pill/Badge", "Tag/Label",
-      "Card", "CardGrid", "PageLayout", "ToggleButtonGroup", "Sidebar",
+      "Toast", "Breadcrumb", "Navbar", "Pagination", "Pill", "Tag/Label",
+      "Badge", "Card", "CardGrid", "PageLayout", "ToggleButtonGroup", "Sidebar",
       "Calendar", "Loader", "ProgressBar", "Slider", "RangeSlider"
     ],
     "fallbackToReactAria": [

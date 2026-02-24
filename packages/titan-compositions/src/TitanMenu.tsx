@@ -9,6 +9,7 @@ import {
   SubmenuTrigger,
 } from 'react-aria-components'
 import { ChevronDown, ChevronRight, Plus, AlertCircle } from 'lucide-react'
+import { TitanBadgeAnchor } from './TitanBadge'
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -82,6 +83,8 @@ export interface TitanProfileMenuProps {
 export interface TitanNotificationsMenuProps {
   triggerIcon?: ReactNode
   triggerLabel?: string
+  badgeCount?: number
+  badgeMax?: number
   placement?: 'bottom end' | 'bottom start'
   notifications: TitanMenuNotification[]
   emptyIcon?: ReactNode
@@ -376,6 +379,8 @@ export function TitanProfileMenu({
 export function TitanNotificationsMenu({
   triggerIcon,
   triggerLabel = 'Notifications',
+  badgeCount,
+  badgeMax = 99,
   placement = 'bottom end',
   notifications,
   emptyIcon,
@@ -387,12 +392,15 @@ export function TitanNotificationsMenu({
   onMarkAll,
 }: TitanNotificationsMenuProps) {
   const hasNotifications = notifications.length > 0
+  const resolvedBadgeCount = badgeCount ?? notifications.length
 
   return (
     <MenuTrigger>
-      <Button className="icon-ghost menu-trigger-icon-ghost" aria-label={triggerLabel}>
-        {triggerIcon}
-      </Button>
+      <TitanBadgeAnchor count={resolvedBadgeCount} max={badgeMax}>
+        <Button className="icon-ghost menu-trigger-icon-ghost" aria-label={triggerLabel}>
+          {triggerIcon}
+        </Button>
+      </TitanBadgeAnchor>
       <Popover className="menu-popover" placement={placement} offset={8}>
         <Menu className="menu-list menu-list-notifications">
           {hasNotifications ? (
