@@ -443,9 +443,10 @@
 }
 
 .menu-trigger-icon-ghost {
-  width: auto;
-  padding: 0 var(--spacing-2xs);
-  gap: var(--spacing-4xs);
+  width: var(--button-icon-slot-size);
+  height: var(--button-icon-slot-size);
+  padding: 0;
+  border-radius: 50%;
 }
 
 .menu-trigger-chevron {
