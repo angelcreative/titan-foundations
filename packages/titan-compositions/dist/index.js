@@ -1100,6 +1100,7 @@ function CalendarDropdown({
   className = ""
 }) {
   const [open, setOpen] = useState2(false);
+  const [flipUp, setFlipUp] = useState2(false);
   const ref = useRef(null);
   const listRef = useRef(null);
   const selected = options.find((o) => o.value === value);
@@ -1113,10 +1114,17 @@ function CalendarDropdown({
     return () => document.removeEventListener("mousedown", handler);
   }, [open, close]);
   useEffect(() => {
-    if (open && listRef.current) {
-      const active = listRef.current.querySelector('[data-active="true"]');
-      if (active) active.scrollIntoView({ block: "nearest" });
-    }
+    if (!open || !ref.current || !listRef.current) return;
+    const triggerRect = ref.current.getBoundingClientRect();
+    const menuHeight = listRef.current.scrollHeight;
+    const MENU_MAX = 240;
+    const effectiveHeight = Math.min(menuHeight, MENU_MAX);
+    const GAP = 4;
+    const spaceBelow = window.innerHeight - triggerRect.bottom - GAP;
+    const spaceAbove = triggerRect.top - GAP;
+    setFlipUp(spaceBelow < effectiveHeight && spaceAbove > spaceBelow);
+    const active = listRef.current.querySelector('[data-active="true"]');
+    if (active) active.scrollIntoView({ block: "nearest" });
   }, [open]);
   return /* @__PURE__ */ jsxs22("div", { className: `cal-dropdown ${className}`.trim(), ref, children: [
     /* @__PURE__ */ jsxs22(
@@ -1133,21 +1141,29 @@ function CalendarDropdown({
         ]
       }
     ),
-    open && /* @__PURE__ */ jsx24("ul", { className: "cal-dropdown-menu", role: "listbox", ref: listRef, children: options.map((o) => /* @__PURE__ */ jsx24(
-      "li",
+    open && /* @__PURE__ */ jsx24(
+      "ul",
       {
-        role: "option",
-        "aria-selected": o.value === value,
-        "data-active": o.value === value ? "true" : void 0,
-        className: `cal-dropdown-item${o.value === value ? " cal-dropdown-item-active" : ""}`,
-        onClick: () => {
-          onChange(o.value);
-          close();
-        },
-        children: o.label
-      },
-      o.value
-    )) })
+        className: `cal-dropdown-menu${flipUp ? " cal-dropdown-menu-flip" : ""}`,
+        role: "listbox",
+        ref: listRef,
+        children: options.map((o) => /* @__PURE__ */ jsx24(
+          "li",
+          {
+            role: "option",
+            "aria-selected": o.value === value,
+            "data-active": o.value === value ? "true" : void 0,
+            className: `cal-dropdown-item${o.value === value ? " cal-dropdown-item-active" : ""}`,
+            onClick: () => {
+              onChange(o.value);
+              close();
+            },
+            children: o.label
+          },
+          o.value
+        ))
+      }
+    )
   ] });
 }
 function TitanCalendar({

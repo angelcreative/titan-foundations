@@ -2143,6 +2143,11 @@
   overscroll-behavior: contain;
 }
 
+.cal-dropdown-menu-flip {
+  top: auto;
+  bottom: calc(100% + 4px);
+}
+
 .cal-dropdown-item {
   padding: var(--spacing-xs) var(--spacing-m);
   font-size: var(--font-size-s);

@@ -68,6 +68,7 @@ function CalendarDropdown({
   className?: string
 }) {
   const [open, setOpen] = useState(false)
+  const [flipUp, setFlipUp] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const listRef = useRef<HTMLUListElement>(null)
 
@@ -85,10 +86,18 @@ function CalendarDropdown({
   }, [open, close])
 
   useEffect(() => {
-    if (open && listRef.current) {
-      const active = listRef.current.querySelector('[data-active="true"]') as HTMLElement
-      if (active) active.scrollIntoView({ block: 'nearest' })
-    }
+    if (!open || !ref.current || !listRef.current) return
+    const triggerRect = ref.current.getBoundingClientRect()
+    const menuHeight = listRef.current.scrollHeight
+    const MENU_MAX = 240
+    const effectiveHeight = Math.min(menuHeight, MENU_MAX)
+    const GAP = 4
+    const spaceBelow = window.innerHeight - triggerRect.bottom - GAP
+    const spaceAbove = triggerRect.top - GAP
+    setFlipUp(spaceBelow < effectiveHeight && spaceAbove > spaceBelow)
+
+    const active = listRef.current.querySelector('[data-active="true"]') as HTMLElement
+    if (active) active.scrollIntoView({ block: 'nearest' })
   }, [open])
 
   return (
@@ -104,7 +113,11 @@ function CalendarDropdown({
         <ChevronDown />
       </button>
       {open && (
-        <ul className="cal-dropdown-menu" role="listbox" ref={listRef}>
+        <ul
+          className={`cal-dropdown-menu${flipUp ? ' cal-dropdown-menu-flip' : ''}`}
+          role="listbox"
+          ref={listRef}
+        >
           {options.map((o) => (
             <li
               key={o.value}
