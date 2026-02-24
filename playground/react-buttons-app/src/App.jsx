@@ -36,6 +36,12 @@ import {
   SlidersHorizontal,
   BarChart3,
   CalendarDays,
+  Check,
+  ThumbsUp,
+  X,
+  Users,
+  ClipboardCheck as ClipboardCheckIcon,
+  FileText,
 } from 'lucide-react'
 import {
   TitanBorderlessTable,
@@ -50,6 +56,9 @@ import {
   TitanIconButton,
   TitanInputField,
   TitanMenuDropdown,
+  TitanSearchMenu,
+  TitanProfileMenu,
+  TitanNotificationsMenu,
   TitanNavbar,
   TitanPagination,
   TitanPill,
@@ -1568,28 +1577,31 @@ function App() {
           <ShowcaseCard
             id="menus"
             title="Menus"
-            ariaImports="import { Button, Menu, MenuItem, MenuTrigger, Popover, SubmenuTrigger } from 'react-aria-components'"
-            ariaDesc="Full menu system built on React Aria: MenuTrigger manages open/close, Popover handles positioning, Menu + MenuItem provide keyboard navigation (arrow keys, typeahead), and SubmenuTrigger enables cascading sub-menus."
-            ariaComponents={['MenuTrigger', 'Button', 'Popover', 'Menu', 'MenuItem', 'SubmenuTrigger']}
+            ariaImports="import { Button, Menu, MenuItem, MenuTrigger, Popover, Separator, SubmenuTrigger } from 'react-aria-components'"
+            ariaDesc="Full menu system: standard items, submenus, destructive actions, search results with highlighting, profile items with avatars, and notification menus. All built on React Aria with keyboard navigation, ARIA roles, and collision-aware positioning."
+            ariaComponents={['MenuTrigger', 'Button', 'Popover', 'Menu', 'MenuItem', 'Separator', 'SubmenuTrigger']}
             foundations={[
-              { category: 'Spacing', detail: '--menu-slot-pad-y / --menu-slot-pad-x for popover padding; --menu-item-slot-pad-x for item padding; --spacing-4xs for item list gap; --spacing-2xs for submenu offset.' },
-              { category: 'Sizing', detail: '--menu-slot-min-width / --menu-slot-max-width constrain popover width; --menu-item-slot-height for item hit area.' },
-              { category: 'Surface', detail: '--menu-slot-bg popover background; --menu-slot-shadow for elevation; --popover-slot-border-width / --popover-slot-border-color for border.' },
-              { category: 'Typography', detail: '--button-slot-font-size, --button-slot-line-height, --button-slot-font-weight for menu item text.' },
-              { category: 'Icons', detail: '--icon-size-m and --icon-stroke-m for item icons and chevrons.' },
+              { category: 'Spacing', detail: '--menu-slot-pad-y (10px) / --menu-slot-pad-x (8px) for container; --menu-item-slot-pad-x (12px) / --menu-item-slot-pad-y (10px) for items; --menu-slot-gap (4px) between items; --spacing-2xs for submenu and trigger offset.' },
+              { category: 'Sizing', detail: '--menu-slot-min-width (230px) / --menu-slot-max-width (330px); --menu-item-slot-height (40px fixed); max 5 items visible (3 for notifications) with scroll.' },
+              { category: 'Surface', detail: '--menu-slot-bg popover background; --menu-slot-shadow elevation; --menu-slot-radius (rounded-m, 12px); --menu-divider-color for separators.' },
+              { category: 'Typography', detail: '--font-size-m / --text-weight-medium for standard labels (body-m-500); --text-weight-regular for search items (body-m-400); --text-weight-semibold for highlighted text (body-m-600); --font-size-s for secondary text.' },
+              { category: 'Icons', detail: '--icon-size-m and --icon-stroke-m for item icons; left-element slot 20x20px with 16x16px safe area for custom graphics.' },
             ]}
             tokenGroups={[
-              { label: 'Popover', tokens: ['--menu-slot-bg', '--menu-slot-color', '--menu-slot-min-width', '--menu-slot-max-width', '--menu-slot-radius', '--menu-slot-shadow', '--menu-slot-pad-y', '--menu-slot-pad-x'] },
+              { label: 'Container', tokens: ['--menu-slot-bg', '--menu-slot-color', '--menu-slot-min-width', '--menu-slot-max-width', '--menu-slot-radius', '--menu-slot-shadow', '--menu-slot-pad-y', '--menu-slot-pad-x', '--menu-slot-gap', '--menu-slot-offset'] },
               { label: 'Border', tokens: ['--popover-slot-border-width', '--popover-slot-border-color'] },
-              { label: 'Item', tokens: ['--menu-item-slot-height', '--menu-item-slot-radius', '--menu-item-slot-pad-x', '--menu-item-slot-color', '--menu-item-slot-bg', '--menu-item-slot-gap', '--menu-item-slot-icon'] },
+              { label: 'Item', tokens: ['--menu-item-slot-height', '--menu-item-slot-radius', '--menu-item-slot-pad-x', '--menu-item-slot-pad-y', '--menu-item-slot-color', '--menu-item-slot-bg', '--menu-item-slot-gap', '--menu-item-slot-icon'] },
               { label: 'Item states', tokens: ['--menu-item-slot-bg-hover', '--menu-item-slot-bg-active', '--menu-item-slot-bg-selected', '--menu-item-slot-disabled'] },
               { label: 'Destructive', tokens: ['--menu-item-destructive-slot-color', '--menu-item-destructive-slot-icon', '--menu-item-destructive-slot-bg-hover', '--menu-item-destructive-slot-bg-active'] },
+              { label: 'Divider', tokens: ['--menu-divider-color', '--menu-divider-width'] },
+              { label: 'Secondary text', tokens: ['--menu-item-secondary-color'] },
             ]}
             code={CODE_MENUS}
           >
-            <div className="row">
+            <p style={{ fontSize: 'var(--font-size-s)', color: 'var(--copy-slot-secondary)', marginBottom: 'var(--spacing-s)' }}>Standard menu with icons, disabled, and destructive items:</p>
+            <div className="row" style={{ marginBottom: 'var(--spacing-m)' }}>
               <TitanMenuDropdown
-                triggerLabel="Open menu"
+                triggerLabel="Standard menu"
                 items={[
                   { id: 'search', label: 'Search profiles', icon: <Search /> },
                   { id: 'profile', label: 'Profile settings', icon: <User /> },
@@ -1599,7 +1611,7 @@ function App() {
                 ]}
               />
               <TitanMenuDropdown
-                triggerLabel="Open cascading menu"
+                triggerLabel="Cascading submenu"
                 items={[
                   { id: 'overview', label: 'Overview', icon: <Search /> },
                   {
@@ -1607,13 +1619,65 @@ function App() {
                     label: 'Export',
                     icon: <Settings />,
                     children: [
-                      { id: 'csv', label: 'CSV file' },
-                      { id: 'xlsx', label: 'XLSX file' },
-                      { id: 'pdf', label: 'PDF file' },
+                      { id: 'csv', label: 'CSV file', icon: <FileText /> },
+                      { id: 'xlsx', label: 'XLSX file', icon: <FileText /> },
+                      { id: 'pdf', label: 'PDF file', icon: <FileText /> },
                     ],
                   },
                   { id: 'delete-2', label: 'Delete audience', icon: <Trash2 />, destructive: true },
                 ]}
+              />
+            </div>
+
+            <p style={{ fontSize: 'var(--font-size-s)', color: 'var(--copy-slot-secondary)', marginBottom: 'var(--spacing-s)' }}>Search menu with highlighted matches and Add New action:</p>
+            <div className="row" style={{ marginBottom: 'var(--spacing-m)' }}>
+              <TitanSearchMenu
+                triggerLabel="Search (with results)"
+                items={[
+                  { id: 's1', label: 'Titan DS', icon: <ThumbsUp /> },
+                  { id: 's2', label: 'Titan Design System', icon: <ThumbsUp /> },
+                ]}
+                query="Tit"
+                onAddNew={() => {}}
+              />
+              <TitanSearchMenu
+                triggerLabel="Search (no results)"
+                items={[]}
+                query="xyz"
+                onAddNew={() => {}}
+              />
+            </div>
+
+            <p style={{ fontSize: 'var(--font-size-s)', color: 'var(--copy-slot-secondary)', marginBottom: 'var(--spacing-s)' }}>Profile menu with avatar, name, username, and metric:</p>
+            <div className="row" style={{ marginBottom: 'var(--spacing-m)' }}>
+              <TitanProfileMenu
+                triggerLabel="Profiles"
+                items={[
+                  { id: 'p1', name: 'Titan', username: 'titan', metric: '5.3M' },
+                  { id: 'p2', name: 'Titan DS', username: 'titands', metric: '5.3M' },
+                  { id: 'p3', name: 'Titan Design System', username: 'titandesignsystem', metric: '5.3M' },
+                ]}
+              />
+            </div>
+
+            <p style={{ fontSize: 'var(--font-size-s)', color: 'var(--copy-slot-secondary)', marginBottom: 'var(--spacing-s)' }}>Notifications menu (max 3 visible, with Mark all):</p>
+            <div className="row" style={{ marginBottom: 'var(--spacing-m)' }}>
+              <TitanNotificationsMenu
+                triggerIcon={<Bell />}
+                triggerLabel="Notifications"
+                notifications={[
+                  { id: 'n1', icon: <ClipboardCheckIcon />, title: <>The <strong>&ldquo;Coffee Brand Analysis&rdquo;</strong> report is ready to view</>, date: 'July 11 at 11:21 AM' },
+                  { id: 'n2', icon: <X />, title: <>The <strong>&ldquo;US Musicians Prioritization&rdquo;</strong> report could not be released</>, date: 'June 24 at 00:07 AM' },
+                  { id: 'n3', icon: <Users />, title: <>The required entities are <strong>now available in the system</strong></>, date: 'August 28 at 17:24 PM' },
+                ]}
+                markAllIcon={<Check />}
+                onMarkAll={() => {}}
+              />
+              <TitanNotificationsMenu
+                triggerIcon={<Bell />}
+                triggerLabel="Empty notifications"
+                notifications={[]}
+                emptyIcon={<ThumbsUp />}
               />
             </div>
           </ShowcaseCard>

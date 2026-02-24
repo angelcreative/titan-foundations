@@ -1566,15 +1566,19 @@
   --menu-slot-color: var(--menu-color);
   --menu-slot-min-width: var(--menu-min-width);
   --menu-slot-max-width: var(--menu-max-width);
-  --menu-slot-radius: var(--radius-slot-control);
+  --menu-slot-radius: var(--rounded-m);
   --menu-slot-shadow: var(--elevation-slot-2);
-  --menu-slot-pad-y: var(--spacing-2xs);
+  --menu-slot-pad-y: var(--spacing-xs);
   --menu-slot-pad-x: var(--spacing-2xs);
+  --menu-slot-gap: var(--spacing-4xs);
+  --menu-slot-offset: var(--spacing-2xs);
+  --menu-slot-max-items: 5;
 
   --menu-item-slot-height: 40px;
-  --menu-item-slot-radius: var(--radius-slot-control);
-  --menu-item-slot-pad-x: var(--spacing-m);
-  --menu-item-slot-gap: var(--spacing-3xs);
+  --menu-item-slot-radius: var(--rounded-s);
+  --menu-item-slot-pad-x: var(--spacing-s);
+  --menu-item-slot-pad-y: var(--spacing-xs);
+  --menu-item-slot-gap: var(--spacing-m);
   --menu-item-slot-bg: transparent;
   --menu-item-slot-bg-hover: var(--menu-item-hover);
   --menu-item-slot-bg-active: var(--menu-item-pressed);
@@ -1584,10 +1588,15 @@
   --menu-item-slot-disabled: var(--menu-item-disabled);
   --menu-item-slot-disabled-icon: var(--menu-item-disabled-icon);
 
+  --menu-divider-color: var(--color-steel-200);
+  --menu-divider-width: var(--stroke-s);
+
   --menu-item-destructive-slot-color: var(--menu-destructive-color);
   --menu-item-destructive-slot-bg-hover: var(--menu-destructive-item-hover);
   --menu-item-destructive-slot-bg-active: var(--menu-destructive-item-pressed);
   --menu-item-destructive-slot-icon: var(--menu-destructive-item-icon);
+
+  --menu-item-secondary-color: var(--color-steel-600);
 
   /* ====================================================================== */
   /* COMPONENT: TOOLTIP                                                      */

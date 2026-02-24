@@ -13,8 +13,22 @@ export { TitanPill } from './TitanPill'
 export type { TitanPillProps } from './TitanPill'
 export { TitanTag } from './TitanTag'
 export type { TitanTagProps } from './TitanTag'
-export { TitanMenuDropdown } from './TitanMenu'
-export type { TitanMenuOption, TitanMenuProps } from './TitanMenu'
+export {
+  TitanMenuDropdown,
+  TitanSearchMenu,
+  TitanProfileMenu,
+  TitanNotificationsMenu,
+} from './TitanMenu'
+export type {
+  TitanMenuOption,
+  TitanMenuProps,
+  TitanMenuSearchOption,
+  TitanSearchMenuProps,
+  TitanMenuProfileOption,
+  TitanProfileMenuProps,
+  TitanMenuNotification,
+  TitanNotificationsMenuProps,
+} from './TitanMenu'
 export { TitanSelect } from './TitanSelect'
 export type { TitanSelectOption, TitanSelectProps } from './TitanSelect'
 export { TitanTabs } from './TitanTabs'

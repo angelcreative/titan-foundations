@@ -35,11 +35,14 @@ __export(index_exports, {
   TitanLoader: () => TitanLoader,
   TitanMenuDropdown: () => TitanMenuDropdown,
   TitanNavbar: () => TitanNavbar,
+  TitanNotificationsMenu: () => TitanNotificationsMenu,
   TitanPagination: () => TitanPagination,
   TitanPill: () => TitanPill,
+  TitanProfileMenu: () => TitanProfileMenu,
   TitanProgressBar: () => TitanProgressBar,
   TitanRadioGroupField: () => TitanRadioGroupField,
   TitanRangeSlider: () => TitanRangeSlider,
+  TitanSearchMenu: () => TitanSearchMenu,
   TitanSelect: () => TitanSelect,
   TitanSidebar: () => TitanSidebar,
   TitanSidebarHeader: () => TitanSidebarHeader,
@@ -246,6 +249,16 @@ function TitanTag({ label, tone }) {
 var import_react_aria_components5 = require("react-aria-components");
 var import_lucide_react4 = require("lucide-react");
 var import_jsx_runtime6 = require("react/jsx-runtime");
+function highlightMatch(text, query) {
+  if (!query || !query.trim()) return text;
+  const idx = text.toLowerCase().indexOf(query.toLowerCase());
+  if (idx === -1) return text;
+  return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_jsx_runtime6.Fragment, { children: [
+    text.slice(0, idx),
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("strong", { children: text.slice(idx, idx + query.length) }),
+    text.slice(idx + query.length)
+  ] });
+}
 function TitanMenuNode({
   item,
   onAction
@@ -254,8 +267,9 @@ function TitanMenuNode({
     return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_react_aria_components5.SubmenuTrigger, { children: [
       /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_react_aria_components5.MenuItem, { className: "menu-item", textValue: item.label, children: [
         /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("span", { className: "menu-item-start", children: [
-          item.icon ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-icon", children: item.icon }) : null,
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: item.label })
+          item.icon && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-icon", children: item.icon }),
+          item.leftElement && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-left-element", children: item.leftElement }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-label", children: item.label })
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-end", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_lucide_react4.ChevronRight, {}) })
       ] }),
@@ -265,13 +279,14 @@ function TitanMenuNode({
   return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
     import_react_aria_components5.MenuItem,
     {
-      className: item.destructive ? "menu-item menu-item-destructive" : "menu-item",
+      className: `menu-item${item.destructive ? " menu-item-destructive" : ""}`,
       textValue: item.label,
       isDisabled: item.disabled,
       onAction: () => onAction?.(item.id),
       children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("span", { className: "menu-item-start", children: [
-        item.icon ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-icon", children: item.icon }) : null,
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: item.label })
+        item.icon && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-icon", children: item.icon }),
+        item.leftElement && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-left-element", children: item.leftElement }),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-label", children: item.label })
       ] })
     }
   );
@@ -289,7 +304,188 @@ function TitanMenuDropdown({
       triggerLabel,
       /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-trigger-chevron", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_lucide_react4.ChevronDown, {}) })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react_aria_components5.Popover, { className: "menu-popover", placement, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react_aria_components5.Menu, { className: "menu-list", children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(TitanMenuNode, { item, onAction }, item.id)) }) })
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react_aria_components5.Popover, { className: "menu-popover", placement, offset: 8, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react_aria_components5.Menu, { className: "menu-list", children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(TitanMenuNode, { item, onAction }, item.id)) }) })
+  ] });
+}
+function TitanSearchMenu({
+  triggerLabel = "Search",
+  triggerIcon,
+  iconOnly = false,
+  placement = "bottom start",
+  items,
+  query,
+  emptyLabel = "This entity is not in our Database, add it here to request it.",
+  addNewLabel = "Add New",
+  onAction,
+  onAddNew
+}) {
+  const hasResults = items.length > 0;
+  return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_react_aria_components5.MenuTrigger, { children: [
+    iconOnly ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react_aria_components5.Button, { className: "icon-ghost menu-trigger-icon-ghost", "aria-label": triggerLabel, children: triggerIcon }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_react_aria_components5.Button, { className: "btn btn-secondary menu-trigger-button", children: [
+      triggerLabel,
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-trigger-chevron", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_lucide_react4.ChevronDown, {}) })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react_aria_components5.Popover, { className: "menu-popover", placement, offset: 8, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react_aria_components5.Menu, { className: "menu-list", children: hasResults ? /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_jsx_runtime6.Fragment, { children: [
+      items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+        import_react_aria_components5.MenuItem,
+        {
+          className: "menu-item menu-item-search",
+          textValue: item.label,
+          onAction: () => onAction?.(item.id),
+          children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("span", { className: "menu-item-start", children: [
+            item.icon && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-icon", children: item.icon }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-label", children: highlightMatch(item.label, query) })
+          ] })
+        },
+        item.id
+      )),
+      onAddNew && /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_jsx_runtime6.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react_aria_components5.Separator, { className: "menu-divider" }),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+          import_react_aria_components5.MenuItem,
+          {
+            className: "menu-item",
+            textValue: addNewLabel,
+            onAction: () => onAddNew(),
+            children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("span", { className: "menu-item-start", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-icon", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("svg", { width: "20", height: "20", viewBox: "0 0 20 20", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("line", { x1: "10", y1: "5", x2: "10", y2: "15" }),
+                /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("line", { x1: "5", y1: "10", x2: "15", y2: "10" })
+              ] }) }),
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-label", children: addNewLabel })
+            ] })
+          }
+        )
+      ] })
+    ] }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_jsx_runtime6.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "menu-item-info", role: "status", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-icon", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("svg", { width: "20", height: "20", viewBox: "0 0 20 20", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("circle", { cx: "10", cy: "10", r: "7" }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("line", { x1: "10", y1: "7", x2: "10", y2: "10" }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("circle", { cx: "10", cy: "13", r: "0.5", fill: "currentColor" })
+        ] }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: emptyLabel })
+      ] }),
+      onAddNew && /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_jsx_runtime6.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react_aria_components5.Separator, { className: "menu-divider" }),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+          import_react_aria_components5.MenuItem,
+          {
+            className: "menu-item",
+            textValue: addNewLabel,
+            onAction: () => onAddNew(),
+            children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("span", { className: "menu-item-start", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-icon", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("svg", { width: "20", height: "20", viewBox: "0 0 20 20", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("line", { x1: "10", y1: "5", x2: "10", y2: "15" }),
+                /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("line", { x1: "5", y1: "10", x2: "15", y2: "10" })
+              ] }) }),
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-label", children: addNewLabel })
+            ] })
+          }
+        )
+      ] })
+    ] }) }) })
+  ] });
+}
+function TitanProfileMenu({
+  triggerLabel = "Profiles",
+  triggerIcon,
+  iconOnly = false,
+  placement = "bottom start",
+  items,
+  onAction
+}) {
+  return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_react_aria_components5.MenuTrigger, { children: [
+    iconOnly ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react_aria_components5.Button, { className: "icon-ghost menu-trigger-icon-ghost", "aria-label": triggerLabel, children: triggerIcon }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_react_aria_components5.Button, { className: "btn btn-secondary menu-trigger-button", children: [
+      triggerLabel,
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-trigger-chevron", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_lucide_react4.ChevronDown, {}) })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react_aria_components5.Popover, { className: "menu-popover", placement, offset: 8, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react_aria_components5.Menu, { className: "menu-list", children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(
+      import_react_aria_components5.MenuItem,
+      {
+        className: "menu-item menu-item-profile",
+        textValue: `${item.name} ${item.username}`,
+        onAction: () => onAction?.(item.id),
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("span", { className: "menu-item-start", children: [
+            item.avatarUrl ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+              "img",
+              {
+                className: "menu-item-profile-avatar",
+                src: item.avatarUrl,
+                alt: item.name
+              }
+            ) : /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-profile-avatar", "aria-hidden": "true" }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("span", { className: "menu-item-profile-info", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-profile-name", children: item.name }),
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("span", { className: "menu-item-profile-username", children: [
+                "@",
+                item.username
+              ] })
+            ] })
+          ] }),
+          item.metric && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-profile-metric", children: item.metric })
+        ]
+      },
+      item.id
+    )) }) })
+  ] });
+}
+function TitanNotificationsMenu({
+  triggerIcon,
+  triggerLabel = "Notifications",
+  placement = "bottom end",
+  notifications,
+  emptyIcon,
+  emptyTitle = "Great!",
+  emptyMessage = "There are not unread notifications",
+  markAllLabel = "Mark all as completed",
+  markAllIcon,
+  onAction,
+  onMarkAll
+}) {
+  const hasNotifications = notifications.length > 0;
+  return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_react_aria_components5.MenuTrigger, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react_aria_components5.Button, { className: "icon-ghost menu-trigger-icon-ghost", "aria-label": triggerLabel, children: triggerIcon }),
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react_aria_components5.Popover, { className: "menu-popover", placement, offset: 8, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react_aria_components5.Menu, { className: "menu-list menu-list-notifications", children: hasNotifications ? /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_jsx_runtime6.Fragment, { children: [
+      notifications.map((n) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+        import_react_aria_components5.MenuItem,
+        {
+          className: "menu-item menu-item-notification",
+          textValue: typeof n.title === "string" ? n.title : n.id,
+          onAction: () => onAction?.(n.id),
+          children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("span", { className: "menu-item-start", children: [
+            n.icon && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-icon", children: n.icon }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("span", { className: "menu-item-notification-content", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-notification-title", children: n.title }),
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-notification-date", children: n.date })
+            ] })
+          ] })
+        },
+        n.id
+      )),
+      onMarkAll && /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_jsx_runtime6.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react_aria_components5.Separator, { className: "menu-divider" }),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+          import_react_aria_components5.MenuItem,
+          {
+            className: "menu-item",
+            textValue: markAllLabel,
+            onAction: () => onMarkAll(),
+            children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("span", { className: "menu-item-start", children: [
+              markAllIcon && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-icon", children: markAllIcon }),
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-label", children: markAllLabel })
+            ] })
+          }
+        )
+      ] })
+    ] }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "menu-item-info", role: "status", children: [
+      emptyIcon && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "menu-item-icon", children: emptyIcon }),
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("span", { className: "menu-item-notification-content", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { style: { fontWeight: "var(--text-weight-medium)" }, children: emptyTitle }),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: emptyMessage })
+      ] })
+    ] }) }) })
   ] });
 }
 
@@ -1294,11 +1490,14 @@ function TitanCalendar({
   TitanLoader,
   TitanMenuDropdown,
   TitanNavbar,
+  TitanNotificationsMenu,
   TitanPagination,
   TitanPill,
+  TitanProfileMenu,
   TitanProgressBar,
   TitanRadioGroupField,
   TitanRangeSlider,
+  TitanSearchMenu,
   TitanSelect,
   TitanSidebar,
   TitanSidebarHeader,

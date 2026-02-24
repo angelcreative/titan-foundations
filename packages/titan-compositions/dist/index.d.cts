@@ -87,9 +87,29 @@ interface TitanMenuOption {
     id: string;
     label: string;
     icon?: ReactNode;
+    leftElement?: ReactNode;
     disabled?: boolean;
     destructive?: boolean;
     children?: TitanMenuOption[];
+}
+interface TitanMenuSearchOption {
+    id: string;
+    label: string;
+    highlightRange?: [number, number];
+    icon?: ReactNode;
+}
+interface TitanMenuProfileOption {
+    id: string;
+    name: string;
+    username: string;
+    avatarUrl?: string;
+    metric?: string;
+}
+interface TitanMenuNotification {
+    id: string;
+    icon?: ReactNode;
+    title: ReactNode;
+    date: string;
 }
 interface TitanMenuProps {
     triggerLabel?: string;
@@ -99,7 +119,43 @@ interface TitanMenuProps {
     items: TitanMenuOption[];
     onAction?: (id: string) => void;
 }
+interface TitanSearchMenuProps {
+    triggerLabel?: string;
+    triggerIcon?: ReactNode;
+    iconOnly?: boolean;
+    placement?: 'bottom start' | 'bottom end';
+    items: TitanMenuSearchOption[];
+    query?: string;
+    emptyLabel?: string;
+    addNewLabel?: string;
+    onAction?: (id: string) => void;
+    onAddNew?: () => void;
+}
+interface TitanProfileMenuProps {
+    triggerLabel?: string;
+    triggerIcon?: ReactNode;
+    iconOnly?: boolean;
+    placement?: 'bottom start' | 'bottom end';
+    items: TitanMenuProfileOption[];
+    onAction?: (id: string) => void;
+}
+interface TitanNotificationsMenuProps {
+    triggerIcon?: ReactNode;
+    triggerLabel?: string;
+    placement?: 'bottom end' | 'bottom start';
+    notifications: TitanMenuNotification[];
+    emptyIcon?: ReactNode;
+    emptyTitle?: string;
+    emptyMessage?: string;
+    markAllLabel?: string;
+    markAllIcon?: ReactNode;
+    onAction?: (id: string) => void;
+    onMarkAll?: () => void;
+}
 declare function TitanMenuDropdown({ triggerLabel, triggerIcon, iconOnly, placement, items, onAction, }: TitanMenuProps): react_jsx_runtime.JSX.Element;
+declare function TitanSearchMenu({ triggerLabel, triggerIcon, iconOnly, placement, items, query, emptyLabel, addNewLabel, onAction, onAddNew, }: TitanSearchMenuProps): react_jsx_runtime.JSX.Element;
+declare function TitanProfileMenu({ triggerLabel, triggerIcon, iconOnly, placement, items, onAction, }: TitanProfileMenuProps): react_jsx_runtime.JSX.Element;
+declare function TitanNotificationsMenu({ triggerIcon, triggerLabel, placement, notifications, emptyIcon, emptyTitle, emptyMessage, markAllLabel, markAllIcon, onAction, onMarkAll, }: TitanNotificationsMenuProps): react_jsx_runtime.JSX.Element;
 
 interface TitanSelectOption {
     id: string;
@@ -442,4 +498,4 @@ interface RenderIconProps {
  */
 declare function renderIconNode(icon: ReactNode | ComponentType<RenderIconProps> | string | undefined, props?: RenderIconProps): ReactNode;
 
-export { type IconComponent, type RenderIconProps, TitanBorderlessTable, type TitanBorderlessTableProps, TitanBreadcrumb, type TitanBreadcrumbItem, type TitanBreadcrumbProps, TitanButton, type TitanButtonProps, type TitanButtonVariant, TitanCalendar, type TitanCalendarProps, TitanCard, TitanCardGrid, type TitanCardGridProps, type TitanCardProps, type TitanCardSpan, TitanCheckboxField, type TitanCheckboxFieldProps, TitanDialog, type TitanDialogProps, TitanDrawer, type TitanDrawerProps, TitanFormControlsGroup, type TitanFormControlsGroupProps, TitanIconButton, type TitanIconButtonProps, type TitanIconButtonVariant, TitanInputField, type TitanInputFieldProps, TitanLoader, type TitanLoaderProps, TitanMenuDropdown, type TitanMenuOption, type TitanMenuProps, TitanNavbar, type TitanNavbarProps, type TitanNavbarTheme, TitanPagination, type TitanPaginationPage, type TitanPaginationProps, TitanPill, type TitanPillProps, TitanProgressBar, type TitanProgressBarProps, TitanRadioGroupField, type TitanRadioGroupFieldProps, type TitanRadioOption, TitanRangeSlider, type TitanRangeSliderProps, TitanSelect, type TitanSelectOption, type TitanSelectProps, TitanSidebar, TitanSidebarHeader, type TitanSidebarHeaderProps, TitanSidebarItem, type TitanSidebarItemProps, type TitanSidebarProps, TitanSlider, type TitanSliderProps, TitanSwitchField, type TitanSwitchFieldProps, type TitanTabItem, type TitanTableColumn, type TitanTableRow, TitanTabs, type TitanTabsProps, TitanTag, type TitanTagProps, TitanTextareaField, type TitanTextareaFieldProps, type TitanToastItem, TitanToastRegion, type TitanToastRegionProps, type TitanToastVariant, TitanToggleButtonGroup, type TitanToggleButtonGroupProps, type TitanToggleItem, TitanTooltip, type TitanTooltipPlacement, type TitanTooltipProps, TitanTwoUpOneDownLayout, type TitanTwoUpOneDownLayoutProps, getToneStyle, registerFallbackIcons, renderIconNode, resolveIcon };
+export { type IconComponent, type RenderIconProps, TitanBorderlessTable, type TitanBorderlessTableProps, TitanBreadcrumb, type TitanBreadcrumbItem, type TitanBreadcrumbProps, TitanButton, type TitanButtonProps, type TitanButtonVariant, TitanCalendar, type TitanCalendarProps, TitanCard, TitanCardGrid, type TitanCardGridProps, type TitanCardProps, type TitanCardSpan, TitanCheckboxField, type TitanCheckboxFieldProps, TitanDialog, type TitanDialogProps, TitanDrawer, type TitanDrawerProps, TitanFormControlsGroup, type TitanFormControlsGroupProps, TitanIconButton, type TitanIconButtonProps, type TitanIconButtonVariant, TitanInputField, type TitanInputFieldProps, TitanLoader, type TitanLoaderProps, TitanMenuDropdown, type TitanMenuNotification, type TitanMenuOption, type TitanMenuProfileOption, type TitanMenuProps, type TitanMenuSearchOption, TitanNavbar, type TitanNavbarProps, type TitanNavbarTheme, TitanNotificationsMenu, type TitanNotificationsMenuProps, TitanPagination, type TitanPaginationPage, type TitanPaginationProps, TitanPill, type TitanPillProps, TitanProfileMenu, type TitanProfileMenuProps, TitanProgressBar, type TitanProgressBarProps, TitanRadioGroupField, type TitanRadioGroupFieldProps, type TitanRadioOption, TitanRangeSlider, type TitanRangeSliderProps, TitanSearchMenu, type TitanSearchMenuProps, TitanSelect, type TitanSelectOption, type TitanSelectProps, TitanSidebar, TitanSidebarHeader, type TitanSidebarHeaderProps, TitanSidebarItem, type TitanSidebarItemProps, type TitanSidebarProps, TitanSlider, type TitanSliderProps, TitanSwitchField, type TitanSwitchFieldProps, type TitanTabItem, type TitanTableColumn, type TitanTableRow, TitanTabs, type TitanTabsProps, TitanTag, type TitanTagProps, TitanTextareaField, type TitanTextareaFieldProps, type TitanToastItem, TitanToastRegion, type TitanToastRegionProps, type TitanToastVariant, TitanToggleButtonGroup, type TitanToggleButtonGroupProps, type TitanToggleItem, TitanTooltip, type TitanTooltipPlacement, type TitanTooltipProps, TitanTwoUpOneDownLayout, type TitanTwoUpOneDownLayoutProps, getToneStyle, registerFallbackIcons, renderIconNode, resolveIcon };

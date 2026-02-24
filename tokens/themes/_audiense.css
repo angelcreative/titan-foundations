@@ -131,8 +131,8 @@ html[data-theme="audiense"] {
 	--menu-item-hover: var(--color-steel-100);
 	--menu-item-pressed: var(--color-steel-200);
 	--menu-item-selected: var(--color-steel-300);
-	--menu-item-disabled: var(--color-disabled-500);
-	--menu-item-disabled-icon: var(--color-disabled-500);
+	--menu-item-disabled: var(--color-disabled-400);
+	--menu-item-disabled-icon: var(--color-disabled-400);
 	--menu-item-icon: var(--color-steel-700);
 	--menu-destructive-item-hover: var(--color-error-100);
 	--menu-destructive-item-pressed: var(--color-error-200);
