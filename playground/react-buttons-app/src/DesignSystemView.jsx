@@ -1,9 +1,17 @@
-import { useState, useCallback } from 'react'
-import { ChevronLeft, ChevronRight, Ruler, Palette, Type, Layers, Sparkles, Image, Search, User, Settings } from 'lucide-react'
-import { Button } from 'react-aria-components'
+import { useState, useCallback, useRef } from 'react'
+import { Ruler, Palette, Type, Layers, Sparkles, Image, Search, User, Settings } from 'lucide-react'
+import {
+  TitanSidebar,
+  TitanSidebarItem,
+  TitanCard,
+  TitanCardGrid,
+  TitanBreadcrumb,
+  TitanButton,
+  TitanSelect,
+} from 'titan-compositions'
 
 /* ------------------------------------------------------------------ */
-/*  Data (from tokens/foundations)                                     */
+/*  Data                                                              */
 /* ------------------------------------------------------------------ */
 
 const SPACING = [
@@ -64,132 +72,105 @@ const THEME_COLORS = {
   tweetbinder: 'var(--color-ocean-600)',
 }
 
+const SOLID_COLOR_FAMILIES = [
+  'black', 'white', 'steel', 'blue', 'ocean', 'indigo', 'blueberry', 'violet', 'purple',
+  'pink', 'magenta', 'red', 'tomato', 'pomegranate', 'orange', 'mango', 'yellow', 'lime',
+  'green', 'teal', 'aquamarine', 'turquoise', 'avocado', 'brown', 'cacao',
+  'error', 'disabled', 'information', 'success', 'warning',
+]
+
+const OPACITY_COLOR_FAMILIES = [
+  'black', 'white', 'steel', 'blue', 'ocean', 'indigo', 'blueberry', 'violet', 'purple',
+  'pink', 'magenta', 'red', 'tomato', 'orange', 'mango', 'yellow', 'lime',
+  'green', 'teal', 'aquamarine', 'turquoise', 'avocado', 'brown', 'cacao',
+]
+
 /* ------------------------------------------------------------------ */
 /*  Design System View                                                 */
 /* ------------------------------------------------------------------ */
 
+const DS_NAV_ITEMS = [
+  { id: 'foundations', label: 'Foundations', icon: Ruler },
+  { id: 'themes', label: 'Themes', icon: Palette },
+  { id: 'typography', label: 'Typography', icon: Type },
+  { id: 'colors', label: 'Colors', icon: Sparkles },
+  { id: 'tokens', label: 'Tokens', icon: Layers },
+  { id: 'icons', label: 'Icons', icon: Image },
+]
+
 export function DesignSystemView({ theme, onThemeChange }) {
   const [breadcrumb, setBreadcrumb] = useState([])
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const mainScrollRef = useRef(null)
 
-  const goTo = useCallback((path) => {
-    setBreadcrumb(path)
-  }, [])
-
-  const goBack = useCallback(() => {
-    setBreadcrumb((prev) => prev.slice(0, -1))
-  }, [])
-
-  const currentLevel = breadcrumb.length
+  const goTo = useCallback((path) => setBreadcrumb(path), [])
+  const goBack = useCallback(() => setBreadcrumb((p) => p.slice(0, -1)), [])
   const currentSection = breadcrumb[0]
 
-  const DS_SIDEBAR_ITEMS = [
-    { id: 'foundations', label: 'Foundations', icon: Ruler },
-    { id: 'themes', label: 'Themes', icon: Palette },
-    { id: 'typography', label: 'Typography', icon: Type },
-    { id: 'colors', label: 'Colors', icon: Sparkles },
-    { id: 'tokens', label: 'Tokens', icon: Layers },
-    { id: 'icons', label: 'Icons', icon: Image },
-  ]
-
   return (
-    <div className="ds-layout">
-      <aside className={`ds-sidebar${sidebarCollapsed ? ' ds-sidebar-collapsed' : ''}`}>
-        <Button
-          className="ds-sidebar-toggle"
-          onPress={() => setSidebarCollapsed((c) => !c)}
-          aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-        >
-          {sidebarCollapsed ? <ChevronRight /> : <ChevronLeft />}
-        </Button>
-        {!sidebarCollapsed && (
-          <nav className="ds-sidebar-nav">
-            <div className="ds-sidebar-header">Design System</div>
-            {DS_SIDEBAR_ITEMS.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                className={`ds-sidebar-item${currentSection === item.id ? ' ds-sidebar-item-active' : ''}`}
-                onClick={() => goTo([item.id])}
-              >
-                <item.icon className="ds-sidebar-icon" />
-                {item.label}
-              </button>
-            ))}
-          </nav>
-        )}
-      </aside>
+    <div className="app-layout">
+      <TitanSidebar
+        collapsed={sidebarCollapsed}
+        onToggle={() => setSidebarCollapsed((c) => !c)}
+        activeId={currentSection ?? ''}
+        onActiveChange={(id) => goTo([id])}
+      >
+        {DS_NAV_ITEMS.map((item) => (
+          <TitanSidebarItem key={item.id} id={item.id} icon={item.icon}>
+            {item.label}
+          </TitanSidebarItem>
+        ))}
+      </TitanSidebar>
 
-      <main className="ds-content">
+      <main ref={mainScrollRef} className="page ds-page">
         {breadcrumb.length > 0 && (
-          <div className="ds-breadcrumb">
-            <button type="button" className="ds-breadcrumb-back" onClick={goBack}>
+          <section className="card ds-breadcrumb-card">
+            <TitanBreadcrumb
+              items={breadcrumb.slice(0, -1).map((b, i) => ({
+                id: b,
+                label: b.charAt(0).toUpperCase() + b.slice(1),
+                onPress: () => goTo(breadcrumb.slice(0, i + 1)),
+              }))}
+              currentLabel={breadcrumb[breadcrumb.length - 1].charAt(0).toUpperCase() + breadcrumb[breadcrumb.length - 1].slice(1)}
+            />
+            <TitanButton variant="secondary" onPress={goBack} style={{ marginTop: 'var(--spacing-s)' }}>
               ← Back
-            </button>
-            <span className="ds-breadcrumb-path">
-              Design System {breadcrumb.map((b) => ` > ${b}`).join('')}
-            </span>
-          </div>
+            </TitanButton>
+          </section>
         )}
 
-        {currentLevel === 0 && (
-          <div className="ds-cards-grid">
-            <DSCard
-              title="Foundations"
-              desc="Spacing, borders, elevation — the basics"
-              icon={Ruler}
-              onClick={() => goTo(['foundations'])}
-            />
-            <DSCard
-              title="Themes"
-              desc="insights, audiense, neutral, demand, linkedin, tweetbinder"
-              icon={Palette}
-              onClick={() => goTo(['themes'])}
-            />
-            <DSCard
-              title="Typography"
-              desc="Vertical rhythm, scale, body text"
-              icon={Type}
-              onClick={() => goTo(['typography'])}
-            />
-            <DSCard
-              title="Colors"
-              desc="Solid palettes & opacity variants"
-              icon={Sparkles}
-              onClick={() => goTo(['colors'])}
-            />
-            <DSCard
-              title="Tokens"
-              desc="Semantic & component tokens"
-              icon={Layers}
-              onClick={() => goTo(['tokens'])}
-            />
-            <DSCard
-              title="Icons"
-              desc="Lucide & Tabler — sizes, spacing"
-              icon={Image}
-              onClick={() => goTo(['icons'])}
-            />
-          </div>
+        {breadcrumb.length === 0 && (
+          <section className="card">
+            <h2 className="ds-page-title">Design System</h2>
+            <p className="ds-page-lead">Foundations, themes, typography, colors, tokens, and icons.</p>
+            <TitanCardGrid>
+              <DSCard title="Foundations" desc="Spacing, borders, elevation" icon={Ruler} onClick={() => goTo(['foundations'])} />
+              <DSCard title="Themes" desc="Six themes" icon={Palette} onClick={() => goTo(['themes'])} />
+              <DSCard title="Typography" desc="Scale & vertical rhythm" icon={Type} onClick={() => goTo(['typography'])} />
+              <DSCard title="Colors" desc="Solid & opacity palettes" icon={Sparkles} onClick={() => goTo(['colors'])} />
+              <DSCard title="Tokens" desc="Semantic tokens" icon={Layers} onClick={() => goTo(['tokens'])} />
+              <DSCard title="Icons" desc="Sizes & spacing" icon={Image} onClick={() => goTo(['icons'])} />
+            </TitanCardGrid>
+          </section>
         )}
 
         {currentSection === 'foundations' && (
-          <FoundationsContent subLevel={breadcrumb[1]} goTo={goTo} goBack={goBack} />
+          <FoundationsContent subLevel={breadcrumb[1]} goTo={goTo} />
         )}
         {currentSection === 'themes' && (
           <ThemesContent theme={theme} onThemeChange={onThemeChange} />
         )}
         {currentSection === 'typography' && (
-          <TypographyContent subLevel={breadcrumb[1]} goTo={goTo} goBack={goBack} />
+          <TypographyContent subLevel={breadcrumb[1]} goTo={goTo} />
         )}
         {currentSection === 'colors' && (
-          <ColorsContent subLevel={breadcrumb[1]} goTo={goTo} goBack={goBack} />
+          <ColorsContent subLevel={breadcrumb[1]} goTo={goTo} />
         )}
         {currentSection === 'tokens' && (
-          <TokensContent subLevel={breadcrumb[1]} goTo={goTo} goBack={goBack} />
+          <TokensContent subLevel={breadcrumb[1]} goTo={goTo} />
         )}
         {currentSection === 'icons' && (
-          <IconsContent subLevel={breadcrumb[1]} goTo={goTo} goBack={goBack} />
+          <IconsContent subLevel={breadcrumb[1]} goTo={goTo} />
         )}
       </main>
     </div>
@@ -198,84 +179,86 @@ export function DesignSystemView({ theme, onThemeChange }) {
 
 function DSCard({ title, desc, icon: Icon, onClick }) {
   return (
-    <button type="button" className="ds-card" onClick={onClick}>
-      <Icon className="ds-card-icon" />
-      <h3 className="ds-card-title">{title}</h3>
-      <p className="ds-card-desc">{desc}</p>
-    </button>
+    <TitanCard span={8} className="ds-card-clickable">
+      <button type="button" className="ds-card-btn" onClick={onClick}>
+        <Icon className="ds-card-icon" />
+        <span className="ds-card-title">{title}</span>
+        <span className="ds-card-desc">{desc}</span>
+      </button>
+    </TitanCard>
   )
 }
 
-function FoundationsContent({ subLevel, goTo, goBack }) {
+function FoundationsContent({ subLevel, goTo }) {
   if (!subLevel) {
     return (
-      <div className="ds-section">
-        <h2>Foundations</h2>
-        <p className="ds-lead">Design tokens for spacing, borders, and elevation.</p>
-        <div className="ds-cards-grid ds-cards-sm">
-          <DSCard title="Spacing" desc="5xs → 5xl scale" icon={Ruler} onClick={() => goTo(['foundations', 'spacing'])} />
+      <section className="card">
+        <h2 className="ds-section-title">Foundations</h2>
+        <p className="ds-lead">Spacing, borders, and elevation tokens.</p>
+        <TitanCardGrid>
+          <DSCard title="Spacing" desc="5xs → 5xl" icon={Ruler} onClick={() => goTo(['foundations', 'spacing'])} />
           <DSCard title="Borders" desc="Radius & stroke" icon={Ruler} onClick={() => goTo(['foundations', 'borders'])} />
           <DSCard title="Elevation" desc="Shadows" icon={Ruler} onClick={() => goTo(['foundations', 'elevation'])} />
-        </div>
-      </div>
+        </TitanCardGrid>
+      </section>
     )
   }
   if (subLevel === 'spacing') {
     return (
-      <div className="ds-section">
-        <h2>Spacing</h2>
-        <p className="ds-lead">Multiples of 2 for consistent rhythm. Use tokens for padding and gaps.</p>
+      <section className="card">
+        <h2 className="ds-section-title">Spacing</h2>
+        <p className="ds-lead">Multiples of 2. Use tokens for padding and gaps.</p>
         <div className="ds-token-grid">
           {SPACING.map((s) => (
             <div key={s.token} className="ds-token-row">
-              <div className="ds-token-swatch" style={{ width: s.value, minWidth: s.value, height: 24 }} />
-              <code>{s.token}</code>
-              <span>{s.value}</span>
+              <div className="ds-token-swatch" style={{ width: s.value, minWidth: s.value, height: 20 }} />
+              <code className="ds-code">{s.token}</code>
+              <span className="ds-muted">{s.value}</span>
             </div>
           ))}
         </div>
-      </div>
+      </section>
     )
   }
   if (subLevel === 'borders') {
     return (
-      <div className="ds-section">
-        <h2>Borders</h2>
+      <section className="card">
+        <h2 className="ds-section-title">Borders</h2>
         <p className="ds-lead">Radius and stroke tokens.</p>
-        <h3>Radius</h3>
+        <h3 className="ds-subtitle">Radius</h3>
         <div className="ds-token-grid">
           {BORDERS.radius.map((r) => (
             <div key={r.token} className="ds-token-row">
-              <div className="ds-token-swatch" style={{ width: 40, height: 40, borderRadius: r.value }} />
-              <code>{r.token}</code>
-              <span>{r.value}</span>
+              <div className="ds-token-swatch" style={{ width: 36, height: 36, borderRadius: r.value }} />
+              <code className="ds-code">{r.token}</code>
+              <span className="ds-muted">{r.value}</span>
             </div>
           ))}
         </div>
-        <h3>Stroke</h3>
+        <h3 className="ds-subtitle">Stroke</h3>
         <div className="ds-token-grid">
           {BORDERS.stroke.map((s) => (
             <div key={s.token} className="ds-token-row">
-              <div className="ds-token-swatch" style={{ width: 40, height: 8, borderBottom: `${s.value} solid var(--color-steel-600)` }} />
-              <code>{s.token}</code>
-              <span>{s.value}</span>
+              <div className="ds-token-swatch" style={{ width: 36, height: 6, borderBottom: `${s.value} solid var(--color-steel-500)` }} />
+              <code className="ds-code">{s.token}</code>
+              <span className="ds-muted">{s.value}</span>
             </div>
           ))}
         </div>
-      </div>
+      </section>
     )
   }
   if (subLevel === 'elevation') {
     return (
-      <div className="ds-section">
-        <h2>Elevation</h2>
+      <section className="card">
+        <h2 className="ds-section-title">Elevation</h2>
         <p className="ds-lead">Box shadows for depth.</p>
         <div className="ds-elevation-row">
           <div className="ds-elevation-card" style={{ boxShadow: 'var(--elevation-slot-1)' }}>1</div>
           <div className="ds-elevation-card" style={{ boxShadow: 'var(--elevation-slot-2)' }}>2</div>
           <div className="ds-elevation-card" style={{ boxShadow: 'var(--elevation-slot-3)' }}>3</div>
         </div>
-      </div>
+      </section>
     )
   }
   return null
@@ -283,218 +266,234 @@ function FoundationsContent({ subLevel, goTo, goBack }) {
 
 function ThemesContent({ theme, onThemeChange }) {
   return (
-    <div className="ds-section">
-      <h2>Themes</h2>
-      <p className="ds-lead">Six themes available. Set via data-theme on html.</p>
-      <div className="ds-theme-selector">
-        <label>Preview theme:</label>
-        <select value={theme} onChange={(e) => onThemeChange(e.target.value)}>
-          {THEMES.map((t) => (
-            <option key={t} value={t}>{t}</option>
-          ))}
-        </select>
-      </div>
+    <section className="card">
+      <h2 className="ds-section-title">Themes</h2>
+      <p className="ds-lead">Set via data-theme on html.</p>
+      <TitanSelect
+        label="Preview"
+        options={THEMES.map((t) => ({ id: t, label: t }))}
+        selectedKey={theme}
+        onSelectionChange={(k) => onThemeChange(String(k))}
+      />
       <div className="ds-theme-preview">
         {THEMES.map((t) => (
-          <div
+          <button
             key={t}
+            type="button"
             className={`ds-theme-card${theme === t ? ' ds-theme-card-active' : ''}`}
             onClick={() => onThemeChange(t)}
           >
             <div className="ds-theme-swatch" style={{ background: THEME_COLORS[t] }} />
             <span>{t}</span>
-          </div>
+          </button>
         ))}
       </div>
-    </div>
+    </section>
   )
 }
 
-function TypographyContent({ subLevel, goTo, goBack }) {
+function TypographyContent({ subLevel, goTo }) {
   if (!subLevel) {
     return (
-      <div className="ds-section">
-        <h2>Typography</h2>
-        <p className="ds-lead">Base size 16px (--font-size-l). Vertical rhythm via line-height.</p>
-        <div className="ds-cards-grid ds-cards-sm">
+      <section className="card">
+        <h2 className="ds-section-title">Typography</h2>
+        <p className="ds-lead">Base 16px. Vertical rhythm via line-height.</p>
+        <TitanCardGrid>
           <DSCard title="Scale" desc="Sizes & line-heights" icon={Type} onClick={() => goTo(['typography', 'scale'])} />
           <DSCard title="Vertical rhythm" desc="Spacing between blocks" icon={Type} onClick={() => goTo(['typography', 'rhythm'])} />
-        </div>
-      </div>
+        </TitanCardGrid>
+      </section>
     )
   }
   if (subLevel === 'scale') {
     return (
-      <div className="ds-section">
-        <h2>Typography scale</h2>
-        <table className="ds-table">
-          <thead>
-            <tr>
-              <th>Use</th>
-              <th>Token</th>
-              <th>Size</th>
-              <th>Sample</th>
-            </tr>
-          </thead>
-          <tbody>
-            {TYPOGRAPHY.map((t) => (
-              <tr key={t.token}>
-                <td>{t.use}</td>
-                <td><code>{t.token}</code></td>
-                <td>{t.size}</td>
-                <td style={{ fontSize: `var(${t.token})`, lineHeight: `var(${t.leading})` }}>
-                  Sample text
-                </td>
+      <section className="card">
+        <h2 className="ds-section-title">Typography scale</h2>
+        <div className="ds-table-wrap">
+          <table className="ds-table">
+            <thead>
+              <tr>
+                <th>Use</th>
+                <th>Token</th>
+                <th>Size</th>
+                <th>Sample</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {TYPOGRAPHY.map((t) => (
+                <tr key={t.token}>
+                  <td className="ds-muted">{t.use}</td>
+                  <td><code className="ds-code">{t.token}</code></td>
+                  <td className="ds-muted">{t.size}</td>
+                  <td style={{ fontSize: `var(${t.token})`, lineHeight: `var(${t.leading})` }}>
+                    Sample text
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
     )
   }
   if (subLevel === 'rhythm') {
     return (
-      <div className="ds-section">
-        <h2>Vertical rhythm</h2>
-        <p className="ds-lead">Use --spacing-s (12px) or --spacing-m (16px) between blocks.</p>
+      <section className="card">
+        <h2 className="ds-section-title">Vertical rhythm</h2>
+        <p className="ds-lead">Use --spacing-s or --spacing-m between blocks.</p>
         <div className="ds-rhythm-demo">
-          <h3 style={{ fontSize: 'var(--font-size-2xl)', marginBottom: 'var(--spacing-s)' }}>Card title</h3>
-          <p style={{ fontSize: 'var(--font-size-l)', marginBottom: 'var(--spacing-m)' }}>
+          <h3 className="ds-rhythm-title">Card title</h3>
+          <p className="ds-rhythm-body">
             Body text at 16px. Consistent spacing creates visual rhythm.
           </p>
-          <p style={{ fontSize: 'var(--font-size-s)', color: 'var(--copy-slot-secondary)' }}>
-            Hints and labels at 12px.
-          </p>
+          <p className="ds-rhythm-hint">Hints and labels at 12px.</p>
         </div>
-      </div>
+      </section>
     )
   }
   return null
 }
 
-function ColorsContent({ subLevel, goTo, goBack }) {
-  const colorFamilies = ['black', 'steel', 'white', 'blue', 'ocean', 'pomegranate', 'mango', 'teal', 'tomato']
+function ColorsContent({ subLevel, goTo }) {
   if (!subLevel) {
     return (
-      <div className="ds-section">
-        <h2>Colors</h2>
-        <p className="ds-lead">Solid palettes (100–900) and opacity variants (10–90).</p>
-        <div className="ds-cards-grid ds-cards-sm">
-          <DSCard title="Solid" desc="100–900 scale" icon={Sparkles} onClick={() => goTo(['colors', 'solid'])} />
-          <DSCard title="Opacity" desc="10–90 variants" icon={Sparkles} onClick={() => goTo(['colors', 'opacity'])} />
-        </div>
-      </div>
+      <section className="card">
+        <h2 className="ds-section-title">Colors</h2>
+        <p className="ds-lead">Solid (100–900) and opacity (10–90).</p>
+        <TitanCardGrid>
+          <DSCard title="Solid" desc="All palettes" icon={Sparkles} onClick={() => goTo(['colors', 'solid'])} />
+          <DSCard title="Opacity" desc="All opacity variants" icon={Sparkles} onClick={() => goTo(['colors', 'opacity'])} />
+        </TitanCardGrid>
+      </section>
     )
   }
   if (subLevel === 'solid') {
     return (
-      <div className="ds-section">
-        <h2>Solid colors</h2>
+      <section className="card">
+        <h2 className="ds-section-title">Solid colors</h2>
         <p className="ds-lead">--color-{'{family}'}-100 to -900</p>
-        {colorFamilies.slice(0, 4).map((fam) => (
-          <div key={fam} className="ds-color-row">
-            <span className="ds-color-label">{fam}</span>
-            {[100, 200, 300, 400, 500, 600, 700, 800, 900].map((n) => (
-              <div
-                key={n}
-                className="ds-color-swatch"
-                style={{ background: `var(--color-${fam}-${n})` }}
-                title={`--color-${fam}-${n}`}
-              />
-            ))}
-          </div>
-        ))}
-      </div>
+        <div className="ds-colors-block">
+          {SOLID_COLOR_FAMILIES.map((fam) => (
+            <div key={fam} className="ds-color-row">
+              <span className="ds-color-label">{fam}</span>
+              <div className="ds-color-row-swatches">
+              {[100, 200, 300, 400, 500, 600, 700, 800, 900].map((n) => {
+                const token = `--color-${fam}-${n}`
+                return (
+                  <div
+                    key={n}
+                    className="ds-color-swatch"
+                    style={{ background: `var(${token})` }}
+                    title={token}
+                  />
+                )
+              })}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
     )
   }
   if (subLevel === 'opacity') {
     return (
-      <div className="ds-section">
-        <h2>Opacity colors</h2>
+      <section className="card">
+        <h2 className="ds-section-title">Opacity colors</h2>
         <p className="ds-lead">--color-{'{family}'}-10 to -90 (over white)</p>
-        <div className="ds-color-row">
-          <span className="ds-color-label">steel</span>
-          {[10, 20, 30, 40, 50, 60, 70, 80, 90].map((n) => (
-            <div
-              key={n}
-              className="ds-color-swatch"
-              style={{ background: `var(--color-steel-${n})` }}
-              title={`--color-steel-${n}`}
-            />
+        <div className="ds-colors-block">
+          {OPACITY_COLOR_FAMILIES.map((fam) => (
+            <div key={fam} className="ds-color-row ds-color-row-opacity">
+              <span className="ds-color-label">{fam}</span>
+              <div className="ds-color-row-swatches">
+                {[10, 20, 30, 40, 50, 60, 70, 80, 90].map((n) => {
+                  const token = `--color-${fam}-${n}`
+                  return (
+                    <div
+                      key={n}
+                      className="ds-color-swatch"
+                      style={{ background: `var(${token})` }}
+                      title={token}
+                    />
+                  )
+                })}
+              </div>
+            </div>
           ))}
         </div>
-      </div>
+      </section>
     )
   }
   return null
 }
 
-function TokensContent({ subLevel, goTo, goBack }) {
+function TokensContent({ subLevel }) {
   if (!subLevel) {
     return (
-      <div className="ds-section">
-        <h2>Tokens</h2>
+      <section className="card">
+        <h2 className="ds-section-title">Tokens</h2>
         <p className="ds-lead">Semantic and component tokens.</p>
         <div className="ds-token-list">
-          <p><code>--copy-slot-primary</code> <code>--copy-slot-secondary</code></p>
-          <p><code>--button-primary-slot-bg</code> <code>--button-slot-font-size</code></p>
-          <p><code>--input-slot-border</code> <code>--menu-slot-radius</code></p>
+          <p><code className="ds-code">--copy-slot-primary</code> <code className="ds-code">--copy-slot-secondary</code></p>
+          <p><code className="ds-code">--button-primary-slot-bg</code> <code className="ds-code">--button-slot-font-size</code></p>
+          <p><code className="ds-code">--input-slot-border</code> <code className="ds-code">--menu-slot-radius</code></p>
         </div>
-      </div>
+      </section>
     )
   }
   return null
 }
 
-function IconsContent({ subLevel, goTo, goBack }) {
+function IconsContent({ subLevel, goTo }) {
+  const icons = [
+    { name: 'Search', Icon: Search },
+    { name: 'User', Icon: User },
+    { name: 'Settings', Icon: Settings },
+  ]
   if (!subLevel) {
     return (
-      <div className="ds-section">
-        <h2>Icons</h2>
-        <p className="ds-lead">Lucide & Tabler. Base grid 16×16, 2px safe area. Spacing: 4px icon-to-text, 8px in buttons.</p>
-        <div className="ds-cards-grid ds-cards-sm">
+      <section className="card">
+        <h2 className="ds-section-title">Icons</h2>
+        <p className="ds-lead">Lucide & Tabler. 16×16 base, 2px safe area. 4px icon-to-text, 8px in buttons.</p>
+        <TitanCardGrid>
           <DSCard title="Sizes" desc="12, 16, 24px" icon={Image} onClick={() => goTo(['icons', 'sizes'])} />
-        </div>
-      </div>
+        </TitanCardGrid>
+      </section>
     )
   }
   if (subLevel === 'sizes') {
-    const icons = [
-      { name: 'Search', Icon: Search },
-      { name: 'User', Icon: User },
-      { name: 'Settings', Icon: Settings },
-    ]
     return (
-      <div className="ds-section">
-        <h2>Icon sizes</h2>
-        <p className="ds-lead">12px (s), 16px (m), 24px (l). Stroke scales: 1.25, 1.5, 2. Spacing: 4px icon-to-text, 8px in buttons.</p>
-        <table className="ds-table">
-          <thead>
-            <tr>
-              <th>Token</th>
-              <th>Size</th>
-              <th>Stroke</th>
-              <th>Search</th>
-              <th>User</th>
-              <th>Settings</th>
-            </tr>
-          </thead>
-          <tbody>
-            {ICON_SIZES.map((s) => (
-              <tr key={s.token}>
-                <td><code>{s.token}</code></td>
-                <td>{s.size}</td>
-                <td>{s.stroke}</td>
-                {icons.map(({ name, Icon }) => (
-                  <td key={name}>
-                    <Icon style={{ width: s.size, height: s.size, strokeWidth: parseFloat(s.stroke) }} />
-                  </td>
-                ))}
+      <section className="card">
+        <h2 className="ds-section-title">Icon sizes</h2>
+        <p className="ds-lead">Stroke: 1.25, 1.5, 2. Spacing: 4px icon-to-text, 8px in buttons.</p>
+        <div className="ds-table-wrap">
+          <table className="ds-table">
+            <thead>
+              <tr>
+                <th>Token</th>
+                <th>Size</th>
+                <th>Stroke</th>
+                <th>Search</th>
+                <th>User</th>
+                <th>Settings</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {ICON_SIZES.map((s) => (
+                <tr key={s.token}>
+                  <td><code className="ds-code">{s.token}</code></td>
+                  <td className="ds-muted">{s.size}</td>
+                  <td className="ds-muted">{s.stroke}</td>
+                  {icons.map(({ name, Icon }) => (
+                    <td key={name}>
+                      <Icon style={{ width: s.size, height: s.size, strokeWidth: parseFloat(s.stroke) }} />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
     )
   }
   return null
