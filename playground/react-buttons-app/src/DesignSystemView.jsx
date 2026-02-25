@@ -431,7 +431,7 @@ function TokensContent({ subLevel }) {
     return (
       <section className="card">
         <h2 className="ds-section-title">Tokens</h2>
-        <p className="ds-lead">Semantic and component tokens.</p>
+        <p className="ds-lead">Semantic and component tokens. Full documentation: <code className="ds-code">docs/tokens.md</code></p>
         <div className="ds-token-list">
           <p><code className="ds-code">--copy-slot-primary</code> <code className="ds-code">--copy-slot-secondary</code></p>
           <p><code className="ds-code">--button-primary-slot-bg</code> <code className="ds-code">--button-slot-font-size</code></p>
