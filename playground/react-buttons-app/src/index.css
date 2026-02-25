@@ -757,3 +757,62 @@ h2 {
   color: var(--copy-slot-muted);
   margin: 0;
 }
+
+
+/* ── Tokens doc (design system) ── */
+.ds-doc-card {
+  max-width: 100%;
+}
+
+.ds-doc {
+  margin-top: var(--spacing-m);
+}
+
+.ds-doc h3 {
+  font-size: var(--font-size-m);
+  font-weight: var(--text-weight-medium);
+  color: var(--copy-slot-primary);
+  margin: var(--spacing-l) 0 var(--spacing-s);
+}
+
+.ds-doc h3:first-of-type {
+  margin-top: 0;
+}
+
+.ds-doc p {
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-m);
+  color: var(--copy-slot-secondary);
+  margin: 0 0 var(--spacing-s);
+}
+
+.ds-doc ul {
+  margin: 0 0 var(--spacing-m);
+  padding-left: var(--spacing-l);
+}
+
+.ds-doc li {
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-m);
+  color: var(--copy-slot-secondary);
+  margin-bottom: var(--spacing-3xs);
+}
+
+.ds-code-block {
+  display: block;
+  font-family: "Menlo", "Monaco", "Courier New", monospace;
+  font-size: 11px;
+  line-height: 1.5;
+  background: var(--color-black-100);
+  padding: var(--spacing-s);
+  border-radius: var(--rounded-s);
+  overflow-x: auto;
+  margin: 0 0 var(--spacing-s);
+  color: var(--copy-slot-secondary);
+}
+
+.ds-doc-footer {
+  margin-top: var(--spacing-l) !important;
+  font-size: var(--font-size-s) !important;
+  color: var(--copy-slot-muted) !important;
+}

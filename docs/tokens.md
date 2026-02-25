@@ -49,9 +49,9 @@ Aquí van **reglas de componentes** (navbar, menu, button, etc.), no primitivos:
 
 ### 2.3 Salida final: `tokens/css/titan.css`
 
-- **No hay build automático**: el archivo `titan.css` se mantiene manualmente sincronizado con los JSON.
-- Los comentarios indican el origen: `/* Spacing (foundations/spacing.json) */`.
-- Ver sección [Build manual](#9-nota-sobre-el-build-manual) para más detalle.
+- **Build automático**: `npm run build:tokens` genera los primitivos desde `tokens/foundations/*.json` (Style Dictionary) y concatena con `titan-semantic.css`.
+- Los primitivos se generan en `titan-foundations.generated.css`; el build produce `titan.css` (header + foundations + semantic).
+- Ver sección [Build](#9-build) para más detalle.
 
 ---
 
@@ -277,19 +277,13 @@ html[data-theme="demand"] {
 }
 ```
 
-2. **Sincronizar manualmente** en `tokens/css/titan.css`:
+2. **Ejecutar el build** tras modificar los JSON: `npm run build:tokens`.
 
-```css
---color-nuevafamilia-100: #f0f0f0;
---color-nuevafamilia-200: #e0e0e0;
-/* ... hasta 900 */
-```
+3. **Spacing:** Editar `tokens/foundations/spacing.json` y ejecutar `npm run build:tokens`.
 
-3. **Spacing:** Editar `tokens/foundations/spacing.json` y añadir la línea correspondiente en `titan.css`.
+4. **Typography:** Editar `tokens/foundations/typography.json` y ejecutar `npm run build:tokens`.
 
-4. **Typography:** Editar `tokens/foundations/typography.json` y sincronizar en `titan.css`.
-
-> **Importante:** No existe un script que genere `titan.css` desde los JSON. Cada cambio en los JSON debe reflejarse manualmente en `titan.css`. Ver [Nota sobre el build manual](#9-nota-sobre-el-build-manual).
+> **Importante:** Tras modificar cualquier JSON en `tokens/foundations/`, ejecuta `npm run build:tokens` para regenerar `titan.css`. Ver [Build](#9-build).
 
 ### 5.7 Resumen para consumidores
 
@@ -355,13 +349,13 @@ html[data-theme="demand"] {
 │   elevation)                                                       │
 └──────────────────────────────────────────────────────────────────┘
                               │
-                              │  sincronización manual
+                              │  npm run build:tokens (Style Dictionary)
                               ▼
 ┌──────────────────────────────────────────────────────────────────┐
 │  tokens/css/titan.css                                             │
-│  - Primitivos en :root                                            │
-│  - Slots semánticos (copy-slot-*, icon-slot-*, surface-slot-*)    │
-│  - Slots de componentes (navbar-slot-*, card-slot-*, etc.)        │
+│  - Primitivos en :root (generados)                                │
+│  - Slots semánticos (copy-slot-*, icon-slot-*, surface-slot-*)   │
+│  - Slots de componentes (navbar-slot-*, card-slot-*, etc.)       │
 └──────────────────────────────────────────────────────────────────┘
                               │
                               │  cargar
@@ -381,20 +375,20 @@ html[data-theme="demand"] {
 
 ---
 
-## 9. Nota sobre el build manual
+## 9. Build
 
-**"No hay build automático"** significa lo siguiente:
+El build usa **Style Dictionary** para generar los primitivos desde los JSON:
 
-- Los archivos `tokens/foundations/*.json` son la **fuente de verdad** para los valores primitivos.
-- El archivo `tokens/css/titan.css` **no se genera** automáticamente a partir de esos JSON.
-- No existe un script (Style Dictionary, Token Transformer, etc.) que lea los JSON y produzca `titan.css`.
-- Cualquier cambio en un JSON debe **reflejarse manualmente** en `titan.css` para que tenga efecto en la aplicación.
+1. **Preproceso**: `tokens/build/preprocess.js` convierte las claves planas (`color-black-100`) a estructura anidada y normaliza referencias (`{$color-steel-10}` → `{color.steel.10}`).
+2. **Style Dictionary**: Lee el JSON preprocesado y genera `tokens/css/titan-foundations.generated.css` con variables CSS en `:root`.
+3. **Concatenación**: `tokens/build/build.js` concatena header + foundations + `titan-semantic.css` → `tokens/css/titan.css`.
+
+**Comando:** `npm run build:tokens`
 
 **Implicaciones:**
 
-1. **Consumidores:** No os afecta. Usáis `titan.css` tal cual; no necesitáis los JSON.
-2. **Contribuidores:** Al añadir o modificar tokens en los JSON, debéis actualizar también `titan.css` en el mismo commit.
-3. **Futuro:** Se podría introducir un build (ej. Style Dictionary) para automatizar esto; hoy no está implementado.
+1. **Consumidores:** No os afecta. Usáis `titan.css` tal cual; no necesitáis los JSON ni ejecutar el build.
+2. **Contribuidores:** Tras modificar `tokens/foundations/*.json`, ejecutad `npm run build:tokens` y committed el `titan.css` actualizado.
 
 ---
 

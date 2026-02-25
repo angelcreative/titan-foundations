@@ -1,3 +1,5 @@
 .DS_Store
 **/.DS_Store
 node_modules/
+tokens/.sd-input.json
+tokens/css/titan-foundations.generated.css
