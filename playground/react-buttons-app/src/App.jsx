@@ -87,6 +87,7 @@ import {
   TitanTwoUpOneDownLayout,
 } from 'titan-compositions'
 import { today, getLocalTimeZone } from '@internationalized/date'
+import { DesignSystemView } from './DesignSystemView'
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
@@ -1391,6 +1392,10 @@ function App() {
           className={`app-top-tab${activeView === 'setup' ? ' app-top-tab-active' : ''}`}
           onClick={() => setActiveView('setup')}
         >How to set up Titan</button>
+        <button
+          className={`app-top-tab${activeView === 'designsystem' ? ' app-top-tab-active' : ''}`}
+          onClick={() => setActiveView('designsystem')}
+        >Design System</button>
         </div>
       </div>
 
@@ -1398,6 +1403,8 @@ function App() {
         <main className="page setup-page">
           <SetupGuide />
         </main>
+      ) : activeView === 'designsystem' ? (
+        <DesignSystemView theme={theme} onThemeChange={setTheme} />
       ) : (
       <div className="app-layout">
         <TitanSidebar
