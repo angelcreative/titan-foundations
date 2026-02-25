@@ -1002,43 +1002,51 @@
   flex: 1;
 }
 
-/* --- Toggle Button Group --- */
+/* --- Toggle Button Group (spec: rounded-s, stroke-s, anatomy) --- */
 
 .toggle-button-group {
   display: inline-flex;
-  align-items: center;
+  align-items: stretch;
   gap: 0;
   background: var(--toggle-group-slot-bg);
   border-radius: var(--toggle-group-slot-radius);
-  padding: var(--toggle-group-slot-pad);
-  border: var(--stroke-slot-width) solid var(--toggle-group-slot-border);
+  border: var(--toggle-group-slot-stroke) solid var(--toggle-group-slot-border);
 }
 
 .toggle-button-item {
   border: none;
-  border-radius: var(--toggle-group-slot-item-radius);
   background: transparent;
   color: var(--toggle-group-slot-item-color);
-  padding: var(--spacing-3xs) var(--spacing-m);
+  padding: var(--toggle-group-slot-item-pad-y) var(--toggle-group-slot-item-pad-x);
   display: inline-flex;
   align-items: center;
-  gap: var(--spacing-4xs);
-  font-size: var(--button-slot-font-size);
-  line-height: var(--button-slot-line-height);
-  font-weight: var(--button-slot-font-weight);
+  justify-content: center;
+  gap: var(--toggle-group-slot-item-gap);
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+  font-weight: var(--font-weight-500);
   font-family: "Poppins", var(--font-audiense), sans-serif;
   cursor: pointer;
-  border-left: 1px solid var(--toggle-group-slot-border);
+  border-left: var(--toggle-group-slot-stroke) solid var(--toggle-group-slot-border);
 }
 
 .toggle-button-item:first-child {
   border-left: none;
+  border-radius: calc(var(--toggle-group-slot-radius) - var(--toggle-group-slot-stroke)) 0 0 calc(var(--toggle-group-slot-radius) - var(--toggle-group-slot-stroke));
+}
+
+.toggle-button-item:last-child {
+  border-radius: 0 calc(var(--toggle-group-slot-radius) - var(--toggle-group-slot-stroke)) calc(var(--toggle-group-slot-radius) - var(--toggle-group-slot-stroke)) 0;
+}
+
+.toggle-button-item:only-child {
+  border-radius: calc(var(--toggle-group-slot-radius) - var(--toggle-group-slot-stroke));
 }
 
 .toggle-button-item[data-selected] {
   background: var(--toggle-group-slot-item-bg-selected);
   color: var(--toggle-group-slot-item-color-selected);
-  box-shadow: var(--toggle-group-slot-item-shadow-selected);
+  box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--toggle-group-slot-item-color-selected) 25%, transparent);
   font-weight: var(--font-weight-500);
 }
 
@@ -1049,7 +1057,6 @@
 .toggle-button-item[data-selected][data-hovered] {
   background: var(--toggle-group-slot-item-bg-selected);
 }
-
 
 .toggle-button-icon {
   display: inline-flex;

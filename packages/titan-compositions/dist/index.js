@@ -1009,8 +1009,9 @@ function TitanToggleButtonGroup({
       },
       "aria-label": ariaLabel,
       children: items.map((item) => /* @__PURE__ */ jsxs18(ToggleButton, { id: item.id, className: "toggle-button-item", children: [
-        item.icon && /* @__PURE__ */ jsx20("span", { className: "toggle-button-icon", children: item.icon }),
-        /* @__PURE__ */ jsx20("span", { children: item.label })
+        item.icon && item.iconPosition !== "right" && /* @__PURE__ */ jsx20("span", { className: "toggle-button-icon", children: item.icon }),
+        /* @__PURE__ */ jsx20("span", { children: item.label }),
+        item.icon && item.iconPosition === "right" && /* @__PURE__ */ jsx20("span", { className: "toggle-button-icon", children: item.icon })
       ] }, item.id))
     }
   );

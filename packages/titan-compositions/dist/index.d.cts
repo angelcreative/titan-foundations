@@ -381,6 +381,7 @@ interface TitanToggleItem {
     id: string;
     label: string;
     icon?: ReactNode;
+    iconPosition?: 'left' | 'right';
 }
 interface TitanToggleButtonGroupProps {
     items: TitanToggleItem[];

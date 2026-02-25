@@ -1856,18 +1856,20 @@
 
   /* ====================================================================== */
   /* COMPONENT: TOGGLE BUTTON GROUP (segmented control)                      */
+  /* Spec: rounded-s outer corners, stroke-s border + separators           */
   /* ====================================================================== */
   --toggle-group-slot-bg: var(--button-group-background);
   --toggle-group-slot-border: var(--button-group-border);
-  --toggle-group-slot-radius: var(--radius-slot-control);
-  --toggle-group-slot-pad: var(--spacing-2xs);
+  --toggle-group-slot-radius: var(--rounded-s);
+  --toggle-group-slot-stroke: var(--stroke-s);
 
-  --toggle-group-slot-item-radius: var(--btn-group-item-slot-radius);
+  --toggle-group-slot-item-pad-y: var(--spacing-3xs);
+  --toggle-group-slot-item-pad-x: var(--spacing-2xs);
+  --toggle-group-slot-item-gap: var(--spacing-4xs);
   --toggle-group-slot-item-color: var(--button-group-color);
   --toggle-group-slot-item-bg-hover: var(--surface-slot-hover);
   --toggle-group-slot-item-bg-selected: var(--button-group-selected-background);
   --toggle-group-slot-item-color-selected: var(--button-group-selected-color);
-  --toggle-group-slot-item-shadow-selected: none;
 
   /* ====================================================================== */
   /* COMPONENT: TABS                                                         */

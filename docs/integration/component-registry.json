@@ -400,7 +400,7 @@
       "import": "import { TitanToggleButtonGroup } from 'titan-compositions'",
       "description": "Segmented button group for single selection (radio behavior). Each item can have an optional icon. Wraps React Aria ToggleButtonGroup. Themed via Titan tokens.",
       "props": {
-        "items": { "type": "TitanToggleItem[]", "required": true, "description": "Array of { id, label, icon? }. Icon is a ReactNode (e.g. Lucide icon wrapped in TitanTooltip)." },
+        "items": { "type": "TitanToggleItem[]", "required": true, "description": "Array of { id, label, icon?, iconPosition? }. iconPosition: 'left' | 'right' for icon placement." },
         "selectedKey": { "type": "string", "required": false, "description": "Controlled selected key" },
         "defaultSelectedKey": { "type": "string", "required": false, "description": "Uncontrolled default selected key" },
         "onSelectionChange": { "type": "(key: string) => void", "required": false },
@@ -409,7 +409,7 @@
       "slots": ["items[].icon"],
       "composableWith": ["TitanTooltip"],
       "relatedTypes": {
-        "TitanToggleItem": { "id": "string", "label": "string", "icon?": "ReactNode" }
+        "TitanToggleItem": { "id": "string", "label": "string", "icon?": "ReactNode", "iconPosition?": "'left' | 'right'" }
       },
       "category": "action"
     },

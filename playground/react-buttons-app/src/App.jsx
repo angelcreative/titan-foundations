@@ -1023,8 +1023,9 @@ export function TitanToggleButtonGroup({ items, selectedKey, defaultSelectedKey,
     >
       {items.map((item) => (
         <ToggleButton key={item.id} id={item.id} className="toggle-button-item">
-          {item.icon && <span className="toggle-button-icon">{item.icon}</span>}
+          {item.icon && item.iconPosition !== 'right' && <span className="toggle-button-icon">{item.icon}</span>}
           <span>{item.label}</span>
+          {item.icon && item.iconPosition === 'right' && <span className="toggle-button-icon">{item.icon}</span>}
         </ToggleButton>
       ))}
     </ToggleButtonGroup>
@@ -2080,28 +2081,73 @@ function App() {
             ariaDesc="Segmented control for single selection (radio behavior). Each segment is a ToggleButton. Uses React Aria ToggleButtonGroup with selectionMode='single'. Themed via --button-group-* tokens."
             ariaComponents={['ToggleButtonGroup', 'ToggleButton']}
             foundations={[
-              { category: 'Container', detail: '--button-group-background, --button-group-border for outer container.' },
-              { category: 'Items', detail: '--button-group-color default text; --button-group-selected-background and --button-group-selected-color for selected state.' },
-              { category: 'Hover', detail: '--surface-slot-hover for unselected item hover.' },
-              { category: 'Typography', detail: '--button-slot-font-size, --button-slot-line-height, --button-slot-font-weight.' },
+              { category: 'Anatomy', detail: 'rounded-s outer corners; stroke-s border + internal separators; item padding 3xs (y) / 2xs (x); gap 4xs.' },
+              { category: 'Container', detail: '--button-group-background, --button-group-border. No container padding — padding inside each item.' },
+              { category: 'Items', detail: '--button-group-color default; --button-group-selected-background and --button-group-selected-color for selected. Subtle inset outline on selected.' },
+              { category: 'Variants', detail: 'iconPosition: left | right for icon placement; supports 2–5+ segments.' },
             ]}
             tokenGroups={[
-              { label: 'Container', tokens: ['--button-group-background', '--button-group-border', '--toggle-group-slot-radius', '--toggle-group-slot-pad'] },
-              { label: 'Item', tokens: ['--button-group-color', '--button-group-selected-background', '--button-group-selected-color'] },
+              { label: 'Container', tokens: ['--button-group-background', '--button-group-border', '--toggle-group-slot-radius', '--toggle-group-slot-stroke'] },
+              { label: 'Item', tokens: ['--toggle-group-slot-item-pad-y', '--toggle-group-slot-item-pad-x', '--toggle-group-slot-item-gap', '--button-group-color', '--button-group-selected-background', '--button-group-selected-color'] },
             ]}
             code={CODE_TOGGLE}
           >
-            <div className="row">
-              <TitanToggleButtonGroup
-                ariaLabel="View mode"
-                items={[
-                  { id: 'natural', label: 'Natural' },
-                  { id: 'simple', label: 'Simple' },
-                  { id: 'boolean', label: 'Boolean' },
-                ]}
-                defaultSelectedKey="natural"
-                onSelectionChange={(k) => console.log('Selected:', k)}
-              />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', width: '100%' }}>
+              <div>
+                <p style={{ fontSize: 'var(--font-size-s)', color: 'var(--copy-slot-secondary)', marginBottom: 8 }}>Toggle (Natural selected)</p>
+                <TitanToggleButtonGroup
+                  ariaLabel="View mode"
+                  items={[
+                    { id: 'natural', label: 'Natural' },
+                    { id: 'simple', label: 'Simple' },
+                    { id: 'boolean', label: 'Boolean' },
+                  ]}
+                  defaultSelectedKey="natural"
+                />
+              </div>
+              <div>
+                <p style={{ fontSize: 'var(--font-size-s)', color: 'var(--copy-slot-secondary)', marginBottom: 8 }}>Variants: Icon Left | No Icon | Icon Right</p>
+                <TitanToggleButtonGroup
+                  ariaLabel="Icon variants"
+                  items={[
+                    { id: 'left', label: 'Icon Left', icon: <Plus />, iconPosition: 'left' },
+                    { id: 'none', label: 'No Icon' },
+                    { id: 'right', label: 'Icon Right', icon: <Plus />, iconPosition: 'right' },
+                  ]}
+                  defaultSelectedKey="none"
+                />
+              </div>
+              <div>
+                <p style={{ fontSize: 'var(--font-size-s)', color: 'var(--copy-slot-secondary)', marginBottom: 8 }}>Levels (2–5 segments)</p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                  <TitanToggleButtonGroup
+                    ariaLabel="Two levels"
+                    items={[{ id: 'a', label: 'Two' }, { id: 'b', label: 'Levels' }]}
+                    defaultSelectedKey="a"
+                  />
+                  <TitanToggleButtonGroup
+                    ariaLabel="Three levels"
+                    items={[{ id: 'a', label: 'Three' }, { id: 'b', label: 'Levels' }, { id: 'c', label: 'Example' }]}
+                    defaultSelectedKey="b"
+                  />
+                  <TitanToggleButtonGroup
+                    ariaLabel="Four levels"
+                    items={[{ id: 'a', label: 'Four' }, { id: 'b', label: 'Levels' }, { id: 'c', label: 'Example' }, { id: 'd', label: 'Here' }]}
+                    defaultSelectedKey="c"
+                  />
+                  <TitanToggleButtonGroup
+                    ariaLabel="Five levels"
+                    items={[
+                      { id: 'a', label: 'Five' },
+                      { id: 'b', label: 'Levels' },
+                      { id: 'c', label: 'Of' },
+                      { id: 'd', label: 'Button' },
+                      { id: 'e', label: 'Group' },
+                    ]}
+                    defaultSelectedKey="d"
+                  />
+                </div>
+              </div>
             </div>
           </ShowcaseCard>
 

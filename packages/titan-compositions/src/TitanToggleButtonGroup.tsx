@@ -5,6 +5,7 @@ export interface TitanToggleItem {
   id: string
   label: string
   icon?: ReactNode
+  iconPosition?: 'left' | 'right'
 }
 
 export interface TitanToggleButtonGroupProps {
@@ -36,8 +37,13 @@ export function TitanToggleButtonGroup({
     >
       {items.map((item) => (
         <ToggleButton key={item.id} id={item.id} className="toggle-button-item">
-          {item.icon && <span className="toggle-button-icon">{item.icon}</span>}
+          {item.icon && item.iconPosition !== 'right' && (
+            <span className="toggle-button-icon">{item.icon}</span>
+          )}
           <span>{item.label}</span>
+          {item.icon && item.iconPosition === 'right' && (
+            <span className="toggle-button-icon">{item.icon}</span>
+          )}
         </ToggleButton>
       ))}
     </ToggleButtonGroup>

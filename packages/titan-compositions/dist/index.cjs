@@ -1036,8 +1036,9 @@ function TitanToggleButtonGroup({
       },
       "aria-label": ariaLabel,
       children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(import_react_aria_components15.ToggleButton, { id: item.id, className: "toggle-button-item", children: [
-        item.icon && /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("span", { className: "toggle-button-icon", children: item.icon }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("span", { children: item.label })
+        item.icon && item.iconPosition !== "right" && /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("span", { className: "toggle-button-icon", children: item.icon }),
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("span", { children: item.label }),
+        item.icon && item.iconPosition === "right" && /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("span", { className: "toggle-button-icon", children: item.icon })
       ] }, item.id))
     }
   );
