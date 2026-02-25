@@ -42,6 +42,9 @@ import {
   Users,
   ClipboardCheck as ClipboardCheckIcon,
   FileText,
+  CircleDot,
+  Columns2,
+  LayoutGrid,
 } from 'lucide-react'
 import {
   TitanBadge,
@@ -80,6 +83,8 @@ import {
   TitanRangeSlider,
   TitanProgressBar,
   TitanCalendar,
+  TitanToggleButtonGroup,
+  TitanTwoUpOneDownLayout,
 } from 'titan-compositions'
 import { today, getLocalTimeZone } from '@internationalized/date'
 
@@ -107,27 +112,30 @@ const INITIAL_PILL_ITEMS = [
 ]
 
 const NAV_ITEMS = [
-  { id: 'navbar', label: 'Navbar', icon: PanelTop },
+  { id: 'badge', label: 'Badge', icon: CircleDot },
   { id: 'breadcrumb', label: 'Breadcrumb', icon: Navigation },
-  { id: 'cardgrid', label: 'Card Grid + Table', icon: LayoutDashboard },
   { id: 'buttons', label: 'Buttons', icon: MousePointerClick },
-  { id: 'pills', label: 'Pills', icon: Tag },
-  { id: 'tags', label: 'Tags', icon: Type },
-  { id: 'menus', label: 'Menus', icon: ChevronDown },
-  { id: 'select', label: 'Select', icon: ListFilter },
-  { id: 'tabs', label: 'Tabs', icon: Layers },
-  { id: 'pagination', label: 'Pagination', icon: Hash },
-  { id: 'drawer', label: 'Drawer', icon: PanelRight },
+  { id: 'calendar', label: 'Calendar', icon: CalendarDays },
+  { id: 'cardgrid', label: 'Card Grid + Table', icon: LayoutDashboard },
   { id: 'dialog', label: 'Dialog', icon: MessageSquare },
-  { id: 'tooltips', label: 'Tooltips', icon: Info },
-  { id: 'toasts', label: 'Toasts', icon: BellRing },
+  { id: 'drawer', label: 'Drawer', icon: PanelRight },
   { id: 'forms', label: 'Form Controls', icon: ToggleLeft },
   { id: 'inputs', label: 'Inputs', icon: TextCursorInput },
-  { id: 'sidebar', label: 'Sidebar', icon: PanelLeft },
   { id: 'loader', label: 'Loader', icon: Loader2 },
-  { id: 'slider', label: 'Slider', icon: SlidersHorizontal },
+  { id: 'menus', label: 'Menus', icon: ChevronDown },
+  { id: 'navbar', label: 'Navbar', icon: PanelTop },
+  { id: 'pagination', label: 'Pagination', icon: Hash },
+  { id: 'pills', label: 'Pills', icon: Tag },
   { id: 'progress', label: 'Progress Bar', icon: BarChart3 },
-  { id: 'calendar', label: 'Calendar', icon: CalendarDays },
+  { id: 'select', label: 'Select', icon: ListFilter },
+  { id: 'sidebar', label: 'Sidebar', icon: PanelLeft },
+  { id: 'slider', label: 'Slider', icon: SlidersHorizontal },
+  { id: 'tabs', label: 'Tabs', icon: Layers },
+  { id: 'tags', label: 'Tags', icon: Type },
+  { id: 'toasts', label: 'Toasts', icon: BellRing },
+  { id: 'togglegroup', label: 'Toggle Button Group', icon: Columns2 },
+  { id: 'tooltips', label: 'Tooltips', icon: Info },
+  { id: 'twouponedown', label: 'Two Up One Down Layout', icon: LayoutGrid },
 ]
 
 /* ------------------------------------------------------------------ */
@@ -997,6 +1005,42 @@ export function TitanToastRegion({ toasts, onDismiss }) {
     </div>
   )
 }`
+
+const CODE_TOGGLE = `import { ToggleButton, ToggleButtonGroup } from 'react-aria-components'
+
+export function TitanToggleButtonGroup({ items, selectedKey, defaultSelectedKey, onSelectionChange, ariaLabel = 'Options' }) {
+  return (
+    <ToggleButtonGroup
+      className="toggle-button-group"
+      selectionMode="single"
+      selectedKeys={selectedKey ? new Set([selectedKey]) : undefined}
+      defaultSelectedKeys={defaultSelectedKey ? new Set([defaultSelectedKey]) : undefined}
+      onSelectionChange={(keys) => {
+        const selected = [...keys][0]
+        if (selected && onSelectionChange) onSelectionChange(String(selected))
+      }}
+      aria-label={ariaLabel}
+    >
+      {items.map((item) => (
+        <ToggleButton key={item.id} id={item.id} className="toggle-button-item">
+          {item.icon && <span className="toggle-button-icon">{item.icon}</span>}
+          <span>{item.label}</span>
+        </ToggleButton>
+      ))}
+    </ToggleButtonGroup>
+  )
+}`
+
+const CODE_TWOUPONEDOWN = `import { TitanTwoUpOneDownLayout } from 'titan-compositions'
+
+<TitanTwoUpOneDownLayout
+  theme="insights"
+  breadcrumbItems={[{ id: 'home', label: 'Home' }, { id: 'reports', label: 'Reports' }]}
+  breadcrumbCurrentLabel="Overview"
+  leftTop={<div>Left panel content</div>}
+  rightTop={<div>Right panel content</div>}
+  bottom={<div>Full-width bottom content</div>}
+/>`
 
 const CODE_FORM_CONTROLS = `import { Checkbox, Label, Radio, RadioGroup, Switch } from 'react-aria-components'
 import { Check } from 'lucide-react'
@@ -2028,6 +2072,39 @@ function App() {
             <TitanToastRegion toasts={toasts} onDismiss={dismissToast} />
           </ShowcaseCard>
 
+          {/* ── Toggle Button Group ─────────────────────────── */}
+          <ShowcaseCard
+            id="togglegroup"
+            title="Toggle Button Group"
+            ariaImports="import { ToggleButton, ToggleButtonGroup } from 'react-aria-components'"
+            ariaDesc="Segmented control for single selection (radio behavior). Each segment is a ToggleButton. Uses React Aria ToggleButtonGroup with selectionMode='single'. Themed via --button-group-* tokens."
+            ariaComponents={['ToggleButtonGroup', 'ToggleButton']}
+            foundations={[
+              { category: 'Container', detail: '--button-group-background, --button-group-border for outer container.' },
+              { category: 'Items', detail: '--button-group-color default text; --button-group-selected-background and --button-group-selected-color for selected state.' },
+              { category: 'Hover', detail: '--surface-slot-hover for unselected item hover.' },
+              { category: 'Typography', detail: '--button-slot-font-size, --button-slot-line-height, --button-slot-font-weight.' },
+            ]}
+            tokenGroups={[
+              { label: 'Container', tokens: ['--button-group-background', '--button-group-border', '--toggle-group-slot-radius', '--toggle-group-slot-pad'] },
+              { label: 'Item', tokens: ['--button-group-color', '--button-group-selected-background', '--button-group-selected-color'] },
+            ]}
+            code={CODE_TOGGLE}
+          >
+            <div className="row">
+              <TitanToggleButtonGroup
+                ariaLabel="View mode"
+                items={[
+                  { id: 'natural', label: 'Natural' },
+                  { id: 'simple', label: 'Simple' },
+                  { id: 'boolean', label: 'Boolean' },
+                ]}
+                defaultSelectedKey="natural"
+                onSelectionChange={(k) => console.log('Selected:', k)}
+              />
+            </div>
+          </ShowcaseCard>
+
           {/* ── 14. Form Controls ──────────────────────────── */}
           <ShowcaseCard
             id="forms"
@@ -2299,6 +2376,40 @@ function App() {
                 <p style={{ margin: '0 0 8px', fontSize: 13, fontWeight: 500, color: 'var(--copy-slot-secondary)' }}>With time</p>
                 <TitanCalendar showTime defaultValue={today(getLocalTimeZone())} />
               </div>
+            </div>
+          </ShowcaseCard>
+
+          {/* ── Two Up One Down Layout ─────────────────────── */}
+          <ShowcaseCard
+            id="twouponedown"
+            title="Two Up One Down Layout"
+            ariaImports="import { TitanTwoUpOneDownLayout } from 'titan-compositions'"
+            ariaDesc="Page composition: Navbar + Breadcrumb + 2-column top row (TitanCard 8+8) + full-width bottom row (TitanCard 16). Composes TitanNavbar, TitanBreadcrumb, TitanCardGrid, TitanCard."
+            ariaComponents={['TitanNavbar', 'TitanBreadcrumb', 'TitanCardGrid', 'TitanCard']}
+            foundations={[
+              { category: 'Layout', detail: 'Navbar at top; breadcrumb in first card; 16-column grid with 8+8 top, 16 bottom.' },
+              { category: 'Theme', detail: 'theme prop passed to Navbar (insights, audiense, etc.); userInitial for avatar.' },
+              { category: 'Slots', detail: 'leftTop, rightTop, bottom accept any ReactNode.' },
+            ]}
+            tokenGroups={[
+              { label: 'Navbar', tokens: ['--navbar-slot-bg', '--navbar-slot-border', '--navbar-slot-height'] },
+              { label: 'Breadcrumb', tokens: ['--breadcrumb-slot-*'] },
+              { label: 'Card', tokens: ['--card-slot-radius', '--layout-grid-gap'] },
+            ]}
+            code={CODE_TWOUPONEDOWN}
+          >
+            <div style={{ border: '1px solid var(--color-black-300)', borderRadius: 'var(--rounded-m)', overflow: 'hidden' }}>
+              <TitanTwoUpOneDownLayout
+                theme={theme}
+                breadcrumbItems={[
+                  { id: 'home', label: 'Home' },
+                  { id: 'reports', label: 'Reports' },
+                ]}
+                breadcrumbCurrentLabel="Overview"
+                leftTop={<div style={{ padding: 'var(--spacing-m)', color: 'var(--copy-slot-secondary)' }}>Left panel content</div>}
+                rightTop={<div style={{ padding: 'var(--spacing-m)', color: 'var(--copy-slot-secondary)' }}>Right panel content</div>}
+                bottom={<div style={{ padding: 'var(--spacing-m)', color: 'var(--copy-slot-secondary)' }}>Full-width bottom content</div>}
+              />
             </div>
           </ShowcaseCard>
 

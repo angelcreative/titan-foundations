@@ -1028,6 +1028,11 @@
   font-weight: var(--button-slot-font-weight);
   font-family: "Poppins", var(--font-audiense), sans-serif;
   cursor: pointer;
+  border-left: 1px solid var(--toggle-group-slot-border);
+}
+
+.toggle-button-item:first-child {
+  border-left: none;
 }
 
 .toggle-button-item[data-selected] {

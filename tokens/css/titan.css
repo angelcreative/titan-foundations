@@ -1855,19 +1855,19 @@
   --toggle-slot-selected-focus: var(--toggle-selected-border-focus);
 
   /* ====================================================================== */
-  /* COMPONENT: TOGGLE BUTTON GROUP                                          */
+  /* COMPONENT: TOGGLE BUTTON GROUP (segmented control)                      */
   /* ====================================================================== */
-  --toggle-group-slot-bg: var(--tab-background);
-  --toggle-group-slot-border: var(--border-slot-default);
+  --toggle-group-slot-bg: var(--button-group-background);
+  --toggle-group-slot-border: var(--button-group-border);
   --toggle-group-slot-radius: var(--radius-slot-control);
   --toggle-group-slot-pad: var(--spacing-2xs);
 
-  --toggle-group-slot-item-radius: var(--radius-slot-control);
-  --toggle-group-slot-item-color: var(--copy-slot-body);
+  --toggle-group-slot-item-radius: var(--btn-group-item-slot-radius);
+  --toggle-group-slot-item-color: var(--button-group-color);
   --toggle-group-slot-item-bg-hover: var(--surface-slot-hover);
-  --toggle-group-slot-item-bg-selected: var(--color-white-900);
-  --toggle-group-slot-item-color-selected: var(--copy-slot-primary);
-  --toggle-group-slot-item-shadow-selected: var(--elevation-slot-1);
+  --toggle-group-slot-item-bg-selected: var(--button-group-selected-background);
+  --toggle-group-slot-item-color-selected: var(--button-group-selected-color);
+  --toggle-group-slot-item-shadow-selected: none;
 
   /* ====================================================================== */
   /* COMPONENT: TABS                                                         */
