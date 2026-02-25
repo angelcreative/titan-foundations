@@ -2092,7 +2092,7 @@ function App() {
             ]}
             code={CODE_TOGGLE}
           >
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', width: '100%' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', width: '100%', alignItems: 'flex-start' }}>
               <div>
                 <p style={{ fontSize: 'var(--font-size-s)', color: 'var(--copy-slot-secondary)', marginBottom: 8 }}>Toggle (Natural selected)</p>
                 <TitanToggleButtonGroup
@@ -2119,7 +2119,7 @@ function App() {
               </div>
               <div>
                 <p style={{ fontSize: 'var(--font-size-s)', color: 'var(--copy-slot-secondary)', marginBottom: 8 }}>Levels (2–5 segments)</p>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'flex-start' }}>
                   <TitanToggleButtonGroup
                     ariaLabel="Two levels"
                     items={[{ id: 'a', label: 'Two' }, { id: 'b', label: 'Levels' }]}
