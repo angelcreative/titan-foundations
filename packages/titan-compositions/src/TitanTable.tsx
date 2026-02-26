@@ -26,10 +26,17 @@ export { TableHeader, TableBody, Column, Row, Cell, Checkbox }
  * Pass all Table props (aria-label, stickyHeader, stickyColumns, selectionMode,
  * sortDescriptor, onSortChange, onRowAction, etc.).
  */
-export function TitanTable(props: TableProps) {
-  const { className = '', children, ...rest } = props
+type TitanTableProps = TableProps & { stickyColumns?: number; stickyHeader?: boolean }
+
+export function TitanTable(props: TitanTableProps) {
+  const { className = '', children, stickyColumns, stickyHeader, ...rest } = props
+  const stickyCols = stickyColumns != null ? Number(stickyColumns) : 0
   return (
-    <div className="layout-table-wrap layout-table-aria">
+    <div
+      className="layout-table-wrap layout-table-aria"
+      data-sticky-cols={stickyCols > 0 ? stickyCols : undefined}
+      data-sticky-header={stickyHeader ? '' : undefined}
+    >
       <RACTable
         className={`table-borderless table-aria ${className}`.trim()}
         {...rest}

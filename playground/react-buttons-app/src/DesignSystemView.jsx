@@ -490,8 +490,8 @@ function TokensContent({ subLevel }) {
           </div>
 
           <h4>3.2 Color scales</h4>
-          <p><strong>Solid (100–900):</strong> Lighter → darker. <code className="ds-code">color-black-100</code> (#f7f7f7) → <code className="ds-code">color-black-900</code> (#1f1f1f).</p>
-          <p><strong>Opacity (10–90):</strong> More transparent → more opaque. <code className="ds-code">color-steel-10</code> (rgba(109,131,139,0.1)).</p>
+          <p><strong>Solid (100–900):</strong> Lighter → darker. <code className="ds-code">color-black-100</code> (#f7f7f7) → <code className="ds-code">color-black-900</code> (#1f1f1f). Keys: <code className="ds-code">color-{'{family}'}-{'{step}'}</code>. Values: 6-digit hex (#RRGGBB).</p>
+          <p><strong>Opacity (10–90):</strong> More transparent → more opaque. Keys use <code className="ds-code">$</code> prefix to distinguish from solid: <code className="ds-code">$color-white-10</code>, <code className="ds-code">$color-steel-50</code>. Values: 8-digit hex (#RRGGBBAA). Output as rgba in CSS.</p>
           <p><strong>Families:</strong> black, white, steel, blue, ocean, indigo, blueberry, violet, purple, pink, magenta, red, tomato, pomegranate, orange, mango, yellow, lime, green, teal, aquamarine, turquoise, avocado, brown, cacao, error, disabled, information, success, warning.</p>
 
           <h4>3.3 Spacing</h4>
@@ -507,7 +507,9 @@ function TokensContent({ subLevel }) {
               <tbody>
                 <tr><td><code className="ds-code">spacing-5xs</code></td><td>2px</td><td>Minimal gaps</td></tr>
                 <tr><td><code className="ds-code">spacing-4xs</code></td><td>4px</td><td>Icon-to-text</td></tr>
+                <tr><td><code className="ds-code">spacing-3xs</code></td><td>6px</td><td></td></tr>
                 <tr><td><code className="ds-code">spacing-2xs</code></td><td>8px</td><td>Inner padding</td></tr>
+                <tr><td><code className="ds-code">spacing-xs</code></td><td>10px</td><td></td></tr>
                 <tr><td><code className="ds-code">spacing-s</code></td><td>12px</td><td></td></tr>
                 <tr><td><code className="ds-code">spacing-m</code></td><td>16px</td><td>Base</td></tr>
                 <tr><td><code className="ds-code">spacing-l</code></td><td>24px</td><td></td></tr>
@@ -516,6 +518,7 @@ function TokensContent({ subLevel }) {
                 <tr><td><code className="ds-code">spacing-3xl</code></td><td>48px</td><td></td></tr>
                 <tr><td><code className="ds-code">spacing-4xl</code></td><td>64px</td><td></td></tr>
                 <tr><td><code className="ds-code">spacing-5xl</code></td><td>80px</td><td></td></tr>
+                <tr><td><code className="ds-code">spacing-6xl</code></td><td>96px</td><td></td></tr>
                 <tr><td><code className="ds-code">spacing-7xl</code></td><td>160px</td><td></td></tr>
               </tbody>
             </table>
@@ -557,6 +560,20 @@ function TokensContent({ subLevel }) {
               </tbody>
             </table>
           </div>
+
+          <h4>3.6 Elevation (boxShadow)</h4>
+          <p>Shadows use <code className="ds-code">type: &quot;boxShadow&quot;</code> with <code className="ds-code">dropShadow</code>. Reference opacity colors with <code className="ds-code">{'{$color-steel-10}'}</code>:</p>
+          <pre className="ds-code-block">{`"box-shadow-1": {
+  "value": {
+    "x": "0",
+    "y": "4",
+    "blur": "12",
+    "spread": "0",
+    "color": "{$color-steel-10}",
+    "type": "dropShadow"
+  },
+  "type": "boxShadow"
+}`}</pre>
 
           <h3>4. Token references</h3>
           <h4>4.1 In JSON</h4>
@@ -779,6 +796,112 @@ Your application — var(--card-slot-bg), var(--my-token), etc.`}</pre>
             <li>Should it change by theme? → Use tokens that already change or define overrides by <code className="ds-code">data-theme</code>.</li>
             <li>Is it a component slot? → Use or extend <code className="ds-code">{'{component}'}-slot-{'{property}'}</code>.</li>
           </ul>
+
+          <h3>11. Generating tokens with AI (Cursor, Claude)</h3>
+          <p>If you contribute to the Titan repo and want to add new primitives, you can ask Cursor or Claude to generate them. The AI must follow the exact formats below.</p>
+
+          <h4>11.1 When to use</h4>
+          <p><strong>Contributors only.</strong> Adding primitives to <code className="ds-code">tokens/foundations/*.json</code>. Consumers do not need this — they define tokens in their own CSS.</p>
+
+          <h4>11.2 Prompt format</h4>
+          <p>Be specific: file path, token type, and desired values. Example:</p>
+          <pre className="ds-code-block">{`"Add a new solid color family 'coral' with scale 100–900 to tokens/foundations/colors-solid.json. Use hex values similar to the orange family."
+
+"Add spacing-8xl (192px) to tokens/foundations/spacing.json following the exact format of existing tokens."
+
+"Add a new typography composition 'body-xl-500' to tokens/foundations/typography.json: font-size-xl, font-leading-2xl, font-weight-500."`}</pre>
+
+          <h4>11.3 File paths and JSON structures</h4>
+          <p>The AI must use these exact paths and formats:</p>
+          <div className="ds-table-wrap">
+            <table className="ds-table">
+              <thead>
+                <tr>
+                  <th>Token type</th>
+                  <th>File</th>
+                  <th>Key format</th>
+                  <th>Value structure</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Solid color</td>
+                  <td><code className="ds-code">tokens/foundations/colors-solid.json</code></td>
+                  <td><code className="ds-code">color-{'{family}'}-{'{100-900}'}</code></td>
+                  <td><code className="ds-code">{`{"value": "#hex", "type": "color", "description": "..."}`}</code></td>
+                </tr>
+                <tr>
+                  <td>Opacity color</td>
+                  <td><code className="ds-code">tokens/foundations/colors-opacity.json</code></td>
+                  <td><code className="ds-code">$color-{'{family}'}-{'{10-90}'}</code></td>
+                  <td><code className="ds-code">{`{"value": "#RRGGBBAA", "type": "color", "description": "..."}`}</code></td>
+                </tr>
+                <tr>
+                  <td>Spacing</td>
+                  <td><code className="ds-code">tokens/foundations/spacing.json</code></td>
+                  <td><code className="ds-code">spacing-{'{5xs|4xs|3xs|2xs|xs|s|m|l|xl|2xl|3xl|4xl|5xl|6xl|7xl}'}</code></td>
+                  <td><code className="ds-code">{`{"value": "Npx", "type": "spacing"}`}</code></td>
+                </tr>
+                <tr>
+                  <td>Font size</td>
+                  <td><code className="ds-code">tokens/foundations/typography.json</code></td>
+                  <td><code className="ds-code">font-size-{'{s|m|l|xl|2xl|3xl|4xl}'}</code></td>
+                  <td><code className="ds-code">{`{"value": "Npx", "type": "fontSizes"}`}</code></td>
+                </tr>
+                <tr>
+                  <td>Font weight</td>
+                  <td><code className="ds-code">tokens/foundations/typography.json</code></td>
+                  <td><code className="ds-code">font-weight-{'{400|500|600}'}</code></td>
+                  <td><code className="ds-code">{`{"value": "Regular|Medium|SemiBold", "type": "fontWeights"}`}</code></td>
+                </tr>
+                <tr>
+                  <td>Line height</td>
+                  <td><code className="ds-code">tokens/foundations/typography.json</code></td>
+                  <td><code className="ds-code">font-leading-{'{s|m|l|xl|2xl|3xl|4xl|5xl}'}</code></td>
+                  <td><code className="ds-code">{`{"value": "Npx", "type": "lineHeights"}`}</code></td>
+                </tr>
+                <tr>
+                  <td>Typography composition</td>
+                  <td><code className="ds-code">tokens/foundations/typography.json</code></td>
+                  <td><code className="ds-code">body-m-500</code>, <code className="ds-code">heading-xl-600</code>, <code className="ds-code">text-button</code></td>
+                  <td><code className="ds-code">{`{"value": {"fontFamily": "{font-audiense}", "fontSize": "{font-size-l}", "lineHeight": "{font-leading-m}", "fontWeight": "{font-weight-500}"}, "type": "typography"}`}</code></td>
+                </tr>
+                <tr>
+                  <td>Border radius</td>
+                  <td><code className="ds-code">tokens/foundations/borders.json</code></td>
+                  <td><code className="ds-code">rounded-{'{xs|s|m|l|xl}'}</code></td>
+                  <td><code className="ds-code">{`{"value": "Npx", "type": "borderRadius"}`}</code></td>
+                </tr>
+                <tr>
+                  <td>Box shadow</td>
+                  <td><code className="ds-code">tokens/foundations/elevation.json</code></td>
+                  <td><code className="ds-code">box-shadow-{'{n}'}</code></td>
+                  <td><code className="ds-code">{`{"value": {"x":"0","y":"4","blur":"12","spread":"0","color":"{$color-steel-10}","type":"dropShadow"}, "type":"boxShadow"}`}</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4>11.4 Reference syntax</h4>
+          <ul>
+            <li><strong>In values:</strong> <code className="ds-code">{'{token-name}'}</code> (e.g. <code className="ds-code">{'{font-size-l}'}</code>).</li>
+            <li><strong>For opacity colors:</strong> <code className="ds-code">{'{$color-family-step}'}</code> (e.g. <code className="ds-code">{'{$color-steel-10}'}</code>).</li>
+            <li><strong>In colors-opacity.json keys:</strong> Use <code className="ds-code">$</code> prefix: <code className="ds-code">$color-white-10</code>.</li>
+          </ul>
+
+          <h4>11.5 After AI generates</h4>
+          <p>1. Run <code className="ds-code">npm run build:tokens</code>.</p>
+          <p>2. Verify <code className="ds-code">tokens/css/titan.css</code> contains the new variables.</p>
+          <p>3. Commit both the JSON files and the updated <code className="ds-code">titan.css</code>.</p>
+
+          <h4>11.6 Example prompts</h4>
+          <pre className="ds-code-block">{`Add spacing-8xl (192px) to tokens/foundations/spacing.json.
+Format: "spacing-8xl": {"value": "192px", "type": "spacing"}
+
+Add a new solid color family 'coral' 100–900 to tokens/foundations/colors-solid.json.
+Follow the exact structure of color-orange. Include value, type, description.
+
+Add font-decoration-none (value: none, type: textDecoration) to tokens/foundations/typography.json.`}</pre>
         </div>
       </section>
     )

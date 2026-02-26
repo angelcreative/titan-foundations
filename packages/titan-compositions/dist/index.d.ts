@@ -368,7 +368,11 @@ type TableProps = ComponentProps<typeof Table>;
  * Pass all Table props (aria-label, stickyHeader, stickyColumns, selectionMode,
  * sortDescriptor, onSortChange, onRowAction, etc.).
  */
-declare function TitanTable(props: TableProps): react_jsx_runtime.JSX.Element;
+type TitanTableProps = TableProps & {
+    stickyColumns?: number;
+    stickyHeader?: boolean;
+};
+declare function TitanTable(props: TitanTableProps): react_jsx_runtime.JSX.Element;
 
 interface TitanTwoUpOneDownLayoutProps {
     theme?: TitanNavbarTheme;

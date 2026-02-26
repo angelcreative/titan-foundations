@@ -1000,15 +1000,24 @@ function TitanBorderlessTable({ columns, rows }) {
 var import_react_aria_components15 = require("react-aria-components");
 var import_jsx_runtime19 = require("react/jsx-runtime");
 function TitanTable(props) {
-  const { className = "", children, ...rest } = props;
-  return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { className: "layout-table-wrap layout-table-aria", children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
-    import_react_aria_components15.Table,
+  const { className = "", children, stickyColumns, stickyHeader, ...rest } = props;
+  const stickyCols = stickyColumns != null ? Number(stickyColumns) : 0;
+  return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+    "div",
     {
-      className: `table-borderless table-aria ${className}`.trim(),
-      ...rest,
-      children
+      className: "layout-table-wrap layout-table-aria",
+      "data-sticky-cols": stickyCols > 0 ? stickyCols : void 0,
+      "data-sticky-header": stickyHeader ? "" : void 0,
+      children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+        import_react_aria_components15.Table,
+        {
+          className: `table-borderless table-aria ${className}`.trim(),
+          ...rest,
+          children
+        }
+      )
     }
-  ) });
+  );
 }
 
 // src/TitanTwoUpOneDownLayout.tsx

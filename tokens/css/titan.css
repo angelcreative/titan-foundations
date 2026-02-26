@@ -616,6 +616,10 @@
   --elevation-3: var(--box-shadow-3);
   --elevation-4: var(--box-shadow-4);
 
+  /* Sticky table shadows (from elevation.json, fallback when box-shadow tokens are invalid) */
+  --sticky-header-shadow: 0 4px 12px 0 var(--color-steel-10);
+  --sticky-col-shadow: 2px 4px 12px 0 var(--color-steel-10);
+
   /* ---------------------------- */
   /* Surfaces (default rules)     */
   /* background ALWAYS black-100  */

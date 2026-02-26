@@ -974,15 +974,24 @@ import {
 } from "react-aria-components";
 import { jsx as jsx19 } from "react/jsx-runtime";
 function TitanTable(props) {
-  const { className = "", children, ...rest } = props;
-  return /* @__PURE__ */ jsx19("div", { className: "layout-table-wrap layout-table-aria", children: /* @__PURE__ */ jsx19(
-    RACTable,
+  const { className = "", children, stickyColumns, stickyHeader, ...rest } = props;
+  const stickyCols = stickyColumns != null ? Number(stickyColumns) : 0;
+  return /* @__PURE__ */ jsx19(
+    "div",
     {
-      className: `table-borderless table-aria ${className}`.trim(),
-      ...rest,
-      children
+      className: "layout-table-wrap layout-table-aria",
+      "data-sticky-cols": stickyCols > 0 ? stickyCols : void 0,
+      "data-sticky-header": stickyHeader ? "" : void 0,
+      children: /* @__PURE__ */ jsx19(
+        RACTable,
+        {
+          className: `table-borderless table-aria ${className}`.trim(),
+          ...rest,
+          children
+        }
+      )
     }
-  ) });
+  );
 }
 
 // src/TitanTwoUpOneDownLayout.tsx

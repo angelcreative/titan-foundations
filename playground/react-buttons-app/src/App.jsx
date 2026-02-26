@@ -24,6 +24,9 @@ import {
   PanelTop,
   MousePointerClick,
   ChevronDown,
+  ArrowUp,
+  ArrowDown,
+  ArrowUpDown,
   ListFilter,
   Layers,
   PanelRight,
@@ -164,27 +167,40 @@ function TokenGroup({ label, tokens }) {
   )
 }
 
+const TABLE_ITEMS = [
+  { id: '1', name: 'Games', type: 'File folder', date: '6/7/2020' },
+  { id: '2', name: 'Program Files', type: 'File folder', date: '4/7/2021' },
+  { id: '3', name: 'bootmgr', type: 'System file', date: '11/20/2010' },
+  { id: '4', name: 'log.txt', type: 'Text Document', date: '1/18/2016' },
+  { id: '5', name: 'config.ini', type: 'Configuration', date: '3/12/2019' },
+  { id: '6', name: 'readme.md', type: 'Markdown', date: '8/22/2022' },
+]
+
+function TableCheckbox({ slot }) {
+  return (
+    <Checkbox slot={slot} className="checkbox-root">
+      <span className="checkbox-box" aria-hidden="true">
+        <Check className="checkbox-mark" />
+      </span>
+    </Checkbox>
+  )
+}
+
 function TableWithSelection() {
   const [selectedKeys, setSelectedKeys] = useState(new Set())
-  const items = [
-    { id: '1', name: 'Games', type: 'File folder', date: '6/7/2020' },
-    { id: '2', name: 'Program Files', type: 'File folder', date: '4/7/2021' },
-    { id: '3', name: 'bootmgr', type: 'System file', date: '11/20/2010' },
-    { id: '4', name: 'log.txt', type: 'Text Document', date: '1/18/2016' },
-  ]
   return (
     <>
       <TitanTable aria-label="Files" selectionMode="multiple" selectedKeys={selectedKeys} onSelectionChange={setSelectedKeys}>
         <TableHeader>
-          <Column><Checkbox slot="selection" /></Column>
+          <Column><TableCheckbox slot="selection" /></Column>
           <Column isRowHeader>Name</Column>
           <Column>Type</Column>
           <Column>Date Modified</Column>
         </TableHeader>
-        <TableBody items={items}>
+        <TableBody items={TABLE_ITEMS}>
           {(item) => (
             <Row id={item.id}>
-              <Cell><Checkbox slot="selection" /></Cell>
+              <Cell><TableCheckbox slot="selection" /></Cell>
               <Cell>{item.name}</Cell>
               <Cell>{item.type}</Cell>
               <Cell>{item.date}</Cell>
@@ -196,6 +212,209 @@ function TableWithSelection() {
         Selected: {selectedKeys === 'all' ? 'all' : [...selectedKeys].join(', ') || 'none'}
       </p>
     </>
+  )
+}
+
+function TableStickyHeader() {
+  return (
+    <div style={{ height: 200, overflow: 'auto', border: '1px solid var(--divider-subtle)', borderRadius: 'var(--card-slot-radius)' }}>
+      <TitanTable aria-label="Files" stickyHeader>
+        <TableHeader>
+          <Column isRowHeader>Name</Column>
+          <Column>Type</Column>
+          <Column>Date Modified</Column>
+        </TableHeader>
+        <TableBody items={TABLE_ITEMS}>
+          {(item) => (
+            <Row id={item.id}>
+              <Cell>{item.name}</Cell>
+              <Cell>{item.type}</Cell>
+              <Cell>{item.date}</Cell>
+            </Row>
+          )}
+        </TableBody>
+      </TitanTable>
+    </div>
+  )
+}
+
+function TableStickyColumns({ stickyCount = 2 }) {
+  const cols = [
+    { key: 'name', label: 'Name', width: 140 },
+    { key: 'type', label: 'Type', width: 120 },
+    { key: 'date', label: 'Date Modified', width: 140 },
+    { key: 'size', label: 'Size', width: 80 },
+    { key: 'owner', label: 'Owner', width: 100 },
+    { key: 'status', label: 'Status', width: 90 },
+    { key: 'tags', label: 'Tags', width: 100 },
+    { key: 'notes', label: 'Notes', width: 120 },
+  ]
+  const items = TABLE_ITEMS.map((i) => ({ ...i, size: '—', owner: '—', status: '—', tags: '—', notes: '—' }))
+  return (
+    <div
+      style={{
+        width: '100%',
+        overflowX: 'auto',
+        border: '1px solid var(--divider-subtle)',
+        borderRadius: 'var(--card-slot-radius)',
+        '--sticky-col-1-width': '140px',
+        '--sticky-col-2-width': '120px',
+        '--sticky-col-3-width': '140px',
+        '--sticky-col-bg': 'var(--color-white-900)',
+      }}
+    >
+      <TitanTable aria-label="Files" stickyColumns={stickyCount}>
+        <TableHeader>
+          {cols.map((c) => (
+            <Column key={c.key} isRowHeader={c.key === 'name'} width={c.width} minWidth={c.width}>
+              {c.label}
+            </Column>
+          ))}
+        </TableHeader>
+        <TableBody items={items}>
+          {(item) => (
+            <Row id={item.id}>
+              {cols.map((c) => (
+                <Cell key={c.key}>{item[c.key]}</Cell>
+              ))}
+            </Row>
+          )}
+        </TableBody>
+      </TitanTable>
+    </div>
+  )
+}
+
+function TableWithSorting() {
+  const [sortDescriptor, setSortDescriptor] = useState({ column: 'name', direction: 'ascending' })
+  const sorted = useMemo(() => {
+    const items = [...TABLE_ITEMS]
+    const key = sortDescriptor.column
+    const dir = sortDescriptor.direction === 'ascending' ? 1 : -1
+    items.sort((a, b) => String(a[key]).localeCompare(String(b[key])) * dir)
+    return items
+  }, [sortDescriptor])
+  return (
+    <>
+      <TitanTable aria-label="Files" sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor} className="table-sortable">
+        <TableHeader>
+          <Column id="name" isRowHeader allowsSorting>
+            {({ allowsSorting, sortDirection }) => (
+              <span className="column-sort-header">
+                {allowsSorting && (
+                  <span className="column-sort-icon" aria-hidden>
+                    {sortDirection === 'ascending' && <ArrowUp size={14} />}
+                    {sortDirection === 'descending' && <ArrowDown size={14} />}
+                    {!sortDirection && <ArrowUpDown size={14} />}
+                  </span>
+                )}
+                Name
+              </span>
+            )}
+          </Column>
+          <Column id="type" allowsSorting>
+            {({ allowsSorting, sortDirection }) => (
+              <span className="column-sort-header">
+                {allowsSorting && (
+                  <span className="column-sort-icon" aria-hidden>
+                    {sortDirection === 'ascending' && <ArrowUp size={14} />}
+                    {sortDirection === 'descending' && <ArrowDown size={14} />}
+                    {!sortDirection && <ArrowUpDown size={14} />}
+                  </span>
+                )}
+                Type
+              </span>
+            )}
+          </Column>
+          <Column id="date" allowsSorting>
+            {({ allowsSorting, sortDirection }) => (
+              <span className="column-sort-header">
+                {allowsSorting && (
+                  <span className="column-sort-icon" aria-hidden>
+                    {sortDirection === 'ascending' && <ArrowUp size={14} />}
+                    {sortDirection === 'descending' && <ArrowDown size={14} />}
+                    {!sortDirection && <ArrowUpDown size={14} />}
+                  </span>
+                )}
+                Date Modified
+              </span>
+            )}
+          </Column>
+        </TableHeader>
+        <TableBody items={sorted}>
+          {(item) => (
+            <Row id={item.id}>
+              <Cell>{item.name}</Cell>
+              <Cell>{item.type}</Cell>
+              <Cell>{item.date}</Cell>
+            </Row>
+          )}
+        </TableBody>
+      </TitanTable>
+      <p style={{ marginTop: 'var(--spacing-s)', fontSize: 'var(--font-size-s)', color: 'var(--copy-slot-secondary)' }}>
+        Sort: {sortDescriptor.column} {sortDescriptor.direction}
+      </p>
+    </>
+  )
+}
+
+function TableClickableRows() {
+  const handleAction = (key) => alert(`Row clicked: ${key}`)
+  return (
+    <TitanTable aria-label="Files" onRowAction={handleAction}>
+      <TableHeader>
+        <Column isRowHeader>Name</Column>
+        <Column>Type</Column>
+        <Column>Date Modified</Column>
+      </TableHeader>
+      <TableBody items={TABLE_ITEMS}>
+        {(item) => (
+          <Row id={item.id}>
+            <Cell>{item.name}</Cell>
+            <Cell>{item.type}</Cell>
+            <Cell>{item.date}</Cell>
+          </Row>
+        )}
+      </TableBody>
+    </TitanTable>
+  )
+}
+
+function TableLinkRows() {
+  return (
+    <TitanTable aria-label="Links">
+      <TableHeader>
+        <Column isRowHeader>Name</Column>
+        <Column>URL</Column>
+      </TableHeader>
+      <TableBody items={TABLE_ITEMS.slice(0, 2)}>
+        {(item) => (
+          <Row id={item.id} href={`https://example.com/${item.id}`} target="_blank">
+            <Cell>{item.name}</Cell>
+            <Cell>example.com/{item.id}</Cell>
+          </Row>
+        )}
+      </TableBody>
+    </TitanTable>
+  )
+}
+
+function TableEmptyState() {
+  return (
+    <TitanTable aria-label="Empty">
+      <TableHeader>
+        <Column isRowHeader>Name</Column>
+        <Column>Type</Column>
+      </TableHeader>
+      <TableBody items={[]} renderEmptyState={() => <div style={{ padding: 'var(--spacing-xl)', textAlign: 'center', color: 'var(--copy-slot-secondary)' }}>No items found</div>}>
+        {(item) => (
+          <Row id={item.id}>
+            <Cell>{item.name}</Cell>
+            <Cell>{item.type}</Cell>
+          </Row>
+        )}
+      </TableBody>
+    </TitanTable>
   )
 }
 
@@ -1668,8 +1887,40 @@ function App() {
               </TitanTable>
             </TitanCard>
             <TitanCard span={16}>
-              <h3>With selection</h3>
+              <h3>With selection (selectionMode, Checkbox)</h3>
               <TableWithSelection />
+            </TitanCard>
+            <TitanCard span={16}>
+              <h3>Sticky header</h3>
+              <TableStickyHeader />
+            </TitanCard>
+            <TitanCard span={16}>
+              <h3>Sticky columns — col 1 fija (stickyColumns={1})</h3>
+              <TableStickyColumns stickyCount={1} />
+            </TitanCard>
+            <TitanCard span={16}>
+              <h3>Sticky columns — cols 1 y 2 fijas (stickyColumns={2})</h3>
+              <TableStickyColumns stickyCount={2} />
+            </TitanCard>
+            <TitanCard span={16}>
+              <h3>Sticky columns — cols 1, 2 y 3 fijas (stickyColumns={3})</h3>
+              <TableStickyColumns stickyCount={3} />
+            </TitanCard>
+            <TitanCard span={16}>
+              <h3>Sorting (sortDescriptor, onSortChange)</h3>
+              <TableWithSorting />
+            </TitanCard>
+            <TitanCard span={16}>
+              <h3>Clickable rows (onRowAction)</h3>
+              <TableClickableRows />
+            </TitanCard>
+            <TitanCard span={16}>
+              <h3>Link rows (href)</h3>
+              <TableLinkRows />
+            </TitanCard>
+            <TitanCard span={16}>
+              <h3>Empty state (renderEmptyState)</h3>
+              <TableEmptyState />
             </TitanCard>
             </TitanCardGrid>
           </ShowcaseCard>

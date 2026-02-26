@@ -100,7 +100,7 @@
   color: var(--table-slot-header-color);
   font-size: var(--button-slot-font-size);
   line-height: var(--button-slot-line-height);
-  font-weight: var(--text-weight-semibold);
+  font-weight: bold;
   border-bottom: var(--stroke-slot-width) solid var(--table-header-separator);
 }
 
@@ -119,6 +119,122 @@
 /* TitanTable (React Aria) — allow overflow for sticky header/columns */
 .layout-table-aria.layout-table-wrap {
   overflow: visible;
+}
+
+/* Sticky header — th row fixed, td rows scroll underneath, box-shadow when sticky */
+.layout-table-wrap[data-sticky-header] .table-borderless thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--sticky-header-bg, var(--color-white-900)) !important;
+  box-shadow: var(--sticky-header-shadow, 0 4px 12px 0 var(--color-steel-10, rgba(109 131 139 / 0.1)));
+}
+
+/* Sticky columns — first N columns fixed, rest scroll underneath */
+.layout-table-wrap[data-sticky-cols] .table-borderless {
+  width: 100%;
+}
+
+.layout-table-wrap[data-sticky-cols="1"] .table-borderless thead th:nth-child(1),
+.layout-table-wrap[data-sticky-cols="1"] .table-borderless tbody td:nth-child(1) {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  width: var(--sticky-col-1-width, 150px);
+  min-width: var(--sticky-col-1-width, 150px);
+  max-width: var(--sticky-col-1-width, 150px);
+  background: var(--sticky-col-bg, var(--color-white-900)) !important;
+  box-shadow: var(--sticky-col-shadow, 2px 4px 12px 0 var(--color-steel-10, rgba(109 131 139 / 0.1)));
+}
+
+.layout-table-wrap[data-sticky-cols="2"] .table-borderless thead th:nth-child(1),
+.layout-table-wrap[data-sticky-cols="2"] .table-borderless tbody td:nth-child(1) {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  width: var(--sticky-col-1-width, 150px);
+  min-width: var(--sticky-col-1-width, 150px);
+  max-width: var(--sticky-col-1-width, 150px);
+  background: var(--sticky-col-bg, var(--color-white-900)) !important;
+  box-shadow: var(--sticky-col-shadow, 2px 4px 12px 0 var(--color-steel-10, rgba(109 131 139 / 0.1)));
+}
+
+.layout-table-wrap[data-sticky-cols="2"] .table-borderless thead th:nth-child(2),
+.layout-table-wrap[data-sticky-cols="2"] .table-borderless tbody td:nth-child(2) {
+  position: sticky;
+  left: var(--sticky-col-1-width, 150px);
+  z-index: 2;
+  width: var(--sticky-col-2-width, 120px);
+  min-width: var(--sticky-col-2-width, 120px);
+  max-width: var(--sticky-col-2-width, 120px);
+  background: var(--sticky-col-bg, var(--color-white-900)) !important;
+  box-shadow: var(--sticky-col-shadow, 2px 4px 12px 0 var(--color-steel-10, rgba(109 131 139 / 0.1)));
+}
+
+.layout-table-wrap[data-sticky-cols="3"] .table-borderless thead th:nth-child(1),
+.layout-table-wrap[data-sticky-cols="3"] .table-borderless tbody td:nth-child(1) {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  width: var(--sticky-col-1-width, 150px);
+  min-width: var(--sticky-col-1-width, 150px);
+  max-width: var(--sticky-col-1-width, 150px);
+  background: var(--sticky-col-bg, var(--color-white-900)) !important;
+  box-shadow: var(--sticky-col-shadow, 2px 4px 12px 0 var(--color-steel-10, rgba(109 131 139 / 0.1)));
+}
+
+.layout-table-wrap[data-sticky-cols="3"] .table-borderless thead th:nth-child(2),
+.layout-table-wrap[data-sticky-cols="3"] .table-borderless tbody td:nth-child(2) {
+  position: sticky;
+  left: var(--sticky-col-1-width, 150px);
+  z-index: 2;
+  width: var(--sticky-col-2-width, 120px);
+  min-width: var(--sticky-col-2-width, 120px);
+  max-width: var(--sticky-col-2-width, 120px);
+  background: var(--sticky-col-bg, var(--color-white-900)) !important;
+  box-shadow: var(--sticky-col-shadow, 2px 4px 12px 0 var(--color-steel-10, rgba(109 131 139 / 0.1)));
+}
+
+.layout-table-wrap[data-sticky-cols="3"] .table-borderless thead th:nth-child(3),
+.layout-table-wrap[data-sticky-cols="3"] .table-borderless tbody td:nth-child(3) {
+  position: sticky;
+  left: calc(var(--sticky-col-1-width, 150px) + var(--sticky-col-2-width, 120px));
+  z-index: 2;
+  width: var(--sticky-col-3-width, 140px);
+  min-width: var(--sticky-col-3-width, 140px);
+  max-width: var(--sticky-col-3-width, 140px);
+  background: var(--sticky-col-bg, var(--color-white-900)) !important;
+  box-shadow: var(--sticky-col-shadow, 2px 4px 12px 0 var(--color-steel-10, rgba(109 131 139 / 0.1)));
+}
+
+/* Sortable table — active column background, sort icons, border radius 8px top corners */
+.table-sortable.table-borderless {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-sortable thead th[aria-sort="ascending"],
+.table-sortable thead th[aria-sort="descending"] {
+  background: var(--table-slot-header-sorted-bg, rgba(0 0 0 / 0.04)) !important;
+  border-radius: 8px 8px 0 0;
+}
+
+.table-sortable .column-sort-header {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2xs, 4px);
+}
+
+.table-sortable .column-sort-icon {
+  display: inline-flex;
+  color: var(--copy-slot-secondary);
+  opacity: 0.8;
+}
+
+.table-sortable thead th[aria-sort="ascending"] .column-sort-icon,
+.table-sortable thead th[aria-sort="descending"] .column-sort-icon {
+  color: var(--copy-slot-primary);
+  opacity: 1;
 }
 
 .navbar {
