@@ -50,6 +50,13 @@ import {
   TitanBadge,
   TitanBadgeAnchor,
   TitanBorderlessTable,
+  TitanTable,
+  TableHeader,
+  TableBody,
+  Column,
+  Row,
+  Cell,
+  Checkbox,
   TitanBreadcrumb,
   TitanButton,
   TitanCard,
@@ -118,6 +125,7 @@ const NAV_ITEMS = [
   { id: 'buttons', label: 'Buttons', icon: MousePointerClick },
   { id: 'calendar', label: 'Calendar', icon: CalendarDays },
   { id: 'cardgrid', label: 'Card Grid + Table', icon: LayoutDashboard },
+  { id: 'table', label: 'Table (Advanced)', icon: Table2 },
   { id: 'dialog', label: 'Dialog', icon: MessageSquare },
   { id: 'drawer', label: 'Drawer', icon: PanelRight },
   { id: 'forms', label: 'Form Controls', icon: ToggleLeft },
@@ -153,6 +161,41 @@ function TokenGroup({ label, tokens }) {
         ))}
       </div>
     </div>
+  )
+}
+
+function TableWithSelection() {
+  const [selectedKeys, setSelectedKeys] = useState(new Set())
+  const items = [
+    { id: '1', name: 'Games', type: 'File folder', date: '6/7/2020' },
+    { id: '2', name: 'Program Files', type: 'File folder', date: '4/7/2021' },
+    { id: '3', name: 'bootmgr', type: 'System file', date: '11/20/2010' },
+    { id: '4', name: 'log.txt', type: 'Text Document', date: '1/18/2016' },
+  ]
+  return (
+    <>
+      <TitanTable aria-label="Files" selectionMode="multiple" selectedKeys={selectedKeys} onSelectionChange={setSelectedKeys}>
+        <TableHeader>
+          <Column><Checkbox slot="selection" /></Column>
+          <Column isRowHeader>Name</Column>
+          <Column>Type</Column>
+          <Column>Date Modified</Column>
+        </TableHeader>
+        <TableBody items={items}>
+          {(item) => (
+            <Row id={item.id}>
+              <Cell><Checkbox slot="selection" /></Cell>
+              <Cell>{item.name}</Cell>
+              <Cell>{item.type}</Cell>
+              <Cell>{item.date}</Cell>
+            </Row>
+          )}
+        </TableBody>
+      </TitanTable>
+      <p style={{ marginTop: 'var(--spacing-s)', fontSize: 'var(--font-size-s)', color: 'var(--copy-slot-secondary)' }}>
+        Selected: {selectedKeys === 'all' ? 'all' : [...selectedKeys].join(', ') || 'none'}
+      </p>
+    </>
   )
 }
 
@@ -1552,6 +1595,82 @@ function App() {
                 <h3>Bottom 4/4</h3>
                 <TitanBorderlessTable columns={tableColumns} rows={tableRows} />
               </TitanCard>
+            </TitanCardGrid>
+          </ShowcaseCard>
+
+          {/* ── 2b. Table (Advanced) — React Aria ────────────── */}
+          <ShowcaseCard
+            id="table"
+            title="Table (Advanced)"
+            ariaImports="import { TitanTable, TableHeader, TableBody, Column, Row, Cell, Checkbox } from 'titan-compositions'"
+            ariaDesc="TitanTable wraps React Aria's Table with Titan borderless styling. Use for sticky header, sticky columns, selection, sorting, clickable rows, empty state. For simple tables use TitanBorderlessTable."
+            ariaComponents={['Table', 'TableHeader', 'TableBody', 'Column', 'Row', 'Cell', 'Checkbox']}
+            foundations={[
+              { category: 'Table', detail: 'Same tokens as TitanBorderlessTable: --table-slot-cell-pad-y/x, --table-header-separator, --table-row-separator, --table-row-hover.' },
+              { category: 'Features', detail: 'Optional: stickyHeader, stickyColumns, selectionMode, sortDescriptor, onRowAction, renderEmptyState.' },
+            ]}
+            tokenGroups={[
+              { label: 'Table', tokens: ['--table-cell-background', '--table-row-hover', '--table-header-separator', '--table-row-separator', '--table-slot-header-color', '--table-slot-cell-color'] },
+            ]}
+            code={`import { TitanTable, TableHeader, TableBody, Column, Row, Cell } from 'titan-compositions'
+
+<TitanTable aria-label="Files">
+  <TableHeader>
+    <Column isRowHeader>Name</Column>
+    <Column>Type</Column>
+    <Column>Date Modified</Column>
+  </TableHeader>
+  <TableBody>
+    <Row id="1">
+      <Cell>Games</Cell>
+      <Cell>File folder</Cell>
+      <Cell>6/7/2020</Cell>
+    </Row>
+    <Row id="2">
+      <Cell>Program Files</Cell>
+      <Cell>File folder</Cell>
+      <Cell>4/7/2021</Cell>
+    </Row>
+  </TableBody>
+</TitanTable>`}
+          >
+            <TitanCardGrid>
+            <TitanCard span={16}>
+              <h3>Default</h3>
+              <TitanTable aria-label="Files">
+                <TableHeader>
+                  <Column isRowHeader>Name</Column>
+                  <Column>Type</Column>
+                  <Column>Date Modified</Column>
+                </TableHeader>
+                <TableBody>
+                  <Row id="1">
+                    <Cell>Games</Cell>
+                    <Cell>File folder</Cell>
+                    <Cell>6/7/2020</Cell>
+                  </Row>
+                  <Row id="2">
+                    <Cell>Program Files</Cell>
+                    <Cell>File folder</Cell>
+                    <Cell>4/7/2021</Cell>
+                  </Row>
+                  <Row id="3">
+                    <Cell>bootmgr</Cell>
+                    <Cell>System file</Cell>
+                    <Cell>11/20/2010</Cell>
+                  </Row>
+                  <Row id="4">
+                    <Cell>log.txt</Cell>
+                    <Cell>Text Document</Cell>
+                    <Cell>1/18/2016</Cell>
+                  </Row>
+                </TableBody>
+              </TitanTable>
+            </TitanCard>
+            <TitanCard span={16}>
+              <h3>With selection</h3>
+              <TableWithSelection />
+            </TitanCard>
             </TitanCardGrid>
           </ShowcaseCard>
 

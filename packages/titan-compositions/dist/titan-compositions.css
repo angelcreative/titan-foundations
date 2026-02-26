@@ -116,6 +116,11 @@
   background: var(--table-row-hover);
 }
 
+/* TitanTable (React Aria) — allow overflow for sticky header/columns */
+.layout-table-aria.layout-table-wrap {
+  overflow: visible;
+}
+
 .navbar {
   width: var(--layout-navbar-width);
   height: var(--navbar-slot-height);
