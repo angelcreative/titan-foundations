@@ -1307,7 +1307,7 @@ const WHAT_CAN_YOU_ASK = [
 ]
 
 const AVAILABLE_TOOLS = [
-  { tool: 'titan_setup', purpose: 'Auto-setup project: npm install + write skill files', progressive: '—' },
+  { tool: 'titan_setup', purpose: 'Auto-setup project: npm install + bootstrap layout/theme; skills via MCP (list_skills/get_skill) or repo', progressive: '—' },
   { tool: 'titan_syncFromGithub', purpose: 'Refresh live data from the titan-foundations repo', progressive: '—' },
   { tool: 'titan_getTheme', purpose: 'Resolve theme, get bootstrap snippets or full CSS', progressive: 'include=summary|bootstrap|css|all' },
   { tool: 'titan_getOverview', purpose: 'Architecture, workflow, available components/patterns', progressive: "Lightweight summary by default; include='full' for details" },
@@ -1372,8 +1372,9 @@ function SetupGuide() {
         <p>This runs <code>titan_setup</code>, which automatically:</p>
         <ul className="setup-auto-list">
           <li>Installs npm dependencies (<code>titan-compositions</code>, <code>react-aria-components</code>, <code>lucide-react</code>, <code>@tabler/icons-react</code>)</li>
-          <li>Writes local skill files so the AI has offline Titan knowledge</li>
+          <li>Bootstraps layout and theme so the app is ready for Titan components</li>
         </ul>
+        <p>Skills (anatomy patterns) are <strong>not</strong> copied into your project. The AI loads them via the MCP (<code>list_skills</code> / <code>get_skill</code>) or from the titan-foundations repo (<code>docs/skills/</code>).</p>
       </section>
 
       {/* ── 3. What can you ask? ── */}

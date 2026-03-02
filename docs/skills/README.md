@@ -106,3 +106,5 @@ When the user asks for UI (in chat, via MCP, or in a prompt), the LLM must **res
 ## V0 / MCP
 
 These skills live in the repo. To expose them to V0 or other consumers, the Titan worker can serve this content via an MCP tool (e.g. return the list of pattern names, or the full text of a given anatomy file) so the system can offer “available UI options” and the LLM can adhere to these anatomies when building.
+
+**Consumer policy:** Do **not** copy or mirror these skills into the consumer project (e.g. `.cursor/skills/`, `.claude/skills/`). The single source of truth is this repo. Consumers should use the Titan MCP (`list_skills` / `get_skill`) or read from `docs/skills/` in the repo when building UI.
