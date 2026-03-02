@@ -8,7 +8,7 @@ Al pedir un **template**, **layout** o similar, se monta: **navbar a ancho compl
 
 2. **Contenedor de contenido** — Debajo de la navbar: centrado (margin: 0 auto), max-width: var(--layout-content-max-width) (1920px), padding horizontal var(--layout-content-pad-x). Dentro: grid de 16 columnas (ver docs/grid.md) para colocar cards, bloques, etc. **Espaciado vertical:** Los elementos apilados (breadcrumb, filas de cards, secciones) no deben quedar pegados. Usar un wrapper con `display: flex; flex-direction: column; gap: var(--layout-grid-gap)` o breadcrumb con `margin-bottom: var(--spacing-m)` y cada fila de cards con margen inferior; ver docs/grid.md (Vertical spacing).
 
-3. **Sidebar** — Si se pide sidebar: **flotante** (overlay o columna que no hace que el contenido supere 1920px). El contenido principal sigue siendo el contenedor centrado.
+3. **Sidebar** — Si se pide sidebar: **flotante** (overlay o columna que no hace que el contenido supere 1920px). El contenido principal sigue siendo el contenedor centrado. **Reglas de scroll (obligatorias):** La sidebar **no hace scroll** — queda fija a la izquierda; nunca debe hacer scroll metiéndose debajo de la navbar. El **breadcrumb no hace scroll** — va siempre visible encima del área que sí scrollea. **Solo el main content** (el área de contenido principal a la derecha) tiene `overflow: auto`; navbar, sidebar y breadcrumb son fijos. Ver `docs/integration/composition-patterns.json` (appLayoutWithSidebar).
 
 4. **Drawer** — Es overlay; no afecta el ancho del contenido. La página tiene navbar + contenido max 1920px; el drawer se abre por encima.
 
