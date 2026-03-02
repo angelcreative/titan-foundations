@@ -26,6 +26,7 @@ This prevents drift and keeps output aligned with validated Titan compositions.
 When the consumer is a **Next.js App Router** project and uses `titan-compositions`, any file that imports from `titan-compositions` must be a **Client Component** (or only imported from one). Otherwise the app can throw `createContext is not a function` because react-aria uses client-only APIs.
 
 - When **setting up** or **generating** layout/pages that use Titan in Next.js: add **`"use client"`** at the top of the file that imports Titan, or create a **client shell** component (e.g. `TitanAppShell.tsx` with `"use client"`) that imports Titan and have the layout import only that shell.
+- Do **not** use `next/dynamic(..., { ssr: false })` inside Server Components (e.g. `app/page.tsx`). If needed, create a `"use client"` wrapper that owns the `dynamic()` call and import that wrapper from the Server Component.
 - Full patterns and rationale: **`docs/integration/nextjs-app-router.md`**.
 
 For Vite, CRA, Remix, etc., this is not required; adding `"use client"` there is harmless.

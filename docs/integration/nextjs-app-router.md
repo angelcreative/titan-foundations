@@ -98,6 +98,44 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 Pages under that layout can be Server or Client as needed; any page that imports Titan directly must still have `"use client"` (or be rendered inside a client component that does).
 
+## `next/dynamic` and `ssr: false` (do not use in Server Components)
+
+In Next.js App Router, `next/dynamic` with `{ ssr: false }` is **not allowed** inside **Server Components**. If an LLM tries to do this in `app/page.tsx` (or any server file), you will see an error like:
+
+```text
+`ssr: false` is not allowed with `next/dynamic` in Server Components.
+Please move it into a Client Component.
+```
+
+**Rule:** If you need `dynamic(..., { ssr: false })`, put it in a **Client Component** (a file with `"use client"`), and import that wrapper from your Server Component.
+
+### Recommended pattern: client wrapper that owns the dynamic import
+
+```tsx
+// components/ClientShellLoader.tsx
+"use client"
+
+import dynamic from "next/dynamic"
+
+const ClientShell = dynamic(
+  () => import("@/components/reports/ClientShell").then((m) => m.ClientShell),
+  { ssr: false }
+)
+
+export function ClientShellLoader() {
+  return <ClientShell />
+}
+```
+
+```tsx
+// app/page.tsx (Server Component; no "use client")
+import { ClientShellLoader } from "@/components/ClientShellLoader"
+
+export default function ReportsPage() {
+  return <ClientShellLoader />
+}
+```
+
 ## MCP / LLM setup
 
 When configuring or generating a **Next.js** app that uses `titan-compositions`:
