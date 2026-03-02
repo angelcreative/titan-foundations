@@ -27,6 +27,10 @@ So either:
 
 This applies **only** to Next.js App Router. In Vite, CRA, Remix, etc., everything is client; the rule is not needed and adding `"use client"` does not break anything (other bundlers ignore the directive).
 
+### When adding `"use client"` to the page is not enough
+
+Sometimes the page file is **evaluated on the server** before the directive takes effect during the build, so `createContext is not a function` can still occur even with `"use client"` at the top of `page.tsx`. The **reliable fix** is to move **all** imports of `titan-compositions` out of the page and into a **dedicated client component** (e.g. `DashboardContent.tsx`, `ReportsContent.tsx`). Keep `page.tsx` as a Server Component that only imports and renders that client component — no Titan imports in the page file. Example: `page.tsx` imports `<DashboardContent />`; `DashboardContent.tsx` has `"use client"` and imports Titan + layout/table; the table and any Titan UI live only inside that client boundary.
+
 ## Pattern A: Page (or layout) as Client Component
 
 Use when the whole page (or layout) uses Titan (navbar, sidebar, table, etc.) and you are fine with the entire tree being client-rendered.

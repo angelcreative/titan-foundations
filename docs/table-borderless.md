@@ -112,6 +112,15 @@ La especificación de “tabla tipo referencia” está en **`foundations/table-
 
 Instrucción para Cursor: *“Al pedir una tabla, usa la spec de table.borderless y estos tokens.”*
 
+### 3.1 TitanBorderlessTable (titan-compositions)
+
+Si usas el componente **TitanBorderlessTable** de `titan-compositions`, la API de columnas es:
+
+- Cada columna es un objeto con **`key`** (string, obligatorio), `header` (string) y opcionalmente `render: (row) => ReactNode`.
+- **No uses `id`** en lugar de `key`. El componente construye las keys de las celdas como `${row.id}-${column.key}`. Si pasas `id` en vez de `key`, `column.key` queda `undefined`, todas las celdas colisionan (`uk-tech-buyers-undefined`) y aparece "undefined" en pantalla. La propiedad correcta es **`key`** (es una prop de configuración del array `columns`, no la React key de JSX).
+
+**Layout (contenedor):** Una tabla que está **suelta en la página** (no dentro de una UI card) **nunca** lleva contenedor tipo card ni borde; la tabla "flota" y ocupa todo el ancho disponible. Si la tabla va **dentro** de una UI card, la card ya es el contenedor; no añadas un wrapper extra alrededor de la tabla.
+
 ---
 
 ## 4. Resumen para Cursor / repo de tokens
@@ -126,6 +135,8 @@ Instrucción para Cursor: *“Al pedir una tabla, usa la spec de table.borderles
 - **Iconos:** Lucide: ordenación = ArrowUpDown / MoveUp / MoveDown; menú = Pencil, Copy, Trash2; ítem destructivo = tokens de error de Titan (text + icon + opcional background).
 
 - **Menú:** no cortarlo; contenedor de la tabla con `overflow: visible`.
+
+- **Layout:** Tabla suelta en página = sin contenedor ni borde; tabla dentro de card = la card es el contenedor. TitanBorderlessTable: columnas con **`key`** (no `id`).
 
 Con esto, cuando otro usuario pida “una tabla como la de reportes”, el Cursor que tenga este doc (y el JSON en `foundations/`) puede replicar la misma apariencia y comportamiento usando solo tokens y convenciones, sin un componente predefinido.
 
@@ -146,8 +157,9 @@ Con esto, cuando otro usuario pida “una tabla como la de reportes”, el Curso
 
 ## Common Implementation Traps
 
+- **TitanBorderlessTable:** Usar `id` en los objetos de columna en lugar de **`key`** → keys de celdas `undefined` y texto "undefined" visible.
 - Sort que solo alterna `asc/desc` sin volver a `inactive`.
-- Aplicar borde de contenedor/celdas, rompiendo contrato borderless.
+- Aplicar borde de contenedor/celdas, rompiendo contrato borderless (y regla: tabla suelta = sin contenedor; tabla en card = card es contenedor).
 - Usar iconos de sort/acciones no contractuales o con estados no distinguibles.
 - No exponer foco visible en controles de sort y acciones.
 - Cortar popovers por `overflow: hidden` del contenedor.

@@ -16,7 +16,7 @@ Each file describes **one** pattern or **one family** of patterns:
 - **Families:** Same name for the family; **variants are identifiable** (e.g. “Categorical List Cards” with variants Domains, Hashtags, Mentioned users). The LLM picks the variant from user intent.
 - **Name & purpose** — When to use this pattern (or which variant of the family).
 - **Anatomy** — Regions, slots, and structure (what appears where: header, body, footer, badges, etc.).
-- **Titan usage** — Which Titan components and tokens to use (surfaces, typography, color).
+- **Titan usage** — Which Titan components and tokens to use (surfaces, typography, color). **Text color rule:** Non-link text (titles, labels, body) = typography only (steel / `--text-title`, `--copy-slot-*`). Theme color **only for links**. Positive deltas (e.g. +3%) = aquamarine; negative = `--text-error-primary`. See `docs/copy-and-links.md`.
 - **Implementation notes** — Hints for the LLM (e.g. chart slot, empty/loading states).
 - **Related patterns** — Cross-links to other skills (e.g. when to use a table vs a list, or which card to combine).
 

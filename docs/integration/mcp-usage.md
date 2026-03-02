@@ -110,7 +110,11 @@ Create a new exploratory component pattern:
 - Load order: `titan.css` -> one theme file -> component styles.
 - Set `<html data-theme="...">`.
 - Use semantic Titan tokens; avoid hardcoded brand values.
+- **Non-link text (titles, labels, body, counts, deltas):** Use **typography tokens only** (steel / hades: `--text-title`, `--copy-slot-title`, `--copy-slot-body`, `--copy-slot-secondary`, `--copy-slot-muted`). **Never** use theme color (e.g. ocean, blueberry) for non-link text. **Theme color is only for links** (and button/tab active states).
+- **Positive delta (e.g. +3%):** Always `--color-aquamarine-600` or `--color-aquamarine-700`. Never theme color.
+- **Negative delta (e.g. -2%):** Use `--text-error-primary`.
 - **Secondary/muted text** (counts, “Showing X–Y of Z”, descriptions): use `color: var(--copy-slot-secondary)` or `var(--copy-slot-muted)`; there is **no** `.copy-secondary` CSS class in Titan.
+- **Tables:** Standalone table (not inside a UI card) **never** has a card wrapper or border; it floats, full width. Table inside a card: the card is the container; do not add an extra wrapper. **TitanBorderlessTable** column config: use **`key`** (not `id`) for each column; cell keys are `${row.id}-${column.key}` — wrong key causes "undefined" and duplicate keys.
 
 ## Using UI anatomy skills (how the LLM knows what to use)
 

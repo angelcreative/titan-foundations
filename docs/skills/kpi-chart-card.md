@@ -18,7 +18,7 @@ Universal UI anatomy for a **metric card with trend and a line chart** over time
 ## Titan usage
 
 - **Surface:** Same as KPI Trend Card: `--surface-0`, `--card-slot-radius`, `--dialog-slot-pad`.
-- **Typography:** Title and trend row: same as KPI Trend Card (positive trend = `--color-aquamarine-600`, no theme). Axis labels: `--text-muted`, `--button-slot-font-size`.
+- **Typography:** Title and trend row: same as KPI Trend Card — **typography only** for title and period (`--text-title`, `--text-muted`); **never** theme color. Positive trend = `--color-aquamarine-600`/`700`; negative = `--text-error-primary`. Axis labels: `--text-muted`, `--button-slot-font-size`.
 - **Chart:** Use a **real chart library** (e.g. Recharts). Line stroke: `--button-primary`. Grid: `--divider`. Axis labels: `--text-muted`, small font (e.g. 10px).
 - **Components:** `TitanCardGrid` + `TitanCard`; chart: Recharts `LineChart` + `Line` + `XAxis` + `YAxis` + `CartesianGrid` + `ResponsiveContainer`, styled with Titan tokens.
 

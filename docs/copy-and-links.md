@@ -15,9 +15,14 @@
 **Texto secundario (contador, “Showing X–Y of Z”, descripciones):** usar `color: var(--copy-slot-secondary)` o `var(--copy-slot-muted)`. **No existe la clase `.copy-secondary`** en los estilos Titan; los patrones deben aplicar el color mediante el token (p. ej. `style={{ color: 'var(--copy-slot-secondary)' }}`).
 | Botones, tabs activos | tokens de botón / tab del tema | color de tema |
 
+## Deltas y tendencias (KPI, métricas)
+
+- **Valor positivo** (ej. +3%, “vs last month” con subida): siempre **aquamarine** — `--color-aquamarine-600` o `--color-aquamarine-700`. Nunca color de tema.
+- **Valor negativo** (ej. -2%): `--text-error-primary` (está bien como está).
+
 ## Qué no hacer
 
-- No usar `--text-primary-active` ni `--text-secondary` en cabeceros de sección, títulos de card ni párrafos.
+- No usar `--text-primary-active` ni `--text-secondary` ni ningún color de tema en cabeceros de sección, títulos de card, párrafos ni etiquetas de periodo/delta. Solo enlaces (y botones/tabs activos) usan color de tema.
 - No poner el mismo color de tema en un label de sección y en un link; el link debe ser el único elemento con ese color en el bloque (junto con subrayado o estilo de enlace).
 
 ## Resumen

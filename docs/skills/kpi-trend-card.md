@@ -18,8 +18,8 @@ Universal UI anatomy for a **dashboard metric card** with a single value and a t
 ## Titan usage
 
 - **Surface:** Card with `--surface-0`, `--card-slot-radius`, `--dialog-slot-pad`.
-- **Typography:** Title `--text-title`, `--text-weight-semibold`. Value: larger `--text-title`. Trend: `--button-slot-font-size`, `--text-muted` for period.
-- **Trend color:** Positive (arrow up): **always** `--color-aquamarine-600` or `--color-aquamarine-700` — fixed, no theme. Negative (arrow down): `--text-error-primary`.
+- **Typography:** Title and period label use **typography only** — `--text-title`, `--text-weight-semibold` for title; `--text-muted` for period (e.g. "vs last month"). Value: larger `--text-title`. **Never** use theme color for title or trend label; only links use theme color.
+- **Trend color:** Positive (arrow up, e.g. "+3%"): **always** `--color-aquamarine-600` or `--color-aquamarine-700` — fixed, no theme. Negative (arrow down, e.g. "-2%"): `--text-error-primary`.
 - **Components:** `TitanCardGrid` + `TitanCard` (e.g. `span={8}`). Info icon wrapped in `TitanTooltip`: tooltip opens **on hover** (and on focus).
 
 ## Implementation notes
