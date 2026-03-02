@@ -76,6 +76,10 @@ Rules:
 - If these components exist, do not regenerate equivalent markup/CSS.
 - Use TitanBorderlessTable for table content when requested.
 - Fallback to Aria/tokens only if composition is missing.
+
+Vertical spacing (mandatory):
+- Breadcrumb must have margin-bottom (e.g. var(--spacing-m) or var(--layout-grid-gap)) so it does not stick to the content below.
+- Card grids must have vertical gap: TitanCardGrid uses --layout-grid-gap for row and column gap. If you stack multiple TitanCardGrid rows (or breadcrumb + grid), wrap them in a container with display: flex; flex-direction: column; gap: var(--layout-grid-gap). Never leave breadcrumb or card rows with no vertical spacing.
 ```
 
 ### Navbar request

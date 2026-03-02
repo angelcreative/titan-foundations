@@ -6,7 +6,7 @@ Al pedir un **template**, **layout** o similar, se monta: **navbar a ancho compl
 
 1. **Navbar** — implementar navbar según `foundations/navbar.json` (source of truth: `titan-comp-doc/navbar.pdf`): 100% width, izquierda Change Product + lockup Anillo+Product Name por tema, derecha icon buttons neutrales + avatar + chevron de menu.
 
-2. **Contenedor de contenido** — Debajo de la navbar: centrado (margin: 0 auto), max-width: var(--layout-content-max-width) (1920px), padding horizontal var(--layout-content-pad-x). Dentro: grid de 16 columnas (ver docs/grid.md) para colocar cards, bloques, etc.
+2. **Contenedor de contenido** — Debajo de la navbar: centrado (margin: 0 auto), max-width: var(--layout-content-max-width) (1920px), padding horizontal var(--layout-content-pad-x). Dentro: grid de 16 columnas (ver docs/grid.md) para colocar cards, bloques, etc. **Espaciado vertical:** Los elementos apilados (breadcrumb, filas de cards, secciones) no deben quedar pegados. Usar un wrapper con `display: flex; flex-direction: column; gap: var(--layout-grid-gap)` o breadcrumb con `margin-bottom: var(--spacing-m)` y cada fila de cards con margen inferior; ver docs/grid.md (Vertical spacing).
 
 3. **Sidebar** — Si se pide sidebar: **flotante** (overlay o columna que no hace que el contenido supere 1920px). El contenido principal sigue siendo el contenedor centrado.
 
