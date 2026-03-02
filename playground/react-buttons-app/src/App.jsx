@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { LineChart as RechartsLineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Legend, PieChart, Pie, Cell as RechartsCell } from 'recharts'
 import {
   AlertCircle,
   AlertTriangle,
@@ -48,6 +49,20 @@ import {
   CircleDot,
   Columns2,
   LayoutGrid,
+  TrendingUp,
+  LineChart,
+  Eye,
+  BarChartHorizontal,
+  BarChart2,
+  ExternalLink,
+  Globe,
+  MapPin,
+  MoreVertical,
+  Pencil,
+  Merge,
+  Download,
+  Gamepad2,
+  Headphones,
 } from 'lucide-react'
 import {
   TitanBadge,
@@ -104,6 +119,14 @@ import { DesignSystemView } from './DesignSystemView'
 /* ------------------------------------------------------------------ */
 
 const THEMES = ['insights', 'audiense', 'neutral', 'demand', 'linkedin', 'tweetbinder']
+const THEME_COLORS = {
+  insights: 'var(--color-blueberry-600)',
+  audiense: 'var(--color-pomegranate-600)',
+  neutral: 'var(--color-black-600)',
+  demand: 'var(--color-aquamarine-600)',
+  linkedin: 'var(--color-indigo-600)',
+  tweetbinder: 'var(--color-ocean-600)',
+}
 
 const TAG_ITEMS = [
   { tone: 'teal', label: 'Teal label' },
@@ -122,13 +145,29 @@ const INITIAL_PILL_ITEMS = [
   { id: 'pill-tomato', tone: 'tomato', label: 'Tomato pill' },
 ]
 
+const COMMON_PATTERN_NAV_ITEMS = [
+  { id: 'kpi-trend-card', label: 'KPI Trend Card', icon: TrendingUp },
+  { id: 'kpi-chart-card', label: 'KPI Chart Card', icon: LineChart },
+  { id: 'distribution-bar-card', label: 'Distribution Bar Card', icon: BarChartHorizontal },
+  { id: 'profile-list-card', label: 'Profile List Card', icon: Users },
+  { id: 'double-bar-chart-card', label: 'Double Bar Chart Card', icon: BarChart3 },
+  { id: 'single-bar-chart-card', label: 'Single Bar Chart Card', icon: BarChart2 },
+  { id: 'insight-variant-cards', label: 'Insight Variant Cards', icon: LayoutGrid },
+  { id: 'sortable-penetration-list', label: 'Sortable Penetration List', icon: ListFilter },
+  { id: 'top-cities-table-card', label: 'Top Cities Table', icon: MapPin },
+  { id: 'skills-table-card', label: 'Skills Table', icon: Type },
+  { id: 'audience-segment-card', label: 'Audience Segment Card', icon: Users },
+  { id: 'comparison-bar-cards', label: 'Comparison Bar Cards', icon: BarChartHorizontal },
+  { id: 'multimedia-grid-cards', label: 'Multimedia Grid Cards', icon: LayoutGrid },
+  { id: 'table', label: 'Table (Advanced)', icon: Table2 },
+]
+
 const NAV_ITEMS = [
   { id: 'badge', label: 'Badge', icon: CircleDot },
   { id: 'breadcrumb', label: 'Breadcrumb', icon: Navigation },
   { id: 'buttons', label: 'Buttons', icon: MousePointerClick },
   { id: 'calendar', label: 'Calendar', icon: CalendarDays },
   { id: 'cardgrid', label: 'Card Grid + Table', icon: LayoutDashboard },
-  { id: 'table', label: 'Table (Advanced)', icon: Table2 },
   { id: 'dialog', label: 'Dialog', icon: MessageSquare },
   { id: 'drawer', label: 'Drawer', icon: PanelRight },
   { id: 'forms', label: 'Form Controls', icon: ToggleLeft },
@@ -163,6 +202,605 @@ function TokenGroup({ label, tokens }) {
           <span key={t} className="token-var">{t}</span>
         ))}
       </div>
+    </div>
+  )
+}
+
+/** KPI line chart styled with Titan tokens (Recharts). */
+const DISTRIBUTION_BAR_ITEMS = [
+  { label: 'Spanish', value: 95.2 },
+  { label: 'English', value: 4.1 },
+  { label: 'Italian', value: 0.2 },
+  { label: 'Portuguese', value: 0.2 },
+]
+
+/** Distribution bar list with load animation: bars animate from 0 to value on mount. */
+function DistributionBarListAnimated() {
+  const [values, setValues] = useState(DISTRIBUTION_BAR_ITEMS.map(() => 0))
+  useEffect(() => {
+    const id = requestAnimationFrame(() => {
+      setTimeout(() => setValues(DISTRIBUTION_BAR_ITEMS.map((d) => d.value)), 80)
+    })
+    return () => cancelAnimationFrame(id)
+  }, [])
+  return (
+    <div className="distribution-bar-list">
+      {DISTRIBUTION_BAR_ITEMS.map((item, i) => (
+        <TitanProgressBar key={item.label} label={item.label} value={values[i]} maxValue={100} />
+      ))}
+    </div>
+  )
+}
+
+const DOUBLE_BAR_DATA = [
+  { name: '13-17', male: 3, female: 3 },
+  { name: '18-24', male: 35, female: 32 },
+  { name: '25-34', male: 18, female: 7 },
+  { name: '35-44', male: 3, female: 1 },
+  { name: '45-64', male: 1, female: 1 },
+  { name: '65+', male: 0.5, female: 0.5 },
+]
+
+/** Double bar chart: two bars per x-axis item (Recharts), Titan tokens. */
+function DoubleBarChartTitan() {
+  return (
+    <div className="double-bar-chart-area" aria-hidden="true">
+      <ResponsiveContainer width="100%" height={160}>
+        <BarChart data={DOUBLE_BAR_DATA} margin={{ top: 8, right: 8, bottom: 8, left: 8 }} barCategoryGap="20%" barGap={4}>
+          <CartesianGrid strokeDasharray="2 2" stroke="var(--divider)" vertical={false} />
+          <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: 'var(--text-muted)', fontSize: 10 }} />
+          <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--text-muted)', fontSize: 10 }} domain={[0, 40]} unit="%" />
+          <Legend content={<DoubleBarLegend />} wrapperStyle={{ paddingTop: 'var(--spacing-s)' }} />
+          <Bar dataKey="male" name="Male" fill="var(--color-orange-600)" radius={[2, 2, 0, 0]} />
+          <Bar dataKey="female" name="Female" fill="var(--color-violet-600)" radius={[2, 2, 0, 0]} />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  )
+}
+
+function DoubleBarLegend() {
+  return (
+    <div className="double-bar-chart-legend">
+      <span className="double-bar-legend-item"><i className="double-bar-legend-dot male" aria-hidden="true" /> Male</span>
+      <span className="double-bar-legend-item"><i className="double-bar-legend-dot female" aria-hidden="true" /> Female</span>
+    </div>
+  )
+}
+
+const TOP_CITIES_DATA = [
+  { id: '1', city: 'Tres Cantos', audiencePct: 1.12, baselinePct: 0.12, affinity: 9.63 },
+  { id: '2', city: 'Villaviciosa de Odón', audiencePct: 0.98, baselinePct: 0.1, affinity: 8.21 },
+  { id: '3', city: 'Boadilla del Monte', audiencePct: 0.85, baselinePct: 0.08, affinity: 7.94 },
+  { id: '4', city: 'Majadahonda', audiencePct: 0.72, baselinePct: 0.07, affinity: 6.5 },
+  { id: '5', city: 'Las Rozas de Madrid', audiencePct: 0.65, baselinePct: 0.06, affinity: 5.82 },
+]
+
+function TopCitiesTableDemo() {
+  const [sortDescriptor, setSortDescriptor] = useState({ column: 'affinity', direction: 'descending' })
+  const sorted = useMemo(() => {
+    const list = [...TOP_CITIES_DATA]
+    const dir = sortDescriptor.direction === 'ascending' ? 1 : -1
+    if (sortDescriptor.column === 'city') {
+      list.sort((a, b) => String(a.city).localeCompare(String(b.city)) * dir)
+    } else {
+      list.sort((a, b) => (a.affinity - b.affinity) * dir)
+    }
+    return list
+  }, [sortDescriptor])
+  return (
+    <>
+      <div className="cities-table-scroll">
+        <TitanTable aria-label="Top cities" stickyHeader sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor} className="table-sortable cities-table">
+          <TableHeader>
+            <Column id="city" isRowHeader>City</Column>
+          <Column id="penetration">Penetration</Column>
+          <Column id="affinity" allowsSorting>
+            {({ allowsSorting, sortDirection }) => (
+              <span className="column-sort-header">
+                {allowsSorting && (
+                  <span className="column-sort-icon" aria-hidden>
+                    {sortDirection === 'ascending' && <ArrowUp size={14} strokeWidth={1.5} />}
+                    {sortDirection === 'descending' && <ArrowDown size={14} strokeWidth={1.5} />}
+                    {!sortDirection && <ArrowUpDown size={14} strokeWidth={1.5} />}
+                  </span>
+                )}
+                Affinity
+              </span>
+            )}
+          </Column>
+        </TableHeader>
+        <TableBody items={sorted}>
+          {(row) => (
+            <Row id={row.id}>
+              <Cell>{row.city}</Cell>
+              <Cell>
+                <div className="cities-penetration-cell">
+                  <div className="cities-dual-bar-row">
+                    <TitanProgressBar label="" value={row.audiencePct} maxValue={100} showValue={false} />
+                    <span className="cities-pct">{row.audiencePct}%</span>
+                  </div>
+                  <div className="cities-dual-bar-row">
+                    <TitanProgressBar label="" value={row.baselinePct} maxValue={100} showValue={false} className="cities-bar-light" />
+                    <span className="cities-pct">{row.baselinePct}%</span>
+                  </div>
+                </div>
+              </Cell>
+              <Cell><span className="cities-affinity-pill">x {row.affinity.toFixed(2)}</span></Cell>
+            </Row>
+          )}
+        </TableBody>
+        </TitanTable>
+      </div>
+      <div className="cities-legend" role="presentation" aria-hidden="true">
+        <span className="cities-legend-item"><i className="cities-legend-dot cities-legend-dot-audience" aria-hidden="true" /> Audience</span>
+        <span className="cities-legend-item"><i className="cities-legend-dot cities-legend-dot-baseline" aria-hidden="true" /> Baseline</span>
+      </div>
+    </>
+  )
+}
+
+const SKILLS_TABLE_DATA = [
+  { id: '1', skill: 'Popular Science', audiencePct: 33.3, baselinePct: 0.84, affinity: 39.7 },
+  { id: '2', skill: 'Research Projects', audiencePct: 33.3, baselinePct: 1.04, affinity: 32.1 },
+  { id: '3', skill: 'Science', audiencePct: 35.3, baselinePct: 1.24, affinity: 28.5 },
+  { id: '4', skill: 'Clinical Development', audiencePct: 41.2, baselinePct: 2.2, affinity: 18.7 },
+]
+
+function SkillsTableDemo() {
+  const [sortDescriptor, setSortDescriptor] = useState({ column: 'affinity', direction: 'descending' })
+  const sorted = useMemo(() => {
+    const list = [...SKILLS_TABLE_DATA]
+    const dir = sortDescriptor.direction === 'ascending' ? 1 : -1
+    if (sortDescriptor.column === 'skill') {
+      list.sort((a, b) => String(a.skill).localeCompare(String(b.skill)) * dir)
+    } else {
+      list.sort((a, b) => (a.affinity - b.affinity) * dir)
+    }
+    return list
+  }, [sortDescriptor])
+  return (
+    <>
+      <div className="cities-table-scroll">
+        <TitanTable aria-label="Skills" stickyHeader sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor} className="table-sortable cities-table">
+          <TableHeader>
+            <Column id="skill" isRowHeader>Skill</Column>
+          <Column id="penetration">Penetration</Column>
+          <Column id="affinity" allowsSorting>
+            {({ allowsSorting, sortDirection }) => (
+              <span className="column-sort-header">
+                {allowsSorting && (
+                  <span className="column-sort-icon" aria-hidden>
+                    {sortDirection === 'ascending' && <ArrowUp size={14} strokeWidth={1.5} />}
+                    {sortDirection === 'descending' && <ArrowDown size={14} strokeWidth={1.5} />}
+                    {!sortDirection && <ArrowUpDown size={14} strokeWidth={1.5} />}
+                  </span>
+                )}
+                Affinity
+              </span>
+            )}
+          </Column>
+        </TableHeader>
+        <TableBody items={sorted}>
+          {(row) => (
+            <Row id={row.id}>
+              <Cell>{row.skill}</Cell>
+              <Cell>
+                <div className="cities-penetration-cell">
+                  <div className="cities-dual-bar-row">
+                    <TitanProgressBar label="" value={row.audiencePct} maxValue={100} showValue={false} />
+                    <span className="cities-pct">{row.audiencePct}%</span>
+                  </div>
+                  <div className="cities-dual-bar-row">
+                    <TitanProgressBar label="" value={row.baselinePct} maxValue={100} showValue={false} className="cities-bar-light" />
+                    <span className="cities-pct">{row.baselinePct}%</span>
+                  </div>
+                </div>
+              </Cell>
+              <Cell><span className="cities-affinity-pill">x {row.affinity}</span></Cell>
+            </Row>
+          )}
+        </TableBody>
+        </TitanTable>
+      </div>
+      <div className="cities-legend" role="presentation" aria-hidden="true">
+        <span className="cities-legend-item"><i className="cities-legend-dot cities-legend-dot-audience" aria-hidden="true" /> Audience</span>
+        <span className="cities-legend-item"><i className="cities-legend-dot cities-legend-dot-baseline" aria-hidden="true" /> Baseline</span>
+      </div>
+    </>
+  )
+}
+
+const SORTABLE_PENETRATION_ROWS = [
+  { id: '1', label: 'Sports', pct: 17.11 },
+  { id: '2', label: 'Pets', pct: 16.08 },
+  { id: '3', label: 'Education', pct: 11.24 },
+  { id: '4', label: 'Science', pct: 10.46 },
+  { id: '5', label: 'Society', pct: 8.9 },
+  { id: '6', label: 'Movies', pct: 8.29 },
+  { id: '7', label: 'Movies and TV', pct: 7.83 },
+  { id: '8', label: 'Travel', pct: 7.15 },
+]
+
+function SortablePenetrationListDemo() {
+  const [sortDescriptor, setSortDescriptor] = useState({ column: 'pct', direction: 'descending' })
+  const sorted = useMemo(() => {
+    const list = [...SORTABLE_PENETRATION_ROWS]
+    const dir = sortDescriptor.direction === 'ascending' ? 1 : -1
+    list.sort((a, b) => (a.pct - b.pct) * dir)
+    return list
+  }, [sortDescriptor])
+  return (
+    <div className="sortable-penetration-table-scroll">
+      <TitanTable
+        aria-label="Interest penetration"
+        stickyHeader
+        sortDescriptor={sortDescriptor}
+        onSortChange={setSortDescriptor}
+        className="table-sortable"
+      >
+        <TableHeader>
+          <Column id="label" isRowHeader>Interest</Column>
+          <Column id="pct" allowsSorting>
+            {({ allowsSorting, sortDirection }) => (
+              <span className="column-sort-header">
+                {allowsSorting && (
+                  <span className="column-sort-icon" aria-hidden>
+                    {sortDirection === 'ascending' && <ArrowUp size={14} strokeWidth={1.5} />}
+                    {sortDirection === 'descending' && <ArrowDown size={14} strokeWidth={1.5} />}
+                    {!sortDirection && <ArrowUpDown size={14} strokeWidth={1.5} />}
+                  </span>
+                )}
+                Avg. Penetration
+              </span>
+            )}
+          </Column>
+        </TableHeader>
+        <TableBody items={sorted}>
+          {(item) => (
+            <Row id={item.id} className={sorted[0]?.id === item.id ? 'sortable-penetration-row-highlight' : undefined}>
+              <Cell>{item.label}</Cell>
+              <Cell>
+                <div className="sortable-penetration-cell-bar">
+                  <TitanProgressBar label="" value={item.pct} maxValue={100} showValue={false} />
+                  <span className="sortable-penetration-pct">{item.pct}%</span>
+                </div>
+              </Cell>
+            </Row>
+          )}
+        </TableBody>
+      </TitanTable>
+    </div>
+  )
+}
+
+const COMPARISON_BIO_ROWS = [
+  { id: 'twitch', term: 'twitch', seg: 22.77, base: 10.75 },
+  { id: 'videojuegos', term: 'videojuegos', seg: 21.25, base: 24.17 },
+  { id: 'gamer', term: 'gamer', seg: 19.61, base: 19.31 },
+  { id: 'streamer', term: 'streamer', seg: 15.29, base: 6.29 },
+  { id: 'league', term: 'league', seg: 12.26, base: 4.1 },
+]
+const COMPARISON_AGE_ROWS = [
+  { id: '25-34', range: '25-34', seg: 54.46, base: 54.74 },
+  { id: '18-24', range: '18-24', seg: 19.92, base: 18.19 },
+  { id: '35-44', range: '35-44', seg: 18.52, base: 18.87 },
+  { id: '13-17', range: '13-17', seg: 3.2, base: 3.55 },
+  { id: '45-54', range: '45-54', seg: 2.37, base: 3.11 },
+]
+
+function ComparisonBioCard() {
+  const [sortDescriptor, setSortDescriptor] = useState({ column: 'seg', direction: 'descending' })
+  const sorted = useMemo(() => {
+    const list = [...COMPARISON_BIO_ROWS]
+    const dir = sortDescriptor.direction === 'ascending' ? 1 : -1
+    if (sortDescriptor.column === 'term') {
+      list.sort((a, b) => String(a.term).localeCompare(String(b.term)) * dir)
+    } else {
+      list.sort((a, b) => (a.seg - b.seg) * dir)
+    }
+    return list
+  }, [sortDescriptor])
+  return (
+    <TitanCard span={8} className="comparison-card top-cities-table-card">
+      <div className="kpi-trend-header">
+        <span className="kpi-trend-title">Bio</span>
+        <TitanTooltip content="Distribution by most common words used by the audience and variance from the baseline.">
+          <button type="button" className="kpi-trend-info" aria-label="More info">
+            <Info size={16} strokeWidth={1.5} />
+          </button>
+        </TitanTooltip>
+      </div>
+      <p className="comparison-desc">This graph shows the distribution by most common words used by the audience to describe themselves, and its variance from the baseline.</p>
+      <a href="#" className="comparison-read-more">Read more</a>
+      <div className="comparison-table-scroll">
+        <TitanTable aria-label="Bio terms" stickyHeader sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor} className="table-sortable cities-table">
+          <TableHeader>
+            <Column id="term" isRowHeader>Term</Column>
+            <Column id="seg" allowsSorting>
+              {({ allowsSorting, sortDirection }) => (
+                <span className="column-sort-header">
+                  {allowsSorting && (
+                    <span className="column-sort-icon" aria-hidden>
+                      {sortDirection === 'ascending' && <ArrowUp size={14} strokeWidth={1.5} />}
+                      {sortDirection === 'descending' && <ArrowDown size={14} strokeWidth={1.5} />}
+                      {!sortDirection && <ArrowUpDown size={14} strokeWidth={1.5} />}
+                    </span>
+                  )}
+                  %
+                </span>
+              )}
+            </Column>
+          </TableHeader>
+          <TableBody items={sorted}>
+            {(row) => (
+              <Row id={row.id}>
+                <Cell>{row.term}</Cell>
+                <Cell>
+                  <div className="comparison-bar-cell">
+                    <div className="comparison-bar-row">
+                      <TitanProgressBar label="" value={row.seg} maxValue={100} showValue={false} className="comparison-bar-segment" />
+                      <span className="comparison-pct">{row.seg}%</span>
+                    </div>
+                    <div className="comparison-bar-row">
+                      <TitanProgressBar label="" value={row.base} maxValue={100} showValue={false} className="comparison-bar-baseline" />
+                      <span className="comparison-pct">{row.base}%</span>
+                    </div>
+                  </div>
+                </Cell>
+              </Row>
+            )}
+          </TableBody>
+        </TitanTable>
+      </div>
+      <div className="comparison-legend">
+        <span className="comparison-legend-item"><i className="comparison-legend-dot segment" aria-hidden="true" /> LoL Streaming</span>
+        <span className="comparison-legend-item"><i className="comparison-legend-dot baseline" aria-hidden="true" /> Madrid Gaming Audience Analysis</span>
+      </div>
+      <div className="comparison-card-footer">
+        <TitanDrawer
+          title="Bio – Full table"
+          triggerLabel="Show full table"
+          triggerClassName="btn btn-tertiary comparison-footer-link"
+          triggerIcon={<ArrowRight size={14} strokeWidth={1.5} aria-hidden="true" />}
+        >
+          <div className="comparison-drawer-content">
+            <p className="comparison-desc">This graph shows the distribution by most common words used by the audience to describe themselves, and its variance from the baseline.</p>
+            <div className="comparison-table-scroll">
+              <TitanTable aria-label="Bio terms (full)" stickyHeader sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor} className="table-sortable cities-table">
+                <TableHeader>
+                  <Column id="term" isRowHeader>Term</Column>
+                  <Column id="seg" allowsSorting>
+                    {({ allowsSorting, sortDirection }) => (
+                      <span className="column-sort-header">
+                        {allowsSorting && (
+                          <span className="column-sort-icon" aria-hidden>
+                            {sortDirection === 'ascending' && <ArrowUp size={14} strokeWidth={1.5} />}
+                            {sortDirection === 'descending' && <ArrowDown size={14} strokeWidth={1.5} />}
+                            {!sortDirection && <ArrowUpDown size={14} strokeWidth={1.5} />}
+                          </span>
+                        )}
+                        %
+                      </span>
+                    )}
+                  </Column>
+                </TableHeader>
+                <TableBody items={sorted}>
+                  {(row) => (
+                    <Row id={row.id}>
+                      <Cell>{row.term}</Cell>
+                      <Cell>
+                        <div className="comparison-bar-cell">
+                          <div className="comparison-bar-row">
+                            <TitanProgressBar label="" value={row.seg} maxValue={100} showValue={false} className="comparison-bar-segment" />
+                            <span className="comparison-pct">{row.seg}%</span>
+                          </div>
+                          <div className="comparison-bar-row">
+                            <TitanProgressBar label="" value={row.base} maxValue={100} showValue={false} className="comparison-bar-baseline" />
+                            <span className="comparison-pct">{row.base}%</span>
+                          </div>
+                        </div>
+                      </Cell>
+                    </Row>
+                  )}
+                </TableBody>
+              </TitanTable>
+            </div>
+            <div className="comparison-legend">
+              <span className="comparison-legend-item"><i className="comparison-legend-dot segment" aria-hidden="true" /> LoL Streaming</span>
+              <span className="comparison-legend-item"><i className="comparison-legend-dot baseline" aria-hidden="true" /> Madrid Gaming Audience Analysis</span>
+            </div>
+          </div>
+        </TitanDrawer>
+      </div>
+    </TitanCard>
+  )
+}
+
+function ComparisonAgeCard() {
+  const [sortDescriptor, setSortDescriptor] = useState({ column: 'seg', direction: 'descending' })
+  const sorted = useMemo(() => {
+    const list = [...COMPARISON_AGE_ROWS]
+    const dir = sortDescriptor.direction === 'ascending' ? 1 : -1
+    if (sortDescriptor.column === 'range') {
+      list.sort((a, b) => String(a.range).localeCompare(String(b.range)) * dir)
+    } else {
+      list.sort((a, b) => (a.seg - b.seg) * dir)
+    }
+    return list
+  }, [sortDescriptor])
+  return (
+    <TitanCard span={8} className="comparison-card top-cities-table-card">
+      <div className="kpi-trend-header">
+        <span className="kpi-trend-title">Age</span>
+        <TitanTooltip content="Distribution by age and its difference versus the baseline.">
+          <button type="button" className="kpi-trend-info" aria-label="More info">
+            <Info size={16} strokeWidth={1.5} />
+          </button>
+        </TitanTooltip>
+      </div>
+      <p className="comparison-desc">This graph shows the distribution by age and its difference versus the baseline.</p>
+      <a href="#" className="comparison-read-more">Read more</a>
+      <div className="comparison-table-scroll">
+        <TitanTable aria-label="Age ranges" stickyHeader sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor} className="table-sortable cities-table">
+          <TableHeader>
+            <Column id="range" isRowHeader>Range</Column>
+            <Column id="seg" allowsSorting>
+              {({ allowsSorting, sortDirection }) => (
+                <span className="column-sort-header">
+                  {allowsSorting && (
+                    <span className="column-sort-icon" aria-hidden>
+                      {sortDirection === 'ascending' && <ArrowUp size={14} strokeWidth={1.5} />}
+                      {sortDirection === 'descending' && <ArrowDown size={14} strokeWidth={1.5} />}
+                      {!sortDirection && <ArrowUpDown size={14} strokeWidth={1.5} />}
+                    </span>
+                  )}
+                  %
+                </span>
+              )}
+            </Column>
+          </TableHeader>
+          <TableBody items={sorted}>
+            {(row) => (
+              <Row id={row.id}>
+                <Cell>{row.range}</Cell>
+                <Cell>
+                  <div className="comparison-bar-cell">
+                    <div className="comparison-bar-row">
+                      <TitanProgressBar label="" value={row.seg} maxValue={100} showValue={false} className="comparison-bar-segment" />
+                      <span className="comparison-pct">{row.seg}%</span>
+                    </div>
+                    <div className="comparison-bar-row">
+                      <TitanProgressBar label="" value={row.base} maxValue={100} showValue={false} className="comparison-bar-baseline" />
+                      <span className="comparison-pct">{row.base}%</span>
+                    </div>
+                  </div>
+                </Cell>
+              </Row>
+            )}
+          </TableBody>
+        </TitanTable>
+      </div>
+      <div className="comparison-legend">
+        <span className="comparison-legend-item"><i className="comparison-legend-dot segment" aria-hidden="true" /> LoL Streaming</span>
+        <span className="comparison-legend-item"><i className="comparison-legend-dot baseline" aria-hidden="true" /> Madrid Gaming Audience Analysis</span>
+      </div>
+      <div className="comparison-card-footer">
+        <TitanDrawer
+          title="Age – Full table"
+          triggerLabel="Show full table"
+          triggerClassName="btn btn-tertiary comparison-footer-link"
+          triggerIcon={<ArrowRight size={14} strokeWidth={1.5} aria-hidden="true" />}
+        >
+          <div className="comparison-drawer-content">
+            <p className="comparison-desc">This graph shows the distribution by age and its difference versus the baseline.</p>
+            <div className="comparison-table-scroll">
+              <TitanTable aria-label="Age ranges (full)" stickyHeader sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor} className="table-sortable cities-table">
+                <TableHeader>
+                  <Column id="range" isRowHeader>Range</Column>
+                  <Column id="seg" allowsSorting>
+                    {({ allowsSorting, sortDirection }) => (
+                      <span className="column-sort-header">
+                        {allowsSorting && (
+                          <span className="column-sort-icon" aria-hidden>
+                            {sortDirection === 'ascending' && <ArrowUp size={14} strokeWidth={1.5} />}
+                            {sortDirection === 'descending' && <ArrowDown size={14} strokeWidth={1.5} />}
+                            {!sortDirection && <ArrowUpDown size={14} strokeWidth={1.5} />}
+                          </span>
+                        )}
+                        %
+                      </span>
+                    )}
+                  </Column>
+                </TableHeader>
+                <TableBody items={sorted}>
+                  {(row) => (
+                    <Row id={row.id}>
+                      <Cell>{row.range}</Cell>
+                      <Cell>
+                        <div className="comparison-bar-cell">
+                          <div className="comparison-bar-row">
+                            <TitanProgressBar label="" value={row.seg} maxValue={100} showValue={false} className="comparison-bar-segment" />
+                            <span className="comparison-pct">{row.seg}%</span>
+                          </div>
+                          <div className="comparison-bar-row">
+                            <TitanProgressBar label="" value={row.base} maxValue={100} showValue={false} className="comparison-bar-baseline" />
+                            <span className="comparison-pct">{row.base}%</span>
+                          </div>
+                        </div>
+                      </Cell>
+                    </Row>
+                  )}
+                </TableBody>
+              </TitanTable>
+            </div>
+            <div className="comparison-legend">
+              <span className="comparison-legend-item"><i className="comparison-legend-dot segment" aria-hidden="true" /> LoL Streaming</span>
+              <span className="comparison-legend-item"><i className="comparison-legend-dot baseline" aria-hidden="true" /> Madrid Gaming Audience Analysis</span>
+            </div>
+          </div>
+        </TitanDrawer>
+        <TitanButton variant="tertiary" className="comparison-footer-link">Download <Download size={14} strokeWidth={1.5} aria-hidden="true" /></TitanButton>
+      </div>
+    </TitanCard>
+  )
+}
+
+const SINGLE_BAR_DATA = [
+  { name: '13-17', value: 7.5 },
+  { name: '18-24', value: 62 },
+  { name: '25-34', value: 28 },
+  { name: '35-44', value: 5 },
+  { name: '45-64', value: 1.5 },
+  { name: '65+', value: 0.5 },
+]
+
+/** Single bar chart: one bar per x-axis category (Recharts), Titan tokens. */
+function SingleBarChartTitan() {
+  return (
+    <div className="single-bar-chart-area" aria-hidden="true">
+      <ResponsiveContainer width="100%" height={160}>
+        <BarChart data={SINGLE_BAR_DATA} margin={{ top: 8, right: 8, bottom: 8, left: 8 }} barCategoryGap="20%">
+          <CartesianGrid strokeDasharray="2 2" stroke="var(--divider)" vertical={false} />
+          <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: 'var(--text-muted)', fontSize: 10 }} />
+          <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--text-muted)', fontSize: 10 }} domain={[0, 80]} unit="%" />
+          <Bar dataKey="value" fill="var(--button-primary)" radius={[2, 2, 0, 0]} />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  )
+}
+
+const KPI_FOLLOWERS_DATA = [
+  { month: 'Aug', value: 104.5 },
+  { month: 'Sep', value: 103 },
+  { month: 'Oct', value: 101.5 },
+  { month: 'Nov', value: 102 },
+  { month: 'Dec', value: 102.5 },
+  { month: 'Jan', value: 103.5 },
+  { month: 'Feb', value: 104 },
+]
+const KPI_FOLLOWING_DATA = [
+  { month: 'Aug', value: 305 },
+  { month: 'Sep', value: 302 },
+  { month: 'Oct', value: 298 },
+  { month: 'Nov', value: 300 },
+  { month: 'Dec', value: 301 },
+  { month: 'Jan', value: 303 },
+  { month: 'Feb', value: 305 },
+]
+
+function KpiLineChart({ data }) {
+  return (
+    <div className="kpi-chart-area" aria-hidden="true">
+      <ResponsiveContainer width="100%" height={56}>
+        <RechartsLineChart data={data} margin={{ top: 4, right: 4, bottom: 0, left: 4 }}>
+          <CartesianGrid strokeDasharray="2 2" stroke="var(--divider)" vertical={false} />
+          <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: 'var(--text-muted)', fontSize: 10 }} />
+          <YAxis hide domain={['dataMin', 'dataMax']} />
+          <Line type="monotone" dataKey="value" stroke="var(--button-primary)" strokeWidth={1.5} dot={false} />
+        </RechartsLineChart>
+      </ResponsiveContainer>
     </div>
   )
 }
@@ -216,15 +854,62 @@ function TableWithSelection() {
 }
 
 function TableStickyHeader() {
+  const [sortDescriptor, setSortDescriptor] = useState({ column: 'name', direction: 'ascending' })
+  const sorted = useMemo(() => {
+    const items = [...TABLE_ITEMS]
+    const key = sortDescriptor.column
+    const dir = sortDescriptor.direction === 'ascending' ? 1 : -1
+    items.sort((a, b) => String(a[key]).localeCompare(String(b[key])) * dir)
+    return items
+  }, [sortDescriptor])
   return (
-    <div style={{ height: 200, overflow: 'auto', border: '1px solid var(--divider-subtle)', borderRadius: 'var(--card-slot-radius)' }}>
-      <TitanTable aria-label="Files" stickyHeader>
+    <div className="cities-table-scroll">
+      <TitanTable aria-label="Files" stickyHeader sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor} className="table-sortable cities-table">
         <TableHeader>
-          <Column isRowHeader>Name</Column>
-          <Column>Type</Column>
-          <Column>Date Modified</Column>
+          <Column id="name" isRowHeader allowsSorting>
+            {({ allowsSorting, sortDirection }) => (
+              <span className="column-sort-header">
+                {allowsSorting && (
+                  <span className="column-sort-icon" aria-hidden>
+                    {sortDirection === 'ascending' && <ArrowUp size={14} strokeWidth={1.5} />}
+                    {sortDirection === 'descending' && <ArrowDown size={14} strokeWidth={1.5} />}
+                    {!sortDirection && <ArrowUpDown size={14} strokeWidth={1.5} />}
+                  </span>
+                )}
+                Name
+              </span>
+            )}
+          </Column>
+          <Column id="type" allowsSorting>
+            {({ allowsSorting, sortDirection }) => (
+              <span className="column-sort-header">
+                {allowsSorting && (
+                  <span className="column-sort-icon" aria-hidden>
+                    {sortDirection === 'ascending' && <ArrowUp size={14} strokeWidth={1.5} />}
+                    {sortDirection === 'descending' && <ArrowDown size={14} strokeWidth={1.5} />}
+                    {!sortDirection && <ArrowUpDown size={14} strokeWidth={1.5} />}
+                  </span>
+                )}
+                Type
+              </span>
+            )}
+          </Column>
+          <Column id="date" allowsSorting>
+            {({ allowsSorting, sortDirection }) => (
+              <span className="column-sort-header">
+                {allowsSorting && (
+                  <span className="column-sort-icon" aria-hidden>
+                    {sortDirection === 'ascending' && <ArrowUp size={14} strokeWidth={1.5} />}
+                    {sortDirection === 'descending' && <ArrowDown size={14} strokeWidth={1.5} />}
+                    {!sortDirection && <ArrowUpDown size={14} strokeWidth={1.5} />}
+                  </span>
+                )}
+                Date Modified
+              </span>
+            )}
+          </Column>
         </TableHeader>
-        <TableBody items={TABLE_ITEMS}>
+        <TableBody items={sorted}>
           {(item) => (
             <Row id={item.id}>
               <Cell>{item.name}</Cell>
@@ -1644,20 +2329,38 @@ function App() {
   return (
     <>
       <div className="app-top-bar">
-        <h1 className="app-top-title">Titan Design System MCP</h1>
-        <div className="app-top-nav">
-        <button
-          className={`app-top-tab${activeView === 'components' ? ' app-top-tab-active' : ''}`}
-          onClick={() => setActiveView('components')}
-        >Components</button>
-        <button
-          className={`app-top-tab${activeView === 'setup' ? ' app-top-tab-active' : ''}`}
-          onClick={() => setActiveView('setup')}
-        >How to set up Titan</button>
-        <button
-          className={`app-top-tab${activeView === 'designsystem' ? ' app-top-tab-active' : ''}`}
-          onClick={() => setActiveView('designsystem')}
-        >Design System</button>
+        <div className="app-top-bar-left">
+          <h1 className="app-top-title">Titan Design System</h1>
+          <nav className="app-top-nav">
+            <button
+              className={`app-top-tab${activeView === 'components' ? ' app-top-tab-active' : ''}`}
+              onClick={() => setActiveView('components')}
+            >Components</button>
+            <button
+              className={`app-top-tab${activeView === 'commonpatterns' ? ' app-top-tab-active' : ''}`}
+              onClick={() => setActiveView('commonpatterns')}
+            >Common patterns</button>
+            <button
+              className={`app-top-tab${activeView === 'setup' ? ' app-top-tab-active' : ''}`}
+              onClick={() => setActiveView('setup')}
+            >How to set up Titan</button>
+            <button
+              className={`app-top-tab${activeView === 'designsystem' ? ' app-top-tab-active' : ''}`}
+              onClick={() => setActiveView('designsystem')}
+            >Design System</button>
+          </nav>
+        </div>
+        <div className="app-top-bar-right">
+          <TitanMenuDropdown
+            triggerLabel={`Theme ${theme}`}
+            placement="bottom end"
+            items={THEMES.map((t) => ({
+              id: t,
+              label: t,
+              icon: <span className="app-theme-swatch" style={{ background: THEME_COLORS[t] }} aria-hidden="true" />,
+            }))}
+            onAction={(key) => setTheme(String(key))}
+          />
         </div>
       </div>
 
@@ -1668,32 +2371,34 @@ function App() {
       ) : activeView === 'designsystem' ? (
         <DesignSystemView theme={theme} onThemeChange={setTheme} />
       ) : (
-      <div className="app-layout">
+      <div className="app-layout" key={activeView}>
         <TitanSidebar
           collapsed={sidebarCollapsed}
           onToggle={() => setSidebarCollapsed((c) => !c)}
-          defaultActiveId="navbar"
+          defaultActiveId={activeView === 'commonpatterns' ? 'kpi-trend-card' : 'navbar'}
           onActiveChange={scrollTo}
         >
-          {NAV_ITEMS.map((nav) => (
-            <TitanSidebarItem key={nav.id} id={nav.id} icon={nav.icon}>
-              {nav.label}
-            </TitanSidebarItem>
-          ))}
+          {activeView === 'commonpatterns' ? (
+            <>
+              <TitanSidebarHeader>Common patterns</TitanSidebarHeader>
+              {COMMON_PATTERN_NAV_ITEMS.map((nav) => (
+                <TitanSidebarItem key={nav.id} id={nav.id} icon={nav.icon}>
+                  {nav.label}
+                </TitanSidebarItem>
+              ))}
+            </>
+          ) : (
+            NAV_ITEMS.map((nav) => (
+              <TitanSidebarItem key={nav.id} id={nav.id} icon={nav.icon}>
+                {nav.label}
+              </TitanSidebarItem>
+            ))
+          )}
         </TitanSidebar>
 
         <main ref={mainScrollRef} className="page">
-          {/* Page title + theme */}
-          <section className="card theme-selector-card">
-            <h1>Titan</h1>
-            <TitanSelect
-              label="Theme"
-              options={THEMES.map((t) => ({ id: t, label: t }))}
-              selectedKey={theme}
-              onSelectionChange={(key) => setTheme(String(key))}
-            />
-          </section>
-
+          {activeView === 'components' && (
+          <>
           {/* ── Navbar (composition) ───────────────────────── */}
           <ShowcaseCard
             id="navbar"
@@ -1816,6 +2521,1079 @@ function App() {
               </TitanCard>
             </TitanCardGrid>
           </ShowcaseCard>
+          </>
+          )}
+
+          {activeView === 'commonpatterns' && (
+          <>
+          {/* ── 2a. KPI Trend Card ─────────────────────────── */}
+          <ShowcaseCard
+            id="kpi-trend-card"
+            title="KPI Trend Card"
+            ariaImports="// No React Aria — TitanCardGrid + TitanCard + Titan tokens"
+            ariaDesc="Dashboard metric card: title with optional info icon, large value, and colored trend. Arrow up = positive, always aquamarine (fixed, no theme). Arrow down = negative = error red. Uses Titan tokens for typography and color."
+            ariaComponents={['None — pure HTML + Titan tokens']}
+            foundations={[
+              { category: 'Surface', detail: 'Card uses --surface-0 (--color-white-900), --card-slot-radius, --dialog-slot-pad.' },
+              { category: 'Typography', detail: 'Title: --text-title, --text-weight-semibold. Value: larger --text-title. Trend: --button-slot-font-size, --text-muted for period.' },
+              { category: 'Trend color', detail: 'Positive (arrow up): always --color-aquamarine-600 (fixed, no theme). Negative (arrow down): --text-error-primary.' },
+            ]}
+            tokenGroups={[
+              { label: 'Card', tokens: ['--surface-0', '--card-slot-radius', '--dialog-slot-pad'] },
+              { label: 'Text', tokens: ['--text-title', '--text-muted', '--text-weight-semibold', '--button-slot-font-size'] },
+              { label: 'Trend', tokens: ['--text-error-primary', '--color-aquamarine-600'] },
+            ]}
+            code={`import { TitanCardGrid, TitanCard, TitanTooltip } from 'titan-compositions'
+import { Info, ArrowDown, ArrowUp } from 'lucide-react'
+
+function KPITrendCard({ title, value, trendPercent, trendLabel, variant }) {
+  const isPositive = variant === 'positive'
+  return (
+    <article className="card layout-card span-8 kpi-trend-card">
+      <div className="kpi-trend-header">
+        <span className="kpi-trend-title">{title}</span>
+        <TitanTooltip content="Metric definition or source.">
+          <button type="button" className="kpi-trend-info" aria-label="More info"><Info /></button>
+        </TitanTooltip>
+      </div>
+      <div className="kpi-trend-value">{value}</div>
+      <div className={\`kpi-trend-row kpi-trend-\${variant}\`}>
+        {isPositive ? <ArrowUp /> : <ArrowDown />}
+        <span>{isPositive ? '' : '-'}{Math.abs(trendPercent)}% {trendLabel}</span>
+      </div>
+    </article>
+  )
+}
+
+<TitanCardGrid>
+  <KPITrendCard title="Followers" value="101.9K" trendPercent={0.59} trendLabel="this month" variant="negative" />
+  <KPITrendCard title="Avg Likes" value="172.3K" trendPercent={1.25} trendLabel="this month" variant="positive" />
+</TitanCardGrid>`}
+          >
+            <TitanCardGrid>
+              <TitanCard span={8} className="kpi-trend-card">
+                <div className="kpi-trend-header">
+                  <span className="kpi-trend-title">Followers</span>
+                  <TitanTooltip content="Total followers for the selected period.">
+                    <button type="button" className="kpi-trend-info" aria-label="More info">
+                      <Info size={16} strokeWidth={1.5} />
+                    </button>
+                  </TitanTooltip>
+                </div>
+                <div className="kpi-trend-value">101.9K</div>
+                <div className="kpi-trend-row kpi-trend-negative">
+                  <ArrowDown size={16} strokeWidth={2} />
+                  <span>0.59% this month</span>
+                </div>
+              </TitanCard>
+              <TitanCard span={8} className="kpi-trend-card">
+                <div className="kpi-trend-header">
+                  <span className="kpi-trend-title">Avg Likes</span>
+                  <TitanTooltip content="Average likes per post in the period.">
+                    <button type="button" className="kpi-trend-info" aria-label="More info">
+                      <Info size={16} strokeWidth={1.5} />
+                    </button>
+                  </TitanTooltip>
+                </div>
+                <div className="kpi-trend-value">172.3K</div>
+                <div className="kpi-trend-row kpi-trend-positive">
+                  <ArrowUp size={16} strokeWidth={2} />
+                  <span>1.25% this month</span>
+                </div>
+              </TitanCard>
+            </TitanCardGrid>
+          </ShowcaseCard>
+
+          {/* ── 2a2. KPI Chart Card (metric + line chart) ────── */}
+          <ShowcaseCard
+            id="kpi-chart-card"
+            title="KPI Chart Card"
+            ariaImports="// No React Aria — TitanCardGrid + TitanCard + Titan tokens; chart slot for your chart library"
+            ariaDesc="Dashboard metric card with title, optional info icon, colored trend (positive/negative), and a real line chart over time (Recharts). Chart uses Titan tokens: --button-primary for line, --divider for grid, --text-muted for axis labels."
+            ariaComponents={['Recharts (LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer) + Titan tokens']}
+            foundations={[
+              { category: 'Surface', detail: 'Same as KPI Trend Card: --surface-0, --card-slot-radius, --dialog-slot-pad.' },
+              { category: 'Typography & trend', detail: 'Title and trend row: same tokens as KPI Trend Card. Chart axis labels: --text-muted, --button-slot-font-size (small).' },
+              { category: 'Chart', detail: 'Line/stroke: --button-primary or --text-secondary. Grid/axis: --divider or --color-steel-100. Chart area is a slot; replace with Recharts/Chart.js etc. if needed.' },
+            ]}
+            tokenGroups={[
+              { label: 'Card', tokens: ['--surface-0', '--card-slot-radius', '--dialog-slot-pad'] },
+              { label: 'Text & trend', tokens: ['--text-title', '--text-muted', '--text-error-primary', '--color-aquamarine-600'] },
+              { label: 'Chart', tokens: ['--button-primary', '--divider'] },
+            ]}
+            code={`import { TitanCardGrid, TitanCard, TitanTooltip } from 'titan-compositions'
+import { Info, ArrowDown, ArrowUp } from 'lucide-react'
+
+function KPIChartCard({ title, trendPercent, trendLabel, variant, chartPoints, yLabels, xLabels }) {
+  return (
+    <article className="card layout-card span-8 kpi-chart-card">
+      <div className="kpi-trend-header">
+        <span className="kpi-trend-title">{title}</span>
+        <TitanTooltip content="Metric definition."><button type="button" className="kpi-trend-info" aria-label="Info"><Info /></button></TitanTooltip>
+      </div>
+      <div className={\`kpi-trend-row kpi-trend-\${variant}\`}>
+        {variant === 'positive' ? <ArrowUp /> : <ArrowDown />}
+        <span>{variant === 'positive' ? '' : '-'}{Math.abs(trendPercent)}% {trendLabel}</span>
+      </div>
+      <div className="kpi-chart-area" aria-hidden="true">
+        {/* Slot: render your chart library or SVG polyline here */}
+      </div>
+    </article>
+  )
+}
+
+<TitanCardGrid>
+  <KPIChartCard title="Followers" trendPercent={0.59} trendLabel="this month" variant="negative" />
+  <KPIChartCard title="Following" trendPercent={1.35} trendLabel="this month" variant="positive" />
+</TitanCardGrid>`}
+          >
+            <TitanCardGrid>
+              <TitanCard span={8} className="kpi-chart-card">
+                <div className="kpi-trend-header">
+                  <span className="kpi-trend-title">Followers</span>
+                  <TitanTooltip content="Total followers over the selected period.">
+                    <button type="button" className="kpi-trend-info" aria-label="More info">
+                      <Info size={16} strokeWidth={1.5} />
+                    </button>
+                  </TitanTooltip>
+                </div>
+                <div className="kpi-trend-row kpi-trend-negative">
+                  <ArrowDown size={16} strokeWidth={2} />
+                  <span>0.59% this month</span>
+                </div>
+                <KpiLineChart data={KPI_FOLLOWERS_DATA} />
+              </TitanCard>
+              <TitanCard span={8} className="kpi-chart-card">
+                <div className="kpi-trend-header">
+                  <span className="kpi-trend-title">Following</span>
+                  <TitanTooltip content="Accounts you follow over the period.">
+                    <button type="button" className="kpi-trend-info" aria-label="More info">
+                      <Info size={16} strokeWidth={1.5} />
+                    </button>
+                  </TitanTooltip>
+                </div>
+                <div className="kpi-trend-row kpi-trend-positive">
+                  <ArrowUp size={16} strokeWidth={2} />
+                  <span>1.35% this month</span>
+                </div>
+                <KpiLineChart data={KPI_FOLLOWING_DATA} />
+              </TitanCard>
+            </TitanCardGrid>
+          </ShowcaseCard>
+
+          {/* ── 2a3. Distribution Bar Card (proportions list) ─ */}
+          <ShowcaseCard
+            id="distribution-bar-card"
+            title="Distribution Bar Card"
+            ariaImports="import { TitanCard, TitanTooltip, TitanProgressBar, TitanButton } from 'titan-compositions'"
+            ariaDesc="Card with title + info icon, list of proportion bars (label + percentage + track), and a 'View more' link. Uses TitanProgressBar for each row; link uses --text-link."
+            ariaComponents={['ProgressBar', 'Button (link)']}
+            foundations={[
+              { category: 'Surface', detail: 'TitanCard with --surface-0, --card-slot-radius, --dialog-slot-pad.' },
+              { category: 'Progress bar', detail: '--progress-slot-track-bg (track), --progress-slot-fill-bg (teal fill), --progress-slot-label-color, --progress-slot-value-color.' },
+              { category: 'Footer', detail: 'View more: TitanButton variant="tertiary", label + icon (e.g. View more <Eye />).' },
+            ]}
+            tokenGroups={[
+              { label: 'Card', tokens: ['--surface-0', '--card-slot-radius', '--dialog-slot-pad'] },
+              { label: 'Progress', tokens: ['--progress-slot-track-bg', '--progress-slot-fill-bg', '--progress-slot-track-height', '--progress-slot-label-color', '--progress-slot-value-color'] },
+              { label: 'Link', tokens: ['--text-link', '--text-link-hover'] },
+            ]}
+            code={`import { TitanCard, TitanTooltip, TitanProgressBar, TitanButton } from 'titan-compositions'
+import { Info, Eye } from 'lucide-react'
+
+<TitanCard span={8} className="distribution-bar-card">
+  <div className="kpi-trend-header">
+    <span className="kpi-trend-title">Language</span>
+    <TitanTooltip content="Distribution by language.">
+      <button type="button" className="kpi-trend-info" aria-label="Info"><Info /></button>
+    </TitanTooltip>
+  </div>
+  <div className="distribution-bar-list">
+    <TitanProgressBar label="Spanish" value={95.2} maxValue={100} />
+    <TitanProgressBar label="English" value={4.1} maxValue={100} />
+    <TitanProgressBar label="Italian" value={0.2} maxValue={100} />
+    <TitanProgressBar label="Portuguese" value={0.2} maxValue={100} />
+  </div>
+  <TitanButton variant="tertiary">View more <Eye /></TitanButton>
+</TitanCard>`}
+          >
+            <TitanCardGrid>
+              <TitanCard span={8} className="distribution-bar-card">
+                <div className="kpi-trend-header">
+                  <span className="kpi-trend-title">Language</span>
+                  <TitanTooltip content="Distribution of content by language in the selected period.">
+                    <button type="button" className="kpi-trend-info" aria-label="More info">
+                      <Info size={16} strokeWidth={1.5} />
+                    </button>
+                  </TitanTooltip>
+                </div>
+                <DistributionBarListAnimated />
+                <TitanButton variant="tertiary" className="distribution-bar-more">View more <Eye size={16} strokeWidth={1.5} aria-hidden="true" /></TitanButton>
+              </TitanCard>
+            </TitanCardGrid>
+          </ShowcaseCard>
+
+          {/* ── 2a4. Profile List Card (entity list + View more) ─ */}
+          <ShowcaseCard
+            id="profile-list-card"
+            title="Profile List Card"
+            ariaImports="import { TitanCard, TitanTooltip, TitanButton, TitanIconButton } from 'titan-compositions'"
+            ariaDesc="Titan th-less table (layout-table-wrap + table-borderless): two columns. Col 1: avatar + handle + name; col 2: icon (variant A) or number/cifra (variant B). Optional header + View more link. Handles use --text-link; col 2 value uses --text-body, tabular-nums."
+            ariaComponents={['Button (link)', 'Button (icon) or plain number']}
+            foundations={[
+              { category: 'Surface', detail: 'TitanCard; avatar circle --color-black-200 or --surface-hover; cell group gap --spacing-s.' },
+              { category: 'Layout', detail: 'Titan th-less table: layout-table-wrap + table-borderless, tbody only. Col 1 = profile-list-cell-group (avatar + content); col 2 = icon or number.' },
+              { category: 'Typography', detail: 'Handle: --text-link. Description: --text-muted. Col 2 number: --text-body, font-variant-numeric tabular-nums.' },
+              { category: 'Icon variant', detail: 'Col 2: TitanIconButton ghost (e.g. ExternalLink). Number variant: plain span/div with value.' },
+            ]}
+            tokenGroups={[
+              { label: 'Card', tokens: ['--surface-0', '--card-slot-radius', '--dialog-slot-pad'] },
+              { label: 'Link & text', tokens: ['--text-link', '--text-link-hover', '--text-muted', '--font-size-s'] },
+              { label: 'Col 2 value', tokens: ['--text-body', '--text-weight-medium'] },
+              { label: 'Avatar', tokens: ['--color-black-200'] },
+            ]}
+            code={`import { TitanCard, TitanTooltip, TitanButton, TitanIconButton } from 'titan-compositions'
+import { Info, Eye, ExternalLink, User } from 'lucide-react'
+
+<TitanCard span={8} className="profile-list-card">
+  <div className="kpi-trend-header">
+    <span className="kpi-trend-title">Audience lookalikes</span>
+    <TitanTooltip content="Profiles similar to your audience.">
+      <button type="button" className="kpi-trend-info" aria-label="Info"><Info /></button>
+    </TitanTooltip>
+  </div>
+  <div className="layout-table-wrap">
+    <table className="table-borderless profile-list-table" aria-label="Audience lookalikes">
+      <tbody>
+        {items.map((item) => (
+          <tr key={item.id}>
+            <td>
+              <div className="profile-list-cell-group">
+                <div className="profile-list-avatar" aria-hidden="true">{item.initial}</div>
+                <div className="profile-list-content">
+                  <a href={item.href} className="profile-list-handle">{item.handle}</a>
+                  <span className="profile-list-desc">{item.description}</span>
+                </div>
+              </div>
+            </td>
+            <td className="profile-list-col-action">
+              <TitanIconButton variant="ghost" aria-label="Open profile"><ExternalLink /></TitanIconButton>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <TitanButton variant="tertiary">View more <Eye /></TitanButton>
+</TitanCard>`}
+          >
+            <TitanCardGrid>
+              <TitanCard span={8} className="profile-list-card">
+                <div className="kpi-trend-header">
+                  <span className="kpi-trend-title">Audience lookalikes</span>
+                  <TitanTooltip content="Profiles with similar audience to yours.">
+                    <button type="button" className="kpi-trend-info" aria-label="More info">
+                      <Info size={16} strokeWidth={1.5} />
+                    </button>
+                  </TitanTooltip>
+                </div>
+                <div className="layout-table-wrap">
+                  <table className="table-borderless profile-list-table" aria-label="Audience lookalikes">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <div className="profile-list-cell-group">
+                            <div className="profile-list-avatar" aria-hidden="true"><User size={20} strokeWidth={1.5} /></div>
+                            <div className="profile-list-content">
+                              <a href="#profile" className="profile-list-handle">@clave.growth</a>
+                              <span className="profile-list-desc">clave.growth</span>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="profile-list-col-action">
+                          <TitanIconButton variant="ghost" aria-label="Open in new tab">
+                            <ExternalLink size={16} strokeWidth={1.5} />
+                          </TitanIconButton>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div className="profile-list-cell-group">
+                            <div className="profile-list-avatar" aria-hidden="true">A</div>
+                            <div className="profile-list-content">
+                              <a href="#profile" className="profile-list-handle">@ale_x4nder</a>
+                              <span className="profile-list-desc">Eduuuu</span>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="profile-list-col-action">
+                          <TitanIconButton variant="ghost" aria-label="Open in new tab">
+                            <ExternalLink size={16} strokeWidth={1.5} />
+                          </TitanIconButton>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div className="profile-list-cell-group">
+                            <div className="profile-list-avatar" aria-hidden="true">J</div>
+                            <div className="profile-list-content">
+                              <a href="#profile" className="profile-list-handle">@jmesvc</a>
+                              <span className="profile-list-desc">maybe dying</span>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="profile-list-col-action">
+                          <TitanIconButton variant="ghost" aria-label="Open in new tab">
+                            <ExternalLink size={16} strokeWidth={1.5} />
+                          </TitanIconButton>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div className="profile-list-cell-group">
+                            <div className="profile-list-avatar" aria-hidden="true">P</div>
+                            <div className="profile-list-content">
+                              <a href="#profile" className="profile-list-handle">@pabloojca7</a>
+                              <span className="profile-list-desc">Pabloo</span>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="profile-list-col-action">
+                          <TitanIconButton variant="ghost" aria-label="Open in new tab">
+                            <ExternalLink size={16} strokeWidth={1.5} />
+                          </TitanIconButton>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <TitanButton variant="tertiary" className="distribution-bar-more">View more <Eye size={16} strokeWidth={1.5} aria-hidden="true" /></TitanButton>
+              </TitanCard>
+              <TitanCard span={8} className="profile-list-card">
+                <div className="kpi-trend-header">
+                  <span className="kpi-trend-title">Top creators</span>
+                  <TitanTooltip content="By engagement in the period.">
+                    <button type="button" className="kpi-trend-info" aria-label="More info">
+                      <Info size={16} strokeWidth={1.5} />
+                    </button>
+                  </TitanTooltip>
+                </div>
+                <div className="layout-table-wrap">
+                  <table className="table-borderless profile-list-table" aria-label="Top creators">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <div className="profile-list-cell-group">
+                            <div className="profile-list-avatar" aria-hidden="true">M</div>
+                            <div className="profile-list-content">
+                              <a href="#profile" className="profile-list-handle">@maria.creates</a>
+                              <span className="profile-list-desc">Maria García</span>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="profile-list-col-action"><span className="profile-list-value">1.2k</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div className="profile-list-cell-group">
+                            <div className="profile-list-avatar" aria-hidden="true">L</div>
+                            <div className="profile-list-content">
+                              <a href="#profile" className="profile-list-handle">@lucia.art</a>
+                              <span className="profile-list-desc">Lucía Fernández</span>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="profile-list-col-action"><span className="profile-list-value">845</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div className="profile-list-cell-group">
+                            <div className="profile-list-avatar" aria-hidden="true">C</div>
+                            <div className="profile-list-content">
+                              <a href="#profile" className="profile-list-handle">@carlos.design</a>
+                              <span className="profile-list-desc">Carlos Ruiz</span>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="profile-list-col-action"><span className="profile-list-value">612</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div className="profile-list-cell-group">
+                            <div className="profile-list-avatar" aria-hidden="true">A</div>
+                            <div className="profile-list-content">
+                              <a href="#profile" className="profile-list-handle">@ana.photos</a>
+                              <span className="profile-list-desc">Ana López</span>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="profile-list-col-action"><span className="profile-list-value">498</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <TitanButton variant="tertiary" className="distribution-bar-more">View more <Eye size={16} strokeWidth={1.5} aria-hidden="true" /></TitanButton>
+              </TitanCard>
+            </TitanCardGrid>
+          </ShowcaseCard>
+
+          {/* ── 2a5. Double Bar Chart Card (grouped bars + legend) ─ */}
+          <ShowcaseCard
+            id="double-bar-chart-card"
+            title="Double Bar Chart Card"
+            ariaImports="import { TitanCard, TitanTooltip } from 'titan-compositions'"
+            ariaDesc="Card with title + info icon and a grouped bar chart (Recharts): each x-axis item has two bars comparing two values (e.g. Male vs Female by age). Bar colors: --color-orange-600, --color-violet-600; grid --divider; labels --text-muted."
+            ariaComponents={['Recharts BarChart, Bar (x2), XAxis, YAxis, CartesianGrid, Legend + Titan tokens']}
+            foundations={[
+              { category: 'Surface', detail: 'TitanCard; same header as other dashboard cards.' },
+              { category: 'Chart', detail: 'Two bars per category (double bar). Series 1: --color-orange-600. Series 2: --color-violet-600. Grid: --divider. Axis/labels: --text-muted.' },
+            ]}
+            tokenGroups={[
+              { label: 'Card', tokens: ['--surface-0', '--card-slot-radius', '--dialog-slot-pad'] },
+              { label: 'Bars', tokens: ['--color-orange-600', '--color-violet-600'] },
+              { label: 'Axis', tokens: ['--text-muted', '--divider'] },
+            ]}
+            code={`import { TitanCard, TitanTooltip } from 'titan-compositions'
+import { Info } from 'lucide-react'
+
+<TitanCard span={16} className="double-bar-chart-card">
+  <div className="kpi-trend-header">
+    <span className="kpi-trend-title">Age and Gender Split</span>
+    <TitanTooltip content="Distribution by age and gender.">
+      <button type="button" className="kpi-trend-info" aria-label="Info"><Info /></button>
+    </TitanTooltip>
+  </div>
+  <div className="double-bar-chart-area" aria-hidden="true">
+    {/* Recharts BarChart: two <Bar dataKey="male" dataKey="female" />, fill Titan tokens */}
+  </div>
+  <div className="double-bar-chart-legend">
+    <span className="double-bar-legend-item"><i className="double-bar-legend-dot male" /> Male</span>
+    <span className="double-bar-legend-item"><i className="double-bar-legend-dot female" /> Female</span>
+  </div>
+</TitanCard>`}
+          >
+            <TitanCardGrid>
+              <TitanCard span={16} className="double-bar-chart-card">
+                <div className="kpi-trend-header">
+                  <span className="kpi-trend-title">Age and Gender Split</span>
+                  <TitanTooltip content="Percentage distribution by age range and gender.">
+                    <button type="button" className="kpi-trend-info" aria-label="More info">
+                      <Info size={16} strokeWidth={1.5} />
+                    </button>
+                  </TitanTooltip>
+                </div>
+                <DoubleBarChartTitan />
+              </TitanCard>
+            </TitanCardGrid>
+          </ShowcaseCard>
+
+          {/* ── 2a6. Single Bar Chart Card (one bar per category) ─ */}
+          <ShowcaseCard
+            id="single-bar-chart-card"
+            title="Single Bar Chart Card"
+            ariaImports="import { TitanCard, TitanTooltip } from 'titan-compositions'"
+            ariaDesc="Card with title + info icon and a single-series bar chart (Recharts): one bar per x-axis category (e.g. Age Split). Bar fill --button-primary; grid --divider; labels --text-muted."
+            ariaComponents={['Recharts BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer + Titan tokens']}
+            foundations={[
+              { category: 'Surface', detail: 'TitanCard; same header as other dashboard cards.' },
+              { category: 'Chart', detail: 'One bar per category. Bar: --button-primary. Grid: --divider. Axis/labels: --text-muted.' },
+            ]}
+            tokenGroups={[
+              { label: 'Card', tokens: ['--surface-0', '--card-slot-radius', '--dialog-slot-pad'] },
+              { label: 'Bar', tokens: ['--button-primary'] },
+              { label: 'Axis', tokens: ['--text-muted', '--divider'] },
+            ]}
+            code={`import { TitanCard, TitanTooltip } from 'titan-compositions'
+import { Info } from 'lucide-react'
+
+<TitanCard span={8} className="single-bar-chart-card">
+  <div className="kpi-trend-header">
+    <span className="kpi-trend-title">Age Split</span>
+    <TitanTooltip content="Distribution by age.">
+      <button type="button" className="kpi-trend-info" aria-label="Info"><Info /></button>
+    </TitanTooltip>
+  </div>
+  <div className="single-bar-chart-area" aria-hidden="true">
+    {/* Recharts BarChart: single <Bar dataKey="value" />, fill --button-primary */}
+  </div>
+</TitanCard>`}
+          >
+            <TitanCardGrid>
+              <TitanCard span={8} className="single-bar-chart-card">
+                <div className="kpi-trend-header">
+                  <span className="kpi-trend-title">Age Split</span>
+                  <TitanTooltip content="Percentage distribution by age range.">
+                    <button type="button" className="kpi-trend-info" aria-label="More info">
+                      <Info size={16} strokeWidth={1.5} />
+                    </button>
+                  </TitanTooltip>
+                </div>
+                <SingleBarChartTitan />
+              </TitanCard>
+            </TitanCardGrid>
+          </ShowcaseCard>
+
+          {/* ── 2a7. Insight Variant Cards (familia de 3 con variantes) ─ */}
+          <ShowcaseCard
+            id="insight-variant-cards"
+            title="Insight Variant Cards"
+            ariaImports="import { TitanCardGrid, TitanCard, TitanTooltip } from 'titan-compositions'"
+            ariaDesc="Family of 3 cards: each has title + info icon, a label (e.g. Predominantly), primary value with optional icon + percentage in success box, contextual sentence in green, separator, and secondary variants (list with optional percentages). Uses --background-success for percentage boxes, --text-success-on-color for context."
+            ariaComponents={['None — layout + Titan tokens']}
+            foundations={[
+              { category: 'Surface', detail: 'TitanCardGrid (3 columns); each TitanCard same as other dashboard cards.' },
+              { category: 'Highlight', detail: 'Percentage boxes: --background-success, --text-success-on-color. Context sentence: --text-success-on-color or --text-secondary.' },
+              { category: 'Divider', detail: '--divider for separator between primary and variants.' },
+            ]}
+            tokenGroups={[
+              { label: 'Card', tokens: ['--surface-0', '--card-slot-radius', '--dialog-slot-pad'] },
+              { label: 'Success', tokens: ['--background-success', '--text-success-on-color'] },
+              { label: 'Text', tokens: ['--text-title', '--text-muted', '--divider'] },
+            ]}
+            code={`import { TitanCardGrid, TitanCard, TitanTooltip } from 'titan-compositions'
+import { Info, User } from 'lucide-react'
+
+<TitanCardGrid>
+  <TitanCard span={8} className="insight-variant-card">
+    <div className="kpi-trend-header">
+      <span className="kpi-trend-title">Gender</span>
+      <TitanTooltip content="…"><button type="button" className="kpi-trend-info" aria-label="Info"><Info /></button></TitanTooltip>
+    </div>
+    <p className="insight-variant-label">Predominantly</p>
+    <div className="insight-variant-primary">
+      <User size={16} /><span>male</span><span className="insight-variant-pct">71.83%</span>
+    </div>
+    <p className="insight-variant-context">Male is 2.5x higher than female…</p>
+    <hr className="insight-variant-divider" />
+    <div className="insight-variant-list">Female with <span className="insight-variant-pct">28.17%</span></div>
+  </TitanCard>
+  {/* Age, Top Market cards same structure */}
+</TitanCardGrid>`}
+          >
+            <TitanCardGrid>
+              <TitanCard span={8} className="insight-variant-card">
+                <div className="kpi-trend-header">
+                  <span className="kpi-trend-title">Gender</span>
+                  <TitanTooltip content="Audience gender distribution.">
+                    <button type="button" className="kpi-trend-info" aria-label="More info">
+                      <Info size={16} strokeWidth={1.5} />
+                    </button>
+                  </TitanTooltip>
+                </div>
+                <p className="insight-variant-label">Predominantly</p>
+                <div className="insight-variant-primary">
+                  <User size={18} strokeWidth={1.5} aria-hidden="true" />
+                  <span className="insight-variant-primary-text">male</span>
+                  <span className="insight-variant-pct">71.83%</span>
+                </div>
+                <p className="insight-variant-context">Male is 2.5x higher than female based on the global gender distribution.</p>
+                <hr className="insight-variant-divider" />
+                <div className="insight-variant-list">
+                  <span className="insight-variant-item">Female with <span className="insight-variant-pct">28.17%</span></span>
+                </div>
+              </TitanCard>
+              <TitanCard span={8} className="insight-variant-card">
+                <div className="kpi-trend-header">
+                  <span className="kpi-trend-title">Age</span>
+                  <TitanTooltip content="Audience age distribution.">
+                    <button type="button" className="kpi-trend-info" aria-label="More info">
+                      <Info size={16} strokeWidth={1.5} />
+                    </button>
+                  </TitanTooltip>
+                </div>
+                <p className="insight-variant-label">Predominantly</p>
+                <div className="insight-variant-primary">
+                  <span className="insight-variant-primary-text">25-34</span>
+                  <span className="insight-variant-pct">40.6%</span>
+                </div>
+                <p className="insight-variant-context">1.3 times more than 18-24 based on the global age distribution.</p>
+                <hr className="insight-variant-divider" />
+                <ul className="insight-variant-list insight-variant-ranked">
+                  <li>2nd. 18-24</li>
+                  <li>3rd. 35-44</li>
+                  <li>4th. 45-64</li>
+                </ul>
+              </TitanCard>
+              <TitanCard span={8} className="insight-variant-card">
+                <div className="kpi-trend-header">
+                  <span className="kpi-trend-title">Top Market</span>
+                  <TitanTooltip content="Audience concentration by market.">
+                    <button type="button" className="kpi-trend-info" aria-label="More info">
+                      <Info size={16} strokeWidth={1.5} />
+                    </button>
+                  </TitanTooltip>
+                </div>
+                <p className="insight-variant-label">They're concentrated in</p>
+                <div className="insight-variant-primary">
+                  <Globe size={18} strokeWidth={1.5} aria-hidden="true" />
+                  <span className="insight-variant-primary-text">United States</span>
+                  <span className="insight-variant-pct">42.5%</span>
+                </div>
+                <p className="insight-variant-context">4.2 times more than United Kingdom.</p>
+                <hr className="insight-variant-divider" />
+                <ul className="insight-variant-list">
+                  <li><Globe size={14} strokeWidth={1.5} aria-hidden="true" /><span>United Kingdom</span><span className="insight-variant-pct">10.04%</span></li>
+                  <li><Globe size={14} strokeWidth={1.5} aria-hidden="true" /><span>Brazil</span><span className="insight-variant-pct">8.97%</span></li>
+                </ul>
+              </TitanCard>
+            </TitanCardGrid>
+          </ShowcaseCard>
+
+          {/* ── 2a8. Sortable Penetration List Card ───────────── */}
+          <ShowcaseCard
+            id="sortable-penetration-list"
+            title="Sortable Penetration List"
+            ariaImports="import { TitanCard, TitanProgressBar } from 'titan-compositions'"
+            ariaDesc="Card with a Titan table (layout-table-wrap + table-borderless, table-sortable): thead th bold, sort on Avg. Penetration (column-sort-header + ArrowUp/ArrowDown). Internal scroll (max-height + overflow-y) on the table wrap; sticky header so thead stays visible. First row highlight --background-success."
+            ariaComponents={['TitanTable', 'TableHeader', 'TableBody', 'Column', 'Row', 'Cell', 'ProgressBar']}
+            foundations={[
+              { category: 'Table', detail: 'Titan table: layout-table-wrap + table-borderless, thead th bold (--table-slot-header-color), --table-header-separator, --table-row-separator, --table-row-hover.' },
+              { category: 'Sort', detail: 'Titan ordering: Column allowsSorting, sortDescriptor + onSortChange, column-sort-header + column-sort-icon (ArrowUp/ArrowDown/ArrowUpDown), aria-sort.' },
+              { category: 'Scroll', detail: 'Table inside card: wrapper with max-height; layout-table-wrap has overflow-y: auto. stickyHeader so thead stays visible when scrolling.' },
+              { category: 'Highlight', detail: 'First row (top after sort): --background-success.' },
+            ]}
+            tokenGroups={[
+              { label: 'Card & table', tokens: ['--surface-0', '--card-slot-radius', '--table-slot-header-color', '--table-header-separator', '--table-row-separator'] },
+              { label: 'Progress', tokens: ['--progress-slot-track-bg', '--progress-slot-fill-bg'] },
+              { label: 'Row highlight', tokens: ['--background-success'] },
+            ]}
+            code={`import { TitanCard, TitanTable, TableHeader, TableBody, Column, Row, Cell, TitanProgressBar } from 'titan-compositions'
+import { ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react'
+
+<TitanCard span={8} className="sortable-penetration-card">
+  <div className="sortable-penetration-table-scroll">
+    <TitanTable aria-label="Interest penetration" stickyHeader sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor} className="table-sortable">
+      <TableHeader>
+        <Column id="label" isRowHeader>Interest</Column>
+        <Column id="pct" allowsSorting>
+          {({ allowsSorting, sortDirection }) => (
+            <span className="column-sort-header">
+              {allowsSorting && <span className="column-sort-icon" aria-hidden>
+                {sortDirection === 'ascending' && <ArrowUp size={14} />}
+                {sortDirection === 'descending' && <ArrowDown size={14} />}
+                {!sortDirection && <ArrowUpDown size={14} />}
+              </span>}
+              Avg. Penetration
+            </span>
+          )}
+        </Column>
+      </TableHeader>
+      <TableBody items={sorted}>
+        {(item) => (
+          <Row id={item.id} className={sorted[0]?.id === item.id ? 'sortable-penetration-row-highlight' : undefined}>
+            <Cell>{item.label}</Cell>
+            <Cell>
+              <div className="sortable-penetration-cell-bar">
+                <TitanProgressBar label="" value={item.pct} maxValue={100} showValue={false} />
+                <span className="sortable-penetration-pct">{item.pct}%</span>
+              </div>
+            </Cell>
+          </Row>
+        )}
+      </TableBody>
+    </TitanTable>
+  </div>
+</TitanCard>`}
+          >
+            <TitanCardGrid>
+              <TitanCard span={8} className="sortable-penetration-card">
+                <SortablePenetrationListDemo />
+              </TitanCard>
+            </TitanCardGrid>
+          </ShowcaseCard>
+
+          {/* ── 2a9. Top Cities Table Card ────────────────────── */}
+          <ShowcaseCard
+            id="top-cities-table-card"
+            title="Top Cities Table"
+            ariaImports="import { TitanCard, TitanTooltip, TitanTable, TableHeader, TableBody, Column, Row, Cell, TitanProgressBar } from 'titan-compositions'"
+            ariaDesc="TitanTable with sortDescriptor and onSortChange (like Sorting table): City, Penetration (two bars + %), Affinity sortable. Legend below table."
+            ariaComponents={['TitanTable', 'ProgressBar', 'Tooltip']}
+            foundations={[
+              { category: 'Table', detail: 'TitanTable: sortDescriptor, onSortChange, Column allowsSorting on Affinity; same as Sorting table.' },
+              { category: 'Penetration', detail: 'Two stacked TitanProgressBar; second bar lighter --progress-slot-track-bg.' },
+              { category: 'Affinity', detail: 'Pill: --pill-background, --pill-color.' },
+            ]}
+            tokenGroups={[
+              { label: 'Card', tokens: ['--surface-0', '--card-slot-radius', '--dialog-slot-pad'] },
+              { label: 'Table', tokens: ['--table-slot-header-color', '--table-header-separator', '--table-row-separator', '--table-row-hover'] },
+              { label: 'Progress & pill', tokens: ['--progress-slot-fill-bg', '--progress-slot-track-bg', '--pill-background', '--pill-color'] },
+            ]}
+            code={`import { TitanCard, TitanTooltip, TitanTable, TableHeader, TableBody, Column, Row, Cell, TitanProgressBar } from 'titan-compositions'
+import { Info, ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react'
+
+<TitanCard span={8} className="top-cities-table-card">
+  <div className="kpi-trend-header">… Top Cities …</div>
+  <div className="cities-table-scroll">
+  <TitanTable aria-label="Top cities" stickyHeader sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor} className="table-sortable cities-table">
+    <TableHeader>
+      <Column id="city" isRowHeader>City</Column>
+      <Column id="penetration">Penetration</Column>
+      <Column id="affinity" allowsSorting>{({ sortDirection }) => <span className="column-sort-header">… Affinity</span>}</Column>
+    </TableHeader>
+    <TableBody items={sorted}>… Row / Cell …</TableBody>
+  </TitanTable>
+  </div>
+  <div className="cities-legend">…</div>
+</TitanCard>`}
+          >
+            <TitanCardGrid>
+              <TitanCard span={8} className="top-cities-table-card">
+                <div className="kpi-trend-header">
+                  <span className="kpi-trend-title">Top Cities</span>
+                  <TitanTooltip content="Cities by penetration and affinity.">
+                    <button type="button" className="kpi-trend-info" aria-label="More info">
+                      <Info size={16} strokeWidth={1.5} />
+                    </button>
+                  </TitanTooltip>
+                </div>
+                <TopCitiesTableDemo />
+              </TitanCard>
+            </TitanCardGrid>
+          </ShowcaseCard>
+
+          {/* ── 2a10. Skills Table Card (variante con búsqueda) ─ */}
+          <ShowcaseCard
+            id="skills-table-card"
+            title="Skills Table"
+            ariaImports="import { TitanCard, TitanInputField, TitanTable, TableHeader, TableBody, Column, Row, Cell, TitanProgressBar } from 'titan-compositions'"
+            ariaDesc="Search above; TitanTable with sortDescriptor and onSortChange (like Sorting table): Skill, Penetration (two bars + %), Affinity sortable. Legend below table."
+            ariaComponents={['TitanTable', 'TextField', 'ProgressBar']}
+            foundations={[
+              { category: 'Search', detail: 'TitanInputField with leadingIcon Search, placeholder; --input-* tokens.' },
+              { category: 'Table', detail: 'TitanTable: sortDescriptor, onSortChange, Column allowsSorting on Affinity; same as Sorting table.' },
+            ]}
+            tokenGroups={[
+              { label: 'Card', tokens: ['--surface-0', '--card-slot-radius', '--dialog-slot-pad'] },
+              { label: 'Input', tokens: ['--input-slot-height', '--input-background', '--input-border'] },
+              { label: 'Table', tokens: ['--table-slot-header-color', '--table-header-separator', '--table-row-separator', '--table-row-hover'] },
+              { label: 'Progress & pill', tokens: ['--progress-slot-fill-bg', '--progress-slot-track-bg', '--pill-background', '--pill-color'] },
+            ]}
+            code={`import { TitanCard, TitanInputField, TitanTable, TableHeader, TableBody, Column, Row, Cell, TitanProgressBar } from 'titan-compositions'
+import { Info, Search, ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react'
+
+<TitanCard span={8} className="top-cities-table-card">
+  <div className="kpi-trend-header">… Skills …</div>
+  <TitanInputField leadingIcon={<Search />} placeholder="Search for a skill" />
+  <div className="cities-table-scroll">
+  <TitanTable aria-label="Skills" stickyHeader sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor} className="table-sortable cities-table">
+    <TableHeader>…</TableHeader>
+    <TableBody items={sorted}>… Row / Cell …</TableBody>
+  </TitanTable>
+  </div>
+  <div className="cities-legend">…</div>
+</TitanCard>`}
+          >
+            <TitanCardGrid>
+              <TitanCard span={8} className="top-cities-table-card skills-table-card">
+                <div className="kpi-trend-header">
+                  <span className="kpi-trend-title">Skills</span>
+                  <TitanTooltip content="Filter and compare skills by penetration and affinity.">
+                    <button type="button" className="kpi-trend-info" aria-label="More info">
+                      <Info size={16} strokeWidth={1.5} />
+                    </button>
+                  </TitanTooltip>
+                </div>
+                <div className="skills-search-wrap">
+                  <TitanInputField
+                    leadingIcon={<Search size={18} strokeWidth={1.5} />}
+                    placeholder="Search for a skill"
+                    aria-label="Search for a skill"
+                    className="skills-search-field"
+                  />
+                </div>
+                <SkillsTableDemo />
+              </TitanCard>
+            </TitanCardGrid>
+          </ShowcaseCard>
+
+          {/* ── 2a11. Audience Segment Card (familia de cards) ─ */}
+          <ShowcaseCard
+            id="audience-segment-card"
+            title="Audience Segment Card"
+            ariaImports="import { TitanCard, TitanMenuDropdown, TitanTag, TitanButton } from 'titan-compositions'"
+            ariaDesc="Family of segment cards: purple accent, title + icons + kebab menu (Edit, Create report, See members, Merge, Export, Integrate, Delete). Sections: cluster size (donut), bio keywords (chips + %), affinities (avatars + links), hashtags (chips), characteristics (mini table). Footer: View more details link."
+            ariaComponents={['MenuDropdown', 'Tag', 'Button']}
+            foundations={[
+              { category: 'Accent', detail: 'Left border or tab: --button-primary or --color-violet-600.' },
+              { category: 'Sections', detail: 'Grey headings --text-muted; chips --pill-background or --tag-*; donut SVG stroke.' },
+              { category: 'Menu', detail: 'TitanMenuDropdown iconOnly with destructive item (Delete).' },
+            ]}
+            tokenGroups={[
+              { label: 'Card', tokens: ['--surface-0', '--card-slot-radius', '--dialog-slot-pad'] },
+              { label: 'Accent & chips', tokens: ['--color-violet-600', '--pill-background', '--pill-color'] },
+              { label: 'Link', tokens: ['--text-link', '--text-link-hover'] },
+            ]}
+            code={`import { TitanCard, TitanMenuDropdown, TitanTag, TitanButton } from 'titan-compositions'
+import { Headphones, Gamepad2, MoreVertical, Pencil, Eye, Merge, Download, Globe, Trash2, ArrowRight } from 'lucide-react'
+
+<TitanCard span={8} className="segment-card">
+  <div className="segment-header">
+    <div className="segment-title-row">
+      <span className="segment-accent" />
+      <h3>LoL Streaming</h3>
+      <Headphones size={18} /><Gamepad2 size={18} />
+    </div>
+    <TitanMenuDropdown iconOnly triggerIcon={<MoreVertical />} placement="bottom end"
+      items={[
+        { id: 'edit', label: 'Edit', icon: <Pencil /> },
+        { id: 'report', label: 'Create report', icon: <FileText /> },
+        { id: 'members', label: 'See cluster members', icon: <Eye /> },
+        { id: 'merge', label: 'Merge this cluster', icon: <Merge /> },
+        { id: 'export', label: 'Export', icon: <Download /> },
+        { id: 'integrate', label: 'Integrate', icon: <Globe /> },
+        { id: 'delete', label: 'Delete', icon: <Trash2 />, destructive: true },
+      ]}
+    />
+  </div>
+  <div className="segment-body">… Cluster size (donut), Bio keywords, Affinities, Hashtags, Top characteristics …</div>
+  <TitanButton variant="tertiary">View more details <ArrowRight /></TitanButton>
+</TitanCard>`}
+          >
+            <TitanCardGrid>
+              {[
+                {
+                  title: 'LoL Streaming',
+                  headerBg: 'var(--color-violet-100)',
+                  donutFill: 'var(--color-violet-600)',
+                  donutRest: 'var(--color-violet-200)',
+                  donutFillHex: '#7f5df6',
+                  donutRestHex: '#dbd2fc',
+                  clusterPct: 12.83,
+                  bio: [{ term: 'league', pct: '12%' }, { term: 'legends', pct: '12%' }, { term: 'league legends', pct: '11%' }],
+                  affinities: [{ initial: 'L', label: 'League of Legends ES' }, { initial: 'K', label: 'KNekro' }, { initial: 'L', label: 'League of Legends' }],
+                  hashtags: ['#laveladadelañov', '#valorant', '#lavelada5'],
+                  chars: [{ label: 'Age', value: '25-34', pct: '54.46%' }, { label: 'Gender', value: 'Male', pct: '78.95%' }, { label: 'Countries', value: 'Spain', pct: '100%' }, { label: 'Interests', value: 'Games', pct: '53.9%' }],
+                },
+                {
+                  title: 'Fitness Creators',
+                  headerBg: 'var(--color-ocean-100)',
+                  donutFill: 'var(--color-ocean-600)',
+                  donutRest: 'var(--color-ocean-200)',
+                  donutFillHex: '#3981f7',
+                  donutRestHex: '#c5dcfd',
+                  clusterPct: 8.2,
+                  bio: [{ term: 'fitness', pct: '18%' }, { term: 'gym', pct: '14%' }, { term: 'workout', pct: '12%' }],
+                  affinities: [{ initial: 'C', label: 'CrossFit' }, { initial: 'P', label: 'Peloton' }, { initial: 'N', label: 'Nike Training' }],
+                  hashtags: ['#fitness', '#gymlife', '#workout'],
+                  chars: [{ label: 'Age', value: '18-34', pct: '62%' }, { label: 'Gender', value: 'Mixed', pct: '51%' }, { label: 'Countries', value: 'USA', pct: '45%' }, { label: 'Interests', value: 'Sports', pct: '71%' }],
+                },
+                {
+                  title: 'Travel & Food',
+                  headerBg: 'var(--color-pomegranate-100)',
+                  donutFill: 'var(--color-pomegranate-600)',
+                  donutRest: 'var(--color-pomegranate-200)',
+                  donutFillHex: '#f74f25',
+                  donutRestHex: '#fec1b1',
+                  clusterPct: 15.1,
+                  bio: [{ term: 'travel', pct: '22%' }, { term: 'foodie', pct: '16%' }, { term: 'restaurant', pct: '11%' }],
+                  affinities: [{ initial: 'M', label: 'Michelin Guide' }, { initial: 'T', label: 'TripAdvisor' }, { initial: 'A', label: 'Airbnb' }],
+                  hashtags: ['#travel', '#foodie', '#wanderlust'],
+                  chars: [{ label: 'Age', value: '25-44', pct: '58%' }, { label: 'Gender', value: 'Female', pct: '61%' }, { label: 'Countries', value: 'Spain', pct: '38%' }, { label: 'Interests', value: 'Food', pct: '64%' }],
+                },
+              ].map((data) => (
+                <TitanCard
+                  key={data.title}
+                  span={4}
+                  className="segment-card"
+                >
+                  <div
+                    className="segment-card-inner"
+                    style={{
+                      '--segment-header-bg': data.headerBg,
+                      '--segment-donut-fill': data.donutFill,
+                      '--segment-donut-rest': data.donutRest,
+                    }}
+                  >
+                  <div className="segment-header">
+                    <div className="segment-title-row">
+                      <h3 className="segment-title">{data.title}</h3>
+                    </div>
+                    <TitanMenuDropdown
+                      iconOnly
+                      triggerIcon={<MoreVertical size={20} strokeWidth={1.5} />}
+                      placement="bottom end"
+                      triggerLabel="Options"
+                      items={[
+                        { id: 'edit', label: 'Edit', icon: <Pencil size={16} /> },
+                        { id: 'report', label: 'Create report', icon: <FileText size={16} /> },
+                        { id: 'members', label: 'See cluster members', icon: <Eye size={16} /> },
+                        { id: 'merge', label: 'Merge this cluster', icon: <Merge size={16} /> },
+                        { id: 'export', label: 'Export', icon: <Download size={16} /> },
+                        { id: 'integrate', label: 'Integrate', icon: <Globe size={16} /> },
+                        { id: 'delete', label: 'Delete', icon: <Trash2 size={16} />, destructive: true },
+                      ]}
+                    />
+                  </div>
+                  <div className="segment-body">
+                    <div className="segment-section segment-cluster-donut">
+                      <h4 className="segment-section-title">Cluster size</h4>
+                      <div className="segment-donut-wrap">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <PieChart>
+                            <Pie
+                              data={[
+                                { name: 'segment', value: data.clusterPct },
+                                { name: 'rest', value: 100 - data.clusterPct },
+                              ]}
+                              cx="50%"
+                              cy="50%"
+                              innerRadius="78%"
+                              outerRadius="100%"
+                              stroke="none"
+                              dataKey="value"
+                            >
+                              <RechartsCell fill={data.donutFillHex} />
+                              <RechartsCell fill={data.donutRestHex} />
+                            </Pie>
+                          </PieChart>
+                        </ResponsiveContainer>
+                        <span className="segment-donut-value">{data.clusterPct}%</span>
+                      </div>
+                    </div>
+                    <div className="segment-section">
+                      <h4 className="segment-section-title">Distinctive bio keywords</h4>
+                      <div className="segment-chips">
+                        {data.bio.map((b) => (
+                          <span key={b.term} className="segment-chip">{b.term} <span className="segment-chip-pct">{b.pct}</span></span>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="segment-section">
+                      <h4 className="segment-section-title">Distinctive affinities</h4>
+                      <div className="segment-affinities">
+                        {data.affinities.map((a, i) => (
+                          <div key={i} className="segment-affinity-item">
+                            <div className="segment-avatar">{a.initial}</div>
+                            <a href="#affinity" className="segment-affinity-label" title={a.label}>{a.label}</a>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="segment-section">
+                      <h4 className="segment-section-title">Top hashtags</h4>
+                      <div className="segment-chips segment-hashtags">
+                        {data.hashtags.map((tag) => (
+                          <span key={tag} className="segment-chip">{tag}</span>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="segment-section">
+                      <h4 className="segment-section-title">Top characteristics</h4>
+                      <table className="segment-char-table">
+                        <tbody>
+                          {data.chars.map((r) => (
+                            <tr key={r.label}><td>{r.label}</td><td>{r.value}</td><td>{r.pct}</td></tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <TitanButton variant="tertiary" className="segment-footer-link">View more details <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" /></TitanButton>
+                  </div>
+                </TitanCard>
+              ))}
+            </TitanCardGrid>
+          </ShowcaseCard>
+
+          {/* ── 2a12. Comparison Bar Cards (Bio / Age vs baseline) ─ */}
+          <ShowcaseCard
+            id="comparison-bar-cards"
+            title="Comparison Bar Cards"
+            ariaImports="import { TitanCardGrid, TitanCard, TitanTable, TableHeader, TableBody, Column, Row, Cell, TitanProgressBar, TitanButton } from 'titan-compositions'"
+            ariaDesc="Family of two cards: title (bold), description, Read more link, TitanTable (sortDescriptor, onSortChange) with dual bars per row, legend, tertiary footer button (label + icon)."
+            ariaComponents={['TitanTable', 'ProgressBar', 'Button']}
+            foundations={[
+              { category: 'Layout', detail: 'Title bold --text-muted; description --text-body; Read more --text-link. Table: Titan 100% (layout-table-wrap + table-borderless, sortable).' },
+              { category: 'Legend', detail: 'Dot + label; optional Gamepad2. Footer: TitanButton variant="tertiary", label + icon.' },
+            ]}
+            tokenGroups={[
+              { label: 'Card', tokens: ['--surface-0', '--card-slot-radius', '--dialog-slot-pad'] },
+              { label: 'Table', tokens: ['--table-slot-header-color', '--table-header-separator', '--table-row-separator', '--table-row-hover'] },
+              { label: 'Bars', tokens: ['--color-violet-600', '--color-violet-200'] },
+              { label: 'Links', tokens: ['--text-link', '--text-muted'] },
+            ]}
+            code={`import { TitanCardGrid, TitanCard, TitanTable, TableHeader, TableBody, Column, Row, Cell, TitanProgressBar, TitanButton } from 'titan-compositions'
+import { ArrowRight, Download, Gamepad2, ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react'
+
+<TitanCard span={8} className="comparison-card top-cities-table-card">
+  <div className="kpi-trend-header">
+    <span className="kpi-trend-title">Bio</span>
+    <TitanTooltip content="…"><button type="button" className="kpi-trend-info" aria-label="More info"><Info /></button></TitanTooltip>
+  </div>
+  <p className="comparison-desc">…</p>
+  <a href="#" className="comparison-read-more">Read more</a>
+  <div className="comparison-table-scroll">
+    <TitanTable aria-label="Bio terms" stickyHeader sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor} className="table-sortable cities-table">
+      <TableHeader>
+        <Column id="term" isRowHeader>Term</Column>
+        <Column id="seg" allowsSorting>{({ sortDirection }) => <span className="column-sort-header">… %</span>}</Column>
+      </TableHeader>
+      <TableBody items={sorted}>… Row/Cell with dual bars + % at end …</TableBody>
+    </TitanTable>
+  </div>
+  <div className="comparison-legend">…</div>
+  <div className="comparison-card-footer">
+    <TitanButton variant="tertiary">Show full table <ArrowRight /></TitanButton>
+  </div>
+</TitanCard>`}
+          >
+            <TitanCardGrid>
+              <ComparisonBioCard />
+              <ComparisonAgeCard />
+            </TitanCardGrid>
+          </ShowcaseCard>
+
+          {/* ── 2a13. Multimedia Grid Cards ──────────────────── */}
+          <ShowcaseCard
+            id="multimedia-grid-cards"
+            title="Multimedia Grid Cards"
+            ariaImports="import { TitanCardGrid, TitanCard } from 'titan-compositions'"
+            ariaDesc="Grid of media tiles: 3:2 aspect ratio, full-cover background image, dark gradient (opacity 0.9→0) under title, circular purple badge with percentage. Use for content libraries, recommendations, watch progress."
+            ariaComponents={['None — layout + tokens']}
+            foundations={[
+              { category: 'Grid', detail: 'TitanCardGrid; tile aspect-ratio 3:2; gap --layout-grid-gap.' },
+              { category: 'Tile', detail: 'Card bg: image cover; overlay gradient (steel-900 opacity 0.9→0); title --text-on-color; badge --color-violet-600 with opacity.' },
+            ]}
+            tokenGroups={[
+              { label: 'Card', tokens: ['--surface-0', '--card-slot-radius'] },
+              { label: 'Badge', tokens: ['--color-violet-600', '--text-on-color'] },
+            ]}
+            code={`import { TitanCardGrid, TitanCard } from 'titan-compositions'
+
+<div className="multimedia-grid">
+  {items.map((item) => (
+    <TitanCard key={item.id} span={4} className="multimedia-tile" style={{ backgroundImage: \`url(\${item.imageUrl})\` }}>
+      <div className="multimedia-tile-gradient" aria-hidden="true" />
+      <span className="multimedia-tile-badge">{item.pct}%</span>
+      <h3 className="multimedia-tile-title">{item.title}</h3>
+    </TitanCard>
+  ))}
+</div>`}
+          >
+            <TitanCardGrid className="multimedia-grid-wrap">
+              {[
+                { id: '1', title: 'La Resistencia por M+', pct: '8.9', imageUrl: 'https://images.pexels.com/photos/261585/pexels-photo-261585.jpeg?auto=compress&cs=tinysrgb&w=600' },
+                { id: '2', title: 'Pokémon', pct: '5.1', imageUrl: 'https://images.pexels.com/photos/274937/pexels-photo-274937.jpeg?auto=compress&cs=tinysrgb&w=600' },
+                { id: '3', title: 'Andreu Buenafuente', pct: '6', imageUrl: 'https://images.pexels.com/photos/325185/pexels-photo-325185.jpeg?auto=compress&cs=tinysrgb&w=600' },
+                { id: '4', title: 'ESPN Esports', pct: '2', imageUrl: 'https://images.pexels.com/photos/3672623/pexels-photo-3672623.jpeg?auto=compress&cs=tinysrgb&w=600' },
+                { id: '5', title: 'euphoria', pct: '0.2', imageUrl: 'https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg?auto=compress&cs=tinysrgb&w=600' },
+                { id: '6', title: 'Gas Monkey Garage', pct: '0.2', imageUrl: 'https://images.pexels.com/photos/733745/pexels-photo-733745.jpeg?auto=compress&cs=tinysrgb&w=600' },
+                { id: '7', title: 'Mr. Robot', pct: '0.3', imageUrl: 'https://images.pexels.com/photos/1667843/pexels-photo-1667843.jpeg?auto=compress&cs=tinysrgb&w=600' },
+                { id: '8', title: 'Rick and Morty', pct: '1.7', imageUrl: 'https://images.pexels.com/photos/1763075/pexels-photo-1763075.jpeg?auto=compress&cs=tinysrgb&w=600' },
+                { id: '9', title: 'The Grand Tour', pct: '0.5', imageUrl: 'https://images.pexels.com/photos/257092/pexels-photo-257092.jpeg?auto=compress&cs=tinysrgb&w=600' },
+                { id: '10', title: 'TEEN WOLF MOVIE', pct: '0.3', imageUrl: 'https://images.pexels.com/photos/3757139/pexels-photo-3757139.jpeg?auto=compress&cs=tinysrgb&w=600' },
+                { id: '11', title: 'The Office on Peacock', pct: '0.3', imageUrl: 'https://images.pexels.com/photos/414660/pexels-photo-414660.jpeg?auto=compress&cs=tinysrgb&w=600' },
+                { id: '12', title: 'Sons of Anarchy', pct: '0.2', imageUrl: 'https://images.pexels.com/photos/2103127/pexels-photo-2103127.jpeg?auto=compress&cs=tinysrgb&w=600' },
+              ].map((item) => (
+                <TitanCard key={item.id} span={4} className="multimedia-tile" style={{ backgroundImage: `url(${item.imageUrl})` }}>
+                  <div className="multimedia-tile-gradient" aria-hidden="true" />
+                  <span className="multimedia-tile-badge">{item.pct}%</span>
+                  <h3 className="multimedia-tile-title">{item.title}</h3>
+                </TitanCard>
+              ))}
+            </TitanCardGrid>
+          </ShowcaseCard>
 
           {/* ── 2b. Table (Advanced) — React Aria ────────────── */}
           <ShowcaseCard
@@ -1924,7 +3702,11 @@ function App() {
             </TitanCard>
             </TitanCardGrid>
           </ShowcaseCard>
+          </>
+          )}
 
+          {activeView === 'components' && (
+          <>
           {/* ── 3. Buttons ─────────────────────────────────── */}
           <ShowcaseCard
             id="buttons"
@@ -2835,6 +4617,9 @@ function App() {
               />
             </div>
           </ShowcaseCard>
+
+          </>
+          )}
 
         </main>
       </div>

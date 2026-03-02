@@ -35,6 +35,14 @@ Panel que se desliza desde un lado (por defecto derecha), con **overlay** debajo
 
 El botón cerrar es **ghost icon button**: sin borde, fondo transparente, border-radius 9999px.
 
+## Uso con React Aria (titan-compositions: TitanDrawer)
+
+`TitanDrawer` usa `DialogTrigger` + `ModalOverlay` + `Modal` + `Dialog` con clases `drawer-overlay`, `drawer-modal`, `drawer-panel`, `drawer-header`, `drawer-body`. El header incluye título y botón cerrar (X) ghost.
+
+**Trigger por defecto:** Si no se pasa `trigger`, se usa un botón con `triggerLabel` y opcionalmente `triggerClassName` y `triggerIcon`. Para un botón **tertiary** (p. ej. “Show full table”): `triggerLabel="Show full table"`, `triggerClassName="btn btn-tertiary comparison-footer-link"`, `triggerIcon={<ArrowRight />}`. Así el trigger se ve como tertiary sin usar un custom trigger (que a veces no pinta bien con DialogTrigger).
+
+**Contenido que debe expandirse hacia abajo:** Si el body del drawer contiene una tabla “full”, el contenedor del contenido debe ser flex column con `flex: 1` y `min-height: 0`; la zona de la tabla `flex: 1`, `min-height: 0`, `max-height: none` y `overflow-y: auto` para que la tabla ocupe todo el alto disponible y haga scroll internamente.
+
 ## Uso con React Aria (titan-aria)
 
 Se usa `ModalOverlay` + `Modal` + `Dialog` con `data-slot="drawer"` en el overlay. El header debe incluir un elemento con `data-slot="drawer-title"` y el botón de cerrar con `data-slot="drawer-close"`. El contenido va en un contenedor con `data-slot="drawer-body"`. Ver estilos en `titan-aria/styles` (bloque Drawer).

@@ -79,7 +79,7 @@
 .layout-table-wrap {
   width: 100%;
   overflow: hidden;
-  border-radius: var(--card-slot-radius);
+  border-radius: var(--table-radius, 0);
 }
 
 .table-borderless {
@@ -1380,6 +1380,7 @@
 
 .tooltip-box {
   position: relative;
+  z-index: 2147483647;
   background: var(--tooltip-slot-bg);
   color: var(--tooltip-slot-color);
   border-radius: var(--tooltip-slot-radius);

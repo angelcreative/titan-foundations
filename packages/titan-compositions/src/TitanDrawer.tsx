@@ -3,15 +3,27 @@ import { Button, Dialog, DialogTrigger, Modal, ModalOverlay } from 'react-aria-c
 import { X } from 'lucide-react'
 
 export interface TitanDrawerProps {
-  triggerLabel: string
+  /** When provided, used as the trigger instead of the default button. */
+  trigger?: ReactNode
+  /** Used when `trigger` is not provided. */
+  triggerLabel?: string
+  /** Class for the default trigger button (e.g. "btn btn-tertiary"). Ignored when `trigger` is provided. */
+  triggerClassName?: string
+  /** Optional icon to show after the label on the default trigger. Ignored when `trigger` is provided. */
+  triggerIcon?: ReactNode
   title: string
   children: ReactNode
 }
 
-export function TitanDrawer({ triggerLabel, title, children }: TitanDrawerProps) {
+export function TitanDrawer({ trigger, triggerLabel = 'Open', triggerClassName, triggerIcon, title, children }: TitanDrawerProps) {
   return (
     <DialogTrigger>
-      <Button className="btn btn-secondary">{triggerLabel}</Button>
+      {trigger ?? (
+        <Button className={triggerClassName ?? 'btn btn-secondary'}>
+          {triggerLabel}
+          {triggerIcon != null ? <> {triggerIcon}</> : null}
+        </Button>
+      )}
       <ModalOverlay isDismissable className="drawer-overlay">
         <Modal className="drawer-modal">
           <Dialog className="drawer-panel">

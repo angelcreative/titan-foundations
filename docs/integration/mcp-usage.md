@@ -83,8 +83,29 @@ Create a new exploratory component pattern:
 - Set `<html data-theme="...">`.
 - Use semantic Titan tokens; avoid hardcoded brand values.
 
+## Using UI anatomy skills (how the LLM knows what to use)
+
+When building or changing UI (with or without MCP), the LLM should **resolve user intent to a Titan UI anatomy skill** and **follow that skill** so output matches the common patterns.
+
+1. **Resolve intent → skill file**  
+   Use the index and mapping in **`docs/skills/README.md`** (section “How the LLM (or MCP) should choose a skill”). Examples:
+   - “Segment card”, “donut + keywords”, “affinities” → `docs/skills/audience-segment-card.md`
+   - “Comparison bars”, “Bio vs baseline”, “show full table” → `docs/skills/comparison-bar-cards.md`
+   - “Sortable table”, “table with column sort” → `docs/skills/table-advanced.md`
+   - “Drawer”, “panel that opens from the side” → `docs/drawer.md`
+
+2. **Load the skill**  
+   - **Without MCP:** Read the chosen file from the repo (e.g. `docs/skills/audience-segment-card.md`).
+   - **With MCP:** If the Titan worker exposes a “get skill” (or similar) tool, call it with the pattern name (e.g. `audience-segment-card`) and use the returned text as the anatomy to follow.
+
+3. **Generate from the anatomy**  
+   Follow the skill’s sections (Anatomy, Titan usage, Implementation notes) and the import-first policy. Do not invent a different layout or component set.
+
+If the consumer exposes **list_skills** / **get_skill** via MCP, the LLM should call **list_skills** when the request is generic (e.g. “add a card”) to choose a pattern, then **get_skill(name)** to load the full anatomy before generating.
+
 ## Sources of truth
 
+- **UI patterns (skills):** `docs/skills/README.md` (index) + `docs/skills/*.md` (anatomy files).
 - Policy: `docs/integration/decision-policy.md`
 - Inventory: `docs/integration/component-inventory.md`
 - Fallback contract: `docs/integration/fallback-contract.md`

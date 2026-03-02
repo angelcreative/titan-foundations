@@ -58,8 +58,8 @@ export function TitanTooltip({
   title,
   body,
   children,
-  delay = 0,
-  closeDelay = 0,
+  delay = 200,
+  closeDelay = 100,
   placement = 'top',
   shouldFlip = true,
 }: TitanTooltipProps) {

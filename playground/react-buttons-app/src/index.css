@@ -26,26 +26,58 @@ body {
   overflow: hidden;
 }
 
-/* ── Top bar (title + tabs) ──────────────────────────────────────────── */
+/* ── Top bar (title + tabs + theme menu) ─────────────────────────────── */
 .app-top-bar {
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-m);
   background: var(--surface-slot-bg);
   border-bottom: 1px solid var(--divider-strong);
+  padding: 0 var(--spacing-xl);
+}
+
+.app-top-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  min-width: 0;
 }
 
 .app-top-title {
   margin: 0;
-  padding: 64px var(--spacing-xl) 64px;
+  padding: 64px var(--spacing-xl) 64px 0;
   font-size: var(--font-size-l);
   line-height: var(--font-leading-l);
   font-weight: var(--text-weight-semibold);
   color: var(--copy-slot-primary);
+  white-space: nowrap;
 }
 
 .app-top-nav {
   display: flex;
   gap: 0;
-  padding: 0 var(--spacing-xl);
+}
+
+.app-top-bar-right {
+  flex-shrink: 0;
+}
+
+.app-theme-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.menu-item-icon .app-theme-swatch {
+  color: inherit;
+}
+
+.app-top-bar-right .menu-trigger-button {
+  font-weight: var(--text-weight-medium);
 }
 
 .app-top-tab {
@@ -139,12 +171,952 @@ body {
   line-height: var(--font-leading-s);
 }
 
+/* ── Card typography hierarchy (semantic tokens, steel scale) ───────────
+   Title:  --copy-slot-title / --text-title  (strongest)
+   Body:   --text-body
+   Muted:  --text-muted
+   Hints:  --text-subtle
+   Icons:  --icon-default-color (rest), --icon-muted (hover)
+   Never use primitive (e.g. --color-steel-800); always semantic.
+   ─────────────────────────────────────────────────────────────────── */
+
+/* ── KPI Trend Card (metric widget with title, value, trend) ──────────── */
+.kpi-trend-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xs);
+}
+.kpi-trend-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2xs);
+}
+.kpi-trend-title {
+  font-size: var(--button-slot-font-size);
+  line-height: var(--button-slot-line-height);
+  font-weight: 700;
+  color: var(--text-title);
+}
+.kpi-trend-info {
+  display: inline-flex;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--icon-default-color);
+  cursor: pointer;
+  border-radius: 50%;
+}
+.kpi-trend-info:hover {
+  color: var(--icon-muted);
+}
+.kpi-trend-value {
+  font-size: var(--font-size-xl);
+  line-height: var(--font-leading-xl);
+  font-weight: var(--text-weight-semibold);
+  color: var(--text-body);
+}
+.kpi-trend-row {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-3xs);
+  font-size: var(--button-slot-font-size);
+  line-height: var(--button-slot-line-height);
+}
+.kpi-trend-row.kpi-trend-negative {
+  color: var(--text-error-primary);
+}
+.kpi-trend-row.kpi-trend-positive {
+  color: var(--color-aquamarine-600);
+}
+
+/* KPI Chart Card: same header/trend + Recharts line chart (Titan tokens) */
+.kpi-chart-card .kpi-chart-area {
+  margin-top: var(--spacing-2xs);
+  min-height: 56px;
+  width: 100%;
+  min-width: 0;
+}
+.kpi-chart-area > div {
+  width: 100% !important;
+  min-width: 0;
+}
+.kpi-chart-area .recharts-cartesian-grid-horizontal line {
+  stroke: var(--divider);
+}
+.kpi-chart-area .recharts-text {
+  fill: var(--text-muted);
+  font-size: 10px;
+}
+.kpi-chart-area .recharts-line-curve {
+  stroke: var(--button-primary);
+}
+
+/* ── Distribution Bar Card (title + proportion list + View more) ──────── */
+.distribution-bar-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-s);
+}
+.distribution-bar-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-m);
+}
+.distribution-bar-list .progress-root {
+  margin: 0;
+}
+.distribution-bar-list .progress-fill {
+  transition: width 0.55s ease-out;
+}
+.distribution-bar-more {
+  margin-top: var(--spacing-2xs);
+  align-self: flex-start;
+}
+
+/* ── Profile List Card (title + entity list + View more) ─────────────── */
+.profile-list-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-s);
+}
+.profile-list-card .layout-table-wrap {
+  margin: 0;
+}
+.profile-list-cell-group {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-s);
+}
+.profile-list-col-action {
+  text-align: right;
+  white-space: nowrap;
+}
+.profile-list-avatar {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 50%;
+  background: var(--color-black-200);
+  color: var(--icon-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-s);
+  font-weight: var(--text-weight-semibold);
+}
+.profile-list-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4xs);
+}
+.profile-list-handle {
+  font-size: var(--button-slot-font-size);
+  line-height: var(--button-slot-line-height);
+  font-weight: var(--text-weight-medium);
+  color: var(--text-link);
+  text-decoration: underline;
+}
+.profile-list-handle:hover {
+  color: var(--text-link-hover);
+}
+.profile-list-desc {
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+  color: var(--text-muted);
+}
+.profile-list-value {
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+  font-weight: var(--text-weight-medium);
+  color: var(--text-body);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Double Bar Chart Card (grouped bars + legend) ────────────────────── */
+.double-bar-chart-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-s);
+}
+.double-bar-chart-area {
+  margin-top: var(--spacing-2xs);
+  min-height: 160px;
+  width: 100%;
+  min-width: 0;
+}
+.double-bar-chart-area > div {
+  width: 100% !important;
+  min-width: 0;
+}
+.double-bar-chart-area .recharts-cartesian-grid-horizontal line {
+  stroke: var(--divider);
+}
+.double-bar-chart-area .recharts-text {
+  fill: var(--text-muted);
+  font-size: 10px;
+}
+.double-bar-chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-m);
+  margin-top: var(--spacing-s);
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+  color: var(--text-body);
+}
+.double-bar-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-3xs);
+}
+.double-bar-legend-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.double-bar-legend-dot.male {
+  background: var(--color-orange-600);
+}
+.double-bar-legend-dot.female {
+  background: var(--color-violet-600);
+}
+
+/* ── Single Bar Chart Card (one bar per category) ─────────────────────── */
+.single-bar-chart-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-s);
+}
+.single-bar-chart-area {
+  margin-top: var(--spacing-2xs);
+  min-height: 160px;
+  width: 100%;
+  min-width: 0;
+}
+.single-bar-chart-area > div {
+  width: 100% !important;
+  min-width: 0;
+}
+.single-bar-chart-area .recharts-cartesian-grid-horizontal line {
+  stroke: var(--divider);
+}
+.single-bar-chart-area .recharts-text {
+  fill: var(--text-muted);
+  font-size: 10px;
+}
+.single-bar-chart-area .recharts-bar-rectangle {
+  fill: var(--button-primary);
+}
+
+/* ── Insight Variant Cards (familia de 3 con variantes) ───────────────── */
+.insight-variant-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-s);
+}
+.insight-variant-label {
+  margin: 0;
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+  font-weight: var(--text-weight-regular);
+  color: var(--text-subtle);
+}
+.insight-variant-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2xs);
+  flex-wrap: wrap;
+}
+.insight-variant-primary-text {
+  font-weight: var(--text-weight-medium);
+  color: var(--text-body);
+}
+.insight-variant-pct {
+  display: inline-block;
+  padding: var(--spacing-4xs) var(--spacing-s);
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+  font-weight: var(--text-weight-medium);
+  color: var(--text-success-on-color);
+  background: var(--background-success);
+  border-radius: var(--card-slot-radius);
+}
+.insight-variant-context {
+  margin: 0;
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-m);
+  font-weight: var(--text-weight-regular);
+  color: var(--text-muted);
+}
+.insight-variant-divider {
+  margin: var(--spacing-s) 0;
+  border: none;
+  border-top: 1px solid var(--divider);
+}
+.insight-variant-list {
+  margin: 0;
+  padding: 0;
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+  font-weight: var(--text-weight-regular);
+  color: var(--text-subtle);
+}
+.insight-variant-list.insight-variant-ranked {
+  list-style: none;
+}
+.insight-variant-list.insight-variant-ranked li {
+  margin-bottom: var(--spacing-2xs);
+}
+.insight-variant-list li {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2xs);
+  margin-bottom: var(--spacing-2xs);
+  list-style: none;
+}
+.insight-variant-list li .insight-variant-pct {
+  margin-left: auto;
+}
+
+/* ── Sortable Penetration List Card (Titan table + internal scroll) ─────── */
+.sortable-penetration-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.sortable-penetration-table-scroll .layout-table-wrap {
+  max-height: 320px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sortable-penetration-row-highlight td {
+  background: var(--background-success);
+}
+
+.sortable-penetration-cell-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-s);
+  min-width: 0;
+}
+
+.sortable-penetration-cell-bar .progress-root {
+  flex: 1;
+  margin: 0;
+  min-width: 0;
+}
+
+.sortable-penetration-cell-bar .progress-header {
+  display: none;
+}
+
+.sortable-penetration-cell-bar .progress-track {
+  margin: 0;
+}
+
+.sortable-penetration-pct {
+  flex-shrink: 0;
+  font-weight: var(--text-weight-medium);
+  color: var(--text-body);
+  min-width: 3.5em;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Top Cities Table Card ────────────────────────────────────────────── */
+.top-cities-table-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-s);
+}
+.cities-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+}
+.cities-table th,
+.cities-table td {
+  padding: var(--table-slot-cell-pad-y) var(--table-slot-cell-pad-x);
+  text-align: left;
+  border-bottom: 1px solid var(--table-row-separator);
+  vertical-align: middle;
+}
+.cities-table th {
+  font-weight: var(--text-weight-semibold);
+  color: var(--table-slot-header-color);
+  border-bottom-color: var(--table-header-separator);
+}
+.cities-table tbody tr:hover td {
+  background: var(--table-row-hover);
+}
+.cities-sort-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2xs);
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  font-weight: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+.cities-sort-trigger .column-sort-icon {
+  display: inline-flex;
+  color: var(--table-slot-header-color);
+  opacity: 0.8;
+}
+.cities-table-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-3xs);
+}
+.cities-table-scroll .layout-table-wrap {
+  max-height: 320px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Ninguna tabla tiene contenedor con border-radius */
+.layout-table-wrap,
+.cities-table-scroll,
+.cities-table-scroll .layout-table-wrap,
+.comparison-table-scroll,
+.comparison-table-scroll .layout-table-wrap,
+.sortable-penetration-table-scroll,
+.sortable-penetration-table-scroll .layout-table-wrap,
+.profile-list-card .layout-table-wrap {
+  border-radius: 0 !important;
+}
+
+/* Sticky header: mismo sombreado que Top Cities en todas las tablas con sticky */
+.layout-table-wrap[data-sticky-header] .table-borderless thead th {
+  box-shadow: var(--sticky-header-shadow, 0 4px 12px 0 rgba(109, 131, 139, 0.15)) !important;
+}
+
+/* Sticky columns: sombreado por defecto siempre */
+.layout-table-wrap[data-sticky-cols="1"] .table-borderless thead th:nth-child(1),
+.layout-table-wrap[data-sticky-cols="1"] .table-borderless tbody td:nth-child(1),
+.layout-table-wrap[data-sticky-cols="2"] .table-borderless thead th:nth-child(1),
+.layout-table-wrap[data-sticky-cols="2"] .table-borderless tbody td:nth-child(1),
+.layout-table-wrap[data-sticky-cols="2"] .table-borderless thead th:nth-child(2),
+.layout-table-wrap[data-sticky-cols="2"] .table-borderless tbody td:nth-child(2),
+.layout-table-wrap[data-sticky-cols="3"] .table-borderless thead th:nth-child(1),
+.layout-table-wrap[data-sticky-cols="3"] .table-borderless tbody td:nth-child(1),
+.layout-table-wrap[data-sticky-cols="3"] .table-borderless thead th:nth-child(2),
+.layout-table-wrap[data-sticky-cols="3"] .table-borderless tbody td:nth-child(2),
+.layout-table-wrap[data-sticky-cols="3"] .table-borderless thead th:nth-child(3),
+.layout-table-wrap[data-sticky-cols="3"] .table-borderless tbody td:nth-child(3) {
+  box-shadow: var(--sticky-col-shadow, 2px 4px 12px 0 rgba(109, 131, 139, 0.15)) !important;
+}
+
+.cities-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-m);
+  margin-top: var(--spacing-s);
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+  color: var(--text-body);
+}
+.cities-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-3xs);
+}
+.cities-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.cities-legend-dot-audience {
+  background: var(--progress-slot-fill-bg);
+}
+.cities-legend-dot-baseline {
+  background: var(--progress-slot-track-bg);
+  opacity: 0.8;
+}
+.cities-penetration-cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xs);
+}
+.cities-dual-bar-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-s);
+  min-width: 0;
+}
+.cities-dual-bar-row .progress-root {
+  flex: 1;
+  margin: 0;
+  min-width: 0;
+}
+.cities-dual-bar-row .progress-header {
+  display: none;
+}
+.cities-dual-bar-row .progress-track {
+  margin: 0;
+}
+.cities-dual-bar-row .cities-bar-light .progress-fill {
+  opacity: 0.6;
+}
+.cities-pct {
+  font-size: var(--font-size-xs);
+  font-weight: var(--text-weight-medium);
+  color: var(--text-muted);
+  flex-shrink: 0;
+  min-width: 3em;
+  text-align: right;
+}
+.cities-dual-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.cities-dual-bar .progress-root {
+  margin: 0;
+}
+.cities-dual-bar .progress-header {
+  display: none;
+}
+.cities-dual-bar .progress-track {
+  margin: 0;
+}
+.cities-dual-bar .cities-bar-light .progress-fill {
+  opacity: 0.6;
+}
+.cities-affinity-pill {
+  display: inline-block;
+  padding: var(--spacing-4xs) var(--spacing-2xs);
+  font-size: var(--font-size-s);
+  font-weight: var(--text-weight-medium);
+  color: var(--pill-color);
+  background: var(--pill-background);
+  border-radius: var(--card-slot-radius);
+}
+
+/* ── Skills Table Card (variante con búsqueda) ─────────────────────────── */
+.skills-table-card {
+  gap: var(--spacing-s);
+}
+.skills-search-wrap {
+  margin-bottom: var(--spacing-2xs);
+}
+.skills-search-wrap .field-root {
+  margin: 0;
+}
+.skills-search-field .field-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  clip: rect(0, 0, 0, 0);
+  overflow: hidden;
+}
+
+/* ── Audience Segment Card (familia de cards) ──────────────────────────── */
+.segment-card {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+}
+.segment-card-inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-s);
+  flex: 1;
+  min-height: 0;
+}
+.segment-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-s);
+  margin: calc(-1 * var(--dialog-slot-pad));
+  margin-bottom: 0;
+  padding: var(--spacing-s) var(--dialog-slot-pad);
+  background: var(--segment-header-bg, var(--color-violet-100));
+}
+.segment-title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2xs);
+  min-width: 0;
+}
+.segment-title {
+  margin: 0;
+  font-size: var(--font-size-m);
+  line-height: var(--font-leading-m);
+  font-weight: 700;
+  color: var(--text-title);
+}
+.segment-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-l);
+  flex: 1;
+  min-height: 0;
+}
+.segment-section-title {
+  margin: 0 0 var(--spacing-2xs);
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+  font-weight: var(--text-weight-regular);
+  color: var(--text-muted);
+}
+.segment-section {
+  margin: 0;
+  padding-bottom: var(--spacing-2xs);
+}
+.segment-section:last-child {
+  padding-bottom: 0;
+}
+.segment-donut-wrap {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.segment-donut-wrap .recharts-wrapper {
+  position: absolute;
+  inset: 0;
+}
+.segment-donut-value {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-s);
+  font-weight: var(--text-weight-semibold);
+  color: var(--text-body);
+  pointer-events: none;
+}
+.segment-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2xs);
+}
+.segment-hashtags {
+  width: 100%;
+  justify-content: center;
+  padding-top: var(--spacing-3xs);
+}
+.segment-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-3xs);
+  padding: var(--spacing-4xs) var(--spacing-2xs);
+  font-size: var(--font-size-s);
+  font-weight: var(--text-weight-regular);
+  color: var(--text-body);
+  background: var(--pill-background);
+  border-radius: var(--card-slot-radius);
+}
+.segment-chip-pct {
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  font-weight: var(--text-weight-regular);
+}
+.segment-affinities {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: var(--spacing-m);
+  overflow: hidden;
+}
+.segment-affinity-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-3xs);
+  min-width: 0;
+}
+.segment-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-black-200);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-s);
+  font-weight: var(--text-weight-medium);
+}
+.segment-affinity-label {
+  font-size: var(--font-size-s);
+  color: var(--text-link);
+  text-decoration: underline;
+  text-align: center;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.segment-affinity-label:hover {
+  color: var(--text-link-hover);
+}
+.segment-char-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+}
+.segment-char-table td {
+  padding: var(--spacing-3xs) var(--spacing-2xs) var(--spacing-3xs) 0;
+  color: var(--text-body);
+  border-bottom: 1px solid var(--table-row-separator);
+}
+.segment-char-table td:first-child {
+  color: var(--text-muted);
+  width: 30%;
+  font-weight: var(--text-weight-regular);
+}
+.segment-char-table td:last-child {
+  text-align: right;
+  font-weight: var(--text-weight-regular);
+  font-variant-numeric: tabular-nums;
+}
+.segment-footer-link {
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+/* ── Comparison Bar Cards (Bio / Age vs baseline) ─────────────────────── */
+.comparison-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-s);
+  min-height: 0;
+}
+.comparison-card .comparison-table-scroll {
+  flex: 1;
+  min-height: 0;
+}
+.comparison-title {
+  margin: 0;
+  font-size: var(--font-size-m);
+  line-height: var(--font-leading-m);
+  font-weight: 700;
+  color: var(--text-title);
+}
+.comparison-desc {
+  margin: 0;
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+  color: var(--text-body);
+}
+.comparison-read-more {
+  align-self: flex-start;
+  font-size: var(--font-size-s);
+  color: var(--text-link);
+  text-decoration: underline;
+}
+.comparison-read-more:hover {
+  color: var(--text-link-hover);
+}
+.comparison-table-scroll .layout-table-wrap {
+  max-height: 320px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.comparison-bar-cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3xs);
+}
+.comparison-bar-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-s);
+}
+.comparison-bar-row .comparison-bar-segment,
+.comparison-bar-row .comparison-bar-baseline {
+  flex: 1;
+  min-width: 0;
+}
+.comparison-bar-cell .progress-root {
+  margin: 0;
+}
+.comparison-bar-cell .progress-header {
+  display: none;
+}
+.comparison-bar-cell .progress-track {
+  margin: 0;
+  height: 12px;
+}
+.comparison-bar-segment .progress-fill {
+  background: var(--color-violet-600);
+}
+.comparison-bar-baseline .progress-fill {
+  background: var(--color-violet-200);
+}
+.comparison-pct {
+  flex-shrink: 0;
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+.comparison-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-m);
+  margin-top: var(--spacing-s);
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+  color: var(--text-body);
+}
+.comparison-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-3xs);
+}
+.comparison-legend-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.comparison-legend-dot.segment {
+  background: var(--color-violet-600);
+}
+.comparison-legend-dot.baseline {
+  background: var(--color-violet-200);
+}
+.comparison-card-footer {
+  margin-top: auto;
+  padding-top: var(--spacing-2xs);
+  padding-bottom: var(--spacing-2xs);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-s);
+  flex-shrink: 0;
+}
+.comparison-footer-link {
+  align-self: flex-start;
+  flex-shrink: 0;
+}
+/* Force tertiary appearance for Show full table (drawer trigger) */
+.comparison-card-footer .btn.comparison-footer-link {
+  background: var(--button-tertiary-slot-bg);
+  color: var(--button-tertiary-slot-label);
+}
+.comparison-card-footer .btn.comparison-footer-link[data-hovered] {
+  background: var(--button-tertiary-slot-bg-hover);
+  color: var(--button-tertiary-slot-label-hover);
+}
+.comparison-card-footer .btn.comparison-footer-link[data-pressed] {
+  background: var(--button-tertiary-slot-bg-active);
+  color: var(--button-tertiary-slot-label-active);
+}
+.comparison-drawer-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-m);
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+.comparison-drawer-content .comparison-table-scroll {
+  flex: 1;
+  min-height: 0;
+  max-height: none;
+  display: flex;
+  flex-direction: column;
+}
+.comparison-drawer-content .comparison-table-scroll .layout-table-wrap {
+  flex: 1;
+  min-height: 0;
+  max-height: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* ── Multimedia Grid Cards ─────────────────────────────────────────────── */
+.multimedia-grid-wrap.layout-card-grid {
+  /* Uses TitanCardGrid 16-col; span-4 = 4 cards per row */
+}
+.multimedia-grid-wrap .layout-card {
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.multimedia-tile {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  background-color: var(--color-black-800);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.multimedia-tile-gradient {
+  position: absolute;
+  inset: 0;
+  top: auto;
+  height: 60%;
+  /* Gradient oscuro: opacity 0.9 → 0 debajo del texto */
+  background: linear-gradient(
+    to top,
+    rgba(44, 52, 56, 0.9),
+    rgba(44, 52, 56, 0)
+  );
+  pointer-events: none;
+}
+.multimedia-tile-badge {
+  position: absolute;
+  top: var(--spacing-2xs);
+  right: var(--spacing-2xs);
+  min-width: 36px;
+  height: 36px;
+  padding: 0 var(--spacing-2xs);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-s);
+  font-weight: var(--text-weight-semibold);
+  color: var(--text-on-color);
+  background: rgba(127, 93, 246, 0.85);
+  border-radius: 50%;
+  z-index: 1;
+}
+.multimedia-tile-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: var(--spacing-s) var(--spacing-m);
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+  font-weight: var(--text-weight-medium);
+  color: var(--text-on-color);
+  z-index: 1;
+}
+
 h1,
 h2 {
   margin: 0 0 var(--spacing-s);
   font-size: var(--font-size-l);
   line-height: var(--font-leading-l);
   font-weight: var(--text-weight-semibold);
+}
+
+.card h2 {
+  margin-bottom: var(--spacing-m);
+  color: var(--copy-slot-title);
 }
 
 /* ── Info / docs blocks ───────────────────────────────────────────────── */
@@ -532,7 +1504,7 @@ h2 {
 
 .ds-card-title {
   font-size: var(--font-size-m);
-  font-weight: var(--text-weight-medium);
+  font-weight: 700;
   color: var(--copy-slot-primary);
   margin: 0;
 }

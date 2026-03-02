@@ -1351,6 +1351,7 @@
   --table-slot-bg: var(--color-white-900);
 
   --table-slot-header-color: var(--copy-slot-title);
+  --table-slot-header-sorted-bg: var(--color-steel-100);
   --table-slot-cell-color: var(--copy-slot-body);
 
   --table-slot-header-border-bottom: var(--table-header-border-bottom);
