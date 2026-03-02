@@ -42,7 +42,7 @@ Every fallback component must define and verify:
 
 ## 6) Icon contract
 
-- Use `lucide-react`.
+- Use **lucide-react** first; if the icon is not in Lucide, use **@tabler/icons-react** as fallback.
 - Keep icon size/color tied to Titan tokens, not fixed values.
 
 ## 7) Snowflake metadata (mandatory)

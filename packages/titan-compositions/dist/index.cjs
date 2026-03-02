@@ -691,9 +691,15 @@ function TitanPagination({
 var import_react_aria_components9 = require("react-aria-components");
 var import_lucide_react7 = require("lucide-react");
 var import_jsx_runtime11 = require("react/jsx-runtime");
-function TitanDrawer({ triggerLabel, title, children }) {
+function TitanDrawer({ trigger, triggerLabel = "Open", triggerClassName, triggerIcon, title, children }) {
   return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_react_aria_components9.DialogTrigger, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_react_aria_components9.Button, { className: "btn btn-secondary", children: triggerLabel }),
+    trigger ?? /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_react_aria_components9.Button, { className: triggerClassName ?? "btn btn-secondary", children: [
+      triggerLabel,
+      triggerIcon != null ? /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_jsx_runtime11.Fragment, { children: [
+        " ",
+        triggerIcon
+      ] }) : null
+    ] }),
     /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_react_aria_components9.ModalOverlay, { isDismissable: true, className: "drawer-overlay", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_react_aria_components9.Modal, { className: "drawer-modal", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_react_aria_components9.Dialog, { className: "drawer-panel", children: ({ close }) => /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_jsx_runtime11.Fragment, { children: [
       /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("header", { className: "drawer-header", children: [
         /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("h3", { className: "drawer-title", children: title }),
@@ -752,8 +758,8 @@ function TitanTooltip({
   title,
   body,
   children,
-  delay = 0,
-  closeDelay = 0,
+  delay = 200,
+  closeDelay = 100,
   placement = "top",
   shouldFlip = true
 }) {

@@ -8,7 +8,7 @@ Use this checklist in PRs that touch components, layout patterns, or design-syst
 - [ ] If a `titan-aria` wrapper exists, I evaluated using it to avoid rework while keeping parity.
 - [ ] I avoided duplicate active implementations for the same component.
 - [ ] Fallback is tagged/documented as `snowflake` with migration trigger.
-- [ ] Icons follow policy: `lucide-react` + Titan token-driven size/color.
+- [ ] Icons follow policy: `lucide-react` first, then `@tabler/icons-react`; Titan token-driven size/color.
 - [ ] No hardcoded brand colors; semantic tokens only.
 - [ ] Theme contract is respected (`data-theme`, load order, multi-theme behavior).
 - [ ] Accessibility behavior verified (keyboard, focus, labels/aria).

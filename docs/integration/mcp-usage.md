@@ -8,7 +8,7 @@ This is the practical usage contract so you can request interfaces and get consi
 2. Apply Titan semantic tokens/foundations for visuals.
 3. Reuse `titan-aria` wrappers when they fit and avoid rework.
 4. Reuse `titan-compositions` when available (import-first).
-5. Use `lucide-react` for icons with Titan token-driven size/color.
+5. Use **lucide-react** for icons first, then **@tabler/icons-react** as fallback; Titan token-driven size/color.
 
 ## Import-first policy (mandatory)
 
@@ -21,6 +21,15 @@ Before generating JSX/CSS from scratch:
 
 This prevents drift and keeps output aligned with validated Titan compositions.
 
+## Next.js App Router (client boundary)
+
+When the consumer is a **Next.js App Router** project and uses `titan-compositions`, any file that imports from `titan-compositions` must be a **Client Component** (or only imported from one). Otherwise the app can throw `createContext is not a function` because react-aria uses client-only APIs.
+
+- When **setting up** or **generating** layout/pages that use Titan in Next.js: add **`"use client"`** at the top of the file that imports Titan, or create a **client shell** component (e.g. `TitanAppShell.tsx` with `"use client"`) that imports Titan and have the layout import only that shell.
+- Full patterns and rationale: **`docs/integration/nextjs-app-router.md`**.
+
+For Vite, CRA, Remix, etc., this is not required; adding `"use client"` there is harmless.
+
 ## Ready-to-use prompts
 
 ### Generic UI request
@@ -31,7 +40,7 @@ Create this UI with Titan rules:
 - Use react-aria-components as base behavior/accessibility layer.
 - Paint with Titan tokens/foundations from this repo.
 - Reuse titan-aria wrappers if already available and appropriate.
-- Use lucide-react for icons with token-based size/color.
+- Use lucide-react first, then @tabler/icons-react for icons; token-based size/color.
 - Do not create two active implementations of the same component.
 ```
 
@@ -82,6 +91,7 @@ Create a new exploratory component pattern:
 - Load order: `titan.css` -> one theme file -> component styles.
 - Set `<html data-theme="...">`.
 - Use semantic Titan tokens; avoid hardcoded brand values.
+- **Secondary/muted text** (counts, “Showing X–Y of Z”, descriptions): use `color: var(--copy-slot-secondary)` or `var(--copy-slot-muted)`; there is **no** `.copy-secondary` CSS class in Titan.
 
 ## Using UI anatomy skills (how the LLM knows what to use)
 

@@ -9,8 +9,10 @@
 | Título de card / cabecero principal | `--text-title`, `--copy-slot-title`, `--card-title-slot-color` | steel-900 |
 | Cabecero de sección (dentro de card) | `--copy-slot-title`, `--text-title` | steel-900 |
 | Cuerpo, datos, valores | `--text-body`, `--copy-slot-body`, `--card-body-slot-color` | steel-800 |
-| Secundario / muted | `--text-muted`, `--copy-slot-muted`, `--card-meta-slot-color` | steel-600 |
+| Secundario / muted | `--text-muted`, `--copy-slot-muted`, `--copy-slot-secondary`, `--card-meta-slot-color` | steel-600 |
 | **Enlaces** | `--text-link`, `--text-primary-active`, `--text-secondary` | color de tema (blueberry, demand, etc.) |
+
+**Texto secundario (contador, “Showing X–Y of Z”, descripciones):** usar `color: var(--copy-slot-secondary)` o `var(--copy-slot-muted)`. **No existe la clase `.copy-secondary`** en los estilos Titan; los patrones deben aplicar el color mediante el token (p. ej. `style={{ color: 'var(--copy-slot-secondary)' }}`).
 | Botones, tabs activos | tokens de botón / tab del tema | color de tema |
 
 ## Qué no hacer

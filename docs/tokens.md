@@ -330,7 +330,7 @@ html[data-theme="demand"] {
 |-----|----------|
 | Título / cabecero | `--copy-slot-title`, `--card-title-slot-color` |
 | Cuerpo de texto | `--copy-slot-body`, `--card-body-slot-color` |
-| Secundario / muted | `--copy-slot-muted`, `--card-meta-slot-color` |
+| Secundario / muted | `--copy-slot-muted`, `--copy-slot-secondary`, `--card-meta-slot-color` |
 | Enlaces | `--text-link`, `--text-primary-active`, `--text-secondary` |
 | Fondo de card | `--card-slot-bg`, `--surface-slot-card` |
 | Borde por defecto | `--border-slot-default`, `--card-slot-border` |

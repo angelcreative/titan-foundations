@@ -217,11 +217,18 @@ interface TitanPaginationProps {
 declare function TitanPagination({ ariaLabel, pages, currentPage, previousDisabled, nextDisabled, onPageChange, onPrevious, onNext, }: TitanPaginationProps): react_jsx_runtime.JSX.Element;
 
 interface TitanDrawerProps {
-    triggerLabel: string;
+    /** When provided, used as the trigger instead of the default button. */
+    trigger?: ReactNode;
+    /** Used when `trigger` is not provided. */
+    triggerLabel?: string;
+    /** Class for the default trigger button (e.g. "btn btn-tertiary"). Ignored when `trigger` is provided. */
+    triggerClassName?: string;
+    /** Optional icon to show after the label on the default trigger. Ignored when `trigger` is provided. */
+    triggerIcon?: ReactNode;
     title: string;
     children: ReactNode;
 }
-declare function TitanDrawer({ triggerLabel, title, children }: TitanDrawerProps): react_jsx_runtime.JSX.Element;
+declare function TitanDrawer({ trigger, triggerLabel, triggerClassName, triggerIcon, title, children }: TitanDrawerProps): react_jsx_runtime.JSX.Element;
 
 interface TitanDialogProps {
     triggerLabel: string;

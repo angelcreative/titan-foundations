@@ -25,7 +25,7 @@ This inventory is the decision baseline to avoid two active sources of truth.
 | Grid/layout system | `foundations/grid.json`, `docs/grid.md`, `foundations/template.json` | `FoundationOnlySpec` | Keep as cross-cutting layout foundation. |
 | Table borderless pattern | `foundations/table-borderless.json`, `docs/table-borderless.md` | `FoundationOnlySpec` | Keep as optional borderless data-table pattern. |
 | Copy and links conventions | `foundations/copy-and-links.json`, `docs/copy-and-links.md` | `FoundationOnlySpec` | Keep as semantic writing/styling convention. |
-| Icons | `lucide-react` + Titan tokens | `AriaBase` | Use Lucide with token-driven color/size consistently. |
+| Icons | `lucide-react` first, then `@tabler/icons-react` + Titan tokens | `AriaBase` | Use Lucide first, Tabler as fallback; token-driven color/size. |
 
 ## Supporting inventory (`titan-aria` package)
 

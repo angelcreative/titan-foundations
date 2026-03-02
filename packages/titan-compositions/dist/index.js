@@ -649,9 +649,15 @@ function TitanPagination({
 import { Button as Button8, Dialog, DialogTrigger, Modal, ModalOverlay } from "react-aria-components";
 import { X as X2 } from "lucide-react";
 import { Fragment as Fragment2, jsx as jsx11, jsxs as jsxs10 } from "react/jsx-runtime";
-function TitanDrawer({ triggerLabel, title, children }) {
+function TitanDrawer({ trigger, triggerLabel = "Open", triggerClassName, triggerIcon, title, children }) {
   return /* @__PURE__ */ jsxs10(DialogTrigger, { children: [
-    /* @__PURE__ */ jsx11(Button8, { className: "btn btn-secondary", children: triggerLabel }),
+    trigger ?? /* @__PURE__ */ jsxs10(Button8, { className: triggerClassName ?? "btn btn-secondary", children: [
+      triggerLabel,
+      triggerIcon != null ? /* @__PURE__ */ jsxs10(Fragment2, { children: [
+        " ",
+        triggerIcon
+      ] }) : null
+    ] }),
     /* @__PURE__ */ jsx11(ModalOverlay, { isDismissable: true, className: "drawer-overlay", children: /* @__PURE__ */ jsx11(Modal, { className: "drawer-modal", children: /* @__PURE__ */ jsx11(Dialog, { className: "drawer-panel", children: ({ close }) => /* @__PURE__ */ jsxs10(Fragment2, { children: [
       /* @__PURE__ */ jsxs10("header", { className: "drawer-header", children: [
         /* @__PURE__ */ jsx11("h3", { className: "drawer-title", children: title }),
@@ -710,8 +716,8 @@ function TitanTooltip({
   title,
   body,
   children,
-  delay = 0,
-  closeDelay = 0,
+  delay = 200,
+  closeDelay = 100,
   placement = "top",
   shouldFlip = true
 }) {

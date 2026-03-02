@@ -14,7 +14,7 @@ This policy defines which layer to use to implement UI, without collisions.
    Reuse wrappers when they reduce rework and preserve parity with the same token contract.
 
 4. **Icon rule**  
-   Use `lucide-react` and bind size/color to Titan tokens.
+   Use **lucide-react** first; if the icon is not available there, use **@tabler/icons-react** as fallback. Always bind size/color to Titan tokens.
 
 ## Single source of truth rule
 
@@ -43,4 +43,4 @@ Regardless of layer:
 | --- | --- |
 | Standard component flow | `react-aria-components` + Titan tokens/foundations |
 | Existing wrapper already fits | `titan-aria` wrapper + Titan tokens/foundations |
-| Missing icon | `lucide-react` + Titan token-driven color/size |
+| Missing icon | `lucide-react` first, then `@tabler/icons-react`; Titan token-driven color/size |

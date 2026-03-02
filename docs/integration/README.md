@@ -3,7 +3,7 @@
 Operational docs to integrate React Aria, `titan-aria` wrappers, and local foundations/tokens without ownership collisions.
 
 - `component-inventory.md`: ownership status and overlap inventory.
-- `decision-policy.md`: mandatory layer precedence and icon fallback rules.
+- `decision-policy.md`: mandatory layer precedence and icon rule (lucide-react first, @tabler/icons-react fallback).
 - `deduplication-roadmap.md`: migration and deprecation path for duplicated ownership.
 - `fallback-contract.md`: technical contract for snowflake implementations.
 - `post-update-audit-runbook.md`: manual audit workflow after integration changes.
@@ -13,6 +13,7 @@ Operational docs to integrate React Aria, `titan-aria` wrappers, and local found
 - `removal-readiness-template.md`: reusable dry-run template before fallback artifact removal.
 - `menu-select-removal-readiness.md`: prefilled dry-run sheet for Menu/Select removal decisions.
 - `mcp-usage.md`: copy/paste prompts and operational contract for Cursor + MCP usage.
+- `nextjs-app-router.md`: Next.js App Router + titan-compositions — client-boundary rule, `createContext` error, patterns (page `"use client"` vs client shell); for MCP/LLM and manual setup.
 - `component-review-contract.md`: transversal QA contract, PASS/FAIL/BLOCKER criteria, and reusable review harness template.
 - `smoke-review-checklist.md`: 10-minute smoke pass for states, interaction, a11y, and token compliance.
 - `component-registry.json`: machine-readable catalog of all `titan-compositions` components — props, types, slots, composability, and coverage map for MCP code generation.

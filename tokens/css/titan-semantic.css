@@ -890,6 +890,7 @@
   /* ====================================================================== */
   --copy-slot-title: var(--color-steel-900);
   --copy-slot-body: var(--color-steel-800);
+  --copy-slot-secondary: var(--copy-slot-muted);
   --copy-slot-muted: var(--color-steel-600);
   --copy-slot-disabled: var(--color-disabled-500);
 

@@ -34,7 +34,8 @@ Consumer apps should install:
 - `react`
 - `react-dom`
 - `react-aria-components`
-- `lucide-react`
+- `lucide-react` (primary icon set; use **first**)
+- `@tabler/icons-react` (optional fallback when an icon is not in Lucide)
 
 And import composition styles:
 
@@ -47,6 +48,18 @@ And load Titan styles in order:
 1. `tokens/css/titan.css`
 2. active theme (`tokens/themes/_*.css`)
 3. `titan-compositions/styles`
+
+## Next.js App Router
+
+`titan-compositions` depends on `react-aria-components` (and React context). Those APIs exist only in the **client** React runtime. In Next.js App Router, pages and layouts are **Server Components** by default, so importing from `titan-compositions` in a Server Component can cause:
+
+```
+TypeError: createContext is not a function
+```
+
+**Rule:** Any module that imports from `titan-compositions` in a Next.js App Router app must be a **Client Component**: add `"use client"` at the top of that file, or only import Titan from components that already have `"use client"`. See **`docs/integration/nextjs-app-router.md`** for patterns (page-level `"use client"` vs client shell).
+
+In Vite, CRA, Remix, etc., there is no Server/Client split; this rule does not apply and adding `"use client"` is harmless (directives are ignored).
 
 ## Quick usage
 
