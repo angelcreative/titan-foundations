@@ -31,3 +31,7 @@ Universal UI anatomy for a **segment summary card**: donut chart, keywords, affi
 - Use **three equal-width cards** (e.g. `span={4}` in a 16-col grid) with **same layout, different data** and different header/donut colors.
 - Donut must have a text alternative or aria-label. Empty state per section; loading: skeleton.
 - Reference: playground `id="audience-segment-card"`.
+
+## Related patterns
+
+- For detailed lists (hashtags, domains, mentioned users) → [categorical-list-cards.md](./categorical-list-cards.md); ranked table → [top-cities-table.md](./top-cities-table.md); sortable penetration list → [sortable-penetration-list.md](./sortable-penetration-list.md); profile list → [profile-list-card.md](./profile-list-card.md).

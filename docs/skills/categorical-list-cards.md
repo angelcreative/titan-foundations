@@ -43,3 +43,8 @@ Universal UI anatomy for a **family of list-based cards**: same container and he
 - Use list semantics (`<ul>`/`<li>`) or `role="list"`; each link/row focusable. Avatar: `alt` or `aria-hidden` + visible username.
 - Empty state: “No domains” / “No hashtags” / “No users”. Loading: skeleton lines or placeholders.
 - Scannability: keep density balanced; dividers and consistent row height improve scanning (Jakob’s Law, Proximity).
+
+## Related patterns
+
+- If the list becomes long or needs sort/pagination → use [table-advanced.md](./table-advanced.md).
+- Filter panel beside results → [vertical-filter-panel.md](./vertical-filter-panel.md).

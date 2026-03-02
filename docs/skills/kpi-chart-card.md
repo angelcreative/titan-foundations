@@ -27,3 +27,8 @@ Universal UI anatomy for a **metric card with trend and a line chart** over time
 - Chart is decorative or has a text alternative (e.g. “Chart: 7 data points”; hide with `aria-hidden="true"` if redundant with value).
 - Provide loading state for chart (skeleton or placeholder).
 - Reference: playground `id="kpi-chart-card"`.
+
+## Related patterns
+
+- For metric without chart → [kpi-trend-card.md](./kpi-trend-card.md).
+- For categorical breakdown (bars by category) → [distribution-bar-card.md](./distribution-bar-card.md), [double-bar-chart-card.md](./double-bar-chart-card.md).

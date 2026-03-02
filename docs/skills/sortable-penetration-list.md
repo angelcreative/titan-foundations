@@ -26,3 +26,8 @@ Universal UI anatomy for a **sortable list** where each row has a label and a **
 - Default sort: usually by penetration descending. Expose sort to keyboard (column header focusable, Enter/Space to sort).
 - Empty state: “No data”. Loading: skeleton rows.
 - Reference: playground `id="sortable-penetration-list"`.
+
+## Related patterns
+
+- Tabular version (name + dual bars + pill) → [top-cities-table.md](./top-cities-table.md).
+- Single bar per row (proportions) → [distribution-bar-card.md](./distribution-bar-card.md). Sort implementation → [table-advanced.md](./table-advanced.md).

@@ -47,3 +47,8 @@ The **variant** is the **dimension/category** of the card. Structure stays the s
 - **“Show full table”** always opens a **TitanDrawer** with title e.g. “Bio – Full table” / “Age – Full table”; drawer body contains description + full table (same columns, sortable) + legend. Use `triggerLabel="Show full table"`, `triggerClassName="btn btn-tertiary comparison-footer-link"`, `triggerIcon={<ArrowRight />}` so the trigger renders as tertiary. In drawer, table container uses flex so the table area expands downward and scrolls internally.
 - “Read more” can open a modal or navigate. Provide empty and loading states (skeleton bars).
 - Reference: playground `id="comparison-bar-cards"`.
+
+## Related patterns
+
+- Same metric as ratio/donut across segments → [comparison-donut-card.md](./comparison-donut-card.md).
+- Full table in a drawer uses sortable table → [table-advanced.md](./table-advanced.md); drawer contract → [../drawer.md](../drawer.md).

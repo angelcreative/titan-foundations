@@ -28,3 +28,7 @@ Universal UI anatomy for a **single card that compares one percentage metric acr
 - Provide a text alternative for the comparison (e.g. “LoL Streaming 74.03%, Madrid Gaming Audience Analysis 80.41%”) or `aria-label` on the card. Decorative donuts can use `aria-hidden="true"` if the central percentages are already in the DOM.
 - Layout: flex or grid for side-by-side donuts; labels can wrap (e.g. two lines for long names). Keep donuts equal width or proportional.
 - Empty/loading: skeleton donuts or “No data”. Reference: use for segment vs segment percentage comparison.
+
+## Related patterns
+
+- Detailed comparison by category (bars per row) → [comparison-bar-cards.md](./comparison-bar-cards.md).

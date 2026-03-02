@@ -27,3 +27,8 @@ Universal UI anatomy for a **grid of media tiles**: each tile has an image area 
 
 - Image: use `<img>` with alt text or `aria-hidden` placeholder. Badge: ensure contrast (WCAG AA).
 - Empty state: “No content”. Loading: skeleton tiles. Reference: playground `id="multimedia-grid-cards"`.
+
+## Related patterns
+
+- Grid layout (16 columns, span) → [../grid.md](../grid.md).
+- Metric badges per tile may use KPI-style tokens → [kpi-trend-card.md](./kpi-trend-card.md).

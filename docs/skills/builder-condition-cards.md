@@ -45,3 +45,12 @@ The **variant** is the **criterion type** of each card. Structure is fixed; only
 - Edit: opens inline editor, modal, or drawer to change the criterion type or value. Delete: removes that card and collapses layout.
 - Keyboard: tab through cards and connectors; Enter on add to add condition. Optional: drag to reorder cards.
 - Empty state: no cards, show single CTA “Add condition” (e.g. same style as add connector). Reference: segment builders, filter builders, rule engines.
+
+## Related patterns
+
+- Filter inputs in a vertical panel: [vertical-filter-panel.md](./vertical-filter-panel.md). Option selection before builder: [selectable-option-cards.md](./selectable-option-cards.md).
+
+## Related patterns
+
+- Selectable option cards (choose one/many) → [selectable-option-cards.md](./selectable-option-cards.md).
+- Filters in a vertical panel → [vertical-filter-panel.md](./vertical-filter-panel.md).

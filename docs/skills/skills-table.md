@@ -24,3 +24,8 @@ Universal UI anatomy for the **same table as Top Cities** (3 columns: name, two 
 
 - Filter rows client-side or server-side by the search term; show loading state if needed. Empty state: “No results”.
 - Reference: playground `id="skills-table-card"`.
+
+## Related patterns
+
+- Base table (columns, bars, legend) → [top-cities-table.md](./top-cities-table.md). Sort → [table-advanced.md](./table-advanced.md).
+- Advanced filters (collapsible sections) → [vertical-filter-panel.md](./vertical-filter-panel.md). Pagination → [../pagination.md](../pagination.md).

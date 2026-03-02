@@ -28,3 +28,9 @@ Universal UI anatomy for a **sortable, accessible table** built with React Aria 
 - **Report list (or any page) with sortable columns:** use **TitanTable** (not TitanBorderlessTable) and this pattern; TitanBorderlessTable only accepts `header: string` and has no API for sortable headers or sort icons.
 - Provide empty state (“No rows”) and loading state (skeleton or spinner).
 - Reference: playground `id="table"` and card demos (Comparison Bar Cards, Top Cities, etc.).
+
+## Related patterns
+
+- Tables inside cards (e.g. comparison full table, report list) → use this pattern; report list page → `docs/integration/composition-patterns.json` (reportListPage).
+- Simpler tables (no sort) → TitanBorderlessTable; table tokens → [../table-borderless.md](../table-borderless.md).
+- Top Cities / Skills table (dual bars + pill) → [top-cities-table.md](./top-cities-table.md), [skills-table.md](./skills-table.md).

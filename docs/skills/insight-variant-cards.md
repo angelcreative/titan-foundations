@@ -32,3 +32,12 @@ Common slots: **Icon** (or illustration), **Title**, **Description** (body text)
 - Use one component with a `variant` prop (default | compact | wide) to avoid duplication.
 - Empty state: placeholder text or hide. Loading: skeleton title + lines.
 - Reference: playground `id="insight-variant-cards"`.
+
+## Related patterns
+
+- For metric/content blocks with chart or bars → [kpi-chart-card.md](./kpi-chart-card.md), [comparison-bar-cards.md](./comparison-bar-cards.md).
+- For selectable option blocks → [selectable-option-cards.md](./selectable-option-cards.md).
+
+## Related patterns
+
+- For metric/content blocks with icon + title + description; combine with [kpi-trend-card.md](./kpi-trend-card.md) or [comparison-donut-card.md](./comparison-donut-card.md) in a grid.

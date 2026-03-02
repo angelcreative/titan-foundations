@@ -25,3 +25,8 @@ Universal UI anatomy for a **card with a single-series bar chart**: **one bar pe
 - Decide scale: same max for all bars or per-row. Show value or % when useful.
 - Empty/loading: skeleton bars or “No data”.
 - Reference: playground `id="single-bar-chart-card"`.
+
+## Related patterns
+
+- Two bars per category → [double-bar-chart-card.md](./double-bar-chart-card.md).
+- List of proportions (label + bar + %) → [distribution-bar-card.md](./distribution-bar-card.md).

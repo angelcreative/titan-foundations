@@ -45,4 +45,10 @@ Each collapsible section can contain different input types. Structure is the sam
 - **Accessibility:** Section header must be focusable and toggle expand with Enter/Space. Use `aria-expanded` and `aria-controls` linking to the content region. Optional: allow one section open at a time (accordion) or multiple (independent collapse).
 - **State:** Track which sections are expanded and current filter values. “Clear All” resets values (and optionally collapses all). “Apply” submits filters (e.g. callback or form submit).
 - **Scroll:** If many sections, panel body can scroll; keep header and footer sticky or visible. Empty state: N/A (panel is always present with section list). Loading: disable inputs or show skeleton sections if filters load async.
-- Reference: filter sidebars, search refinement panels, “add some filters” flows.
+- Reference: filter sidebars, search refinement panels, "add some filters" flows.
+
+## Related patterns
+
+- Menu/Select for dropdowns → [../menu-and-select.md](../menu-and-select.md).
+- Results beside panel: e.g. [kpi-trend-card.md](./kpi-trend-card.md), [comparison-bar-cards.md](./comparison-bar-cards.md), [top-cities-table.md](./top-cities-table.md).
+

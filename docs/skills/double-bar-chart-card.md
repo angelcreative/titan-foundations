@@ -26,3 +26,9 @@ Universal UI anatomy for a **card with a grouped bar chart**: **each x-axis cate
 - Include a legend if the two bars are not self-explanatory. Prefer consistent order (e.g. always Male then Female).
 - Empty/loading: skeleton rows or “No data”.
 - Reference: playground `id="double-bar-chart-card"`.
+
+## Related patterns
+
+- Single series per category → [single-bar-chart-card.md](./single-bar-chart-card.md).
+- Horizontal bars in a list (label + % bar) → [distribution-bar-card.md](./distribution-bar-card.md).
+- Comparison cards with bars + legend in card layout → [comparison-bar-cards.md](./comparison-bar-cards.md).

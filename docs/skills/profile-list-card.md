@@ -34,3 +34,7 @@ Universal UI anatomy for a **card listing profiles**: table-like layout **withou
 - **Col 2:** Use icon (e.g. ExternalLink) for “open profile” actions, or a plain number/cifra (e.g. engagement count) with tabular-nums; right-align the second column (e.g. `profile-list-col-action`).
 - Empty state: “No profiles”. Loading: skeleton avatars + lines.
 - Reference: playground `id="profile-list-card"` (two cards: icon variant + number variant).
+
+## Related patterns
+
+- Table contract (borderless, no thead) → [../table-borderless.md](../table-borderless.md). For sort/selection → [table-advanced.md](./table-advanced.md).

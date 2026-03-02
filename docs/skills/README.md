@@ -18,36 +18,66 @@ Each file describes **one** pattern or **one family** of patterns:
 - **Anatomy** — Regions, slots, and structure (what appears where: header, body, footer, badges, etc.).
 - **Titan usage** — Which Titan components and tokens to use (surfaces, typography, color).
 - **Implementation notes** — Hints for the LLM (e.g. chart slot, empty/loading states).
+- **Related patterns** — Cross-links to other skills (e.g. when to use a table vs a list, or which card to combine).
 
-## Index of patterns
+## Index of patterns (by category)
+
+Each anatomy file includes a **Related patterns** section at the end with cross-links to other skills; use it when composing UI from multiple patterns.
+
+### Cards — KPI & metrics
 
 | Pattern | File | Use when |
 |--------|------|----------|
 | KPI Trend Card | [kpi-trend-card.md](./kpi-trend-card.md) | Single metric + trend (up/down %) |
 | KPI Chart Card | [kpi-chart-card.md](./kpi-chart-card.md) | Metric + trend + line chart over time |
+
+### Cards — Bars & distribution
+
+| Pattern | File | Use when |
+|--------|------|----------|
 | Distribution Bar Card | [distribution-bar-card.md](./distribution-bar-card.md) | Proportions list (label + % bar) |
-| Profile List Card | [profile-list-card.md](./profile-list-card.md) | List of avatars + names + meta |
 | Double Bar Chart Card | [double-bar-chart-card.md](./double-bar-chart-card.md) | Two bars per row (e.g. male/female) |
 | Single Bar Chart Card | [single-bar-chart-card.md](./single-bar-chart-card.md) | One bar per row, optional target line |
-| Insight Variant Cards | [insight-variant-cards.md](./insight-variant-cards.md) | Family: default, compact, wide (insight/content blocks) |
-| Categorical List Cards | [categorical-list-cards.md](./categorical-list-cards.md) | Family: Domains, Hashtags, Mentioned users (list cards) |
-| Selectable Option Cards | [selectable-option-cards.md](./selectable-option-cards.md) | Family: selectable cards (title + illustration + description); selection state by border/highlight |
-| Builder Condition Cards | [builder-condition-cards.md](./builder-condition-cards.md) | Family: condition cards linked by AND/OR; title + prompt + value pill + edit/delete; add connector |
-| Vertical Filter Panel | [vertical-filter-panel.md](./vertical-filter-panel.md) | Vertical long card builder: header + N collapsible filter sections + Clear All / Apply |
-| Sortable Penetration List | [sortable-penetration-list.md](./sortable-penetration-list.md) | Sortable list with penetration % |
-| Top Cities Table | [top-cities-table.md](./top-cities-table.md) | Ranked table (e.g. city, value, %) |
-| Skills Table | [skills-table.md](./skills-table.md) | Table with search/filter |
+| Comparison Bar Cards | [comparison-bar-cards.md](./comparison-bar-cards.md) | Family: Device, Content type, Bio, Age (two bars + legend) |
+| Comparison Donut Card | [comparison-donut-card.md](./comparison-donut-card.md) | One % metric across segments: side-by-side donuts |
+
+### Cards — Lists & segment
+
+| Pattern | File | Use when |
+|--------|------|----------|
+| Profile List Card | [profile-list-card.md](./profile-list-card.md) | List of avatars + names + meta |
+| Categorical List Cards | [categorical-list-cards.md](./categorical-list-cards.md) | Family: Domains, Hashtags, Mentioned users |
 | Audience Segment Card | [audience-segment-card.md](./audience-segment-card.md) | Segment summary: donut, keywords, affinities, etc. |
-| Comparison Bar Cards | [comparison-bar-cards.md](./comparison-bar-cards.md) | Family: Device, Content type, Bio, Age (title + description + Read more + items with icon + two bars + legend) |
-| Comparison Donut Card | [comparison-donut-card.md](./comparison-donut-card.md) | One % metric across segments: icon + title + description + side-by-side donuts |
+
+### Cards — Insight, option & builder
+
+| Pattern | File | Use when |
+|--------|------|----------|
+| Insight Variant Cards | [insight-variant-cards.md](./insight-variant-cards.md) | Family: default, compact, wide (insight/content blocks) |
+| Selectable Option Cards | [selectable-option-cards.md](./selectable-option-cards.md) | Selectable cards (title + illustration + description) |
+| Builder Condition Cards | [builder-condition-cards.md](./builder-condition-cards.md) | Condition cards linked by AND/OR; edit/delete; add connector |
 | Multimedia Grid Cards | [multimedia-grid-cards.md](./multimedia-grid-cards.md) | Grid of media tiles (image + title + % badge) |
-| Table (Advanced) | [table-advanced.md](./table-advanced.md) | Sortable table with React Aria |
+
+### Tables
+
+| Pattern | File | Use when |
+|--------|------|----------|
+| Table (Advanced) | [table-advanced.md](./table-advanced.md) | Sortable table with React Aria (lucide sort icons) |
+| Top Cities Table | [top-cities-table.md](./top-cities-table.md) | Ranked table (name + dual bars + pill; legend) |
+| Skills Table | [skills-table.md](./skills-table.md) | Same as Top Cities + search above table |
+| Sortable Penetration List | [sortable-penetration-list.md](./sortable-penetration-list.md) | Sortable list with penetration % |
+
+### Filters & panels
+
+| Pattern | File | Use when |
+|--------|------|----------|
+| Vertical Filter Panel | [vertical-filter-panel.md](./vertical-filter-panel.md) | Vertical panel: N collapsible filter sections + Clear All / Apply |
 
 ## How to add a new pattern
 
 1. Add a new `.md` file named after the pattern (e.g. `my-pattern.md`).
 2. Use the same sections: purpose, anatomy, Titan usage, implementation notes.
-3. Add a row to the table above and, if useful, link from the main docs.
+3. Add a row to the appropriate category table above and a **Related patterns** section at the end of the file. Link from the main docs if useful.
 
 ## How the LLM (or MCP) should choose a skill
 

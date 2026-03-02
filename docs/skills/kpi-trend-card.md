@@ -28,3 +28,8 @@ Universal UI anatomy for a **dashboard metric card** with a single value and a t
 - Use semantic HTML: `<article>`, heading or `<span>` for title, no heading level for the value (or aria-label).
 - Provide empty/loading state (skeleton or “—” for value, hide trend).
 - Reference: playground `id="kpi-trend-card"`.
+
+## Related patterns
+
+- If you need a small line chart over time on the same card → [kpi-chart-card.md](./kpi-chart-card.md).
+- For multiple KPIs in a row → use this pattern inside `TitanCardGrid` (same as KPI Chart Card).

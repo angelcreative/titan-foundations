@@ -44,3 +44,12 @@ The **variant** is each **option** in the set. Same layout per card; only title,
 - **Selection:** Single-select (one card) or multi-select (several cards) depending on product. Selected card must be clearly distinguishable (border, background, or both).
 - Keyboard: cards in tab order; Enter/Space to toggle selection. Prefer minimum touch target (e.g. 44px) for the whole card.
 - Empty/loading: N/A for option set; if options load async, show skeleton cards. Reference: use for wizards, onboarding, or “choose audience type” flows.
+
+## Related patterns
+
+- After selection, next step may use [vertical-filter-panel.md](./vertical-filter-panel.md) or [builder-condition-cards.md](./builder-condition-cards.md).
+
+## Related patterns
+
+- Content blocks (icon + title + description) → [insight-variant-cards.md](./insight-variant-cards.md).
+- Condition/rule builder (AND/OR cards) → [builder-condition-cards.md](./builder-condition-cards.md).

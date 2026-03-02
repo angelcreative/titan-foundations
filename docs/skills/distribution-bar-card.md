@@ -28,3 +28,8 @@ Universal UI anatomy for a **card showing a list of proportions** (label + perce
 - Order rows by value (descending) unless user needs custom order. Cap visible rows and use “View more” for the rest.
 - Empty state: “No data” or hide card. Loading: skeleton bars.
 - Reference: playground `id="distribution-bar-card"`.
+
+## Related patterns
+
+- Two series per row (e.g. segment vs baseline) → [double-bar-chart-card.md](./double-bar-chart-card.md); single bar per row → [single-bar-chart-card.md](./single-bar-chart-card.md).
+- When used inside comparison cards with legend → [comparison-bar-cards.md](./comparison-bar-cards.md).

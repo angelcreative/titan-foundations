@@ -27,3 +27,8 @@ Universal UI anatomy for a **table with 3 columns**: (1) name, (2) two comparati
 - Legend is required so users know which bar is Audience vs Baseline. Place above the table.
 - Col 2: use two rows in the cell (e.g. `cities-dual-bar-row`): bar + % on same line for each series.
 - Reference: playground `id="top-cities-table-card"`.
+
+## Related patterns
+
+- Table look & feel → [../table-borderless.md](../table-borderless.md). Sortable headers (lucide icons) → [table-advanced.md](./table-advanced.md).
+- List variant (sort by penetration only) → [sortable-penetration-list.md](./sortable-penetration-list.md).
