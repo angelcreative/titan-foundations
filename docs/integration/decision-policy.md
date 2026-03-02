@@ -21,6 +21,13 @@ This policy defines which layer to use to implement UI, without collisions.
 - Never maintain two active implementations of the same component in one solution.
 - Prefer one path per component (`AriaBase` or `TitanAriaWrapper`) and document exceptions.
 
+## Non-negotiables (anti-invention rules)
+
+- **Do not invent bespoke HTML/CSS** as a substitute for Titan components when something is unclear or fails.  
+  Raw HTML is allowed only for **structural wrappers** (e.g. `<main>`, `<section>`, layout containers) and must still use Titan tokens.
+- If the correct Titan API/props cannot be verified (registry/docs not available), **return `BLOCKER`** instead of guessing.
+- If something looks “unsupported”, verify against: component registry/docs → skills/patterns → then decide.
+
 ## Snowflake rule
 
 Temporary implementations must be marked as `snowflake` and include:

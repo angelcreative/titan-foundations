@@ -21,6 +21,24 @@ Before generating JSX/CSS from scratch:
 
 This prevents drift and keeps output aligned with validated Titan compositions.
 
+## Hard constraints (non-negotiable)
+
+These rules exist to prevent LLM “panic fallbacks” (inventing HTML/CSS) when something is unclear or fails.
+
+- **NEVER** replace `titan-compositions` / `titan-aria` / React Aria usage with bespoke HTML/CSS as a “fix”.
+  - Raw HTML is allowed only for **structural wrappers** that have no Titan equivalent (e.g. `<main>`, `<section>`, grid wrappers), and must still be styled using Titan semantic tokens.
+- If the UI request depends on knowing a Titan component API and the registry/docs are unavailable: **return `BLOCKER`** with the missing dependency/tooling needed. Do not guess.
+- If something “seems unsupported” by Titan, do not decide by intuition. **Verify** against registry/docs and skills/patterns first.
+
+## Failure playbook (when something doesn’t work)
+
+If a Titan component does not render as expected, a prop seems missing, or behavior conflicts appear:
+
+1. **Verify the API** (registry/docs in this repo or via MCP).
+2. **Load the relevant anatomy/pattern** (skills + composition-patterns).
+3. **Choose the Titan-native alternative** (example: sortable table headers → use `TitanTable` + `docs/skills/table-advanced.md`, not `TitanBorderlessTable`).
+4. If still not possible, propose a **temporary `snowflake`** that follows `docs/integration/fallback-contract.md` (and includes exit criteria). Do not silently invent look & feel.
+
 ## Next.js App Router (client boundary)
 
 When the consumer is a **Next.js App Router** project and uses `titan-compositions`, any file that imports from `titan-compositions` must be a **Client Component** (or only imported from one). Otherwise the app can throw `createContext is not a function` because react-aria uses client-only APIs.

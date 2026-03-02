@@ -2,6 +2,13 @@
 
 This contract applies to temporary implementations (`snowflake`) built with React Aria + Titan tokens/foundations.
 
+## Zero-invention rule
+
+Fallbacks exist only when there is **no** suitable `titan-compositions` component, wrapper, or documented pattern.
+
+- **Do not** replace a Titan component with bespoke HTML/CSS just because it “seems broken” or “seems unsupported”.
+- Before declaring a fallback, verify API/patterns (registry/docs + skills/patterns). If you cannot verify, **return `BLOCKER`** rather than guessing.
+
 ## 1) Build primitives
 
 - Use `react-aria-components` primitives for behavior and accessibility.
