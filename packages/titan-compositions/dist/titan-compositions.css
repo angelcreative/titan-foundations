@@ -213,9 +213,14 @@
   border-spacing: 0;
 }
 
+/* Sortable th: hover and active (sorted) use black-200 */
+.table-sortable thead th:hover {
+  background: var(--table-slot-header-hover-bg, var(--color-black-200)) !important;
+}
+
 .table-sortable thead th[aria-sort="ascending"],
 .table-sortable thead th[aria-sort="descending"] {
-  background: var(--table-slot-header-sorted-bg, rgba(0 0 0 / 0.04)) !important;
+  background: var(--table-slot-header-sorted-bg, var(--color-black-200)) !important;
   border-radius: 8px 8px 0 0;
 }
 
@@ -235,6 +240,78 @@
 .table-sortable thead th[aria-sort="descending"] .column-sort-icon {
   color: var(--copy-slot-primary);
   opacity: 1;
+}
+
+/* TitanBorderlessTable — name cell, social icons, status, checkbox/actions columns */
+.table-cell-name-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-2xs, 4px);
+}
+
+.table-cell-name-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--copy-slot-primary, inherit);
+  text-align: left;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.table-cell-name-link:hover {
+  color: var(--copy-slot-secondary, inherit);
+}
+
+.table-cell-name-icons {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2xs, 4px);
+}
+
+.table-social-icon {
+  font-size: 0.75rem;
+  color: var(--copy-slot-secondary);
+}
+
+.table-avatar-initials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-black-200);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.table-status-dot-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2xs, 4px);
+}
+
+.table-status-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--color-ocean-600, var(--color-black-600));
+}
+
+.table-col-checkbox .table-checkbox-header,
+.table-cell-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.table-col-actions,
+.table-cell-actions {
+  text-align: right;
 }
 
 .navbar {

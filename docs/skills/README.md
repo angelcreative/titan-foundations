@@ -90,7 +90,7 @@ When the user asks for UI (in chat, via MCP, or in a prompt), the LLM must **res
 | Segment card, audience segment, donut + keywords, affinities, hashtags | `audience-segment-card.md` |
 | Comparison vs baseline, Bio/Age/Device bars, two bars per row, segment vs audience | `comparison-bar-cards.md` |
 | Sortable table, data table, column sort, table in card | `table-advanced.md` (+ card skill if inside a card) |
-| Report list with sortable columns, reports table with sort (Audience size, Created, etc.) | `table-advanced.md` + report-list-page pattern (use TitanTable, not TitanBorderlessTable, for sortable headers; lucide ArrowUp/ArrowDown/ArrowUpDown) |
+| Report list with sortable columns, reports table with sort (Audience size, Created, etc.) | `table-advanced.md` + report-list-page pattern (use TitanBorderlessTable with sortable columns; lucide ArrowUp/ArrowDown/ArrowUpDown) |
 | Drawer, panel lateral, show full table opens panel | `../drawer.md` (and comparison-bar-cards for show full table behavior) |
 | KPI metric, single value + trend | `kpi-trend-card.md` or `kpi-chart-card.md` |
 | Top cities, ranked list, penetration by city | `top-cities-table.md` |

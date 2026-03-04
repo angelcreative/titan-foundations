@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Checkbox } from 'react-aria-components'
 import { LineChart as RechartsLineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Legend, PieChart, Pie, Cell as RechartsCell } from 'recharts'
 import {
   AlertCircle,
@@ -68,13 +69,6 @@ import {
   TitanBadge,
   TitanBadgeAnchor,
   TitanBorderlessTable,
-  TitanTable,
-  TableHeader,
-  TableBody,
-  Column,
-  Row,
-  Cell,
-  Checkbox,
   TitanBreadcrumb,
   TitanButton,
   TitanCard,
@@ -288,49 +282,26 @@ function TopCitiesTableDemo() {
     }
     return list
   }, [sortDescriptor])
+  const columns = [
+    { key: 'city', header: 'City', sortable: true },
+    { key: 'penetration', header: 'Penetration', render: (row) => (
+      <div className="cities-penetration-cell">
+        <div className="cities-dual-bar-row">
+          <TitanProgressBar label="" value={row.audiencePct} maxValue={100} showValue={false} />
+          <span className="cities-pct">{row.audiencePct}%</span>
+        </div>
+        <div className="cities-dual-bar-row">
+          <TitanProgressBar label="" value={row.baselinePct} maxValue={100} showValue={false} className="cities-bar-light" />
+          <span className="cities-pct">{row.baselinePct}%</span>
+        </div>
+      </div>
+    ) },
+    { key: 'affinity', header: 'Affinity', sortable: true, render: (row) => <span className="cities-affinity-pill">x {row.affinity.toFixed(2)}</span> },
+  ]
   return (
     <>
       <div className="cities-table-scroll">
-        <TitanTable aria-label="Top cities" stickyHeader sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor} className="table-sortable cities-table">
-          <TableHeader>
-            <Column id="city" isRowHeader>City</Column>
-          <Column id="penetration">Penetration</Column>
-          <Column id="affinity" allowsSorting>
-            {({ allowsSorting, sortDirection }) => (
-              <span className="column-sort-header">
-                {allowsSorting && (
-                  <span className="column-sort-icon" aria-hidden>
-                    {sortDirection === 'ascending' && <ArrowUp size={14} strokeWidth={1.5} />}
-                    {sortDirection === 'descending' && <ArrowDown size={14} strokeWidth={1.5} />}
-                    {!sortDirection && <ArrowUpDown size={14} strokeWidth={1.5} />}
-                  </span>
-                )}
-                Affinity
-              </span>
-            )}
-          </Column>
-        </TableHeader>
-        <TableBody items={sorted}>
-          {(row) => (
-            <Row id={row.id}>
-              <Cell>{row.city}</Cell>
-              <Cell>
-                <div className="cities-penetration-cell">
-                  <div className="cities-dual-bar-row">
-                    <TitanProgressBar label="" value={row.audiencePct} maxValue={100} showValue={false} />
-                    <span className="cities-pct">{row.audiencePct}%</span>
-                  </div>
-                  <div className="cities-dual-bar-row">
-                    <TitanProgressBar label="" value={row.baselinePct} maxValue={100} showValue={false} className="cities-bar-light" />
-                    <span className="cities-pct">{row.baselinePct}%</span>
-                  </div>
-                </div>
-              </Cell>
-              <Cell><span className="cities-affinity-pill">x {row.affinity.toFixed(2)}</span></Cell>
-            </Row>
-          )}
-        </TableBody>
-        </TitanTable>
+        <TitanBorderlessTable aria-label="Top cities" columns={columns} rows={sorted} sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor} className="cities-table" />
       </div>
       <div className="cities-legend" role="presentation" aria-hidden="true">
         <span className="cities-legend-item"><i className="cities-legend-dot cities-legend-dot-audience" aria-hidden="true" /> Audience</span>
@@ -359,49 +330,26 @@ function SkillsTableDemo() {
     }
     return list
   }, [sortDescriptor])
+  const columns = [
+    { key: 'skill', header: 'Skill', sortable: true },
+    { key: 'penetration', header: 'Penetration', render: (row) => (
+      <div className="cities-penetration-cell">
+        <div className="cities-dual-bar-row">
+          <TitanProgressBar label="" value={row.audiencePct} maxValue={100} showValue={false} />
+          <span className="cities-pct">{row.audiencePct}%</span>
+        </div>
+        <div className="cities-dual-bar-row">
+          <TitanProgressBar label="" value={row.baselinePct} maxValue={100} showValue={false} className="cities-bar-light" />
+          <span className="cities-pct">{row.baselinePct}%</span>
+        </div>
+      </div>
+    ) },
+    { key: 'affinity', header: 'Affinity', sortable: true, render: (row) => <span className="cities-affinity-pill">x {row.affinity.toFixed(2)}</span> },
+  ]
   return (
     <>
       <div className="cities-table-scroll">
-        <TitanTable aria-label="Skills" stickyHeader sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor} className="table-sortable cities-table">
-          <TableHeader>
-            <Column id="skill" isRowHeader>Skill</Column>
-          <Column id="penetration">Penetration</Column>
-          <Column id="affinity" allowsSorting>
-            {({ allowsSorting, sortDirection }) => (
-              <span className="column-sort-header">
-                {allowsSorting && (
-                  <span className="column-sort-icon" aria-hidden>
-                    {sortDirection === 'ascending' && <ArrowUp size={14} strokeWidth={1.5} />}
-                    {sortDirection === 'descending' && <ArrowDown size={14} strokeWidth={1.5} />}
-                    {!sortDirection && <ArrowUpDown size={14} strokeWidth={1.5} />}
-                  </span>
-                )}
-                Affinity
-              </span>
-            )}
-          </Column>
-        </TableHeader>
-        <TableBody items={sorted}>
-          {(row) => (
-            <Row id={row.id}>
-              <Cell>{row.skill}</Cell>
-              <Cell>
-                <div className="cities-penetration-cell">
-                  <div className="cities-dual-bar-row">
-                    <TitanProgressBar label="" value={row.audiencePct} maxValue={100} showValue={false} />
-                    <span className="cities-pct">{row.audiencePct}%</span>
-                  </div>
-                  <div className="cities-dual-bar-row">
-                    <TitanProgressBar label="" value={row.baselinePct} maxValue={100} showValue={false} className="cities-bar-light" />
-                    <span className="cities-pct">{row.baselinePct}%</span>
-                  </div>
-                </div>
-              </Cell>
-              <Cell><span className="cities-affinity-pill">x {row.affinity}</span></Cell>
-            </Row>
-          )}
-        </TableBody>
-        </TitanTable>
+        <TitanBorderlessTable aria-label="Skills" columns={columns} rows={sorted} sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor} className="cities-table" />
       </div>
       <div className="cities-legend" role="presentation" aria-hidden="true">
         <span className="cities-legend-item"><i className="cities-legend-dot cities-legend-dot-audience" aria-hidden="true" /> Audience</span>
@@ -430,46 +378,18 @@ function SortablePenetrationListDemo() {
     list.sort((a, b) => (a.pct - b.pct) * dir)
     return list
   }, [sortDescriptor])
+  const columns = [
+    { key: 'label', header: 'Interest', sortable: true },
+    { key: 'pct', header: 'Avg. Penetration', sortable: true, render: (item) => (
+      <div className="sortable-penetration-cell-bar">
+        <TitanProgressBar label="" value={item.pct} maxValue={100} showValue={false} />
+        <span className="sortable-penetration-pct">{item.pct}%</span>
+      </div>
+    ) },
+  ]
   return (
     <div className="sortable-penetration-table-scroll">
-      <TitanTable
-        aria-label="Interest penetration"
-        stickyHeader
-        sortDescriptor={sortDescriptor}
-        onSortChange={setSortDescriptor}
-        className="table-sortable"
-      >
-        <TableHeader>
-          <Column id="label" isRowHeader>Interest</Column>
-          <Column id="pct" allowsSorting>
-            {({ allowsSorting, sortDirection }) => (
-              <span className="column-sort-header">
-                {allowsSorting && (
-                  <span className="column-sort-icon" aria-hidden>
-                    {sortDirection === 'ascending' && <ArrowUp size={14} strokeWidth={1.5} />}
-                    {sortDirection === 'descending' && <ArrowDown size={14} strokeWidth={1.5} />}
-                    {!sortDirection && <ArrowUpDown size={14} strokeWidth={1.5} />}
-                  </span>
-                )}
-                Avg. Penetration
-              </span>
-            )}
-          </Column>
-        </TableHeader>
-        <TableBody items={sorted}>
-          {(item) => (
-            <Row id={item.id} className={sorted[0]?.id === item.id ? 'sortable-penetration-row-highlight' : undefined}>
-              <Cell>{item.label}</Cell>
-              <Cell>
-                <div className="sortable-penetration-cell-bar">
-                  <TitanProgressBar label="" value={item.pct} maxValue={100} showValue={false} />
-                  <span className="sortable-penetration-pct">{item.pct}%</span>
-                </div>
-              </Cell>
-            </Row>
-          )}
-        </TableBody>
-      </TitanTable>
+      <TitanBorderlessTable aria-label="Interest penetration" columns={columns} rows={sorted} sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor} className="table-sortable" />
     </div>
   )
 }
@@ -514,44 +434,28 @@ function ComparisonBioCard() {
       <p className="comparison-desc">This graph shows the distribution by most common words used by the audience to describe themselves, and its variance from the baseline.</p>
       <a href="#" className="comparison-read-more">Read more</a>
       <div className="comparison-table-scroll">
-        <TitanTable aria-label="Bio terms" stickyHeader sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor} className="table-sortable cities-table">
-          <TableHeader>
-            <Column id="term" isRowHeader>Term</Column>
-            <Column id="seg" allowsSorting>
-              {({ allowsSorting, sortDirection }) => (
-                <span className="column-sort-header">
-                  {allowsSorting && (
-                    <span className="column-sort-icon" aria-hidden>
-                      {sortDirection === 'ascending' && <ArrowUp size={14} strokeWidth={1.5} />}
-                      {sortDirection === 'descending' && <ArrowDown size={14} strokeWidth={1.5} />}
-                      {!sortDirection && <ArrowUpDown size={14} strokeWidth={1.5} />}
-                    </span>
-                  )}
-                  %
-                </span>
-              )}
-            </Column>
-          </TableHeader>
-          <TableBody items={sorted}>
-            {(row) => (
-              <Row id={row.id}>
-                <Cell>{row.term}</Cell>
-                <Cell>
-                  <div className="comparison-bar-cell">
-                    <div className="comparison-bar-row">
-                      <TitanProgressBar label="" value={row.seg} maxValue={100} showValue={false} className="comparison-bar-segment" />
-                      <span className="comparison-pct">{row.seg}%</span>
-                    </div>
-                    <div className="comparison-bar-row">
-                      <TitanProgressBar label="" value={row.base} maxValue={100} showValue={false} className="comparison-bar-baseline" />
-                      <span className="comparison-pct">{row.base}%</span>
-                    </div>
-                  </div>
-                </Cell>
-              </Row>
-            )}
-          </TableBody>
-        </TitanTable>
+        <TitanBorderlessTable
+          aria-label="Bio terms"
+          columns={[
+            { key: 'term', header: 'Term', sortable: true },
+            { key: 'seg', header: '%', sortable: true, render: (row) => (
+              <div className="comparison-bar-cell">
+                <div className="comparison-bar-row">
+                  <TitanProgressBar label="" value={row.seg} maxValue={100} showValue={false} className="comparison-bar-segment" />
+                  <span className="comparison-pct">{row.seg}%</span>
+                </div>
+                <div className="comparison-bar-row">
+                  <TitanProgressBar label="" value={row.base} maxValue={100} showValue={false} className="comparison-bar-baseline" />
+                  <span className="comparison-pct">{row.base}%</span>
+                </div>
+              </div>
+            ) },
+          ]}
+          rows={sorted}
+          sortDescriptor={sortDescriptor}
+          onSortChange={setSortDescriptor}
+          className="table-sortable cities-table"
+        />
       </div>
       <div className="comparison-legend">
         <span className="comparison-legend-item"><i className="comparison-legend-dot segment" aria-hidden="true" /> LoL Streaming</span>
@@ -567,44 +471,28 @@ function ComparisonBioCard() {
           <div className="comparison-drawer-content">
             <p className="comparison-desc">This graph shows the distribution by most common words used by the audience to describe themselves, and its variance from the baseline.</p>
             <div className="comparison-table-scroll">
-              <TitanTable aria-label="Bio terms (full)" stickyHeader sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor} className="table-sortable cities-table">
-                <TableHeader>
-                  <Column id="term" isRowHeader>Term</Column>
-                  <Column id="seg" allowsSorting>
-                    {({ allowsSorting, sortDirection }) => (
-                      <span className="column-sort-header">
-                        {allowsSorting && (
-                          <span className="column-sort-icon" aria-hidden>
-                            {sortDirection === 'ascending' && <ArrowUp size={14} strokeWidth={1.5} />}
-                            {sortDirection === 'descending' && <ArrowDown size={14} strokeWidth={1.5} />}
-                            {!sortDirection && <ArrowUpDown size={14} strokeWidth={1.5} />}
-                          </span>
-                        )}
-                        %
-                      </span>
-                    )}
-                  </Column>
-                </TableHeader>
-                <TableBody items={sorted}>
-                  {(row) => (
-                    <Row id={row.id}>
-                      <Cell>{row.term}</Cell>
-                      <Cell>
-                        <div className="comparison-bar-cell">
-                          <div className="comparison-bar-row">
-                            <TitanProgressBar label="" value={row.seg} maxValue={100} showValue={false} className="comparison-bar-segment" />
-                            <span className="comparison-pct">{row.seg}%</span>
-                          </div>
-                          <div className="comparison-bar-row">
-                            <TitanProgressBar label="" value={row.base} maxValue={100} showValue={false} className="comparison-bar-baseline" />
-                            <span className="comparison-pct">{row.base}%</span>
-                          </div>
-                        </div>
-                      </Cell>
-                    </Row>
-                  )}
-                </TableBody>
-              </TitanTable>
+              <TitanBorderlessTable
+                aria-label="Bio terms (full)"
+                columns={[
+                  { key: 'term', header: 'Term', sortable: true },
+                  { key: 'seg', header: '%', sortable: true, render: (row) => (
+                    <div className="comparison-bar-cell">
+                      <div className="comparison-bar-row">
+                        <TitanProgressBar label="" value={row.seg} maxValue={100} showValue={false} className="comparison-bar-segment" />
+                        <span className="comparison-pct">{row.seg}%</span>
+                      </div>
+                      <div className="comparison-bar-row">
+                        <TitanProgressBar label="" value={row.base} maxValue={100} showValue={false} className="comparison-bar-baseline" />
+                        <span className="comparison-pct">{row.base}%</span>
+                      </div>
+                    </div>
+                  ) },
+                ]}
+                rows={sorted}
+                sortDescriptor={sortDescriptor}
+                onSortChange={setSortDescriptor}
+                className="table-sortable cities-table"
+              />
             </div>
             <div className="comparison-legend">
               <span className="comparison-legend-item"><i className="comparison-legend-dot segment" aria-hidden="true" /> LoL Streaming</span>
@@ -642,44 +530,28 @@ function ComparisonAgeCard() {
       <p className="comparison-desc">This graph shows the distribution by age and its difference versus the baseline.</p>
       <a href="#" className="comparison-read-more">Read more</a>
       <div className="comparison-table-scroll">
-        <TitanTable aria-label="Age ranges" stickyHeader sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor} className="table-sortable cities-table">
-          <TableHeader>
-            <Column id="range" isRowHeader>Range</Column>
-            <Column id="seg" allowsSorting>
-              {({ allowsSorting, sortDirection }) => (
-                <span className="column-sort-header">
-                  {allowsSorting && (
-                    <span className="column-sort-icon" aria-hidden>
-                      {sortDirection === 'ascending' && <ArrowUp size={14} strokeWidth={1.5} />}
-                      {sortDirection === 'descending' && <ArrowDown size={14} strokeWidth={1.5} />}
-                      {!sortDirection && <ArrowUpDown size={14} strokeWidth={1.5} />}
-                    </span>
-                  )}
-                  %
-                </span>
-              )}
-            </Column>
-          </TableHeader>
-          <TableBody items={sorted}>
-            {(row) => (
-              <Row id={row.id}>
-                <Cell>{row.range}</Cell>
-                <Cell>
-                  <div className="comparison-bar-cell">
-                    <div className="comparison-bar-row">
-                      <TitanProgressBar label="" value={row.seg} maxValue={100} showValue={false} className="comparison-bar-segment" />
-                      <span className="comparison-pct">{row.seg}%</span>
-                    </div>
-                    <div className="comparison-bar-row">
-                      <TitanProgressBar label="" value={row.base} maxValue={100} showValue={false} className="comparison-bar-baseline" />
-                      <span className="comparison-pct">{row.base}%</span>
-                    </div>
-                  </div>
-                </Cell>
-              </Row>
-            )}
-          </TableBody>
-        </TitanTable>
+        <TitanBorderlessTable
+          aria-label="Age ranges"
+          columns={[
+            { key: 'range', header: 'Range', sortable: true },
+            { key: 'seg', header: '%', sortable: true, render: (row) => (
+              <div className="comparison-bar-cell">
+                <div className="comparison-bar-row">
+                  <TitanProgressBar label="" value={row.seg} maxValue={100} showValue={false} className="comparison-bar-segment" />
+                  <span className="comparison-pct">{row.seg}%</span>
+                </div>
+                <div className="comparison-bar-row">
+                  <TitanProgressBar label="" value={row.base} maxValue={100} showValue={false} className="comparison-bar-baseline" />
+                  <span className="comparison-pct">{row.base}%</span>
+                </div>
+              </div>
+            ) },
+          ]}
+          rows={sorted}
+          sortDescriptor={sortDescriptor}
+          onSortChange={setSortDescriptor}
+          className="table-sortable cities-table"
+        />
       </div>
       <div className="comparison-legend">
         <span className="comparison-legend-item"><i className="comparison-legend-dot segment" aria-hidden="true" /> LoL Streaming</span>
@@ -695,44 +567,28 @@ function ComparisonAgeCard() {
           <div className="comparison-drawer-content">
             <p className="comparison-desc">This graph shows the distribution by age and its difference versus the baseline.</p>
             <div className="comparison-table-scroll">
-              <TitanTable aria-label="Age ranges (full)" stickyHeader sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor} className="table-sortable cities-table">
-                <TableHeader>
-                  <Column id="range" isRowHeader>Range</Column>
-                  <Column id="seg" allowsSorting>
-                    {({ allowsSorting, sortDirection }) => (
-                      <span className="column-sort-header">
-                        {allowsSorting && (
-                          <span className="column-sort-icon" aria-hidden>
-                            {sortDirection === 'ascending' && <ArrowUp size={14} strokeWidth={1.5} />}
-                            {sortDirection === 'descending' && <ArrowDown size={14} strokeWidth={1.5} />}
-                            {!sortDirection && <ArrowUpDown size={14} strokeWidth={1.5} />}
-                          </span>
-                        )}
-                        %
-                      </span>
-                    )}
-                  </Column>
-                </TableHeader>
-                <TableBody items={sorted}>
-                  {(row) => (
-                    <Row id={row.id}>
-                      <Cell>{row.range}</Cell>
-                      <Cell>
-                        <div className="comparison-bar-cell">
-                          <div className="comparison-bar-row">
-                            <TitanProgressBar label="" value={row.seg} maxValue={100} showValue={false} className="comparison-bar-segment" />
-                            <span className="comparison-pct">{row.seg}%</span>
-                          </div>
-                          <div className="comparison-bar-row">
-                            <TitanProgressBar label="" value={row.base} maxValue={100} showValue={false} className="comparison-bar-baseline" />
-                            <span className="comparison-pct">{row.base}%</span>
-                          </div>
-                        </div>
-                      </Cell>
-                    </Row>
-                  )}
-                </TableBody>
-              </TitanTable>
+              <TitanBorderlessTable
+                aria-label="Age ranges (full)"
+                columns={[
+                  { key: 'range', header: 'Range', sortable: true },
+                  { key: 'seg', header: '%', sortable: true, render: (row) => (
+                    <div className="comparison-bar-cell">
+                      <div className="comparison-bar-row">
+                        <TitanProgressBar label="" value={row.seg} maxValue={100} showValue={false} className="comparison-bar-segment" />
+                        <span className="comparison-pct">{row.seg}%</span>
+                      </div>
+                      <div className="comparison-bar-row">
+                        <TitanProgressBar label="" value={row.base} maxValue={100} showValue={false} className="comparison-bar-baseline" />
+                        <span className="comparison-pct">{row.base}%</span>
+                      </div>
+                    </div>
+                  ) },
+                ]}
+                rows={sorted}
+                sortDescriptor={sortDescriptor}
+                onSortChange={setSortDescriptor}
+                className="table-sortable cities-table"
+              />
             </div>
             <div className="comparison-legend">
               <span className="comparison-legend-item"><i className="comparison-legend-dot segment" aria-hidden="true" /> LoL Streaming</span>
@@ -824,28 +680,17 @@ function TableCheckbox({ slot }) {
   )
 }
 
+const FILES_COLUMNS = [
+  { key: 'name', header: 'Name', sortable: true },
+  { key: 'type', header: 'Type', sortable: true },
+  { key: 'date', header: 'Date Modified', sortable: true },
+]
+
 function TableWithSelection() {
   const [selectedKeys, setSelectedKeys] = useState(new Set())
   return (
     <>
-      <TitanTable aria-label="Files" selectionMode="multiple" selectedKeys={selectedKeys} onSelectionChange={setSelectedKeys}>
-        <TableHeader>
-          <Column><TableCheckbox slot="selection" /></Column>
-          <Column isRowHeader>Name</Column>
-          <Column>Type</Column>
-          <Column>Date Modified</Column>
-        </TableHeader>
-        <TableBody items={TABLE_ITEMS}>
-          {(item) => (
-            <Row id={item.id}>
-              <Cell><TableCheckbox slot="selection" /></Cell>
-              <Cell>{item.name}</Cell>
-              <Cell>{item.type}</Cell>
-              <Cell>{item.date}</Cell>
-            </Row>
-          )}
-        </TableBody>
-      </TitanTable>
+      <TitanBorderlessTable aria-label="Files" columns={FILES_COLUMNS} rows={TABLE_ITEMS} selectedKeys={selectedKeys} onSelectionChange={setSelectedKeys} />
       <p style={{ marginTop: 'var(--spacing-s)', fontSize: 'var(--font-size-s)', color: 'var(--copy-slot-secondary)' }}>
         Selected: {selectedKeys === 'all' ? 'all' : [...selectedKeys].join(', ') || 'none'}
       </p>
@@ -864,108 +709,26 @@ function TableStickyHeader() {
   }, [sortDescriptor])
   return (
     <div className="cities-table-scroll">
-      <TitanTable aria-label="Files" stickyHeader sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor} className="table-sortable cities-table">
-        <TableHeader>
-          <Column id="name" isRowHeader allowsSorting>
-            {({ allowsSorting, sortDirection }) => (
-              <span className="column-sort-header">
-                {allowsSorting && (
-                  <span className="column-sort-icon" aria-hidden>
-                    {sortDirection === 'ascending' && <ArrowUp size={14} strokeWidth={1.5} />}
-                    {sortDirection === 'descending' && <ArrowDown size={14} strokeWidth={1.5} />}
-                    {!sortDirection && <ArrowUpDown size={14} strokeWidth={1.5} />}
-                  </span>
-                )}
-                Name
-              </span>
-            )}
-          </Column>
-          <Column id="type" allowsSorting>
-            {({ allowsSorting, sortDirection }) => (
-              <span className="column-sort-header">
-                {allowsSorting && (
-                  <span className="column-sort-icon" aria-hidden>
-                    {sortDirection === 'ascending' && <ArrowUp size={14} strokeWidth={1.5} />}
-                    {sortDirection === 'descending' && <ArrowDown size={14} strokeWidth={1.5} />}
-                    {!sortDirection && <ArrowUpDown size={14} strokeWidth={1.5} />}
-                  </span>
-                )}
-                Type
-              </span>
-            )}
-          </Column>
-          <Column id="date" allowsSorting>
-            {({ allowsSorting, sortDirection }) => (
-              <span className="column-sort-header">
-                {allowsSorting && (
-                  <span className="column-sort-icon" aria-hidden>
-                    {sortDirection === 'ascending' && <ArrowUp size={14} strokeWidth={1.5} />}
-                    {sortDirection === 'descending' && <ArrowDown size={14} strokeWidth={1.5} />}
-                    {!sortDirection && <ArrowUpDown size={14} strokeWidth={1.5} />}
-                  </span>
-                )}
-                Date Modified
-              </span>
-            )}
-          </Column>
-        </TableHeader>
-        <TableBody items={sorted}>
-          {(item) => (
-            <Row id={item.id}>
-              <Cell>{item.name}</Cell>
-              <Cell>{item.type}</Cell>
-              <Cell>{item.date}</Cell>
-            </Row>
-          )}
-        </TableBody>
-      </TitanTable>
+      <TitanBorderlessTable aria-label="Files" columns={FILES_COLUMNS} rows={sorted} sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor} className="table-sortable cities-table" />
     </div>
   )
 }
 
 function TableStickyColumns({ stickyCount = 2 }) {
-  const cols = [
-    { key: 'name', label: 'Name', width: 140 },
-    { key: 'type', label: 'Type', width: 120 },
-    { key: 'date', label: 'Date Modified', width: 140 },
-    { key: 'size', label: 'Size', width: 80 },
-    { key: 'owner', label: 'Owner', width: 100 },
-    { key: 'status', label: 'Status', width: 90 },
-    { key: 'tags', label: 'Tags', width: 100 },
-    { key: 'notes', label: 'Notes', width: 120 },
+  const columns = [
+    { key: 'name', header: 'Name' },
+    { key: 'type', header: 'Type' },
+    { key: 'date', header: 'Date Modified' },
+    { key: 'size', header: 'Size' },
+    { key: 'owner', header: 'Owner' },
+    { key: 'status', header: 'Status' },
+    { key: 'tags', header: 'Tags' },
+    { key: 'notes', header: 'Notes' },
   ]
   const items = TABLE_ITEMS.map((i) => ({ ...i, size: '—', owner: '—', status: '—', tags: '—', notes: '—' }))
   return (
-    <div
-      style={{
-        width: '100%',
-        overflowX: 'auto',
-        border: '1px solid var(--divider-subtle)',
-        borderRadius: 'var(--card-slot-radius)',
-        '--sticky-col-1-width': '140px',
-        '--sticky-col-2-width': '120px',
-        '--sticky-col-3-width': '140px',
-        '--sticky-col-bg': 'var(--color-white-900)',
-      }}
-    >
-      <TitanTable aria-label="Files" stickyColumns={stickyCount}>
-        <TableHeader>
-          {cols.map((c) => (
-            <Column key={c.key} isRowHeader={c.key === 'name'} width={c.width} minWidth={c.width}>
-              {c.label}
-            </Column>
-          ))}
-        </TableHeader>
-        <TableBody items={items}>
-          {(item) => (
-            <Row id={item.id}>
-              {cols.map((c) => (
-                <Cell key={c.key}>{item[c.key]}</Cell>
-              ))}
-            </Row>
-          )}
-        </TableBody>
-      </TitanTable>
+    <div style={{ width: '100%', overflowX: 'auto', border: '1px solid var(--divider-subtle)', borderRadius: 'var(--card-slot-radius)' }}>
+      <TitanBorderlessTable aria-label="Files" columns={columns} rows={items} />
     </div>
   )
 }
@@ -981,61 +744,7 @@ function TableWithSorting() {
   }, [sortDescriptor])
   return (
     <>
-      <TitanTable aria-label="Files" sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor} className="table-sortable">
-        <TableHeader>
-          <Column id="name" isRowHeader allowsSorting>
-            {({ allowsSorting, sortDirection }) => (
-              <span className="column-sort-header">
-                {allowsSorting && (
-                  <span className="column-sort-icon" aria-hidden>
-                    {sortDirection === 'ascending' && <ArrowUp size={14} />}
-                    {sortDirection === 'descending' && <ArrowDown size={14} />}
-                    {!sortDirection && <ArrowUpDown size={14} />}
-                  </span>
-                )}
-                Name
-              </span>
-            )}
-          </Column>
-          <Column id="type" allowsSorting>
-            {({ allowsSorting, sortDirection }) => (
-              <span className="column-sort-header">
-                {allowsSorting && (
-                  <span className="column-sort-icon" aria-hidden>
-                    {sortDirection === 'ascending' && <ArrowUp size={14} />}
-                    {sortDirection === 'descending' && <ArrowDown size={14} />}
-                    {!sortDirection && <ArrowUpDown size={14} />}
-                  </span>
-                )}
-                Type
-              </span>
-            )}
-          </Column>
-          <Column id="date" allowsSorting>
-            {({ allowsSorting, sortDirection }) => (
-              <span className="column-sort-header">
-                {allowsSorting && (
-                  <span className="column-sort-icon" aria-hidden>
-                    {sortDirection === 'ascending' && <ArrowUp size={14} />}
-                    {sortDirection === 'descending' && <ArrowDown size={14} />}
-                    {!sortDirection && <ArrowUpDown size={14} />}
-                  </span>
-                )}
-                Date Modified
-              </span>
-            )}
-          </Column>
-        </TableHeader>
-        <TableBody items={sorted}>
-          {(item) => (
-            <Row id={item.id}>
-              <Cell>{item.name}</Cell>
-              <Cell>{item.type}</Cell>
-              <Cell>{item.date}</Cell>
-            </Row>
-          )}
-        </TableBody>
-      </TitanTable>
+      <TitanBorderlessTable aria-label="Files" columns={FILES_COLUMNS} rows={sorted} sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor} className="table-sortable" />
       <p style={{ marginTop: 'var(--spacing-s)', fontSize: 'var(--font-size-s)', color: 'var(--copy-slot-secondary)' }}>
         Sort: {sortDescriptor.column} {sortDescriptor.direction}
       </p>
@@ -1044,62 +753,27 @@ function TableWithSorting() {
 }
 
 function TableClickableRows() {
-  const handleAction = (key) => alert(`Row clicked: ${key}`)
+  const handleAction = (rowId, action) => alert(`Row ${rowId}: ${action}`)
   return (
-    <TitanTable aria-label="Files" onRowAction={handleAction}>
-      <TableHeader>
-        <Column isRowHeader>Name</Column>
-        <Column>Type</Column>
-        <Column>Date Modified</Column>
-      </TableHeader>
-      <TableBody items={TABLE_ITEMS}>
-        {(item) => (
-          <Row id={item.id}>
-            <Cell>{item.name}</Cell>
-            <Cell>{item.type}</Cell>
-            <Cell>{item.date}</Cell>
-          </Row>
-        )}
-      </TableBody>
-    </TitanTable>
+    <TitanBorderlessTable aria-label="Files" columns={FILES_COLUMNS} rows={TABLE_ITEMS} onAction={handleAction} />
   )
 }
 
 function TableLinkRows() {
+  const linkRows = TABLE_ITEMS.slice(0, 2).map((item) => ({ ...item, url: `example.com/${item.id}` }))
+  const columns = [
+    { key: 'name', header: 'Name' },
+    { key: 'url', header: 'URL' },
+  ]
   return (
-    <TitanTable aria-label="Links">
-      <TableHeader>
-        <Column isRowHeader>Name</Column>
-        <Column>URL</Column>
-      </TableHeader>
-      <TableBody items={TABLE_ITEMS.slice(0, 2)}>
-        {(item) => (
-          <Row id={item.id} href={`https://example.com/${item.id}`} target="_blank">
-            <Cell>{item.name}</Cell>
-            <Cell>example.com/{item.id}</Cell>
-          </Row>
-        )}
-      </TableBody>
-    </TitanTable>
+    <TitanBorderlessTable aria-label="Links" columns={columns} rows={linkRows} onRowNameClick={(id) => window.open(`https://example.com/${id}`, '_blank')} />
   )
 }
 
 function TableEmptyState() {
+  const columns = [{ key: 'name', header: 'Name' }, { key: 'type', header: 'Type' }]
   return (
-    <TitanTable aria-label="Empty">
-      <TableHeader>
-        <Column isRowHeader>Name</Column>
-        <Column>Type</Column>
-      </TableHeader>
-      <TableBody items={[]} renderEmptyState={() => <div style={{ padding: 'var(--spacing-xl)', textAlign: 'center', color: 'var(--copy-slot-secondary)' }}>No items found</div>}>
-        {(item) => (
-          <Row id={item.id}>
-            <Cell>{item.name}</Cell>
-            <Cell>{item.type}</Cell>
-          </Row>
-        )}
-      </TableBody>
-    </TitanTable>
+    <TitanBorderlessTable aria-label="Empty" columns={columns} rows={[]} />
   )
 }
 
@@ -3146,7 +2820,7 @@ import { Info, User } from 'lucide-react'
             title="Sortable Penetration List"
             ariaImports="import { TitanCard, TitanProgressBar } from 'titan-compositions'"
             ariaDesc="Card with a Titan table (layout-table-wrap + table-borderless, table-sortable): thead th bold, sort on Avg. Penetration (column-sort-header + ArrowUp/ArrowDown). Internal scroll (max-height + overflow-y) on the table wrap; sticky header so thead stays visible. First row highlight --background-success."
-            ariaComponents={['TitanTable', 'TableHeader', 'TableBody', 'Column', 'Row', 'Cell', 'ProgressBar']}
+            ariaComponents={['TitanBorderlessTable', 'ProgressBar']}
             foundations={[
               { category: 'Table', detail: 'Titan table: layout-table-wrap + table-borderless, thead th bold (--table-slot-header-color), --table-header-separator, --table-row-separator, --table-row-hover.' },
               { category: 'Sort', detail: 'Titan ordering: Column allowsSorting, sortDescriptor + onSortChange, column-sort-header + column-sort-icon (ArrowUp/ArrowDown/ArrowUpDown), aria-sort.' },
@@ -3207,11 +2881,11 @@ import { ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react'
           <ShowcaseCard
             id="top-cities-table-card"
             title="Top Cities Table"
-            ariaImports="import { TitanCard, TitanTooltip, TitanTable, TableHeader, TableBody, Column, Row, Cell, TitanProgressBar } from 'titan-compositions'"
-            ariaDesc="TitanTable with sortDescriptor and onSortChange (like Sorting table): City, Penetration (two bars + %), Affinity sortable. Legend below table."
-            ariaComponents={['TitanTable', 'ProgressBar', 'Tooltip']}
+            ariaImports="import { TitanCard, TitanTooltip, TitanBorderlessTable, TitanProgressBar } from 'titan-compositions'"
+            ariaDesc="TitanBorderlessTable with sortDescriptor and onSortChange: City, Penetration (two bars + %), Affinity sortable. Legend below table."
+            ariaComponents={['TitanBorderlessTable', 'ProgressBar', 'Tooltip']}
             foundations={[
-              { category: 'Table', detail: 'TitanTable: sortDescriptor, onSortChange, Column allowsSorting on Affinity; same as Sorting table.' },
+              { category: 'Table', detail: 'TitanBorderlessTable: sortDescriptor, onSortChange, sortable columns.' },
               { category: 'Penetration', detail: 'Two stacked TitanProgressBar; second bar lighter --progress-slot-track-bg.' },
               { category: 'Affinity', detail: 'Pill: --pill-background, --pill-color.' },
             ]}
@@ -3257,12 +2931,12 @@ import { Info, ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react'
           <ShowcaseCard
             id="skills-table-card"
             title="Skills Table"
-            ariaImports="import { TitanCard, TitanInputField, TitanTable, TableHeader, TableBody, Column, Row, Cell, TitanProgressBar } from 'titan-compositions'"
-            ariaDesc="Search above; TitanTable with sortDescriptor and onSortChange (like Sorting table): Skill, Penetration (two bars + %), Affinity sortable. Legend below table."
-            ariaComponents={['TitanTable', 'TextField', 'ProgressBar']}
+            ariaImports="import { TitanCard, TitanInputField, TitanBorderlessTable, TitanProgressBar } from 'titan-compositions'"
+            ariaDesc="Search above; TitanBorderlessTable with sortDescriptor and onSortChange: Skill, Penetration (two bars + %), Affinity sortable. Legend below table."
+            ariaComponents={['TitanBorderlessTable', 'TextField', 'ProgressBar']}
             foundations={[
               { category: 'Search', detail: 'TitanInputField with leadingIcon Search, placeholder; --input-* tokens.' },
-              { category: 'Table', detail: 'TitanTable: sortDescriptor, onSortChange, Column allowsSorting on Affinity; same as Sorting table.' },
+              { category: 'Table', detail: 'TitanBorderlessTable: sortDescriptor, onSortChange, sortable columns.' },
             ]}
             tokenGroups={[
               { label: 'Card', tokens: ['--surface-0', '--card-slot-radius', '--dialog-slot-pad'] },
@@ -3501,9 +3175,9 @@ import { Headphones, Gamepad2, MoreVertical, Pencil, Eye, Merge, Download, Globe
           <ShowcaseCard
             id="comparison-bar-cards"
             title="Comparison Bar Cards"
-            ariaImports="import { TitanCardGrid, TitanCard, TitanTable, TableHeader, TableBody, Column, Row, Cell, TitanProgressBar, TitanButton } from 'titan-compositions'"
-            ariaDesc="Family of two cards: title (bold), description, Read more link, TitanTable (sortDescriptor, onSortChange) with dual bars per row, legend, tertiary footer button (label + icon)."
-            ariaComponents={['TitanTable', 'ProgressBar', 'Button']}
+            ariaImports="import { TitanCardGrid, TitanCard, TitanBorderlessTable, TitanProgressBar, TitanButton } from 'titan-compositions'"
+            ariaDesc="Family of two cards: title (bold), description, Read more link, TitanBorderlessTable (sortDescriptor, onSortChange) with dual bars per row, legend, tertiary footer button (label + icon)."
+            ariaComponents={['TitanBorderlessTable', 'ProgressBar', 'Button']}
             foundations={[
               { category: 'Layout', detail: 'Title bold --text-muted; description --text-body; Read more --text-link. Table: Titan 100% (layout-table-wrap + table-borderless, sortable).' },
               { category: 'Legend', detail: 'Dot + label; optional Gamepad2. Footer: TitanButton variant="tertiary", label + icon.' },
@@ -3600,9 +3274,9 @@ import { ArrowRight, Download, Gamepad2, ArrowUp, ArrowDown, ArrowUpDown } from 
           <ShowcaseCard
             id="table"
             title="Table (Advanced)"
-            ariaImports="import { TitanTable, TableHeader, TableBody, Column, Row, Cell, Checkbox } from 'titan-compositions'"
-            ariaDesc="TitanTable wraps React Aria's Table with Titan borderless styling. Use for sticky header, sticky columns, selection, sorting, clickable rows, empty state. For simple tables use TitanBorderlessTable."
-            ariaComponents={['Table', 'TableHeader', 'TableBody', 'Column', 'Row', 'Cell', 'Checkbox']}
+            ariaImports="import { TitanBorderlessTable } from 'titan-compositions'"
+            ariaDesc="TitanBorderlessTable: sticky header, checkbox selection, sortable columns (ArrowUp/ArrowDown/ArrowUpDown), kebab actions, clickable name. Pass columns and rows or use default."
+            ariaComponents={['TitanBorderlessTable']}
             foundations={[
               { category: 'Table', detail: 'Same tokens as TitanBorderlessTable: --table-slot-cell-pad-y/x, --table-header-separator, --table-row-separator, --table-row-hover.' },
               { category: 'Features', detail: 'Optional: stickyHeader, stickyColumns, selectionMode, sortDescriptor, onRowAction, renderEmptyState.' },
@@ -3610,60 +3284,14 @@ import { ArrowRight, Download, Gamepad2, ArrowUp, ArrowDown, ArrowUpDown } from 
             tokenGroups={[
               { label: 'Table', tokens: ['--table-cell-background', '--table-row-hover', '--table-header-separator', '--table-row-separator', '--table-slot-header-color', '--table-slot-cell-color'] },
             ]}
-            code={`import { TitanTable, TableHeader, TableBody, Column, Row, Cell } from 'titan-compositions'
+            code={`import { TitanBorderlessTable } from 'titan-compositions'
 
-<TitanTable aria-label="Files">
-  <TableHeader>
-    <Column isRowHeader>Name</Column>
-    <Column>Type</Column>
-    <Column>Date Modified</Column>
-  </TableHeader>
-  <TableBody>
-    <Row id="1">
-      <Cell>Games</Cell>
-      <Cell>File folder</Cell>
-      <Cell>6/7/2020</Cell>
-    </Row>
-    <Row id="2">
-      <Cell>Program Files</Cell>
-      <Cell>File folder</Cell>
-      <Cell>4/7/2021</Cell>
-    </Row>
-  </TableBody>
-</TitanTable>`}
+<TitanBorderlessTable aria-label="Files" />`}
           >
             <TitanCardGrid>
             <TitanCard span={16}>
               <h3>Default</h3>
-              <TitanTable aria-label="Files">
-                <TableHeader>
-                  <Column isRowHeader>Name</Column>
-                  <Column>Type</Column>
-                  <Column>Date Modified</Column>
-                </TableHeader>
-                <TableBody>
-                  <Row id="1">
-                    <Cell>Games</Cell>
-                    <Cell>File folder</Cell>
-                    <Cell>6/7/2020</Cell>
-                  </Row>
-                  <Row id="2">
-                    <Cell>Program Files</Cell>
-                    <Cell>File folder</Cell>
-                    <Cell>4/7/2021</Cell>
-                  </Row>
-                  <Row id="3">
-                    <Cell>bootmgr</Cell>
-                    <Cell>System file</Cell>
-                    <Cell>11/20/2010</Cell>
-                  </Row>
-                  <Row id="4">
-                    <Cell>log.txt</Cell>
-                    <Cell>Text Document</Cell>
-                    <Cell>1/18/2016</Cell>
-                  </Row>
-                </TableBody>
-              </TitanTable>
+              <TitanBorderlessTable aria-label="Files" />
             </TitanCard>
             <TitanCard span={16}>
               <h3>With selection (selectionMode, Checkbox)</h3>

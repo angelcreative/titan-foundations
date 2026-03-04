@@ -67,16 +67,8 @@ export type {
   TitanBorderlessTableProps,
   TitanTableColumn,
   TitanTableRow,
+  TitanBorderlessTableAction,
 } from './TitanBorderlessTable'
-export {
-  TitanTable,
-  TableHeader,
-  TableBody,
-  Column,
-  Row,
-  Cell,
-  Checkbox,
-} from './TitanTable'
 export { TitanTwoUpOneDownLayout } from './TitanTwoUpOneDownLayout'
 export type { TitanTwoUpOneDownLayoutProps } from './TitanTwoUpOneDownLayout'
 export { TitanToggleButtonGroup } from './TitanToggleButtonGroup'

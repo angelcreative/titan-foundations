@@ -38,8 +38,8 @@ The **variant** is the **dimension/category** of the card. Structure stays the s
 - **Typography:** Title: `--text-title`, `--text-weight-semibold`. Description: `--text-muted`, `--font-size-s` or `--text-body`. “Read more”: `--text-link`, `--text-link-hover`. Percentages: `--text-body` or `--text-title` (right-aligned).
 - **Bars:** Two colors for the two datasets: e.g. darker `--color-violet-600`, lighter `--color-violet-200` (or `--button-primary` and `--divider`). Track: `--progress-slot-track-bg` or transparent.
 - **Legend:** Dot color matches bar color; label only (no icons). Use `--text-body`, `--text-muted`.
-- **Table sorting:** Same pattern as all card tables: **sortDescriptor** + **onSortChange** on `TitanTable`; sortable column headers show icon (ArrowUp/ArrowDown/ArrowUpDown) and get **background color when sorted** (`--table-slot-header-sorted-bg`).
-- **Components:** `TitanCardGrid` + `TitanCard`, `TitanTable`, `TitanProgressBar`, `TitanDrawer` (triggerLabel + triggerClassName + triggerIcon for tertiary “Show full table”), `TitanButton` (tertiary for “Read more”, “Download”).
+- **Table sorting:** Same pattern as all card tables: **sortDescriptor** + **onSortChange** on `TitanBorderlessTable`; sortable column headers show icon (ArrowUp/ArrowDown/ArrowUpDown) and get **background color when sorted** (`--table-slot-header-sorted-bg`).
+- **Components:** `TitanCardGrid` + `TitanCard`, `TitanBorderlessTable`, `TitanProgressBar`, `TitanDrawer` (triggerLabel + triggerClassName + triggerIcon for tertiary “Show full table”), `TitanButton` (tertiary for “Read more”, “Download”).
 
 ## Implementation notes
 

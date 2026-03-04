@@ -36,7 +36,7 @@ If a Titan component does not render as expected, a prop seems missing, or behav
 
 1. **Verify the API** (registry/docs in this repo or via MCP).
 2. **Load the relevant anatomy/pattern** (skills + composition-patterns).
-3. **Choose the Titan-native alternative** (example: sortable table headers → use `TitanTable` + `docs/skills/table-advanced.md`, not `TitanBorderlessTable`).
+3. **Choose the Titan-native alternative** (example: sortable table headers → use `TitanBorderlessTable` + `docs/skills/table-advanced.md`).
 4. If still not possible, propose a **temporary `snowflake`** that follows `docs/integration/fallback-contract.md` (and includes exit criteria). Do not silently invent look & feel.
 
 ## Next.js App Router (client boundary)
