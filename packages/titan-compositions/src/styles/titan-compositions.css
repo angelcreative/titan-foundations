@@ -94,14 +94,35 @@
   background: var(--table-cell-background);
   text-align: left;
   border-inline: none;
+  vertical-align: middle;
+  box-sizing: border-box;
 }
 
+/* Border 1px sólido; color por token (--table-header-separator / --table-row-separator), sin box-shadow */
 .table-borderless thead th {
   color: var(--table-slot-header-color);
   font-size: var(--button-slot-font-size);
   line-height: var(--button-slot-line-height);
   font-weight: bold;
-  border-bottom: var(--stroke-slot-width) solid var(--table-header-separator);
+  border-bottom: 1px solid var(--table-header-separator);
+  padding: var(--table-slot-cell-pad-y) var(--table-slot-cell-pad-x);
+}
+
+/* Header row shadow: una sola sombra para toda la fila (thead tr no pinta en tablas → thead::after) */
+.layout-table-wrap .table-borderless thead {
+  position: relative;
+}
+.layout-table-wrap .table-borderless thead::after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 0;
+  box-shadow: 0 4px 8px -2px var(--table-header-row-shadow, rgba(0 0 0 / 0.14));
+  pointer-events: none;
+  z-index: 1;
 }
 
 .table-borderless tbody td {
@@ -109,28 +130,38 @@
   font-size: var(--button-slot-font-size);
   line-height: var(--button-slot-line-height);
   font-weight: var(--text-weight-regular);
-  border-bottom: var(--stroke-slot-width) solid var(--table-row-separator);
+  border-bottom: 1px solid var(--table-row-separator);
 }
 
 .table-borderless tbody tr:hover td {
   background: var(--table-row-hover);
 }
 
-/* TitanBorderlessTable (React Aria) — allow overflow for sticky header/columns */
+/* Selected row — full-width background, no misalignment (ARIA data-selected) */
+.table-borderless tbody tr[data-selected] td {
+  background: var(--table-row-selected-bg, var(--color-black-100)) !important;
+}
+
+/* TitanTable (React Aria) — allow overflow for sticky header/columns */
 .layout-table-aria.layout-table-wrap {
   overflow: visible;
 }
 
-/* Sticky header — th row fixed, td rows scroll underneath, box-shadow when sticky */
+/* Sticky header — th fijo; borde inferior visible; filas que pasan por detrás deben ocultarse */
 .layout-table-wrap[data-sticky-header] .table-borderless thead th {
   position: sticky;
   top: 0;
   z-index: 2;
   background: var(--sticky-header-bg, var(--color-white-900)) !important;
-  box-shadow: var(--sticky-header-shadow, 0 4px 12px 0 var(--color-steel-10, rgba(109 131 139 / 0.1)));
+  border-bottom: 1px solid var(--table-header-separator);
+  transform: translateZ(0);
+  isolation: isolate;
 }
 
-/* Sticky columns — first N columns fixed, rest scroll underneath */
+/* Sticky columns — first N columns fixed, rest scroll underneath; no box-shadow on any th */
+.layout-table-wrap[data-sticky-cols] .table-borderless thead th {
+  box-shadow: none !important;
+}
 .layout-table-wrap[data-sticky-cols] .table-borderless {
   width: 100%;
 }
@@ -207,19 +238,41 @@
   box-shadow: var(--sticky-col-shadow, 2px 4px 12px 0 var(--color-steel-10, rgba(109 131 139 / 0.1)));
 }
 
+/* Ningún th ni su contenido tiene box-shadow (la sombra va en thead::after, no en celdas) */
+.layout-table-wrap .table-borderless thead th,
+.layout-table-wrap .table-borderless thead th * {
+  box-shadow: none !important;
+}
+
+/* Sticky-cols: th sin box-shadow (solo las celdas td llevan sombra de columna) */
+.layout-table-wrap[data-sticky-cols="1"] .table-borderless thead th:nth-child(1),
+.layout-table-wrap[data-sticky-cols="2"] .table-borderless thead th:nth-child(1),
+.layout-table-wrap[data-sticky-cols="2"] .table-borderless thead th:nth-child(2),
+.layout-table-wrap[data-sticky-cols="3"] .table-borderless thead th:nth-child(1),
+.layout-table-wrap[data-sticky-cols="3"] .table-borderless thead th:nth-child(2),
+.layout-table-wrap[data-sticky-cols="3"] .table-borderless thead th:nth-child(3) {
+  box-shadow: none !important;
+}
+
 /* Sortable table — active column background, sort icons, border radius 8px top corners */
 .table-sortable.table-borderless {
   border-collapse: separate;
   border-spacing: 0;
 }
 
-/* Sortable th: hover and active (sorted) use black-200 */
-.table-sortable thead th:hover {
-  background: var(--table-slot-header-hover-bg, var(--color-black-200)) !important;
+/* Sortable th: border-radius; solo las th con flechas sortables (.table-col-sortable) tienen hover/sorted bg */
+.layout-table-wrap .table-sortable.table-borderless thead th {
+  border-radius: 8px 8px 0 0;
 }
-
-.table-sortable thead th[aria-sort="ascending"],
-.table-sortable thead th[aria-sort="descending"] {
+.layout-table-wrap .table-sortable.table-borderless thead th.table-col-sortable:hover,
+.layout-table-wrap .table-sortable.table-borderless thead th.table-col-sortable button:hover {
+  background: var(--table-slot-header-hover-bg, var(--color-black-200)) !important;
+  border-radius: 8px 8px 0 0;
+}
+.layout-table-wrap .table-sortable.table-borderless thead th.table-col-sortable[aria-sort="ascending"],
+.layout-table-wrap .table-sortable.table-borderless thead th.table-col-sortable[aria-sort="descending"],
+.layout-table-wrap .table-sortable.table-borderless thead th.table-col-sortable[aria-sort="ascending"] button,
+.layout-table-wrap .table-sortable.table-borderless thead th.table-col-sortable[aria-sort="descending"] button {
   background: var(--table-slot-header-sorted-bg, var(--color-black-200)) !important;
   border-radius: 8px 8px 0 0;
 }
@@ -227,13 +280,37 @@
 .table-sortable .column-sort-header {
   display: inline-flex;
   align-items: center;
-  gap: var(--spacing-2xs, 4px);
+  gap: var(--spacing-xs, 8px);
+}
+
+/* Wrapper para microanimación al cambiar asc/desc/neutral */
+.table-sortable .column-sort-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 14px;
+  height: 14px;
 }
 
 .table-sortable .column-sort-icon {
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 14px;
   color: var(--copy-slot-secondary);
-  opacity: 0.8;
+  opacity: 0.9;
+  animation: table-sort-icon-in 0.22s ease-out;
+}
+
+@keyframes table-sort-icon-in {
+  0% {
+    opacity: 0;
+    transform: rotate(-90deg);
+  }
+  100% {
+    opacity: 0.9;
+    transform: rotate(0deg);
+  }
 }
 
 .table-sortable thead th[aria-sort="ascending"] .column-sort-icon,
@@ -242,7 +319,44 @@
   opacity: 1;
 }
 
-/* TitanBorderlessTable — name cell, social icons, status, checkbox/actions columns */
+/* Resizable columns: control visible (barra vertical) en el borde derecho del th */
+.titan-resizable-table-container .react-aria-ColumnResizer,
+.layout-table-wrap.titan-resizable-table-container .react-aria-ColumnResizer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 8px;
+  margin-right: -4px;
+  cursor: col-resize;
+  z-index: 1;
+  /* Barra visible para indicar que se puede redimensionar */
+  background: transparent;
+}
+.titan-resizable-table-container .react-aria-ColumnResizer::after,
+.layout-table-wrap.titan-resizable-table-container .react-aria-ColumnResizer::after {
+  content: '';
+  position: absolute;
+  top: 20%;
+  bottom: 20%;
+  left: 50%;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--color-black-300, rgba(0 0 0 / 0.15));
+  border-radius: 1px;
+  opacity: 0.6;
+}
+.titan-resizable-table-container .react-aria-ColumnResizer:hover::after,
+.titan-resizable-table-container .react-aria-ColumnResizer[data-hovered]::after,
+.titan-resizable-table-container .react-aria-ColumnResizer[data-resizing]::after {
+  opacity: 1;
+  background: var(--color-ocean-600, #0d6efd);
+}
+.titan-resizable-table-container .table-borderless thead th {
+  position: relative;
+}
+
+/* Table — name cell, social icons, status, checkbox/actions columns */
 .table-cell-name-wrap {
   display: flex;
   flex-direction: column;
@@ -277,6 +391,17 @@
   color: var(--copy-slot-secondary);
 }
 
+/* Celda fecha con icono (formato por defecto) */
+.table-cell-date {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2xs, 4px);
+}
+.table-cell-date-icon {
+  color: var(--color-steel-500, #85989e);
+  flex-shrink: 0;
+}
+
 .table-avatar-initials {
   display: inline-flex;
   align-items: center;
@@ -285,6 +410,7 @@
   height: 24px;
   border-radius: 50%;
   background: var(--color-black-200);
+  color: var(--color-white-900);
   font-size: 0.7rem;
   font-weight: 600;
 }
@@ -302,16 +428,149 @@
   background: var(--color-ocean-600, var(--color-black-600));
 }
 
-.table-col-checkbox .table-checkbox-header,
-.table-cell-checkbox {
-  display: flex;
+/* Checkbox column: ancho fijo solo para columna checkbox (no :first-child para no aplastar primera col de datos) */
+.layout-table-wrap .table-borderless thead th.table-col-checkbox,
+.layout-table-wrap .table-borderless tbody td.table-cell-checkbox {
+  width: 44px;
+  min-width: 44px;
+  max-width: 44px;
+  padding: var(--table-slot-cell-pad-y, 8px) var(--table-slot-cell-pad-x, 12px);
+  box-sizing: border-box;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.layout-table-wrap .table-borderless thead th.table-col-checkbox .table-checkbox-header,
+.layout-table-wrap .table-borderless tbody td.table-cell-checkbox .checkbox-root {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Drag column: ancho fijo */
+.layout-table-wrap .table-borderless thead th.table-col-drag,
+.layout-table-wrap .table-borderless tbody td.table-cell-drag {
+  width: 36px;
+  min-width: 36px;
+  max-width: 36px;
+  padding: var(--table-slot-cell-pad-y, 8px) var(--table-slot-cell-pad-x, 12px);
+  box-sizing: border-box;
+  vertical-align: middle;
+  text-align: center;
+}
+
+/* Data columns: min-width para que la primera columna no salga aplastada */
+.layout-table-wrap .table-borderless thead th:not(.table-col-checkbox):not(.table-col-drag),
+.layout-table-wrap .table-borderless tbody td:not(.table-cell-checkbox):not(.table-cell-drag) {
+  min-width: 100px;
+}
+
+/* Link row: cursor pointer */
+.layout-table-wrap .table-borderless tbody tr[data-href] {
+  cursor: pointer;
+}
+
+/* Draggable rows: grab (mano abierta) y grabbing (mano cerrada) al arrastrar */
+.layout-table-wrap .table-borderless tbody tr[data-allows-dragging] {
+  cursor: grab;
+}
+.layout-table-wrap .table-borderless tbody tr[data-allows-dragging][data-dragging] {
+  cursor: grabbing;
+}
+.layout-table-wrap .table-borderless .table-cell-drag [slot="drag"],
+.layout-table-wrap .table-borderless .table-cell-drag button[aria-label="Drag"] {
+  cursor: grab;
+}
+.layout-table-wrap .table-borderless .table-cell-drag [slot="drag"]:active,
+.layout-table-wrap .table-borderless .table-cell-drag button[aria-label="Drag"]:active {
+  cursor: grabbing;
+}
+
+/* Clickable name/label in cell: color de enlace por token para que se distinga del resto */
+.layout-table-wrap .table-borderless .table-cell-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--link-slot-color, var(--link-color, var(--text-link)));
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.layout-table-wrap .table-borderless .table-cell-link:hover {
+  color: var(--link-slot-color-hover, var(--text-link-hover));
+}
+
+/* Celdas preparadas: date con icono, iniciales, acciones, status */
+.table-cell-date {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2xs, 6px);
+  color: var(--table-slot-cell-color, var(--copy-slot-primary));
+}
+.table-cell-date-icon {
+  color: var(--color-steel-500, #85989e);
+  flex-shrink: 0;
+}
+
+.table-cell-initials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: var(--color-white-900);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.table-cell-actions-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.table-cell-actions-trigger {
+  min-width: 28px;
+  min-height: 28px;
+  border-radius: 50%;
+}
+
+.table-cell-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2xs, 6px);
+  color: var(--table-slot-cell-color, var(--copy-slot-primary));
+}
+.table-cell-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .table-col-actions,
 .table-cell-actions {
   text-align: right;
+  white-space: nowrap;
+}
+
+/* Celda con icon button y menú (kebab) */
+.table-cell-actions-wrap {
+  display: inline-flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.table-cell-actions-trigger {
+  border-radius: 50%;
+  padding: var(--spacing-2xs, 4px);
+}
+
+/* Kebab menu popover above sticky header */
+.table-row-menu-popover {
+  z-index: 10;
 }
 
 .navbar {

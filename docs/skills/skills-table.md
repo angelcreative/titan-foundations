@@ -18,7 +18,7 @@ Universal UI anatomy for the **same table as Top Cities** (3 columns: name, two 
 ## Titan usage
 
 - **Search:** `TitanInputField` with leading icon (Search), placeholder; `--input-*` tokens.
-- **Table, bars, legend, pill:** Same as Top Cities Table (see top-cities-table.md).
+- **Table, bars, legend, pill:** Same as Top Cities Table: `TitanTable` + `TitanTableHeader`, `TitanColumn`, `TitanTableBody`, `TitanRow`, `TitanCell`; see [top-cities-table.md](./top-cities-table.md).
 
 ## Implementation notes
 

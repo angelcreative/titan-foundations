@@ -62,13 +62,45 @@ export { TitanInputField, TitanTextareaField } from './TitanInput'
 export type { TitanInputFieldProps, TitanTextareaFieldProps } from './TitanInput'
 export { TitanCardGrid, TitanCard } from './TitanCardGrid'
 export type { TitanCardGridProps, TitanCardProps, TitanCardSpan } from './TitanCardGrid'
-export { TitanBorderlessTable } from './TitanBorderlessTable'
+export {
+  TitanTable,
+  TitanTableHeader,
+  TitanColumn,
+  TitanTableBody,
+  TitanRow,
+  TitanCell,
+  TitanResizableTableContainer,
+  TitanTableLoadMoreItem,
+  ColumnResizer,
+} from './TitanTable'
+export type { TitanTableProps, TitanColumnProps } from './TitanTable'
+export {
+  TitanTableCellDate,
+  TitanTableCellInitials,
+  TitanTableCellActions,
+  TitanTableCellStatus,
+} from './TitanTableCells'
 export type {
-  TitanBorderlessTableProps,
-  TitanTableColumn,
-  TitanTableRow,
-  TitanBorderlessTableAction,
-} from './TitanBorderlessTable'
+  TitanTableCellDateProps,
+  TitanTableCellInitialsProps,
+  TitanTableCellActionsProps,
+  TitanTableCellActionsItem,
+  TitanTableCellStatusProps,
+  TitanTableCellStatusVariant,
+} from './TitanTableCells'
+export {
+  TitanTableExampleBasic,
+  TitanTableExampleDynamic,
+  TitanTableExampleAsync,
+  TitanTableExampleLinks,
+  TitanTableExampleClickableNameCell,
+  TitanTableExampleCellTypes,
+  TitanTableExampleEmpty,
+  TitanTableExampleSelection,
+  TitanTableExampleSortable,
+  TitanTableExampleResizable,
+  TitanTableExampleDragDrop,
+} from './TitanTableExamples'
 export { TitanTwoUpOneDownLayout } from './TitanTwoUpOneDownLayout'
 export type { TitanTwoUpOneDownLayoutProps } from './TitanTwoUpOneDownLayout'
 export { TitanToggleButtonGroup } from './TitanToggleButtonGroup'

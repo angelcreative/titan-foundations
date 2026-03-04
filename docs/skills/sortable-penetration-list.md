@@ -19,7 +19,7 @@ Universal UI anatomy for a **sortable list** where each row has a label and a **
 - **Surface:** Card or bordered block with `--surface-0`, `--card-slot-radius`. Table/list uses `--table-cell-background`, `--table-slot-cell-pad-*`.
 - **Typography:** Headers: `--table-slot-header-color`, `--text-weight-semibold`. Cells: `--text-body`; alignment: right for numbers.
 - **Sort:** Only on the column that contains the bar and the cifra (penetration). Use a button or clickable header with `aria-sort="ascending"` or `"descending"`; icon ArrowUp (asc) or ArrowDown (desc). Toggle between asc and desc on click. Label column has no sort.
-- **Components:** `TitanCard` (optional wrapper), table or list with sort state; or `TitanBorderlessTable` (React Aria) if using Table Advanced pattern.
+- **Components:** `TitanCard` (optional wrapper), `TitanTable` + `TitanTableHeader`, `TitanColumn`, `TitanTableBody`, `TitanRow`, `TitanCell` (React Aria) when using Table Advanced pattern.
 
 ## Implementation notes
 
@@ -30,4 +30,4 @@ Universal UI anatomy for a **sortable list** where each row has a label and a **
 ## Related patterns
 
 - Tabular version (name + dual bars + pill) → [top-cities-table.md](./top-cities-table.md).
-- Single bar per row (proportions) → [distribution-bar-card.md](./distribution-bar-card.md). Sort implementation → [table-advanced.md](./table-advanced.md).
+- Single bar per row (proportions) → [distribution-bar-card.md](./distribution-bar-card.md). Sort (TitanTable + allowsSorting) → [table-advanced.md](./table-advanced.md).

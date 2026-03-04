@@ -40,3 +40,9 @@
 .read-the-docs {
   color: #888;
 }
+
+.cardgrid-label {
+  font-size: var(--font-size-s, 0.875rem);
+  color: var(--copy-slot-secondary, #666);
+  font-weight: var(--text-weight-medium, 500);
+}

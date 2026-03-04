@@ -316,20 +316,25 @@
         "className": { "type": "string", "required": false }
       },
       "slots": ["children"],
-      "composableWith": ["TitanBorderlessTable", "TitanInputField", "TitanButton", "TitanMenuDropdown", "TitanSelect"],
+      "composableWith": ["TitanTable", "TitanInputField", "TitanButton", "TitanMenuDropdown", "TitanSelect"],
       "category": "layout"
     },
-    "TitanBorderlessTable": {
-      "import": "import { TitanBorderlessTable } from 'titan-compositions'",
-      "description": "Data table without borders. Header row + data rows with hover. Supports custom cell renderers.",
+    "TitanTable": {
+      "import": "import { TitanTable, TitanTableHeader, TitanColumn, TitanTableBody, TitanRow, TitanCell } from 'titan-compositions'",
+      "description": "Accessible data table (React Aria). Use TitanTable + TitanTableHeader/TitanColumn + TitanTableBody/TitanRow/TitanCell. Supports sortDescriptor/onSortChange, sticky header, resizable columns, drag-and-drop, selection. Optional cell helpers: TitanTableCellDate, TitanTableCellInitials, TitanTableCellActions, TitanTableCellStatus.",
       "props": {
-        "columns": { "type": "TitanTableColumn[]", "required": true, "description": "Array of { key, header, render? }" },
-        "rows": { "type": "TitanTableRow[]", "required": true, "description": "Array of { id, ...data }" }
+        "aria-label": { "type": "string", "required": true },
+        "sortDescriptor": { "type": "{ column: Key, direction: 'ascending' | 'descending' }", "required": false },
+        "onSortChange": { "type": "(descriptor: SortDescriptor) => void", "required": false },
+        "selectionMode": { "type": "'none' | 'single' | 'multiple'", "required": false },
+        "selectedKeys": { "type": "Iterable<Key>", "required": false },
+        "onSelectionChange": { "type": "(keys: Selection) => void", "required": false }
       },
-      "slots": [],
+      "slots": ["TitanTableHeader (columns + render Column)", "TitanTableBody (items + render Row/Cell)"],
       "relatedTypes": {
-        "TitanTableColumn": { "key": "string", "header": "string", "render?": "(row: TitanTableRow) => ReactNode" },
-        "TitanTableRow": { "id": "string", "[key: string]": "ReactNode" }
+        "TitanColumn": "id (string), allowsSorting?, isRowHeader?",
+        "TitanRow": "id (row key), columns for cell render",
+        "TitanCell": "wraps cell content; use col.render(row) when using column config"
       },
       "category": "data"
     },
@@ -393,7 +398,7 @@
         "bottom": { "type": "ReactNode", "required": true, "description": "Content for full-width 4/4 card" }
       },
       "slots": ["leftTop", "rightTop", "bottom"],
-      "composableWith": ["TitanBorderlessTable", "TitanInputField", "TitanButton"],
+      "composableWith": ["TitanTable", "TitanInputField", "TitanButton"],
       "category": "layout"
     },
     "TitanToggleButtonGroup": {

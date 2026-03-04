@@ -17,7 +17,8 @@ Universal UI anatomy for a **table with 3 columns**: (1) name, (2) two comparati
 
 ## Titan usage
 
-- **Surface:** `TitanCard`; table with `--table-slot-header-color`, `--table-header-separator`, `--table-row-separator`, `--table-row-hover`.
+- **Table:** `TitanTable` + `TitanTableHeader`, `TitanColumn`, `TitanTableBody`, `TitanRow`, `TitanCell`. Use `sortDescriptor` and `onSortChange` for sortable columns; `TitanColumn allowsSorting` for Affinity/City. See [table-advanced.md](./table-advanced.md).
+- **Surface:** `TitanCard`; table tokens `--table-slot-header-color`, `--table-header-separator`, `--table-row-separator`, `--table-row-hover`.
 - **Bars:** Two `TitanProgressBar` (or custom) per cell; first bar `--progress-slot-fill-bg`, second bar same with lighter opacity or `--progress-slot-track-bg`. Each bar on its own row with percentage to the right.
 - **Legend:** Dots: `--progress-slot-fill-bg` (Audience), `--progress-slot-track-bg` or lighter (Baseline). Text: `--text-body`.
 - **Pill:** `--pill-background`, `--pill-color`, `--card-slot-radius`.
@@ -30,5 +31,5 @@ Universal UI anatomy for a **table with 3 columns**: (1) name, (2) two comparati
 
 ## Related patterns
 
-- Table look & feel → [../table-borderless.md](../table-borderless.md). Sortable headers (lucide icons) → [table-advanced.md](./table-advanced.md).
+- Table look & feel → [../table-borderless.md](../table-borderless.md). Sortable table (TitanTable primitives) → [table-advanced.md](./table-advanced.md).
 - List variant (sort by penetration only) → [sortable-penetration-list.md](./sortable-penetration-list.md).

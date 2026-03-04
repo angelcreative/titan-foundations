@@ -36,7 +36,7 @@ If a Titan component does not render as expected, a prop seems missing, or behav
 
 1. **Verify the API** (registry/docs in this repo or via MCP).
 2. **Load the relevant anatomy/pattern** (skills + composition-patterns).
-3. **Choose the Titan-native alternative** (example: sortable table headers → use `TitanBorderlessTable` + `docs/skills/table-advanced.md`).
+3. **Choose the Titan-native alternative** (example: sortable table headers → use `TitanTable` + TitanTableHeader/TitanColumn/TitanTableBody/TitanRow/TitanCell + `docs/skills/table-advanced.md`).
 4. If still not possible, propose a **temporary `snowflake`** that follows `docs/integration/fallback-contract.md` (and includes exit criteria). Do not silently invent look & feel.
 
 ## Next.js App Router (client boundary)
@@ -74,7 +74,7 @@ Build this layout with import-first policy:
 Rules:
 - Reuse titan-compositions components (TitanNavbar, TitanBreadcrumb, TitanCardGrid/TitanCard, TitanTwoUpOneDownLayout).
 - If these components exist, do not regenerate equivalent markup/CSS.
-- Use TitanBorderlessTable for table content when requested.
+- Use TitanTable (with TitanTableHeader, TitanColumn, TitanTableBody, TitanRow, TitanCell) for table content when requested.
 - Fallback to Aria/tokens only if composition is missing.
 
 Vertical spacing (mandatory):
@@ -128,7 +128,7 @@ Create a new exploratory component pattern:
 - **Positive delta (e.g. +3%):** Always `--color-aquamarine-600` or `--color-aquamarine-700`. Never theme color.
 - **Negative delta (e.g. -2%):** Use `--text-error-primary`.
 - **Secondary/muted text** (counts, “Showing X–Y of Z”, descriptions): use `color: var(--copy-slot-secondary)` or `var(--copy-slot-muted)`; there is **no** `.copy-secondary` CSS class in Titan.
-- **Tables:** Standalone table (not inside a UI card) **never** has a card wrapper or border; it floats, full width. Table inside a card: the card is the container; do not add an extra wrapper. **TitanBorderlessTable** column config: use **`key`** (not `id`) for each column; cell keys are `${row.id}-${column.key}` — wrong key causes "undefined" and duplicate keys.
+- **Tables:** Standalone table (not inside a UI card) **never** has a card wrapper or border; it floats, full width. Table inside a card: the card is the container; do not add an extra wrapper. **TitanTable** primitives: use **`id`** on `TitanColumn` for column identity; `TitanRow` needs `id={row.id}`; pass `sortDescriptor` and `onSortChange` for sortable columns. See `docs/skills/table-advanced.md`.
 
 ## Using UI anatomy skills (how the LLM knows what to use)
 

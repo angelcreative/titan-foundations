@@ -959,216 +959,639 @@ function TitanCard({ children, span = 16, className = "" }) {
   return /* @__PURE__ */ jsx17("article", { className: mergedClassName, children });
 }
 
-// src/TitanBorderlessTable.tsx
-import { useMemo, useState } from "react";
+// src/TitanTable.tsx
 import {
   Table as RACTable,
-  TableHeader,
-  TableBody,
-  Column,
-  Row,
-  Cell,
+  TableHeader as RACTableHeader,
+  TableBody as RACTableBody,
+  Column as RACColumn,
+  Row as RACRow,
+  Cell as RACCell,
   Checkbox as Checkbox2,
-  MenuTrigger as MenuTrigger3,
-  Menu as Menu3,
-  MenuItem as MenuItem3
+  Collection,
+  useTableOptions,
+  ResizableTableContainer,
+  ColumnResizer,
+  TableLoadMoreItem as RACTableLoadMoreItem
 } from "react-aria-components";
-import { ArrowUp, ArrowDown, ArrowUpDown, MoreVertical } from "lucide-react";
+import { ArrowUp, ArrowDown, ArrowUpDown, GripVertical } from "lucide-react";
 import { Check as Check2 } from "lucide-react";
+import { Button as Button11 } from "react-aria-components";
 import { Fragment as Fragment4, jsx as jsx18, jsxs as jsxs16 } from "react/jsx-runtime";
-var DEFAULT_COLUMNS = [
-  { key: "name", header: "Report name", sortable: true },
-  { key: "created", header: "Created", sortable: true },
-  { key: "author", header: "Author", sortable: true },
-  { key: "status", header: "Status", sortable: true }
-];
-function DefaultNameCell({ row, onRowNameClick }) {
-  const name = row.name ?? row.id;
-  const icons = row.socialIcons;
-  return /* @__PURE__ */ jsxs16("div", { className: "table-cell-name-wrap", children: [
-    /* @__PURE__ */ jsx18(
-      "button",
-      {
-        type: "button",
-        className: "table-cell-name-link",
-        onClick: () => onRowNameClick?.(row.id),
-        children: name
-      }
-    ),
-    icons != null && /* @__PURE__ */ jsx18("div", { className: "table-cell-name-icons", children: icons })
-  ] });
-}
-var DEFAULT_ROWS = [
-  {
-    id: "audiense-segments",
-    name: "Audiense segments",
-    socialIcons: /* @__PURE__ */ jsxs16(Fragment4, { children: [
-      /* @__PURE__ */ jsx18("span", { className: "table-social-icon", "aria-hidden": true, title: "X", children: "\u{1D54F}" }),
-      /* @__PURE__ */ jsx18("span", { className: "table-social-icon", "aria-hidden": true, title: "Meta", children: "M" })
-    ] }),
-    created: "01 Jan 2026",
-    author: /* @__PURE__ */ jsx18("span", { className: "table-avatar-initials", "aria-hidden": true, children: "AS" }),
-    status: /* @__PURE__ */ jsxs16("span", { className: "table-status-dot-wrap", children: [
-      /* @__PURE__ */ jsx18("span", { className: "table-status-dot", "aria-hidden": true }),
-      /* @__PURE__ */ jsx18("span", { children: "Demo" })
-    ] })
-  },
-  {
-    id: "audiense-intelligence",
-    name: "Audiense intelligence",
-    socialIcons: /* @__PURE__ */ jsxs16(Fragment4, { children: [
-      /* @__PURE__ */ jsx18("span", { className: "table-social-icon", "aria-hidden": true, title: "Instagram", children: "IG" }),
-      /* @__PURE__ */ jsx18("span", { className: "table-social-icon", "aria-hidden": true, title: "TikTok", children: "TT" }),
-      /* @__PURE__ */ jsx18("span", { className: "table-social-icon", "aria-hidden": true, title: "YouTube", children: "YT" })
-    ] }),
-    created: "01 Jan 2026",
-    author: /* @__PURE__ */ jsx18("span", { className: "table-avatar-initials", "aria-hidden": true, children: "AS" }),
-    status: /* @__PURE__ */ jsxs16("span", { className: "table-status-dot-wrap", children: [
-      /* @__PURE__ */ jsx18("span", { className: "table-status-dot", "aria-hidden": true }),
-      /* @__PURE__ */ jsx18("span", { children: "Demo" })
-    ] })
-  }
-];
 function SortableHeaderContent({
   label,
   sortDirection
 }) {
   return /* @__PURE__ */ jsxs16("span", { className: "column-sort-header", children: [
     label,
-    /* @__PURE__ */ jsxs16("span", { className: "column-sort-icon", "aria-hidden": true, children: [
+    /* @__PURE__ */ jsx18("span", { className: "column-sort-icon-wrap", "aria-hidden": true, children: /* @__PURE__ */ jsxs16("span", { className: "column-sort-icon", children: [
       sortDirection === "ascending" && /* @__PURE__ */ jsx18(ArrowUp, { size: 14, strokeWidth: 1.5 }),
       sortDirection === "descending" && /* @__PURE__ */ jsx18(ArrowDown, { size: 14, strokeWidth: 1.5 }),
       !sortDirection && /* @__PURE__ */ jsx18(ArrowUpDown, { size: 14, strokeWidth: 1.5 })
-    ] })
+    ] }, sortDirection ?? "none") })
   ] });
 }
-function TitanBorderlessTable({
-  columns: columnsProp,
-  rows: rowsProp,
-  selectedKeys: selectedKeysProp,
-  onSelectionChange,
-  sortDescriptor: sortDescriptorProp,
-  onSortChange,
-  onRowNameClick,
-  onAction,
-  "aria-label": ariaLabel = "Data table",
-  className: wrapperClassName
-}) {
-  const columns = useMemo(() => columnsProp ?? DEFAULT_COLUMNS, [columnsProp]);
-  const rows = useMemo(() => rowsProp ?? DEFAULT_ROWS, [rowsProp]);
-  const [internalSelection, setInternalSelection] = useState(/* @__PURE__ */ new Set());
-  const [internalSort, setInternalSort] = useState({
-    column: "name",
-    direction: "ascending"
-  });
-  const selectedKeys = selectedKeysProp ?? internalSelection;
-  const setSelectedKeys = useMemo(() => {
-    if (onSelectionChange) {
-      return (keys) => {
-        onSelectionChange(keys === "all" ? new Set(rows.map((r) => r.id)) : keys);
-      };
+function TitanTable({ className, wrapperClassName, noWrapper, stickyHeader = false, ...props }) {
+  const table = /* @__PURE__ */ jsx18(
+    RACTable,
+    {
+      ...props,
+      className: ["table-borderless", "table-sortable", "table-aria", className].filter(Boolean).join(" ")
     }
-    return setInternalSelection;
-  }, [onSelectionChange, rows]);
-  const sortDescriptor = sortDescriptorProp ?? internalSort;
-  const handleSortChange = onSortChange ?? setInternalSort;
-  const selectedSet = useMemo(() => {
-    if (selectedKeys === "all") return new Set(rows.map((r) => r.id));
-    if (selectedKeys instanceof Set) return selectedKeys;
-    return new Set(selectedKeys);
-  }, [selectedKeys, rows]);
-  const allSelected = rows.length > 0 && selectedSet.size === rows.length;
-  const someSelected = selectedSet.size > 0;
-  const toggleSelectAll = () => {
-    if (allSelected) {
-      setSelectedKeys(/* @__PURE__ */ new Set());
-    } else {
-      setSelectedKeys(new Set(rows.map((r) => r.id)));
-    }
-  };
-  const toggleRow = (id) => {
-    const next = new Set(selectedSet);
-    if (next.has(id)) next.delete(id);
-    else next.add(id);
-    setSelectedKeys(next);
-  };
+  );
+  if (noWrapper) return table;
   return /* @__PURE__ */ jsx18(
     "div",
     {
       className: ["layout-table-wrap", "layout-table-aria", wrapperClassName].filter(Boolean).join(" "),
-      "data-sticky-header": "",
-      children: /* @__PURE__ */ jsxs16(
-        RACTable,
-        {
-          "aria-label": ariaLabel,
-          className: "table-borderless table-sortable table-aria",
-          sortDescriptor,
-          onSortChange: handleSortChange,
-          children: [
-            /* @__PURE__ */ jsxs16(TableHeader, { children: [
-              /* @__PURE__ */ jsx18(Column, { width: 44, minWidth: 44, maxWidth: 44, className: "table-col-checkbox", children: () => /* @__PURE__ */ jsx18(
-                Checkbox2,
-                {
-                  slot: "selection",
-                  "aria-label": "Select all",
-                  isSelected: allSelected,
-                  isIndeterminate: someSelected && !allSelected,
-                  onChange: toggleSelectAll,
-                  className: "checkbox-root table-checkbox-header",
-                  children: /* @__PURE__ */ jsx18("span", { className: "checkbox-box", "aria-hidden": true, children: /* @__PURE__ */ jsx18(Check2, { className: "checkbox-mark" }) })
-                }
-              ) }),
-              columns.map((col) => /* @__PURE__ */ jsx18(
-                Column,
-                {
-                  id: col.key,
-                  allowsSorting: col.sortable,
-                  className: col.sortable ? "table-col-sortable" : void 0,
-                  children: col.sortable ? ({ sortDirection }) => /* @__PURE__ */ jsx18(SortableHeaderContent, { label: col.header, sortDirection }) : col.header
-                },
-                col.key
-              )),
-              /* @__PURE__ */ jsx18(Column, { width: 56, minWidth: 56, maxWidth: 56, className: "table-col-actions", children: () => "Actions" })
-            ] }),
-            /* @__PURE__ */ jsx18(TableBody, { items: rows, children: (row) => /* @__PURE__ */ jsxs16(Row, { id: row.id, textValue: String(row.name ?? row.id), children: [
-              /* @__PURE__ */ jsx18(Cell, { className: "table-cell-checkbox", children: /* @__PURE__ */ jsx18(
-                Checkbox2,
-                {
-                  slot: "selection",
-                  "aria-label": `Select ${row.name ?? row.id}`,
-                  isSelected: selectedSet.has(row.id),
-                  onChange: () => toggleRow(row.id),
-                  className: "checkbox-root",
-                  children: /* @__PURE__ */ jsx18("span", { className: "checkbox-box", "aria-hidden": true, children: /* @__PURE__ */ jsx18(Check2, { className: "checkbox-mark" }) })
-                }
-              ) }),
-              columns.map((col) => /* @__PURE__ */ jsx18(Cell, { children: col.render ? col.render(row) : col.key === "name" ? /* @__PURE__ */ jsx18(DefaultNameCell, { row, onRowNameClick }) : row[col.key] }, col.key)),
-              /* @__PURE__ */ jsx18(Cell, { className: "table-cell-actions", children: /* @__PURE__ */ jsxs16(MenuTrigger3, { children: [
-                /* @__PURE__ */ jsx18(TitanIconButton, { variant: "ghost", "aria-label": "Row actions", children: /* @__PURE__ */ jsx18(MoreVertical, { size: 16, strokeWidth: 1.5 }) }),
-                /* @__PURE__ */ jsxs16(
-                  Menu3,
-                  {
-                    className: "table-row-menu",
-                    onAction: (key) => onAction?.(row.id, key),
-                    children: [
-                      /* @__PURE__ */ jsx18(MenuItem3, { id: "edit", children: "Edit" }),
-                      /* @__PURE__ */ jsx18(MenuItem3, { id: "clone", children: "Clone" }),
-                      /* @__PURE__ */ jsx18(MenuItem3, { id: "share", children: "Share" }),
-                      /* @__PURE__ */ jsx18(MenuItem3, { id: "delete", className: "menu-item-destructive", children: "Delete" })
-                    ]
-                  }
-                )
+      ...stickyHeader ? { "data-sticky-header": "" } : {},
+      children: table
+    }
+  );
+}
+function TitanTableHeader({
+  columns,
+  children,
+  ...props
+}) {
+  const { selectionBehavior, selectionMode, allowsDragging } = useTableOptions();
+  return /* @__PURE__ */ jsxs16(RACTableHeader, { ...props, children: [
+    allowsDragging && /* @__PURE__ */ jsx18(RACColumn, { width: 36, minWidth: 36, maxWidth: 36, className: "table-col-drag", children: () => null }),
+    selectionBehavior === "toggle" && /* @__PURE__ */ jsx18(RACColumn, { width: 44, minWidth: 44, maxWidth: 44, className: "table-col-checkbox", children: () => /* @__PURE__ */ jsx18(Checkbox2, { slot: "selection", "aria-label": "Select all", className: "checkbox-root table-checkbox-header", children: /* @__PURE__ */ jsx18("span", { className: "checkbox-box", "aria-hidden": true, children: /* @__PURE__ */ jsx18(Check2, { className: "checkbox-mark" }) }) }) }),
+    columns != null ? /* @__PURE__ */ jsx18(Collection, { items: columns, children }) : children
+  ] });
+}
+function TitanColumn(props) {
+  const { allowsSorting, children } = props;
+  const allowsResizing = props.allowsResizing;
+  const headerContent = allowsSorting ? (renderProps) => /* @__PURE__ */ jsx18(
+    SortableHeaderContent,
+    {
+      label: typeof children === "function" ? children(renderProps) : children,
+      sortDirection: renderProps.sortDirection
+    }
+  ) : children;
+  return /* @__PURE__ */ jsx18(
+    RACColumn,
+    {
+      ...props,
+      className: allowsSorting ? [props.className, "table-col-sortable"].filter(Boolean).join(" ") : props.className,
+      children: allowsResizing && typeof headerContent !== "function" ? /* @__PURE__ */ jsxs16(Fragment4, { children: [
+        headerContent,
+        /* @__PURE__ */ jsx18(ColumnResizer, {})
+      ] }) : allowsResizing && typeof headerContent === "function" ? ((rp) => /* @__PURE__ */ jsxs16(Fragment4, { children: [
+        headerContent(rp),
+        /* @__PURE__ */ jsx18(ColumnResizer, {})
+      ] })) : headerContent
+    }
+  );
+}
+function TitanTableBody(props) {
+  return /* @__PURE__ */ jsx18(RACTableBody, { ...props });
+}
+function TitanRow({ columns, children, ...props }) {
+  const { selectionBehavior, allowsDragging } = useTableOptions();
+  return /* @__PURE__ */ jsxs16(RACRow, { ...props, children: [
+    allowsDragging && /* @__PURE__ */ jsx18(RACCell, { className: "table-cell-drag", children: /* @__PURE__ */ jsx18(Button11, { slot: "drag", className: "icon-ghost", "aria-label": "Drag", children: /* @__PURE__ */ jsx18(GripVertical, { size: 14, strokeWidth: 1.5 }) }) }),
+    selectionBehavior === "toggle" && /* @__PURE__ */ jsx18(RACCell, { className: "table-cell-checkbox", children: /* @__PURE__ */ jsx18(Checkbox2, { slot: "selection", "aria-label": "Select row", className: "checkbox-root", children: /* @__PURE__ */ jsx18("span", { className: "checkbox-box", "aria-hidden": true, children: /* @__PURE__ */ jsx18(Check2, { className: "checkbox-mark" }) }) }) }),
+    columns != null ? /* @__PURE__ */ jsx18(Collection, { items: columns, children }) : children
+  ] });
+}
+function TitanCell(props) {
+  return /* @__PURE__ */ jsx18(RACCell, { ...props });
+}
+function TitanResizableTableContainer({
+  className,
+  children,
+  ...props
+}) {
+  return /* @__PURE__ */ jsx18(
+    ResizableTableContainer,
+    {
+      ...props,
+      className: ["layout-table-wrap", "layout-table-aria", "titan-resizable-table-container", className].filter(Boolean).join(" "),
+      children
+    }
+  );
+}
+function TitanTableLoadMoreItem(props) {
+  return /* @__PURE__ */ jsx18(RACTableLoadMoreItem, { ...props });
+}
+
+// src/TitanTableCells.tsx
+import { Button as Button12, Menu as Menu3, MenuItem as MenuItem3, MenuTrigger as MenuTrigger3, Popover as Popover4 } from "react-aria-components";
+import { Calendar, MoreVertical, Pencil, Trash2 } from "lucide-react";
+import { jsx as jsx19, jsxs as jsxs17 } from "react/jsx-runtime";
+var TITAN_500_COLORS = [
+  "var(--color-blueberry-500, #6f6dde)",
+  "var(--color-violet-500, #967af8)",
+  "var(--color-purple-500, #a452f7)",
+  "var(--color-ocean-500, #5c98f8)",
+  "var(--color-indigo-500, #6caad1)",
+  "var(--color-turquoise-500, #35c0cb)",
+  "var(--color-teal-500, #6ec091)",
+  "var(--color-green-500, #83e46e)",
+  "var(--color-orange-500, #ef8251)",
+  "var(--color-red-500, #ed655c)",
+  "var(--color-pink-500, #ed57a3)"
+];
+function getInitialsColor(seed) {
+  const idx = typeof seed === "string" ? seed.split("").reduce((a, c) => a + c.charCodeAt(0), 0) : seed;
+  const safe = Math.abs(idx) % TITAN_500_COLORS.length;
+  return TITAN_500_COLORS[safe] || TITAN_500_COLORS[0];
+}
+var defaultFormat = (d) => d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+function TitanTableCellDate({ value, format = defaultFormat, className = "" }) {
+  const d = value instanceof Date ? value : new Date(value);
+  const str = Number.isNaN(d.getTime()) ? String(value) : format(d);
+  return /* @__PURE__ */ jsxs17("span", { className: `table-cell-date ${className}`.trim(), children: [
+    /* @__PURE__ */ jsx19(Calendar, { size: 14, className: "table-cell-date-icon", "aria-hidden": true }),
+    /* @__PURE__ */ jsx19("span", { children: str })
+  ] });
+}
+function deriveInitials(initials, name) {
+  if (initials && initials.length >= 1) return initials.slice(0, 2).toUpperCase();
+  if (name && name.length >= 1) {
+    const parts = name.trim().split(/\s+/);
+    if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    return name.slice(0, 2).toUpperCase();
+  }
+  return "??";
+}
+function TitanTableCellInitials({
+  initials,
+  name,
+  seed = "",
+  className = ""
+}) {
+  const text = deriveInitials(initials, name);
+  const bg = getInitialsColor(seed || text);
+  return /* @__PURE__ */ jsx19(
+    "span",
+    {
+      className: `table-avatar-initials ${className}`.trim(),
+      style: { background: bg },
+      title: name || text,
+      children: text
+    }
+  );
+}
+function TitanTableCellActions({
+  onEdit,
+  onDelete,
+  extraItems = [],
+  ariaLabel = "Actions",
+  className = ""
+}) {
+  const hasEdit = typeof onEdit === "function";
+  const hasDelete = typeof onDelete === "function";
+  const hasAny = hasEdit || hasDelete || extraItems.length > 0;
+  if (!hasAny) return null;
+  return /* @__PURE__ */ jsx19("div", { className: `table-cell-actions-wrap ${className}`.trim(), children: /* @__PURE__ */ jsxs17(MenuTrigger3, { children: [
+    /* @__PURE__ */ jsx19(Button12, { className: "icon-ghost table-cell-actions-trigger", "aria-label": ariaLabel, children: /* @__PURE__ */ jsx19(MoreVertical, { size: 16, "aria-hidden": true }) }),
+    /* @__PURE__ */ jsx19(
+      Popover4,
+      {
+        className: "menu-popover table-row-menu-popover",
+        placement: "bottom end",
+        offset: 4,
+        shouldFlip: true,
+        children: /* @__PURE__ */ jsxs17(
+          Menu3,
+          {
+            className: "menu-list",
+            onAction: (key) => {
+              if (key === "edit") onEdit?.();
+              else if (key === "delete") onDelete?.();
+              else extraItems.find((i) => i.id === key)?.onAction();
+            },
+            children: [
+              extraItems.map((item) => /* @__PURE__ */ jsx19(MenuItem3, { id: item.id, className: "menu-item", textValue: item.label, children: /* @__PURE__ */ jsx19("span", { className: "menu-item-start", children: /* @__PURE__ */ jsx19("span", { className: "menu-item-label", children: item.label }) }) }, item.id)),
+              extraItems.length > 0 && (hasEdit || hasDelete) && /* @__PURE__ */ jsx19("div", { role: "separator", className: "menu-separator" }),
+              hasEdit && /* @__PURE__ */ jsx19(MenuItem3, { id: "edit", className: "menu-item", textValue: "Edit", children: /* @__PURE__ */ jsxs17("span", { className: "menu-item-start", children: [
+                /* @__PURE__ */ jsx19("span", { className: "menu-item-icon", "aria-hidden": true, children: /* @__PURE__ */ jsx19(Pencil, { size: 14 }) }),
+                /* @__PURE__ */ jsx19("span", { className: "menu-item-label", children: "Edit" })
+              ] }) }),
+              hasDelete && /* @__PURE__ */ jsx19(MenuItem3, { id: "delete", className: "menu-item menu-item-destructive", textValue: "Delete", children: /* @__PURE__ */ jsxs17("span", { className: "menu-item-start", children: [
+                /* @__PURE__ */ jsx19("span", { className: "menu-item-icon", "aria-hidden": true, children: /* @__PURE__ */ jsx19(Trash2, { size: 14 }) }),
+                /* @__PURE__ */ jsx19("span", { className: "menu-item-label", children: "Delete" })
               ] }) })
-            ] }) })
-          ]
-        }
-      )
+            ]
+          }
+        )
+      }
+    )
+  ] }) });
+}
+var STATUS_CONFIG = {
+  processing: { label: "Processing", colorVar: "var(--color-orange-500, #ef8251)" },
+  finished: { label: "Finished", colorVar: "var(--color-green-500, #83e46e)" },
+  demo: { label: "Demo", colorVar: "var(--color-ocean-500, #5c98f8)" },
+  failed: { label: "Failed", colorVar: "var(--color-red-500, #ed655c)" }
+};
+function TitanTableCellStatus({ status, label, className = "" }) {
+  const config = STATUS_CONFIG[status];
+  const text = label ?? config.label;
+  return /* @__PURE__ */ jsxs17("span", { className: `table-status-dot-wrap ${className}`.trim(), children: [
+    /* @__PURE__ */ jsx19(
+      "span",
+      {
+        className: "table-status-dot",
+        style: { background: config.colorVar },
+        "aria-hidden": true
+      }
+    ),
+    /* @__PURE__ */ jsx19("span", { children: text })
+  ] });
+}
+
+// src/TitanTableExamples.tsx
+import { useState, useMemo } from "react";
+import { useListData, useDragAndDrop, useAsyncList } from "react-aria-components";
+
+// src/TitanLoader.tsx
+import { jsx as jsx20, jsxs as jsxs18 } from "react/jsx-runtime";
+var LOADER_CDN_BASE = "https://cdn.jsdelivr.net/gh/angelcreative/titan-foundations@main/public/assets/logos";
+function TitanLoader({
+  size = 120,
+  label = "Loading\u2026",
+  className = "",
+  style,
+  loaderBasePath = LOADER_CDN_BASE
+}) {
+  return /* @__PURE__ */ jsxs18(
+    "div",
+    {
+      className: `titan-loader ${className}`.trim(),
+      role: "status",
+      "aria-label": label,
+      style,
+      children: [
+        /* @__PURE__ */ jsx20(
+          "img",
+          {
+            className: "titan-loader-img",
+            src: `${loaderBasePath}/loader-l.gif`,
+            alt: "",
+            "aria-hidden": "true",
+            width: size,
+            height: size,
+            style: { width: size, height: size }
+          }
+        ),
+        /* @__PURE__ */ jsx20("span", { className: "titan-loader-sr-only", children: label })
+      ]
     }
   );
 }
 
+// src/TitanTableExamples.tsx
+import { jsx as jsx21, jsxs as jsxs19 } from "react/jsx-runtime";
+function TitanTableExampleBasic() {
+  return /* @__PURE__ */ jsxs19(TitanTable, { "aria-label": "Files", children: [
+    /* @__PURE__ */ jsxs19(TitanTableHeader, { children: [
+      /* @__PURE__ */ jsx21(TitanColumn, { isRowHeader: true, children: "Name" }),
+      /* @__PURE__ */ jsx21(TitanColumn, { children: "Type" }),
+      /* @__PURE__ */ jsx21(TitanColumn, { children: "Date Modified" })
+    ] }),
+    /* @__PURE__ */ jsxs19(TitanTableBody, { children: [
+      /* @__PURE__ */ jsxs19(TitanRow, { id: "row-1", children: [
+        /* @__PURE__ */ jsx21(TitanCell, { children: "Games" }),
+        /* @__PURE__ */ jsx21(TitanCell, { children: "File folder" }),
+        /* @__PURE__ */ jsx21(TitanCell, { children: "6/7/2020" })
+      ] }),
+      /* @__PURE__ */ jsxs19(TitanRow, { id: "row-2", children: [
+        /* @__PURE__ */ jsx21(TitanCell, { children: "Program Files" }),
+        /* @__PURE__ */ jsx21(TitanCell, { children: "File folder" }),
+        /* @__PURE__ */ jsx21(TitanCell, { children: "4/7/2021" })
+      ] }),
+      /* @__PURE__ */ jsxs19(TitanRow, { id: "row-3", children: [
+        /* @__PURE__ */ jsx21(TitanCell, { children: "bootmgr" }),
+        /* @__PURE__ */ jsx21(TitanCell, { children: "System file" }),
+        /* @__PURE__ */ jsx21(TitanCell, { children: "11/20/2010" })
+      ] }),
+      /* @__PURE__ */ jsxs19(TitanRow, { id: "row-4", children: [
+        /* @__PURE__ */ jsx21(TitanCell, { children: "log.txt" }),
+        /* @__PURE__ */ jsx21(TitanCell, { children: "Text Document" }),
+        /* @__PURE__ */ jsx21(TitanCell, { children: "1/18/2016" })
+      ] })
+    ] })
+  ] });
+}
+var dynamicColumns = [
+  { id: "name", name: "Name", isRowHeader: true },
+  { id: "type", name: "Type" },
+  { id: "date", name: "Date Modified" }
+];
+var initialDynamicRows = [
+  { id: 1, name: "Games", type: "File folder", date: "6/7/2020" },
+  { id: 2, name: "Program Files", type: "File folder", date: "4/7/2021" },
+  { id: 3, name: "bootmgr", type: "System file", date: "11/20/2010" },
+  { id: 4, name: "log.txt", type: "Text Document", date: "1/18/2016" }
+];
+function TitanTableExampleDynamic() {
+  const [showColumns, setShowColumns] = useState(["name", "type", "date"]);
+  const [rows, setRows] = useState(initialDynamicRows);
+  const visibleColumns = dynamicColumns.filter((c) => showColumns.includes(c.id));
+  const addRow = () => {
+    const date = (/* @__PURE__ */ new Date()).toLocaleDateString();
+    setRows((prev) => [...prev, { id: prev.length + 1, name: "file.txt", type: "Text Document", date }]);
+  };
+  return /* @__PURE__ */ jsxs19("div", { style: { display: "flex", flexDirection: "column", gap: 12, alignItems: "flex-start", width: "100%" }, children: [
+    /* @__PURE__ */ jsxs19("div", { style: { display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }, children: [
+      /* @__PURE__ */ jsx21("span", { style: { fontSize: 14, fontWeight: 600 }, children: "Show columns:" }),
+      dynamicColumns.map((c) => /* @__PURE__ */ jsx21(
+        TitanCheckboxField,
+        {
+          label: c.name,
+          isSelected: showColumns.includes(c.id),
+          onChange: (checked) => setShowColumns(
+            (prev) => checked ? [...prev, c.id] : prev.filter((x) => x !== c.id)
+          )
+        },
+        c.id
+      )),
+      /* @__PURE__ */ jsx21(TitanButton, { onPress: addRow, children: "Add row" })
+    ] }),
+    /* @__PURE__ */ jsxs19(TitanTable, { "aria-label": "Files", style: { width: "100%" }, children: [
+      /* @__PURE__ */ jsx21(TitanTableHeader, { columns: visibleColumns, children: (column) => /* @__PURE__ */ jsx21(TitanColumn, { isRowHeader: column.isRowHeader, children: column.name }, column.id) }),
+      /* @__PURE__ */ jsx21(TitanTableBody, { items: rows, dependencies: [visibleColumns], children: (item) => /* @__PURE__ */ jsx21(TitanRow, { id: String(item.id), columns: visibleColumns, children: (column) => /* @__PURE__ */ jsx21(TitanCell, { children: item[column.id] }) }, item.id) })
+    ] })
+  ] });
+}
+function TitanTableExampleAsync() {
+  const list = useAsyncList({
+    async load({ signal, cursor }) {
+      const url = cursor ?? "https://swapi.dev/api/people/";
+      const res = await fetch(url, { signal });
+      const json = await res.json();
+      const items = (json.results ?? []).map((p) => ({
+        id: p.url ?? String(Math.random()),
+        name: p.name ?? "",
+        height: p.height ?? "",
+        mass: p.mass ?? "",
+        birth: p.birth_year ?? ""
+      }));
+      return { items, cursor: json.next ?? void 0 };
+    },
+    getKey: (item) => item.id
+  });
+  const isLoadingMore = list.loadingState === "loadingMore";
+  return /* @__PURE__ */ jsx21("div", { style: { minHeight: 200, maxHeight: 360, overflow: "auto", width: "100%" }, children: /* @__PURE__ */ jsxs19(TitanTable, { "aria-label": "Star Wars characters", stickyHeader: true, style: { width: "100%" }, children: [
+    /* @__PURE__ */ jsxs19(TitanTableHeader, { children: [
+      /* @__PURE__ */ jsx21(TitanColumn, { id: "name", isRowHeader: true, children: "Name" }),
+      /* @__PURE__ */ jsx21(TitanColumn, { id: "height", children: "Height" }),
+      /* @__PURE__ */ jsx21(TitanColumn, { id: "mass", children: "Mass" }),
+      /* @__PURE__ */ jsx21(TitanColumn, { id: "birth", children: "Birth Year" })
+    ] }),
+    /* @__PURE__ */ jsxs19(
+      TitanTableBody,
+      {
+        items: list.items,
+        renderEmptyState: () => list.isLoading ? /* @__PURE__ */ jsx21("div", { style: { display: "flex", justifyContent: "center", padding: 24 }, children: /* @__PURE__ */ jsx21(TitanLoader, { "aria-label": "Loading..." }) }) : list.error ? /* @__PURE__ */ jsx21("div", { style: { padding: 24, textAlign: "center", color: "var(--color-red-600)" }, children: list.error.message }) : /* @__PURE__ */ jsx21("div", { style: { padding: 24, textAlign: "center", fontStyle: "italic" }, children: "No data." }),
+        children: [
+          ((item) => /* @__PURE__ */ jsxs19(TitanRow, { id: item.id, children: [
+            /* @__PURE__ */ jsx21(TitanCell, { children: item.name }),
+            /* @__PURE__ */ jsx21(TitanCell, { children: item.height }),
+            /* @__PURE__ */ jsx21(TitanCell, { children: item.mass }),
+            /* @__PURE__ */ jsx21(TitanCell, { children: item.birth })
+          ] })),
+          /* @__PURE__ */ jsx21(TitanTableLoadMoreItem, { onLoadMore: list.loadMore, isLoading: isLoadingMore })
+        ]
+      }
+    )
+  ] }) });
+}
+function TitanTableExampleLinks() {
+  return /* @__PURE__ */ jsxs19(TitanTable, { "aria-label": "Links", children: [
+    /* @__PURE__ */ jsxs19(TitanTableHeader, { children: [
+      /* @__PURE__ */ jsx21(TitanColumn, { isRowHeader: true, children: "Name" }),
+      /* @__PURE__ */ jsx21(TitanColumn, { children: "URL" }),
+      /* @__PURE__ */ jsx21(TitanColumn, { children: "Date added" })
+    ] }),
+    /* @__PURE__ */ jsxs19(TitanTableBody, { children: [
+      /* @__PURE__ */ jsxs19(TitanRow, { id: "row-1", href: "https://adobe.com/", target: "_blank", children: [
+        /* @__PURE__ */ jsx21(TitanCell, { children: "Adobe" }),
+        /* @__PURE__ */ jsx21(TitanCell, { children: "https://adobe.com/" }),
+        /* @__PURE__ */ jsx21(TitanCell, { children: "January 28, 2023" })
+      ] }),
+      /* @__PURE__ */ jsxs19(TitanRow, { id: "row-2", href: "https://google.com/", target: "_blank", children: [
+        /* @__PURE__ */ jsx21(TitanCell, { children: "Google" }),
+        /* @__PURE__ */ jsx21(TitanCell, { children: "https://google.com/" }),
+        /* @__PURE__ */ jsx21(TitanCell, { children: "April 5, 2023" })
+      ] }),
+      /* @__PURE__ */ jsxs19(TitanRow, { id: "row-3", href: "https://nytimes.com/", target: "_blank", children: [
+        /* @__PURE__ */ jsx21(TitanCell, { children: "New York Times" }),
+        /* @__PURE__ */ jsx21(TitanCell, { children: "https://nytimes.com/" }),
+        /* @__PURE__ */ jsx21(TitanCell, { children: "July 12, 2023" })
+      ] })
+    ] })
+  ] });
+}
+var clickableNameRows = [
+  { id: "1", name: "Games", type: "File folder", date: "6/7/2020" },
+  { id: "2", name: "Program Files", type: "File folder", date: "4/7/2021" },
+  { id: "3", name: "bootmgr", type: "System file", date: "11/20/2010" }
+];
+function TitanTableExampleClickableNameCell() {
+  return /* @__PURE__ */ jsxs19(TitanTable, { "aria-label": "Files with clickable names", children: [
+    /* @__PURE__ */ jsxs19(TitanTableHeader, { children: [
+      /* @__PURE__ */ jsx21(TitanColumn, { isRowHeader: true, children: "Name" }),
+      /* @__PURE__ */ jsx21(TitanColumn, { children: "Type" }),
+      /* @__PURE__ */ jsx21(TitanColumn, { children: "Date Modified" })
+    ] }),
+    /* @__PURE__ */ jsx21(TitanTableBody, { items: clickableNameRows, children: (item) => /* @__PURE__ */ jsxs19(TitanRow, { id: item.id, children: [
+      /* @__PURE__ */ jsx21(TitanCell, { children: /* @__PURE__ */ jsx21(
+        "button",
+        {
+          type: "button",
+          className: "table-cell-link",
+          onClick: () => alert(`Open: ${item.name}`),
+          children: item.name
+        }
+      ) }),
+      /* @__PURE__ */ jsx21(TitanCell, { children: item.type }),
+      /* @__PURE__ */ jsx21(TitanCell, { children: item.date })
+    ] }) })
+  ] });
+}
+var cellTypesRows = [
+  { id: "1", name: "Alice Wong", date: "2025-11-15", status: "finished" },
+  { id: "2", name: "Diego Zapata", date: "2025-10-01", status: "processing" },
+  { id: "3", name: "Diego Zapata", date: "2025-09-20", status: "demo" },
+  { id: "4", name: "Jane Doe", date: "2025-08-12", status: "failed" }
+];
+function TitanTableExampleCellTypes() {
+  return /* @__PURE__ */ jsxs19(TitanTable, { "aria-label": "Rows with date, initials, status, actions", children: [
+    /* @__PURE__ */ jsxs19(TitanTableHeader, { children: [
+      /* @__PURE__ */ jsx21(TitanColumn, { isRowHeader: true, children: "Name" }),
+      /* @__PURE__ */ jsx21(TitanColumn, { children: "Date" }),
+      /* @__PURE__ */ jsx21(TitanColumn, { children: "Status" }),
+      /* @__PURE__ */ jsx21(TitanColumn, { className: "table-col-actions", children: "Actions" })
+    ] }),
+    /* @__PURE__ */ jsx21(TitanTableBody, { items: cellTypesRows, children: (item) => /* @__PURE__ */ jsxs19(TitanRow, { id: item.id, children: [
+      /* @__PURE__ */ jsxs19(TitanCell, { children: [
+        /* @__PURE__ */ jsx21(TitanTableCellInitials, { name: item.name, seed: item.id }),
+        /* @__PURE__ */ jsx21("span", { style: { marginLeft: 8 }, children: item.name })
+      ] }),
+      /* @__PURE__ */ jsx21(TitanCell, { children: /* @__PURE__ */ jsx21(TitanTableCellDate, { value: item.date }) }),
+      /* @__PURE__ */ jsx21(TitanCell, { children: /* @__PURE__ */ jsx21(TitanTableCellStatus, { status: item.status }) }),
+      /* @__PURE__ */ jsx21(TitanCell, { className: "table-cell-actions", children: /* @__PURE__ */ jsx21(
+        TitanTableCellActions,
+        {
+          onEdit: () => alert(`Edit ${item.name}`),
+          onDelete: () => alert(`Delete ${item.name}`)
+        }
+      ) })
+    ] }) })
+  ] });
+}
+function TitanTableExampleEmpty() {
+  return /* @__PURE__ */ jsxs19(TitanTable, { "aria-label": "Search results", children: [
+    /* @__PURE__ */ jsxs19(TitanTableHeader, { children: [
+      /* @__PURE__ */ jsx21(TitanColumn, { isRowHeader: true, children: "Name" }),
+      /* @__PURE__ */ jsx21(TitanColumn, { children: "Type" }),
+      /* @__PURE__ */ jsx21(TitanColumn, { children: "Date Modified" })
+    ] }),
+    /* @__PURE__ */ jsx21(TitanTableBody, { items: [], renderEmptyState: () => "No results found.", children: () => null })
+  ] });
+}
+var selectionRows = [
+  { id: "charizard", name: "Charizard", type: "Fire, Flying", level: 67 },
+  { id: "blastoise", name: "Blastoise", type: "Water", level: 56 },
+  { id: "venusaur", name: "Venusaur", type: "Grass, Poison", level: 83 },
+  { id: "pikachu", name: "Pikachu", type: "Electric", level: 100 }
+];
+function TitanTableExampleSelection() {
+  const [selected, setSelected] = useState(/* @__PURE__ */ new Set());
+  return /* @__PURE__ */ jsxs19("div", { style: { display: "flex", flexDirection: "column", gap: 8, width: "100%" }, children: [
+    /* @__PURE__ */ jsxs19(
+      TitanTable,
+      {
+        "aria-label": "Favorite pokemon",
+        selectionMode: "multiple",
+        selectedKeys: selected,
+        onSelectionChange: setSelected,
+        onRowAction: (key) => alert(`Clicked ${key}`),
+        children: [
+          /* @__PURE__ */ jsxs19(TitanTableHeader, { children: [
+            /* @__PURE__ */ jsx21(TitanColumn, { isRowHeader: true, children: "Name" }),
+            /* @__PURE__ */ jsx21(TitanColumn, { children: "Type" }),
+            /* @__PURE__ */ jsx21(TitanColumn, { children: "Level" })
+          ] }),
+          /* @__PURE__ */ jsx21(TitanTableBody, { items: selectionRows, children: (item) => /* @__PURE__ */ jsxs19(TitanRow, { id: item.id, children: [
+            /* @__PURE__ */ jsx21(TitanCell, { children: item.name }),
+            /* @__PURE__ */ jsx21(TitanCell, { children: item.type }),
+            /* @__PURE__ */ jsx21(TitanCell, { children: item.level })
+          ] }) })
+        ]
+      }
+    ),
+    /* @__PURE__ */ jsxs19("p", { style: { fontSize: 14, margin: 0 }, children: [
+      "Current selection: ",
+      selected === "all" ? "all" : [...selected].join(", ")
+    ] })
+  ] });
+}
+var sortableRows = [
+  { id: 1, name: "Charizard", type: "Fire, Flying", level: 67 },
+  { id: 2, name: "Blastoise", type: "Water", level: 56 },
+  { id: 3, name: "Venusaur", type: "Grass, Poison", level: 83 },
+  { id: 4, name: "Pikachu", type: "Electric", level: 100 }
+];
+function TitanTableExampleSortable() {
+  const [sortDescriptor, setSortDescriptor] = useState({
+    column: "name",
+    direction: "ascending"
+  });
+  const sortedRows = useMemo(() => {
+    if (!sortDescriptor.column) return sortableRows;
+    return [...sortableRows].sort((a, b) => {
+      const key = sortDescriptor.column;
+      const aVal = a[key];
+      const bVal = b[key];
+      const cmp = aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
+      return sortDescriptor.direction === "descending" ? -cmp : cmp;
+    });
+  }, [sortDescriptor]);
+  return /* @__PURE__ */ jsxs19(
+    TitanTable,
+    {
+      "aria-label": "Favorite pokemon",
+      sortDescriptor,
+      onSortChange: setSortDescriptor,
+      children: [
+        /* @__PURE__ */ jsxs19(TitanTableHeader, { children: [
+          /* @__PURE__ */ jsx21(TitanColumn, { id: "name", isRowHeader: true, allowsSorting: true, children: "Name" }),
+          /* @__PURE__ */ jsx21(TitanColumn, { id: "type", allowsSorting: true, children: "Type" }),
+          /* @__PURE__ */ jsx21(TitanColumn, { id: "level", allowsSorting: true, children: "Level" })
+        ] }),
+        /* @__PURE__ */ jsx21(TitanTableBody, { items: sortedRows, children: (item) => /* @__PURE__ */ jsxs19(TitanRow, { id: String(item.id), children: [
+          /* @__PURE__ */ jsx21(TitanCell, { children: item.name }),
+          /* @__PURE__ */ jsx21(TitanCell, { children: item.type }),
+          /* @__PURE__ */ jsx21(TitanCell, { children: item.level })
+        ] }) })
+      ]
+    }
+  );
+}
+var resizableRows = [
+  { id: 1, name: "2022 Roadmap Proposal Revision 012822 Copy (2)", date: "November 27, 2022 at 4:56PM", size: "214 KB" },
+  { id: 2, name: "Budget", date: "January 27, 2021 at 1:56AM", size: "14 MB" },
+  { id: 3, name: "Welcome Email Template", date: "July 24, 2022 at 2:48 PM", size: "20 KB" },
+  { id: 4, name: "Job Posting_8301", date: "May 30, 2025", size: "139 KB" }
+];
+function TitanTableExampleResizable() {
+  return /* @__PURE__ */ jsx21(TitanResizableTableContainer, { style: { maxHeight: 320 }, children: /* @__PURE__ */ jsxs19(TitanTable, { noWrapper: true, "aria-label": "Table with resizable columns", style: { width: "100%" }, children: [
+    /* @__PURE__ */ jsxs19(TitanTableHeader, { children: [
+      /* @__PURE__ */ jsx21(TitanColumn, { id: "file", isRowHeader: true, allowsResizing: true, defaultWidth: 200, minWidth: 120, maxWidth: 500, children: "File Name" }),
+      /* @__PURE__ */ jsx21(TitanColumn, { id: "size", allowsResizing: true, defaultWidth: 80, children: "Size" }),
+      /* @__PURE__ */ jsx21(TitanColumn, { id: "date", allowsResizing: true, defaultWidth: 140, minWidth: 100, children: "Date Modified" })
+    ] }),
+    /* @__PURE__ */ jsx21(TitanTableBody, { items: resizableRows, children: (item) => /* @__PURE__ */ jsxs19(TitanRow, { id: String(item.id), children: [
+      /* @__PURE__ */ jsx21(TitanCell, { children: item.name }),
+      /* @__PURE__ */ jsx21(TitanCell, { children: item.size }),
+      /* @__PURE__ */ jsx21(TitanCell, { children: item.date })
+    ] }) })
+  ] }) });
+}
+var dragDropInitial = [
+  { id: 1, name: "Games", date: "6/7/2020", type: "File folder" },
+  { id: 2, name: "Program Files", date: "4/7/2021", type: "File folder" },
+  { id: 3, name: "bootmgr", date: "11/20/2010", type: "System file" },
+  { id: 4, name: "log.txt", date: "1/18/2016", type: "Text Document" }
+];
+function TitanTableExampleDragDrop() {
+  const list = useListData({
+    initialItems: dragDropInitial,
+    getKey: (item) => String(item.id)
+  });
+  const { dragAndDropHooks } = useDragAndDrop({
+    getItems: (keys, items) => items.map((item) => ({ "text/plain": item.name })),
+    onReorder: (e) => {
+      if (e.target.dropPosition === "before") {
+        list.moveBefore(e.target.key, e.keys);
+      } else if (e.target.dropPosition === "after") {
+        list.moveAfter(e.target.key, e.keys);
+      }
+    }
+  });
+  return /* @__PURE__ */ jsxs19(TitanTable, { "aria-label": "Files", selectionMode: "multiple", dragAndDropHooks, children: [
+    /* @__PURE__ */ jsxs19(TitanTableHeader, { children: [
+      /* @__PURE__ */ jsx21(TitanColumn, { isRowHeader: true, children: "Name" }),
+      /* @__PURE__ */ jsx21(TitanColumn, { children: "Type" }),
+      /* @__PURE__ */ jsx21(TitanColumn, { children: "Date Modified" })
+    ] }),
+    /* @__PURE__ */ jsx21(TitanTableBody, { items: list.items, children: (item) => /* @__PURE__ */ jsxs19(TitanRow, { id: String(item.id), children: [
+      /* @__PURE__ */ jsx21(TitanCell, { children: item.name }),
+      /* @__PURE__ */ jsx21(TitanCell, { children: item.type }),
+      /* @__PURE__ */ jsx21(TitanCell, { children: item.date })
+    ] }) })
+  ] });
+}
+
 // src/TitanTwoUpOneDownLayout.tsx
-import { Fragment as Fragment5, jsx as jsx19, jsxs as jsxs17 } from "react/jsx-runtime";
+import { Fragment as Fragment5, jsx as jsx22, jsxs as jsxs20 } from "react/jsx-runtime";
 function TitanTwoUpOneDownLayout({
   theme = "insights",
   userInitial = "A",
@@ -1178,14 +1601,14 @@ function TitanTwoUpOneDownLayout({
   rightTop,
   bottom
 }) {
-  return /* @__PURE__ */ jsxs17(Fragment5, { children: [
-    /* @__PURE__ */ jsx19(TitanNavbar, { theme, userInitial }),
-    /* @__PURE__ */ jsxs17("main", { className: "page", children: [
-      /* @__PURE__ */ jsx19("section", { className: "card", children: /* @__PURE__ */ jsx19(TitanBreadcrumb, { items: breadcrumbItems, currentLabel: breadcrumbCurrentLabel }) }),
-      /* @__PURE__ */ jsxs17(TitanCardGrid, { children: [
-        /* @__PURE__ */ jsx19(TitanCard, { span: 8, children: leftTop }),
-        /* @__PURE__ */ jsx19(TitanCard, { span: 8, children: rightTop }),
-        /* @__PURE__ */ jsx19(TitanCard, { span: 16, children: bottom })
+  return /* @__PURE__ */ jsxs20(Fragment5, { children: [
+    /* @__PURE__ */ jsx22(TitanNavbar, { theme, userInitial }),
+    /* @__PURE__ */ jsxs20("main", { className: "page", children: [
+      /* @__PURE__ */ jsx22("section", { className: "card", children: /* @__PURE__ */ jsx22(TitanBreadcrumb, { items: breadcrumbItems, currentLabel: breadcrumbCurrentLabel }) }),
+      /* @__PURE__ */ jsxs20(TitanCardGrid, { children: [
+        /* @__PURE__ */ jsx22(TitanCard, { span: 8, children: leftTop }),
+        /* @__PURE__ */ jsx22(TitanCard, { span: 8, children: rightTop }),
+        /* @__PURE__ */ jsx22(TitanCard, { span: 16, children: bottom })
       ] })
     ] })
   ] });
@@ -1193,7 +1616,7 @@ function TitanTwoUpOneDownLayout({
 
 // src/TitanToggleButtonGroup.tsx
 import { ToggleButton, ToggleButtonGroup } from "react-aria-components";
-import { jsx as jsx20, jsxs as jsxs18 } from "react/jsx-runtime";
+import { jsx as jsx23, jsxs as jsxs21 } from "react/jsx-runtime";
 function TitanToggleButtonGroup({
   items,
   selectedKey,
@@ -1201,7 +1624,7 @@ function TitanToggleButtonGroup({
   onSelectionChange,
   ariaLabel = "Options"
 }) {
-  return /* @__PURE__ */ jsx20(
+  return /* @__PURE__ */ jsx23(
     ToggleButtonGroup,
     {
       className: "toggle-button-group",
@@ -1213,10 +1636,10 @@ function TitanToggleButtonGroup({
         if (selected && onSelectionChange) onSelectionChange(String(selected));
       },
       "aria-label": ariaLabel,
-      children: items.map((item) => /* @__PURE__ */ jsxs18(ToggleButton, { id: item.id, className: "toggle-button-item", children: [
-        item.icon && item.iconPosition !== "right" && /* @__PURE__ */ jsx20("span", { className: "toggle-button-icon", children: item.icon }),
-        /* @__PURE__ */ jsx20("span", { children: item.label }),
-        item.icon && item.iconPosition === "right" && /* @__PURE__ */ jsx20("span", { className: "toggle-button-icon", children: item.icon })
+      children: items.map((item) => /* @__PURE__ */ jsxs21(ToggleButton, { id: item.id, className: "toggle-button-item", children: [
+        item.icon && item.iconPosition !== "right" && /* @__PURE__ */ jsx23("span", { className: "toggle-button-icon", children: item.icon }),
+        /* @__PURE__ */ jsx23("span", { children: item.label }),
+        item.icon && item.iconPosition === "right" && /* @__PURE__ */ jsx23("span", { className: "toggle-button-icon", children: item.icon })
       ] }, item.id))
     }
   );
@@ -1229,7 +1652,7 @@ import {
   useState as useState2,
   useCallback as useCallback2
 } from "react";
-import { Button as Button11 } from "react-aria-components";
+import { Button as Button13 } from "react-aria-components";
 import { ChevronLeft as ChevronLeft3, ChevronRight as ChevronRight5 } from "lucide-react";
 
 // src/icons/renderIconNode.tsx
@@ -1353,7 +1776,7 @@ function renderIconNode(icon, props) {
 }
 
 // src/TitanSidebar.tsx
-import { jsx as jsx21, jsxs as jsxs19 } from "react/jsx-runtime";
+import { jsx as jsx24, jsxs as jsxs22 } from "react/jsx-runtime";
 var SidebarContext = createContext({
   collapsed: false,
   activeId: null,
@@ -1380,19 +1803,19 @@ function TitanSidebar({
     },
     [isControlled, onActiveChange]
   );
-  return /* @__PURE__ */ jsx21(SidebarContext.Provider, { value: { collapsed, activeId, setActiveId }, children: /* @__PURE__ */ jsxs19(
+  return /* @__PURE__ */ jsx24(SidebarContext.Provider, { value: { collapsed, activeId, setActiveId }, children: /* @__PURE__ */ jsxs22(
     "aside",
     {
       className: "titan-sidebar",
       ...collapsed ? { "data-collapsed": "" } : {},
       children: [
-        onToggle && /* @__PURE__ */ jsx21(
-          Button11,
+        onToggle && /* @__PURE__ */ jsx24(
+          Button13,
           {
             className: "titan-sidebar-toggle",
             onPress: onToggle,
             "aria-label": collapsed ? "Expand sidebar" : "Collapse sidebar",
-            children: collapsed ? /* @__PURE__ */ jsx21(ChevronRight5, {}) : /* @__PURE__ */ jsx21(ChevronLeft3, {})
+            children: collapsed ? /* @__PURE__ */ jsx24(ChevronRight5, {}) : /* @__PURE__ */ jsx24(ChevronLeft3, {})
           }
         ),
         children
@@ -1401,7 +1824,7 @@ function TitanSidebar({
   ) });
 }
 function TitanSidebarHeader({ children }) {
-  return /* @__PURE__ */ jsx21("div", { className: "titan-sidebar-header", children });
+  return /* @__PURE__ */ jsx24("div", { className: "titan-sidebar-header", children });
 }
 function TitanSidebarItem({
   id,
@@ -1411,8 +1834,8 @@ function TitanSidebarItem({
 }) {
   const { collapsed, activeId, setActiveId } = useContext(SidebarContext);
   const isActive = activeId === id;
-  return /* @__PURE__ */ jsxs19(
-    Button11,
+  return /* @__PURE__ */ jsxs22(
+    Button13,
     {
       className: "titan-sidebar-item",
       "data-active": isActive ? "true" : void 0,
@@ -1424,43 +1847,7 @@ function TitanSidebarItem({
       },
       children: [
         icon ? renderIconNode(icon) : null,
-        /* @__PURE__ */ jsx21("span", { className: "titan-sidebar-item-label", children })
-      ]
-    }
-  );
-}
-
-// src/TitanLoader.tsx
-import { jsx as jsx22, jsxs as jsxs20 } from "react/jsx-runtime";
-var LOADER_CDN_BASE = "https://cdn.jsdelivr.net/gh/angelcreative/titan-foundations@main/public/assets/logos";
-function TitanLoader({
-  size = 120,
-  label = "Loading\u2026",
-  className = "",
-  style,
-  loaderBasePath = LOADER_CDN_BASE
-}) {
-  return /* @__PURE__ */ jsxs20(
-    "div",
-    {
-      className: `titan-loader ${className}`.trim(),
-      role: "status",
-      "aria-label": label,
-      style,
-      children: [
-        /* @__PURE__ */ jsx22(
-          "img",
-          {
-            className: "titan-loader-img",
-            src: `${loaderBasePath}/loader-l.gif`,
-            alt: "",
-            "aria-hidden": "true",
-            width: size,
-            height: size,
-            style: { width: size, height: size }
-          }
-        ),
-        /* @__PURE__ */ jsx22("span", { className: "titan-loader-sr-only", children: label })
+        /* @__PURE__ */ jsx24("span", { className: "titan-sidebar-item-label", children })
       ]
     }
   );
@@ -1474,7 +1861,7 @@ import {
   SliderThumb,
   SliderTrack
 } from "react-aria-components";
-import { Fragment as Fragment6, jsx as jsx23, jsxs as jsxs21 } from "react/jsx-runtime";
+import { Fragment as Fragment6, jsx as jsx25, jsxs as jsxs23 } from "react/jsx-runtime";
 function TitanSlider({
   label,
   defaultValue = 50,
@@ -1487,7 +1874,7 @@ function TitanSlider({
   formatOptions,
   className = ""
 }) {
-  return /* @__PURE__ */ jsxs21(
+  return /* @__PURE__ */ jsxs23(
     Slider,
     {
       className: `slider-root ${className}`.trim(),
@@ -1499,19 +1886,19 @@ function TitanSlider({
       onChange,
       formatOptions,
       children: [
-        (label || showOutput) && /* @__PURE__ */ jsxs21("div", { className: "slider-header", children: [
-          label && /* @__PURE__ */ jsx23(Label4, { className: "slider-label", children: label }),
-          showOutput && /* @__PURE__ */ jsx23(SliderOutput, { className: "slider-output" })
+        (label || showOutput) && /* @__PURE__ */ jsxs23("div", { className: "slider-header", children: [
+          label && /* @__PURE__ */ jsx25(Label4, { className: "slider-label", children: label }),
+          showOutput && /* @__PURE__ */ jsx25(SliderOutput, { className: "slider-output" })
         ] }),
-        /* @__PURE__ */ jsx23(SliderTrack, { className: "slider-track", children: ({ state }) => /* @__PURE__ */ jsxs21(Fragment6, { children: [
-          /* @__PURE__ */ jsx23(
+        /* @__PURE__ */ jsx25(SliderTrack, { className: "slider-track", children: ({ state }) => /* @__PURE__ */ jsxs23(Fragment6, { children: [
+          /* @__PURE__ */ jsx25(
             "div",
             {
               className: "slider-track-fill",
               style: { width: `${state.getThumbPercent(0) * 100}%` }
             }
           ),
-          /* @__PURE__ */ jsx23(SliderThumb, { className: "slider-thumb", index: 0 })
+          /* @__PURE__ */ jsx25(SliderThumb, { className: "slider-thumb", index: 0 })
         ] }) })
       ]
     }
@@ -1529,7 +1916,7 @@ function TitanRangeSlider({
   formatOptions,
   className = ""
 }) {
-  return /* @__PURE__ */ jsxs21(
+  return /* @__PURE__ */ jsxs23(
     Slider,
     {
       className: `slider-root slider-root-range ${className}`.trim(),
@@ -1541,23 +1928,23 @@ function TitanRangeSlider({
       onChange,
       formatOptions,
       children: [
-        (label || showOutput) && /* @__PURE__ */ jsxs21("div", { className: "slider-header", children: [
-          label && /* @__PURE__ */ jsx23(Label4, { className: "slider-label", children: label }),
-          showOutput && /* @__PURE__ */ jsx23(SliderOutput, { className: "slider-output" })
+        (label || showOutput) && /* @__PURE__ */ jsxs23("div", { className: "slider-header", children: [
+          label && /* @__PURE__ */ jsx25(Label4, { className: "slider-label", children: label }),
+          showOutput && /* @__PURE__ */ jsx25(SliderOutput, { className: "slider-output" })
         ] }),
-        /* @__PURE__ */ jsx23(SliderTrack, { className: "slider-track", children: ({ state }) => {
+        /* @__PURE__ */ jsx25(SliderTrack, { className: "slider-track", children: ({ state }) => {
           const left = state.getThumbPercent(0) * 100;
           const right = state.getThumbPercent(1) * 100;
-          return /* @__PURE__ */ jsxs21(Fragment6, { children: [
-            /* @__PURE__ */ jsx23(
+          return /* @__PURE__ */ jsxs23(Fragment6, { children: [
+            /* @__PURE__ */ jsx25(
               "div",
               {
                 className: "slider-track-fill",
                 style: { left: `${left}%`, width: `${right - left}%` }
               }
             ),
-            /* @__PURE__ */ jsx23(SliderThumb, { className: "slider-thumb", index: 0 }),
-            /* @__PURE__ */ jsx23(SliderThumb, { className: "slider-thumb", index: 1 })
+            /* @__PURE__ */ jsx25(SliderThumb, { className: "slider-thumb", index: 0 }),
+            /* @__PURE__ */ jsx25(SliderThumb, { className: "slider-thumb", index: 1 })
           ] });
         } })
       ]
@@ -1567,7 +1954,7 @@ function TitanRangeSlider({
 
 // src/TitanProgressBar.tsx
 import { Label as Label5, ProgressBar } from "react-aria-components";
-import { Fragment as Fragment7, jsx as jsx24, jsxs as jsxs22 } from "react/jsx-runtime";
+import { Fragment as Fragment7, jsx as jsx26, jsxs as jsxs24 } from "react/jsx-runtime";
 function TitanProgressBar({
   label,
   value = 0,
@@ -1578,7 +1965,7 @@ function TitanProgressBar({
   className = ""
 }) {
   const percent = (value - minValue) / (maxValue - minValue) * 100;
-  return /* @__PURE__ */ jsx24(
+  return /* @__PURE__ */ jsx26(
     ProgressBar,
     {
       className: `progress-root ${className}`.trim(),
@@ -1586,12 +1973,12 @@ function TitanProgressBar({
       minValue,
       maxValue,
       formatOptions,
-      children: ({ valueText }) => /* @__PURE__ */ jsxs22(Fragment7, { children: [
-        (label || showValue) && /* @__PURE__ */ jsxs22("div", { className: "progress-header", children: [
-          label && /* @__PURE__ */ jsx24(Label5, { className: "progress-label", children: label }),
-          showValue && /* @__PURE__ */ jsx24("span", { className: "progress-value", children: valueText })
+      children: ({ valueText }) => /* @__PURE__ */ jsxs24(Fragment7, { children: [
+        (label || showValue) && /* @__PURE__ */ jsxs24("div", { className: "progress-header", children: [
+          label && /* @__PURE__ */ jsx26(Label5, { className: "progress-label", children: label }),
+          showValue && /* @__PURE__ */ jsx26("span", { className: "progress-value", children: valueText })
         ] }),
-        /* @__PURE__ */ jsx24("div", { className: "progress-track", children: /* @__PURE__ */ jsx24("div", { className: "progress-fill", style: { width: `${percent}%` } }) })
+        /* @__PURE__ */ jsx26("div", { className: "progress-track", children: /* @__PURE__ */ jsx26("div", { className: "progress-fill", style: { width: `${percent}%` } }) })
       ] })
     }
   );
@@ -1600,8 +1987,8 @@ function TitanProgressBar({
 // src/TitanCalendar.tsx
 import { useCallback as useCallback3, useEffect, useMemo as useMemo2, useRef as useRef2, useState as useState3 } from "react";
 import {
-  Button as Button12,
-  Calendar,
+  Button as Button14,
+  Calendar as Calendar2,
   CalendarCell,
   CalendarGrid,
   CalendarGridBody,
@@ -1612,10 +1999,10 @@ import {
   today,
   getLocalTimeZone
 } from "@internationalized/date";
-import { jsx as jsx25, jsxs as jsxs23 } from "react/jsx-runtime";
-var ChevronLeft4 = () => /* @__PURE__ */ jsx25("svg", { width: "16", height: "16", viewBox: "0 0 16 16", fill: "none", "aria-hidden": "true", children: /* @__PURE__ */ jsx25("path", { d: "M10 12L6 8l4-4", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }) });
-var ChevronRight6 = () => /* @__PURE__ */ jsx25("svg", { width: "16", height: "16", viewBox: "0 0 16 16", fill: "none", "aria-hidden": "true", children: /* @__PURE__ */ jsx25("path", { d: "M6 4l4 4-4 4", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }) });
-var ChevronDown5 = () => /* @__PURE__ */ jsx25("svg", { width: "12", height: "12", viewBox: "0 0 12 12", fill: "none", "aria-hidden": "true", children: /* @__PURE__ */ jsx25("path", { d: "M3 4.5L6 7.5L9 4.5", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" }) });
+import { jsx as jsx27, jsxs as jsxs25 } from "react/jsx-runtime";
+var ChevronLeft4 = () => /* @__PURE__ */ jsx27("svg", { width: "16", height: "16", viewBox: "0 0 16 16", fill: "none", "aria-hidden": "true", children: /* @__PURE__ */ jsx27("path", { d: "M10 12L6 8l4-4", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }) });
+var ChevronRight6 = () => /* @__PURE__ */ jsx27("svg", { width: "16", height: "16", viewBox: "0 0 16 16", fill: "none", "aria-hidden": "true", children: /* @__PURE__ */ jsx27("path", { d: "M6 4l4 4-4 4", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }) });
+var ChevronDown5 = () => /* @__PURE__ */ jsx27("svg", { width: "12", height: "12", viewBox: "0 0 12 12", fill: "none", "aria-hidden": "true", children: /* @__PURE__ */ jsx27("path", { d: "M3 4.5L6 7.5L9 4.5", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" }) });
 function CalendarDropdown({
   options,
   value,
@@ -1649,8 +2036,8 @@ function CalendarDropdown({
     const active = listRef.current.querySelector('[data-active="true"]');
     if (active) active.scrollIntoView({ block: "nearest" });
   }, [open]);
-  return /* @__PURE__ */ jsxs23("div", { className: `cal-dropdown ${className}`.trim(), ref, children: [
-    /* @__PURE__ */ jsxs23(
+  return /* @__PURE__ */ jsxs25("div", { className: `cal-dropdown ${className}`.trim(), ref, children: [
+    /* @__PURE__ */ jsxs25(
       "button",
       {
         type: "button",
@@ -1659,18 +2046,18 @@ function CalendarDropdown({
         "aria-haspopup": "listbox",
         "aria-expanded": open,
         children: [
-          /* @__PURE__ */ jsx25("span", { children: selected?.label ?? "" }),
-          /* @__PURE__ */ jsx25(ChevronDown5, {})
+          /* @__PURE__ */ jsx27("span", { children: selected?.label ?? "" }),
+          /* @__PURE__ */ jsx27(ChevronDown5, {})
         ]
       }
     ),
-    open && /* @__PURE__ */ jsx25(
+    open && /* @__PURE__ */ jsx27(
       "ul",
       {
         className: `cal-dropdown-menu${flipUp ? " cal-dropdown-menu-flip" : ""}`,
         role: "listbox",
         ref: listRef,
-        children: options.map((o) => /* @__PURE__ */ jsx25(
+        children: options.map((o) => /* @__PURE__ */ jsx27(
           "li",
           {
             role: "option",
@@ -1722,9 +2109,9 @@ function TitanCalendar({
     () => years.map((y) => ({ value: y, label: String(y) })),
     [years]
   );
-  return /* @__PURE__ */ jsxs23("div", { className: `calendar-wrapper ${className}`.trim(), children: [
-    /* @__PURE__ */ jsxs23(
-      Calendar,
+  return /* @__PURE__ */ jsxs25("div", { className: `calendar-wrapper ${className}`.trim(), children: [
+    /* @__PURE__ */ jsxs25(
+      Calendar2,
       {
         "aria-label": "Calendar",
         focusedValue: focusedDate,
@@ -1736,10 +2123,10 @@ function TitanCalendar({
         maxValue,
         isDisabled,
         children: [
-          /* @__PURE__ */ jsxs23("header", { className: "calendar-header", children: [
-            /* @__PURE__ */ jsx25(Button12, { slot: "previous", className: "calendar-nav-btn", children: /* @__PURE__ */ jsx25(ChevronLeft4, {}) }),
-            /* @__PURE__ */ jsxs23("div", { className: "calendar-selects", children: [
-              /* @__PURE__ */ jsx25(
+          /* @__PURE__ */ jsxs25("header", { className: "calendar-header", children: [
+            /* @__PURE__ */ jsx27(Button14, { slot: "previous", className: "calendar-nav-btn", children: /* @__PURE__ */ jsx27(ChevronLeft4, {}) }),
+            /* @__PURE__ */ jsxs25("div", { className: "calendar-selects", children: [
+              /* @__PURE__ */ jsx27(
                 CalendarDropdown,
                 {
                   options: months,
@@ -1747,7 +2134,7 @@ function TitanCalendar({
                   onChange: (m) => setFocusedDate(focusedDate.set({ month: m }))
                 }
               ),
-              /* @__PURE__ */ jsx25(
+              /* @__PURE__ */ jsx27(
                 CalendarDropdown,
                 {
                   className: "cal-dropdown-year",
@@ -1757,19 +2144,19 @@ function TitanCalendar({
                 }
               )
             ] }),
-            /* @__PURE__ */ jsx25(Button12, { slot: "next", className: "calendar-nav-btn", children: /* @__PURE__ */ jsx25(ChevronRight6, {}) })
+            /* @__PURE__ */ jsx27(Button14, { slot: "next", className: "calendar-nav-btn", children: /* @__PURE__ */ jsx27(ChevronRight6, {}) })
           ] }),
-          /* @__PURE__ */ jsxs23(CalendarGrid, { className: "calendar-grid", children: [
-            /* @__PURE__ */ jsx25(CalendarGridHeader, { children: (day) => /* @__PURE__ */ jsx25(CalendarHeaderCell, { className: "calendar-header-cell" }) }),
-            /* @__PURE__ */ jsx25(CalendarGridBody, { children: (date) => /* @__PURE__ */ jsx25(CalendarCell, { date, className: "calendar-cell" }) })
+          /* @__PURE__ */ jsxs25(CalendarGrid, { className: "calendar-grid", children: [
+            /* @__PURE__ */ jsx27(CalendarGridHeader, { children: (day) => /* @__PURE__ */ jsx27(CalendarHeaderCell, { className: "calendar-header-cell" }) }),
+            /* @__PURE__ */ jsx27(CalendarGridBody, { children: (date) => /* @__PURE__ */ jsx27(CalendarCell, { date, className: "calendar-cell" }) })
           ] })
         ]
       }
     ),
-    showTime && /* @__PURE__ */ jsxs23("div", { className: "calendar-time", children: [
-      /* @__PURE__ */ jsxs23("div", { className: "calendar-time-field", children: [
-        /* @__PURE__ */ jsx25("label", { className: "calendar-time-label", children: "Hour" }),
-        /* @__PURE__ */ jsx25(
+    showTime && /* @__PURE__ */ jsxs25("div", { className: "calendar-time", children: [
+      /* @__PURE__ */ jsxs25("div", { className: "calendar-time-field", children: [
+        /* @__PURE__ */ jsx27("label", { className: "calendar-time-label", children: "Hour" }),
+        /* @__PURE__ */ jsx27(
           "input",
           {
             type: "text",
@@ -1792,10 +2179,10 @@ function TitanCalendar({
           }
         )
       ] }),
-      /* @__PURE__ */ jsx25("span", { className: "calendar-time-separator", children: ":" }),
-      /* @__PURE__ */ jsxs23("div", { className: "calendar-time-field", children: [
-        /* @__PURE__ */ jsx25("label", { className: "calendar-time-label", children: "Minute" }),
-        /* @__PURE__ */ jsx25(
+      /* @__PURE__ */ jsx27("span", { className: "calendar-time-separator", children: ":" }),
+      /* @__PURE__ */ jsxs25("div", { className: "calendar-time-field", children: [
+        /* @__PURE__ */ jsx27("label", { className: "calendar-time-label", children: "Minute" }),
+        /* @__PURE__ */ jsx27(
           "input",
           {
             type: "text",
@@ -1822,15 +2209,17 @@ function TitanCalendar({
   ] });
 }
 export {
+  ColumnResizer,
   TitanBadge,
   TitanBadgeAnchor,
-  TitanBorderlessTable,
   TitanBreadcrumb,
   TitanButton,
   TitanCalendar,
   TitanCard,
   TitanCardGrid,
+  TitanCell,
   TitanCheckboxField,
+  TitanColumn,
   TitanDialog,
   TitanDrawer,
   TitanFormControlsGroup,
@@ -1846,6 +2235,8 @@ export {
   TitanProgressBar,
   TitanRadioGroupField,
   TitanRangeSlider,
+  TitanResizableTableContainer,
+  TitanRow,
   TitanSearchMenu,
   TitanSelect,
   TitanSidebar,
@@ -1853,6 +2244,25 @@ export {
   TitanSidebarItem,
   TitanSlider,
   TitanSwitchField,
+  TitanTable,
+  TitanTableBody,
+  TitanTableCellActions,
+  TitanTableCellDate,
+  TitanTableCellInitials,
+  TitanTableCellStatus,
+  TitanTableExampleAsync,
+  TitanTableExampleBasic,
+  TitanTableExampleCellTypes,
+  TitanTableExampleClickableNameCell,
+  TitanTableExampleDragDrop,
+  TitanTableExampleDynamic,
+  TitanTableExampleEmpty,
+  TitanTableExampleLinks,
+  TitanTableExampleResizable,
+  TitanTableExampleSelection,
+  TitanTableExampleSortable,
+  TitanTableHeader,
+  TitanTableLoadMoreItem,
   TitanTabs,
   TitanTag,
   TitanTextareaField,

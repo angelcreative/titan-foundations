@@ -41,7 +41,7 @@ All 22 visual components exported by `titan-compositions` are imported and demon
 | Feedback | `TitanTooltip`, `TitanToastRegion` (success/error/info/warning) |
 | Forms | `TitanInputField`, `TitanTextareaField` (with label, hint, counter, icons, error) |
 | Form controls | `TitanCheckboxField`, `TitanRadioGroupField`, `TitanSwitchField`, `TitanFormControlsGroup` |
-| Data | `TitanBorderlessTable` (inside card grid) |
+| Data | `TitanTable` + TitanTableHeader/TitanColumn/TitanTableBody/TitanRow/TitanCell (inside card grid) |
 
 `getToneStyle` (utility) and `TitanTwoUpOneDownLayout` (convenience wrapper) are not shown separately but are covered indirectly through Pills/Tags and the CardGrid layout respectively.
 

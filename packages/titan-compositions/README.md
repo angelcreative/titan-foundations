@@ -11,7 +11,7 @@ Incremental exports:
 - `TitanBreadcrumb` (implemented)
 - `TitanNavbar` (implemented)
 - `TitanCardGrid` / `TitanCard` (implemented)
-- `TitanBorderlessTable` (implemented)
+- `TitanTable` + TitanTableHeader, TitanColumn, TitanTableBody, TitanRow, TitanCell (React Aria Table; implemented)
 - `TitanTwoUpOneDownLayout` (implemented)
 - `TitanButton` / `TitanIconButton` (implemented)
 - `TitanPill` (implemented)
@@ -66,19 +66,22 @@ In Vite, CRA, Remix, etc., there is no Server/Client split; this rule does not a
 ```tsx
 import {
   TitanTwoUpOneDownLayout,
-  TitanBorderlessTable,
-  type TitanTableColumn,
-  type TitanTableRow,
+  TitanTable,
+  TitanTableHeader,
+  TitanColumn,
+  TitanTableBody,
+  TitanRow,
+  TitanCell,
 } from 'titan-compositions'
 import 'titan-compositions/styles'
 
-const columns: TitanTableColumn[] = [
+const columns = [
   { key: 'creator', header: 'Creator' },
   { key: 'network', header: 'Network' },
   { key: 'engagement', header: 'Engagement' },
 ]
 
-const rows: TitanTableRow[] = [
+const rows = [
   { id: 'r1', creator: 'Luna Media', network: 'Instagram', engagement: '6.7%' },
   { id: 'r2', creator: 'North Spark', network: 'TikTok', engagement: '4.1%' },
   { id: 'r3', creator: 'Daily Scope', network: 'YouTube', engagement: '8.2%' },
@@ -96,7 +99,16 @@ export function Page() {
       breadcrumbCurrentLabel="Campaigns"
       leftTop={<section>Left 2/4 card content</section>}
       rightTop={<section>Right 2/4 card content</section>}
-      bottom={<TitanBorderlessTable columns={columns} rows={rows} />}
+      bottom={
+        <TitanTable aria-label="Campaigns">
+          <TitanTableHeader columns={columns}>
+            {(col) => <TitanColumn id={col.key}>{col.header}</TitanColumn>}
+          </TitanTableHeader>
+          <TitanTableBody items={rows}>
+            {(row) => <TitanRow id={row.id} columns={columns}>{(col) => <TitanCell>{row[col.key]}</TitanCell>}</TitanRow>}
+          </TitanTableBody>
+        </TitanTable>
+      }
     />
   )
 }
