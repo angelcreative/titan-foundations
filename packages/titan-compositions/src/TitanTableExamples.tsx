@@ -436,6 +436,61 @@ export function TitanTableExampleSortable() {
 }
 
 /* -------------------------------------------------------------------------- */
+/*  7b. Header variants: [sort] label | label [info] | [sort] label [info] | label */
+/* -------------------------------------------------------------------------- */
+
+const headerVariantRows = [
+  { id: 1, name: 'Alpha', metric: 100, note: 'First', plain: 'A' },
+  { id: 2, name: 'Beta', metric: 200, note: 'Second', plain: 'B' },
+  { id: 3, name: 'Gamma', metric: 150, note: 'Third', plain: 'C' },
+]
+
+export function TitanTableExampleHeaderVariants() {
+  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({ column: 'name', direction: 'ascending' })
+  const sortedRows = useMemo(() => {
+    if (!sortDescriptor.column) return headerVariantRows
+    return [...headerVariantRows].sort((a, b) => {
+      const key = sortDescriptor.column as keyof (typeof headerVariantRows)[0]
+      const aVal = a[key]
+      const bVal = b[key]
+      const cmp = String(aVal).localeCompare(String(bVal), undefined, { numeric: true })
+      return sortDescriptor.direction === 'descending' ? -cmp : cmp
+    })
+  }, [sortDescriptor])
+
+  return (
+    <TitanTable
+      aria-label="Table with header variants"
+      sortDescriptor={sortDescriptor}
+      onSortChange={setSortDescriptor}
+    >
+      <TitanTableHeader>
+        <TitanColumn id="name" isRowHeader allowsSorting sortIconPosition="left">
+          Name
+        </TitanColumn>
+        <TitanColumn id="metric" showInfoIcon infoIconAriaLabel="Metric definition">
+          Metric
+        </TitanColumn>
+        <TitanColumn id="note" allowsSorting sortIconPosition="left" showInfoIcon infoIconAriaLabel="Note tooltip">
+          Note
+        </TitanColumn>
+        <TitanColumn id="plain">Plain</TitanColumn>
+      </TitanTableHeader>
+      <TitanTableBody items={sortedRows}>
+        {(item) => (
+          <TitanRow id={String(item.id)}>
+            <TitanCell>{item.name}</TitanCell>
+            <TitanCell>{item.metric}</TitanCell>
+            <TitanCell>{item.note}</TitanCell>
+            <TitanCell>{item.plain}</TitanCell>
+          </TitanRow>
+        )}
+      </TitanTableBody>
+    </TitanTable>
+  )
+}
+
+/* -------------------------------------------------------------------------- */
 /*  8. Resizable columns                                                      */
 /* -------------------------------------------------------------------------- */
 

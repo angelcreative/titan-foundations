@@ -11,7 +11,7 @@ Universal UI anatomy for a **sortable, accessible table** built with **TitanTabl
 
 | Region | Content |
 |--------|---------|
-| **Header** | One `<th>` per column via `TitanTableHeader` + `TitanColumn`; sortable columns use `allowsSorting` and show ArrowUp/ArrowDown/ArrowUpDown. Sorted `<th>` gets background `--table-slot-header-sorted-bg`. |
+| **Header** | One `<th>` per column via `TitanTableHeader` + `TitanColumn`. Four variants: (1) `[sort] label` — `allowsSorting` + `sortIconPosition="left"`; (2) `label [info]` — `showInfoIcon` + `infoIconAriaLabel`; (3) `[sort] label [info]` — both; (4) `label` only. Sortable columns use `allowsSorting` and show ArrowUp/ArrowDown/ArrowUpDown; only those get background `--table-slot-header-sorted-bg` when sorted. |
 | **Body** | `TitanTableBody` + `TitanRow` + `TitanCell`; first column may be row header. Optional: checkbox column for selection. |
 
 ## Titan usage
@@ -19,8 +19,9 @@ Universal UI anatomy for a **sortable, accessible table** built with **TitanTabl
 - **Components:** `TitanTable`, `TitanTableHeader`, `TitanColumn`, `TitanTableBody`, `TitanRow`, `TitanCell` from `titan-compositions`. Table has `data-sticky-header` for sticky header; use `sortDescriptor` and `onSortChange` for sort.
 - **Surface:** Borderless table styling: `--table-slot-cell-pad-*`, `--table-slot-header-color`, `--table-header-separator`, `--table-row-separator`. Table classes: `table-borderless`, `table-sortable`.
 - **Layout:** Standalone table = no card wrapper; table inside a card = card is the container.
-- **Sort:** Pass `sortDescriptor` and `onSortChange` to `TitanTable`. Sort data with `useMemo` from sortDescriptor; pass sorted list as `items` to `TitanTableBody`. Set `TitanColumn allowsSorting` for sortable columns.
+- **Sort:** Pass `sortDescriptor` and `onSortChange` to `TitanTable`. Sort data with `useMemo` from sortDescriptor; pass sorted list as `items` to `TitanTableBody`. Set `TitanColumn allowsSorting` for sortable columns (sort icon appears on the left by default).
 - **Column ids:** Use `id` on `TitanColumn` (e.g. `id="name"`); row keys via `TitanRow id={row.id}`.
+- **Header variants:** Sortable columns use icon on the **left** by default (`[sort] label`). Use `sortIconPosition="right"` for label [sort]. Use `showInfoIcon` + `infoIconAriaLabel` for tooltip icon. Plain label-only columns need no extra props.
 
 ## Implementation notes
 

@@ -974,20 +974,37 @@ import {
   ColumnResizer,
   TableLoadMoreItem as RACTableLoadMoreItem
 } from "react-aria-components";
-import { ArrowUp, ArrowDown, ArrowUpDown, GripVertical, Check as Check2, Minus } from "lucide-react";
+import { ArrowUp, ArrowDown, ArrowUpDown, GripVertical, Check as Check2, Minus, Info } from "lucide-react";
 import { Button as Button11 } from "react-aria-components";
 import { Fragment as Fragment4, jsx as jsx18, jsxs as jsxs16 } from "react/jsx-runtime";
+function SortIcon({ sortDirection }) {
+  return /* @__PURE__ */ jsx18("span", { className: "column-sort-icon-wrap", "aria-hidden": true, children: /* @__PURE__ */ jsxs16("span", { className: "column-sort-icon", children: [
+    sortDirection === "ascending" && /* @__PURE__ */ jsx18(ArrowUp, { size: 14, strokeWidth: 1.5 }),
+    sortDirection === "descending" && /* @__PURE__ */ jsx18(ArrowDown, { size: 14, strokeWidth: 1.5 }),
+    !sortDirection && /* @__PURE__ */ jsx18(ArrowUpDown, { size: 14, strokeWidth: 1.5 })
+  ] }, sortDirection ?? "none") });
+}
 function SortableHeaderContent({
   label,
-  sortDirection
+  sortDirection,
+  sortIconPosition = "right",
+  showInfoIcon = false,
+  infoIconAriaLabel = "More information"
 }) {
-  return /* @__PURE__ */ jsxs16("span", { className: "column-sort-header", children: [
+  return /* @__PURE__ */ jsxs16("span", { className: `column-sort-header ${sortIconPosition === "left" ? "column-sort-header--sort-left" : ""} ${showInfoIcon ? "column-sort-header--has-info" : ""}`, children: [
+    sortIconPosition === "left" && /* @__PURE__ */ jsx18(SortIcon, { sortDirection }),
     label,
-    /* @__PURE__ */ jsx18("span", { className: "column-sort-icon-wrap", "aria-hidden": true, children: /* @__PURE__ */ jsxs16("span", { className: "column-sort-icon", children: [
-      sortDirection === "ascending" && /* @__PURE__ */ jsx18(ArrowUp, { size: 14, strokeWidth: 1.5 }),
-      sortDirection === "descending" && /* @__PURE__ */ jsx18(ArrowDown, { size: 14, strokeWidth: 1.5 }),
-      !sortDirection && /* @__PURE__ */ jsx18(ArrowUpDown, { size: 14, strokeWidth: 1.5 })
-    ] }, sortDirection ?? "none") })
+    sortIconPosition === "right" && /* @__PURE__ */ jsx18(SortIcon, { sortDirection }),
+    showInfoIcon && /* @__PURE__ */ jsx18("span", { className: "column-header-info-wrap", "aria-hidden": true, children: /* @__PURE__ */ jsx18(Info, { size: 14, strokeWidth: 1.5, className: "column-header-info-icon", "aria-label": infoIconAriaLabel }) })
+  ] });
+}
+function HeaderWithInfoOnly({
+  label,
+  infoIconAriaLabel = "More information"
+}) {
+  return /* @__PURE__ */ jsxs16("span", { className: "column-sort-header column-sort-header--info-only", children: [
+    label,
+    /* @__PURE__ */ jsx18("span", { className: "column-header-info-wrap", "aria-hidden": true, children: /* @__PURE__ */ jsx18(Info, { size: 14, strokeWidth: 1.5, className: "column-header-info-icon", "aria-label": infoIconAriaLabel }) })
   ] });
 }
 function TitanTable({ className, wrapperClassName, noWrapper, stickyHeader = false, ...props }) {
@@ -1021,13 +1038,23 @@ function TitanTableHeader({
   ] });
 }
 function TitanColumn(props) {
-  const { allowsSorting, children } = props;
+  const { allowsSorting, children, sortIconPosition = "left", showInfoIcon = false, infoIconAriaLabel } = props;
   const allowsResizing = props.allowsResizing;
+  const resolvedLabel = (renderProps) => typeof children === "function" ? children(renderProps) : children;
   const headerContent = allowsSorting ? (renderProps) => /* @__PURE__ */ jsx18(
     SortableHeaderContent,
     {
-      label: typeof children === "function" ? children(renderProps) : children,
-      sortDirection: renderProps.sortDirection
+      label: resolvedLabel(renderProps),
+      sortDirection: renderProps.sortDirection,
+      sortIconPosition,
+      showInfoIcon,
+      infoIconAriaLabel
+    }
+  ) : showInfoIcon ? (renderProps) => /* @__PURE__ */ jsx18(
+    HeaderWithInfoOnly,
+    {
+      label: resolvedLabel(renderProps),
+      infoIconAriaLabel
     }
   ) : children;
   return /* @__PURE__ */ jsx18(
@@ -1534,6 +1561,46 @@ function TitanTableExampleSortable() {
     }
   );
 }
+var headerVariantRows = [
+  { id: 1, name: "Alpha", metric: 100, note: "First", plain: "A" },
+  { id: 2, name: "Beta", metric: 200, note: "Second", plain: "B" },
+  { id: 3, name: "Gamma", metric: 150, note: "Third", plain: "C" }
+];
+function TitanTableExampleHeaderVariants() {
+  const [sortDescriptor, setSortDescriptor] = useState({ column: "name", direction: "ascending" });
+  const sortedRows = useMemo(() => {
+    if (!sortDescriptor.column) return headerVariantRows;
+    return [...headerVariantRows].sort((a, b) => {
+      const key = sortDescriptor.column;
+      const aVal = a[key];
+      const bVal = b[key];
+      const cmp = String(aVal).localeCompare(String(bVal), void 0, { numeric: true });
+      return sortDescriptor.direction === "descending" ? -cmp : cmp;
+    });
+  }, [sortDescriptor]);
+  return /* @__PURE__ */ jsxs19(
+    TitanTable,
+    {
+      "aria-label": "Table with header variants",
+      sortDescriptor,
+      onSortChange: setSortDescriptor,
+      children: [
+        /* @__PURE__ */ jsxs19(TitanTableHeader, { children: [
+          /* @__PURE__ */ jsx21(TitanColumn, { id: "name", isRowHeader: true, allowsSorting: true, sortIconPosition: "left", children: "Name" }),
+          /* @__PURE__ */ jsx21(TitanColumn, { id: "metric", showInfoIcon: true, infoIconAriaLabel: "Metric definition", children: "Metric" }),
+          /* @__PURE__ */ jsx21(TitanColumn, { id: "note", allowsSorting: true, sortIconPosition: "left", showInfoIcon: true, infoIconAriaLabel: "Note tooltip", children: "Note" }),
+          /* @__PURE__ */ jsx21(TitanColumn, { id: "plain", children: "Plain" })
+        ] }),
+        /* @__PURE__ */ jsx21(TitanTableBody, { items: sortedRows, children: (item) => /* @__PURE__ */ jsxs19(TitanRow, { id: String(item.id), children: [
+          /* @__PURE__ */ jsx21(TitanCell, { children: item.name }),
+          /* @__PURE__ */ jsx21(TitanCell, { children: item.metric }),
+          /* @__PURE__ */ jsx21(TitanCell, { children: item.note }),
+          /* @__PURE__ */ jsx21(TitanCell, { children: item.plain })
+        ] }) })
+      ]
+    }
+  );
+}
 var resizableRows = [
   { id: 1, name: "2022 Roadmap Proposal Revision 012822 Copy (2)", date: "November 27, 2022 at 4:56PM", size: "214 KB" },
   { id: 2, name: "Budget", date: "January 27, 2021 at 1:56AM", size: "14 MB" },
@@ -1687,7 +1754,7 @@ import {
   Grip as Grip2,
   Handshake as Handshake2,
   Hash,
-  Info,
+  Info as Info2,
   Layers,
   LayoutDashboard,
   ListFilter,
@@ -1718,7 +1785,7 @@ var LUCIDE_REGISTRY = {
   "grip": Grip2,
   "handshake": Handshake2,
   "hash": Hash,
-  "info": Info,
+  "info": Info2,
   "layers": Layers,
   "layout-dashboard": LayoutDashboard,
   "list-filter": ListFilter,
@@ -2256,6 +2323,7 @@ export {
   TitanTableExampleDragDrop,
   TitanTableExampleDynamic,
   TitanTableExampleEmpty,
+  TitanTableExampleHeaderVariants,
   TitanTableExampleLinks,
   TitanTableExampleResizable,
   TitanTableExampleSelection,

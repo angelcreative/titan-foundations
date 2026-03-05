@@ -98,6 +98,7 @@ export {
   TitanTableExampleEmpty,
   TitanTableExampleSelection,
   TitanTableExampleSortable,
+  TitanTableExampleHeaderVariants,
   TitanTableExampleResizable,
   TitanTableExampleDragDrop,
 } from './TitanTableExamples'

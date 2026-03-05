@@ -332,7 +332,7 @@
       },
       "slots": ["TitanTableHeader (columns + render Column)", "TitanTableBody (items + render Row/Cell)"],
       "relatedTypes": {
-        "TitanColumn": "id (string), allowsSorting?, isRowHeader?",
+        "TitanColumn": "id (string), allowsSorting?, isRowHeader?, sortIconPosition? ('left'|'right'), showInfoIcon?, infoIconAriaLabel?. Header variants: [sort] label, label [info], [sort] label [info], label. Only sortable columns get sorted background.",
         "TitanRow": "id (row key), columns for cell render",
         "TitanCell": "wraps cell content; use col.render(row) when using column config"
       },

@@ -18,25 +18,60 @@ import {
   TableLoadMoreItem as RACTableLoadMoreItem,
 } from 'react-aria-components'
 import type { TableHeaderProps, TableBodyProps, ColumnProps, RowProps, CellProps } from 'react-aria-components'
-import { ArrowUp, ArrowDown, ArrowUpDown, GripVertical, Check, Minus } from 'lucide-react'
+import { ArrowUp, ArrowDown, ArrowUpDown, GripVertical, Check, Minus, Info } from 'lucide-react'
 import { Button } from 'react-aria-components'
+
+function SortIcon({ sortDirection }: { sortDirection?: 'ascending' | 'descending' }) {
+  return (
+    <span className="column-sort-icon-wrap" aria-hidden>
+      <span key={sortDirection ?? 'none'} className="column-sort-icon">
+        {sortDirection === 'ascending' && <ArrowUp size={14} strokeWidth={1.5} />}
+        {sortDirection === 'descending' && <ArrowDown size={14} strokeWidth={1.5} />}
+        {!sortDirection && <ArrowUpDown size={14} strokeWidth={1.5} />}
+      </span>
+    </span>
+  )
+}
 
 function SortableHeaderContent({
   label,
   sortDirection,
+  sortIconPosition = 'right',
+  showInfoIcon = false,
+  infoIconAriaLabel = 'More information',
 }: {
   label: ReactNode
   sortDirection?: 'ascending' | 'descending'
+  sortIconPosition?: 'left' | 'right'
+  showInfoIcon?: boolean
+  infoIconAriaLabel?: string
 }) {
   return (
-    <span className="column-sort-header">
+    <span className={`column-sort-header ${sortIconPosition === 'left' ? 'column-sort-header--sort-left' : ''} ${showInfoIcon ? 'column-sort-header--has-info' : ''}`}>
+      {sortIconPosition === 'left' && <SortIcon sortDirection={sortDirection} />}
       {label}
-      <span className="column-sort-icon-wrap" aria-hidden>
-        <span key={sortDirection ?? 'none'} className="column-sort-icon">
-          {sortDirection === 'ascending' && <ArrowUp size={14} strokeWidth={1.5} />}
-          {sortDirection === 'descending' && <ArrowDown size={14} strokeWidth={1.5} />}
-          {!sortDirection && <ArrowUpDown size={14} strokeWidth={1.5} />}
+      {sortIconPosition === 'right' && <SortIcon sortDirection={sortDirection} />}
+      {showInfoIcon && (
+        <span className="column-header-info-wrap" aria-hidden>
+          <Info size={14} strokeWidth={1.5} className="column-header-info-icon" aria-label={infoIconAriaLabel} />
         </span>
+      )}
+    </span>
+  )
+}
+
+function HeaderWithInfoOnly({
+  label,
+  infoIconAriaLabel = 'More information',
+}: {
+  label: ReactNode
+  infoIconAriaLabel?: string
+}) {
+  return (
+    <span className="column-sort-header column-sort-header--info-only">
+      {label}
+      <span className="column-header-info-wrap" aria-hidden>
+        <Info size={14} strokeWidth={1.5} className="column-header-info-icon" aria-label={infoIconAriaLabel} />
       </span>
     </span>
   )
@@ -113,23 +148,40 @@ export function TitanTableHeader<T extends object>({
 
 export interface TitanColumnProps extends ColumnProps {
   allowsResizing?: boolean
+  /** When allowsSorting, put sort icon on the left ([sort] label) or right (label [sort]). Default 'left' for table-advanced. */
+  sortIconPosition?: 'left' | 'right'
+  /** Show an info icon after the label (label [info] or [sort] label [info]). */
+  showInfoIcon?: boolean
+  /** Accessible label for the info icon. */
+  infoIconAriaLabel?: string
 }
 
 export function TitanColumn(props: TitanColumnProps) {
-  const { allowsSorting, children } = props
+  const { allowsSorting, children, sortIconPosition = 'left', showInfoIcon = false, infoIconAriaLabel } = props
   const allowsResizing = props.allowsResizing
-  const headerContent = allowsSorting
-    ? (renderProps: { sortDirection?: 'ascending' | 'descending' }) => (
-        <SortableHeaderContent
-          label={
-            typeof children === 'function'
-              ? (children as (p: unknown) => ReactNode)(renderProps)
-              : children
-          }
-          sortDirection={renderProps.sortDirection}
-        />
-      )
-    : children
+
+  const resolvedLabel = (renderProps: { sortDirection?: 'ascending' | 'descending' }) =>
+    typeof children === 'function' ? (children as (p: unknown) => ReactNode)(renderProps) : children
+
+  const headerContent =
+    allowsSorting
+      ? (renderProps: { sortDirection?: 'ascending' | 'descending' }) => (
+          <SortableHeaderContent
+            label={resolvedLabel(renderProps)}
+            sortDirection={renderProps.sortDirection}
+            sortIconPosition={sortIconPosition}
+            showInfoIcon={showInfoIcon}
+            infoIconAriaLabel={infoIconAriaLabel}
+          />
+        )
+      : showInfoIcon
+        ? (renderProps: { sortDirection?: 'ascending' | 'descending' }) => (
+            <HeaderWithInfoOnly
+              label={resolvedLabel(renderProps)}
+              infoIconAriaLabel={infoIconAriaLabel}
+            />
+          )
+        : children
 
   return (
     <RACColumn

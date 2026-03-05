@@ -319,6 +319,27 @@
   opacity: 1;
 }
 
+/* Header info icon (label [info] or [sort] label [info]) */
+.table-sortable .column-header-info-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 14px;
+  height: 14px;
+}
+
+.table-sortable .column-header-info-icon {
+  color: var(--copy-slot-secondary);
+  opacity: 0.9;
+  flex-shrink: 0;
+}
+
+.table-sortable .column-sort-header--info-only {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs, 8px);
+}
+
 /* Resizable columns: control visible (barra vertical) en el borde derecho del th */
 .titan-resizable-table-container .react-aria-ColumnResizer,
 .layout-table-wrap.titan-resizable-table-container .react-aria-ColumnResizer {

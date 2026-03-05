@@ -118,6 +118,7 @@ import {
   TitanTableExampleEmpty,
   TitanTableExampleSelection,
   TitanTableExampleSortable,
+  TitanTableExampleHeaderVariants,
   TitanTableExampleResizable,
   TitanTableExampleDragDrop,
 } from 'titan-compositions'
@@ -3275,6 +3276,13 @@ import { Headphones, Gamepad2, MoreVertical, Pencil, Eye, Merge, Download, Globe
             <TitanCard span={16}>
               <h3>7. Sortable</h3>
               <TitanTableExampleSortable />
+            </TitanCard>
+            <TitanCard span={16}>
+              <h3>7b. Header variants</h3>
+              <p className="text-secondary" style={{ marginBottom: 'var(--spacing-s)' }}>
+                [sort] label · label [info] · [sort] label [info] · label
+              </p>
+              <TitanTableExampleHeaderVariants />
             </TitanCard>
             <TitanCard span={16}>
               <h3>8. Resizable columns</h3>
