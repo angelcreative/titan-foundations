@@ -17,7 +17,7 @@ Before generating JSX/CSS from scratch:
 1. Try to import from `titan-compositions`.
 2. If component exists there, **do not** recreate it.
 3. If component does not exist, then fallback to `titan-aria`/React Aria + tokens.
-4. If required package/component is missing in the consumer project, return `BLOCKER` with install steps.
+4. If required package/component is missing in the consumer project, return `BLOCKER` with install steps: **`npm install titan-compositions react-aria-components lucide-react @tabler/icons-react`**.
 
 This prevents drift and keeps output aligned with validated Titan compositions.
 
