@@ -1012,7 +1012,6 @@ function TitanCard({ children, span = 16, className = "" }) {
 // src/TitanTable.tsx
 var import_react_aria_components15 = require("react-aria-components");
 var import_lucide_react11 = require("lucide-react");
-var import_lucide_react12 = require("lucide-react");
 var import_react_aria_components16 = require("react-aria-components");
 var import_jsx_runtime18 = require("react/jsx-runtime");
 function SortableHeaderContent({
@@ -1054,7 +1053,7 @@ function TitanTableHeader({
   const { selectionBehavior, selectionMode, allowsDragging } = (0, import_react_aria_components15.useTableOptions)();
   return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_react_aria_components15.TableHeader, { ...props, children: [
     allowsDragging && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_react_aria_components15.Column, { width: 36, minWidth: 36, maxWidth: 36, className: "table-col-drag", children: () => null }),
-    selectionBehavior === "toggle" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_react_aria_components15.Column, { width: 44, minWidth: 44, maxWidth: 44, className: "table-col-checkbox", children: () => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_react_aria_components15.Checkbox, { slot: "selection", "aria-label": "Select all", className: "checkbox-root table-checkbox-header", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "checkbox-box", "aria-hidden": true, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_lucide_react12.Check, { className: "checkbox-mark" }) }) }) }),
+    selectionBehavior === "toggle" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_react_aria_components15.Column, { width: 44, minWidth: 44, maxWidth: 44, className: "table-col-checkbox", children: () => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_react_aria_components15.Checkbox, { slot: "selection", "aria-label": "Select all", className: "checkbox-root table-checkbox-header", children: ({ isIndeterminate }) => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "checkbox-box", "aria-hidden": true, children: isIndeterminate ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_lucide_react11.Minus, { className: "checkbox-mark", size: 14, strokeWidth: 2.5 }) : /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_lucide_react11.Check, { className: "checkbox-mark" }) }) }) }),
     columns != null ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_react_aria_components15.Collection, { items: columns, children }) : children
   ] });
 }
@@ -1090,7 +1089,7 @@ function TitanRow({ columns, children, ...props }) {
   const { selectionBehavior, allowsDragging } = (0, import_react_aria_components15.useTableOptions)();
   return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_react_aria_components15.Row, { ...props, children: [
     allowsDragging && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_react_aria_components15.Cell, { className: "table-cell-drag", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_react_aria_components16.Button, { slot: "drag", className: "icon-ghost", "aria-label": "Drag", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_lucide_react11.GripVertical, { size: 14, strokeWidth: 1.5 }) }) }),
-    selectionBehavior === "toggle" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_react_aria_components15.Cell, { className: "table-cell-checkbox", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_react_aria_components15.Checkbox, { slot: "selection", "aria-label": "Select row", className: "checkbox-root", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "checkbox-box", "aria-hidden": true, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_lucide_react12.Check, { className: "checkbox-mark" }) }) }) }),
+    selectionBehavior === "toggle" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_react_aria_components15.Cell, { className: "table-cell-checkbox", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_react_aria_components15.Checkbox, { slot: "selection", "aria-label": "Select row", className: "checkbox-root", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "checkbox-box", "aria-hidden": true, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_lucide_react11.Check, { className: "checkbox-mark" }) }) }) }),
     columns != null ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_react_aria_components15.Collection, { items: columns, children }) : children
   ] });
 }
@@ -1117,7 +1116,7 @@ function TitanTableLoadMoreItem(props) {
 
 // src/TitanTableCells.tsx
 var import_react_aria_components17 = require("react-aria-components");
-var import_lucide_react13 = require("lucide-react");
+var import_lucide_react12 = require("lucide-react");
 var import_jsx_runtime19 = require("react/jsx-runtime");
 var TITAN_500_COLORS = [
   "var(--color-blueberry-500, #6f6dde)",
@@ -1142,7 +1141,7 @@ function TitanTableCellDate({ value, format = defaultFormat, className = "" }) {
   const d = value instanceof Date ? value : new Date(value);
   const str = Number.isNaN(d.getTime()) ? String(value) : format(d);
   return /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("span", { className: `table-cell-date ${className}`.trim(), children: [
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_lucide_react13.Calendar, { size: 14, className: "table-cell-date-icon", "aria-hidden": true }),
+    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_lucide_react12.Calendar, { size: 14, className: "table-cell-date-icon", "aria-hidden": true }),
     /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { children: str })
   ] });
 }
@@ -1185,7 +1184,7 @@ function TitanTableCellActions({
   const hasAny = hasEdit || hasDelete || extraItems.length > 0;
   if (!hasAny) return null;
   return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { className: `table-cell-actions-wrap ${className}`.trim(), children: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_react_aria_components17.MenuTrigger, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_react_aria_components17.Button, { className: "icon-ghost table-cell-actions-trigger", "aria-label": ariaLabel, children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_lucide_react13.MoreVertical, { size: 16, "aria-hidden": true }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_react_aria_components17.Button, { className: "icon-ghost table-cell-actions-trigger", "aria-label": ariaLabel, children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_lucide_react12.MoreVertical, { size: 16, "aria-hidden": true }) }),
     /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
       import_react_aria_components17.Popover,
       {
@@ -1206,11 +1205,11 @@ function TitanTableCellActions({
               extraItems.map((item) => /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_react_aria_components17.MenuItem, { id: item.id, className: "menu-item", textValue: item.label, children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { className: "menu-item-start", children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { className: "menu-item-label", children: item.label }) }) }, item.id)),
               extraItems.length > 0 && (hasEdit || hasDelete) && /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { role: "separator", className: "menu-separator" }),
               hasEdit && /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_react_aria_components17.MenuItem, { id: "edit", className: "menu-item", textValue: "Edit", children: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("span", { className: "menu-item-start", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { className: "menu-item-icon", "aria-hidden": true, children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_lucide_react13.Pencil, { size: 14 }) }),
+                /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { className: "menu-item-icon", "aria-hidden": true, children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_lucide_react12.Pencil, { size: 14 }) }),
                 /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { className: "menu-item-label", children: "Edit" })
               ] }) }),
               hasDelete && /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_react_aria_components17.MenuItem, { id: "delete", className: "menu-item menu-item-destructive", textValue: "Delete", children: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("span", { className: "menu-item-start", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { className: "menu-item-icon", "aria-hidden": true, children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_lucide_react13.Trash2, { size: 14 }) }),
+                /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { className: "menu-item-icon", "aria-hidden": true, children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_lucide_react12.Trash2, { size: 14 }) }),
                 /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { className: "menu-item-label", children: "Delete" })
               ] }) })
             ]
@@ -1685,7 +1684,7 @@ function TitanToggleButtonGroup({
 // src/TitanSidebar.tsx
 var import_react4 = require("react");
 var import_react_aria_components20 = require("react-aria-components");
-var import_lucide_react15 = require("lucide-react");
+var import_lucide_react14 = require("lucide-react");
 
 // src/icons/renderIconNode.tsx
 var import_react3 = require("react");
@@ -1708,38 +1707,38 @@ function resolveIconAlias(normalized) {
 }
 
 // src/icons/lucideRegistry.ts
-var import_lucide_react14 = require("lucide-react");
+var import_lucide_react13 = require("lucide-react");
 var LUCIDE_REGISTRY = {
-  "bell": import_lucide_react14.Bell,
-  "bell-ring": import_lucide_react14.BellRing,
-  "box": import_lucide_react14.Box,
-  "check": import_lucide_react14.Check,
-  "chevron-down": import_lucide_react14.ChevronDown,
-  "chevron-left": import_lucide_react14.ChevronLeft,
-  "chevron-right": import_lucide_react14.ChevronRight,
-  "circle-help": import_lucide_react14.CircleHelp,
-  "grip": import_lucide_react14.Grip,
-  "handshake": import_lucide_react14.Handshake,
-  "hash": import_lucide_react14.Hash,
-  "info": import_lucide_react14.Info,
-  "layers": import_lucide_react14.Layers,
-  "layout-dashboard": import_lucide_react14.LayoutDashboard,
-  "list-filter": import_lucide_react14.ListFilter,
-  "loader": import_lucide_react14.Loader2,
-  "loader-2": import_lucide_react14.Loader2,
-  "message-square": import_lucide_react14.MessageSquare,
-  "mouse-pointer-click": import_lucide_react14.MousePointerClick,
-  "navigation": import_lucide_react14.Navigation,
-  "panel-left": import_lucide_react14.PanelLeft,
-  "panel-right": import_lucide_react14.PanelRight,
-  "search": import_lucide_react14.Search,
-  "settings": import_lucide_react14.Settings,
-  "sparkles": import_lucide_react14.Sparkles,
-  "tag": import_lucide_react14.Tag,
-  "text-cursor-input": import_lucide_react14.TextCursorInput,
-  "toggle-left": import_lucide_react14.ToggleLeft,
-  "type": import_lucide_react14.Type,
-  "x": import_lucide_react14.X
+  "bell": import_lucide_react13.Bell,
+  "bell-ring": import_lucide_react13.BellRing,
+  "box": import_lucide_react13.Box,
+  "check": import_lucide_react13.Check,
+  "chevron-down": import_lucide_react13.ChevronDown,
+  "chevron-left": import_lucide_react13.ChevronLeft,
+  "chevron-right": import_lucide_react13.ChevronRight,
+  "circle-help": import_lucide_react13.CircleHelp,
+  "grip": import_lucide_react13.Grip,
+  "handshake": import_lucide_react13.Handshake,
+  "hash": import_lucide_react13.Hash,
+  "info": import_lucide_react13.Info,
+  "layers": import_lucide_react13.Layers,
+  "layout-dashboard": import_lucide_react13.LayoutDashboard,
+  "list-filter": import_lucide_react13.ListFilter,
+  "loader": import_lucide_react13.Loader2,
+  "loader-2": import_lucide_react13.Loader2,
+  "message-square": import_lucide_react13.MessageSquare,
+  "mouse-pointer-click": import_lucide_react13.MousePointerClick,
+  "navigation": import_lucide_react13.Navigation,
+  "panel-left": import_lucide_react13.PanelLeft,
+  "panel-right": import_lucide_react13.PanelRight,
+  "search": import_lucide_react13.Search,
+  "settings": import_lucide_react13.Settings,
+  "sparkles": import_lucide_react13.Sparkles,
+  "tag": import_lucide_react13.Tag,
+  "text-cursor-input": import_lucide_react13.TextCursorInput,
+  "toggle-left": import_lucide_react13.ToggleLeft,
+  "type": import_lucide_react13.Type,
+  "x": import_lucide_react13.X
 };
 
 // src/icons/resolveIcon.ts
@@ -1817,7 +1816,7 @@ function TitanSidebar({
             className: "titan-sidebar-toggle",
             onPress: onToggle,
             "aria-label": collapsed ? "Expand sidebar" : "Collapse sidebar",
-            children: collapsed ? /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_lucide_react15.ChevronRight, {}) : /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_lucide_react15.ChevronLeft, {})
+            children: collapsed ? /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_lucide_react14.ChevronRight, {}) : /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_lucide_react14.ChevronLeft, {})
           }
         ),
         children

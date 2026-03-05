@@ -2193,9 +2193,15 @@
   background: var(--checkbox-slot-selected-bg);
 }
 
-.checkbox-root[data-selected] .checkbox-mark {
+.checkbox-root[data-selected] .checkbox-mark,
+.checkbox-root[data-indeterminate] .checkbox-mark {
   opacity: 1;
   transform: scale(1);
+}
+
+.checkbox-root[data-indeterminate] .checkbox-box {
+  border-color: var(--checkbox-slot-selected-border);
+  background: var(--checkbox-slot-selected-bg);
 }
 
 .radio-box {

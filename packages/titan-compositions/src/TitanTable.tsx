@@ -18,8 +18,7 @@ import {
   TableLoadMoreItem as RACTableLoadMoreItem,
 } from 'react-aria-components'
 import type { TableHeaderProps, TableBodyProps, ColumnProps, RowProps, CellProps } from 'react-aria-components'
-import { ArrowUp, ArrowDown, ArrowUpDown, GripVertical } from 'lucide-react'
-import { Check } from 'lucide-react'
+import { ArrowUp, ArrowDown, ArrowUpDown, GripVertical, Check, Minus } from 'lucide-react'
 import { Button } from 'react-aria-components'
 
 function SortableHeaderContent({
@@ -88,9 +87,15 @@ export function TitanTableHeader<T extends object>({
         <RACColumn width={44} minWidth={44} maxWidth={44} className="table-col-checkbox">
           {() => (
             <Checkbox slot="selection" aria-label="Select all" className="checkbox-root table-checkbox-header">
-              <span className="checkbox-box" aria-hidden>
-                <Check className="checkbox-mark" />
-              </span>
+              {({ isIndeterminate }) => (
+                <span className="checkbox-box" aria-hidden>
+                  {isIndeterminate ? (
+                    <Minus className="checkbox-mark" size={14} strokeWidth={2.5} />
+                  ) : (
+                    <Check className="checkbox-mark" />
+                  )}
+                </span>
+              )}
             </Checkbox>
           )}
         </RACColumn>

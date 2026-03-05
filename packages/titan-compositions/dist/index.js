@@ -974,8 +974,7 @@ import {
   ColumnResizer,
   TableLoadMoreItem as RACTableLoadMoreItem
 } from "react-aria-components";
-import { ArrowUp, ArrowDown, ArrowUpDown, GripVertical } from "lucide-react";
-import { Check as Check2 } from "lucide-react";
+import { ArrowUp, ArrowDown, ArrowUpDown, GripVertical, Check as Check2, Minus } from "lucide-react";
 import { Button as Button11 } from "react-aria-components";
 import { Fragment as Fragment4, jsx as jsx18, jsxs as jsxs16 } from "react/jsx-runtime";
 function SortableHeaderContent({
@@ -1017,7 +1016,7 @@ function TitanTableHeader({
   const { selectionBehavior, selectionMode, allowsDragging } = useTableOptions();
   return /* @__PURE__ */ jsxs16(RACTableHeader, { ...props, children: [
     allowsDragging && /* @__PURE__ */ jsx18(RACColumn, { width: 36, minWidth: 36, maxWidth: 36, className: "table-col-drag", children: () => null }),
-    selectionBehavior === "toggle" && /* @__PURE__ */ jsx18(RACColumn, { width: 44, minWidth: 44, maxWidth: 44, className: "table-col-checkbox", children: () => /* @__PURE__ */ jsx18(Checkbox2, { slot: "selection", "aria-label": "Select all", className: "checkbox-root table-checkbox-header", children: /* @__PURE__ */ jsx18("span", { className: "checkbox-box", "aria-hidden": true, children: /* @__PURE__ */ jsx18(Check2, { className: "checkbox-mark" }) }) }) }),
+    selectionBehavior === "toggle" && /* @__PURE__ */ jsx18(RACColumn, { width: 44, minWidth: 44, maxWidth: 44, className: "table-col-checkbox", children: () => /* @__PURE__ */ jsx18(Checkbox2, { slot: "selection", "aria-label": "Select all", className: "checkbox-root table-checkbox-header", children: ({ isIndeterminate }) => /* @__PURE__ */ jsx18("span", { className: "checkbox-box", "aria-hidden": true, children: isIndeterminate ? /* @__PURE__ */ jsx18(Minus, { className: "checkbox-mark", size: 14, strokeWidth: 2.5 }) : /* @__PURE__ */ jsx18(Check2, { className: "checkbox-mark" }) }) }) }),
     columns != null ? /* @__PURE__ */ jsx18(Collection, { items: columns, children }) : children
   ] });
 }
