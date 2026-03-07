@@ -1,17 +1,17 @@
-# @audiense/titan-cli
+# titan-cli
 
 CLI to create a **Titan monorepo**: one install, many projects. For use with Cursor and Claude (and the Titan MCP).
 
 ## Install
 
 ```bash
-npm install -g @audiense/titan-cli
+npm install -g titan-cli
 ```
 
 Or run without installing:
 
 ```bash
-npx @audiense/titan-cli init
+npx titan-cli init
 ```
 
 ## Commands
