@@ -17,6 +17,7 @@ See:
 - [titan-aria](packages/titan-aria/README.md) for installation and usage.
 - [Integration docs](docs/integration/README.md) for ownership model and migration workflow.
 - [MCP usage](docs/integration/mcp-usage.md) for ready-to-use Cursor prompts and generation rules.
+- [Design quality & anti–AI slop](docs/design-quality.md) — guidelines and link to [impeccable](https://impeccable.style) / `impeccable/`; use with Titan tokens and titan-compositions.
 - [UI anatomy skills](docs/skills/README.md) — Universal UI pattern anatomies so the LLM (or consumer) can choose and build the right structure (cards, tables, KPIs, etc.) regardless of product.
 - [Integration policy](docs/integration/decision-policy.md) for layer precedence (React Aria base, Titan tokens/foundations, optional `titan-aria` wrappers, Lucide icons).
 - [Component inventory](docs/integration/component-inventory.md) for ownership and overlap status.
