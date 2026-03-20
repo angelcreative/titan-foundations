@@ -36,7 +36,7 @@ Gate before items 6 and 7:
 
 ### 2) Docs ownership wording
 
-- File: `docs/menu-and-select.md`
+- File: `docs/components/menu-and-select.md`
 - Action:
   - Keep top ownership note: hybrid Aria model is default source.
   - Keep tokens + structure as operational contract section.
@@ -45,7 +45,7 @@ Gate before items 6 and 7:
 
 ### 3) Foundations usage guidance
 
-- File: `foundations/README.md`
+- File: `component-specs/README.md`
 - Action:
   - Add explicit note that `menu.json` and `select.json` are operational references for Aria/token consistency.
 - Reason:
@@ -56,8 +56,8 @@ Gate before items 6 and 7:
 ### 4) Foundations specs lifecycle tag
 
 - Files:
-  - `foundations/menu.json`
-  - `foundations/select.json`
+  - `component-specs/menu.json`
+  - `component-specs/select.json`
 - Action:
   - Add lifecycle metadata (for example: `status: "aria-primary"`).
   - Optionally add `owner: "HybridAriaModel"` and `migrationNote`.
@@ -80,8 +80,8 @@ Gate before items 6 and 7:
 ### 6) Retire local menu/select specs
 
 - Files:
-  - `foundations/menu.json`
-  - `foundations/select.json`
+  - `component-specs/menu.json`
+  - `component-specs/select.json`
 - Preconditions:
   - No active generator/rule/workflow depends on these files.
   - Teams have normalized to Aria/token usage paths.
@@ -92,7 +92,7 @@ Gate before items 6 and 7:
 ### 7) Slim down menu/select docs/rules
 
 - Files:
-  - `docs/menu-and-select.md`
+  - `docs/components/menu-and-select.md`
   - `.cursor/rules/menu-and-select.mdc`
 - Action:
   - Convert from implementation guide to “fallback appendix” or remove if obsolete.

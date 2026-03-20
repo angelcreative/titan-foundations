@@ -19,6 +19,10 @@ const ALIASES: Record<string, string> = {
   'caja-vacia': 'box',
   'inbox': 'inbox',
   'threads': 'threads',
+  'change-product': 'grip',
+  'notifications': 'bell',
+  'question': 'circle-help',
+  'sparks': 'sparkles',
 }
 
 /**

@@ -2,14 +2,28 @@ export { TitanBadge, TitanBadgeAnchor } from './TitanBadge'
 export type { TitanBadgeProps, TitanBadgeAnchorProps } from './TitanBadge'
 export { TitanBreadcrumb } from './TitanBreadcrumb'
 export type { TitanBreadcrumbItem, TitanBreadcrumbProps } from './TitanBreadcrumb'
-export { TitanNavbar } from './TitanNavbar'
-export type { TitanNavbarTheme, TitanNavbarProps } from './TitanNavbar'
-export { TitanButton, TitanIconButton, getToneStyle } from './TitanButton'
+export { TitanNavbar, TitanNavBar } from './TitanNavbar'
+export type { TitanNavbarTheme, TitanNavbarProps, TitanNavBarProps } from './TitanNavbar'
+export {
+  TitanButton,
+  TitanButtonVariants,
+  TitanIconButton,
+  TitanIconButtonVariants,
+  TitanErrorButton,
+  TitanErrorButtonVariants,
+  TitanDestructiveIconButton,
+  TitanDestructiveIconButtonVariants,
+  getToneStyle,
+} from './TitanButton'
 export type {
   TitanButtonProps,
   TitanButtonVariant,
   TitanIconButtonProps,
   TitanIconButtonVariant,
+  TitanErrorButtonProps,
+  TitanErrorButtonVariant,
+  TitanDestructiveIconButtonProps,
+  TitanDestructiveIconButtonVariant,
 } from './TitanButton'
 export { TitanPill } from './TitanPill'
 export type { TitanPillProps } from './TitanPill'
@@ -58,8 +72,18 @@ export type {
   TitanSwitchFieldProps,
   TitanFormControlsGroupProps,
 } from './TitanFormControls'
-export { TitanInputField, TitanTextareaField } from './TitanInput'
-export type { TitanInputFieldProps, TitanTextareaFieldProps } from './TitanInput'
+export {
+  TitanInputField,
+  TitanTextareaField,
+  TitanTextInput,
+  TitanTextArea,
+} from './TitanInput'
+export type {
+  TitanInputFieldProps,
+  TitanTextareaFieldProps,
+  TitanTextInputProps,
+  TitanTextAreaProps,
+} from './TitanInput'
 export { TitanCardGrid, TitanCard } from './TitanCardGrid'
 export type { TitanCardGridProps, TitanCardProps, TitanCardSpan } from './TitanCardGrid'
 export {
@@ -73,7 +97,7 @@ export {
   TitanTableLoadMoreItem,
   ColumnResizer,
 } from './TitanTable'
-export type { TitanTableProps, TitanColumnProps } from './TitanTable'
+export type { TitanTableProps, TitanColumnProps, TitanCellProps } from './TitanTable'
 export {
   TitanTableCellDate,
   TitanTableCellInitials,
@@ -120,5 +144,5 @@ export { TitanProgressBar } from './TitanProgressBar'
 export type { TitanProgressBarProps } from './TitanProgressBar'
 export { TitanCalendar } from './TitanCalendar'
 export type { TitanCalendarProps, CalendarDate } from './TitanCalendar'
-export { resolveIcon, registerFallbackIcons, renderIconNode } from './icons'
+export { resolveIcon, registerTitanIcons, registerFallbackIcons, renderIconNode } from './icons'
 export type { IconComponent, RenderIconProps } from './icons'

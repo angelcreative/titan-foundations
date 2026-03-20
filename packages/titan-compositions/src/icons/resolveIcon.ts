@@ -3,8 +3,23 @@ import { normalizeIconName, resolveIconAlias } from './normalizeIconName'
 import { LUCIDE_REGISTRY } from './lucideRegistry'
 import type { IconComponent } from './lucideRegistry'
 
-/** Fallback registry (e.g. Tabler): name -> component. Checked after Lucide. */
+/** Titan official icon registry: name -> component. */
+const titanRegistry: Record<string, ComponentType<{ className?: string }>> = {}
+/** Fallback registry (e.g. Tabler): name -> component. Checked last. */
 const fallbackRegistry: Record<string, ComponentType<{ className?: string }>> = {}
+
+/**
+ * Register official Titan icons from your icon source exports.
+ * These are always preferred over Lucide/Tabler.
+ */
+export function registerTitanIcons(
+  map: Record<string, ComponentType<{ className?: string }>>
+): void {
+  for (const [key, component] of Object.entries(map)) {
+    const normalized = normalizeIconName(key)
+    if (normalized) titanRegistry[normalized] = component
+  }
+}
 
 /**
  * Register fallback icons (e.g. from @tabler/icons-react) for names not in Lucide.
@@ -23,7 +38,7 @@ export function registerFallbackIcons(
 }
 
 /**
- * Resolve icon by name: Lucide first, then fallback (e.g. Tabler).
+ * Resolve icon by name: Titan official first, then Lucide, then fallback (e.g. Tabler).
  * Returns the component or null if not found.
  * Names are normalized to kebab-case; aliases (e.g. "empty-box" -> "box") are applied.
  */
@@ -31,6 +46,9 @@ export function resolveIcon(name: string): IconComponent | ComponentType<{ class
   const normalized = normalizeIconName(name)
   if (!normalized) return null
   const canonical = resolveIconAlias(normalized)
+
+  const fromTitan = titanRegistry[canonical] ?? titanRegistry[normalized]
+  if (fromTitan) return fromTitan
 
   const fromLucide = LUCIDE_REGISTRY[canonical]
   if (fromLucide) return fromLucide

@@ -8,8 +8,8 @@ import {
   Separator,
   SubmenuTrigger,
 } from 'react-aria-components'
-import { ChevronDown, ChevronRight, Plus, AlertCircle } from 'lucide-react'
 import { TitanBadgeAnchor } from './TitanBadge'
+import { renderIconNode } from './icons'
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -22,6 +22,8 @@ export interface TitanMenuOption {
   leftElement?: ReactNode
   disabled?: boolean
   destructive?: boolean
+  mcp?: boolean
+  user?: boolean
   children?: TitanMenuOption[]
 }
 
@@ -45,6 +47,7 @@ export interface TitanMenuNotification {
   icon?: ReactNode
   title: ReactNode
   date: string
+  destructive?: boolean
 }
 
 export interface TitanMenuProps {
@@ -136,7 +139,7 @@ function TitanMenuNode({
             <span className="menu-item-label">{item.label}</span>
           </span>
           <span className="menu-item-end" aria-hidden="true">
-            <ChevronRight />
+            {renderIconNode('chevron-right')}
           </span>
         </MenuItem>
         <Popover className="menu-popover menu-popover-submenu" placement="end top">
@@ -156,6 +159,9 @@ function TitanMenuNode({
       textValue={item.label}
       isDisabled={item.disabled}
       onAction={() => onAction?.(item.id)}
+      {...(item.destructive ? { 'data-is-destructive': '' } : {})}
+      {...(item.mcp ? { 'data-is-mcp': '' } : {})}
+      {...(item.user ? { 'data-is-user': '' } : {})}
     >
       <span className="menu-item-start">
         {item.icon && <span className="menu-item-icon">{item.icon}</span>}
@@ -190,7 +196,7 @@ export function TitanMenuDropdown({
         <Button className="btn btn-secondary menu-trigger-button">
           {triggerLabel}
           <span className="menu-trigger-chevron" aria-hidden="true">
-            <ChevronDown />
+            {renderIconNode('chevron-down')}
           </span>
         </Button>
       )}
@@ -224,8 +230,8 @@ export function TitanSearchMenu({
   onAddNew,
 }: TitanSearchMenuProps) {
   const hasResults = items.length > 0
-  const resolvedAddIcon = addNewIcon ?? <Plus />
-  const resolvedEmptyIcon = emptyIcon ?? <AlertCircle />
+  const resolvedAddIcon = addNewIcon ?? renderIconNode('add')
+  const resolvedEmptyIcon = emptyIcon ?? renderIconNode('alert-circle')
 
   return (
     <MenuTrigger>
@@ -237,7 +243,7 @@ export function TitanSearchMenu({
         <Button className="btn btn-secondary menu-trigger-button">
           {triggerLabel}
           <span className="menu-trigger-chevron" aria-hidden="true">
-            <ChevronDown />
+            {renderIconNode('chevron-down')}
           </span>
         </Button>
       )}
@@ -333,7 +339,7 @@ export function TitanProfileMenu({
         <Button className="btn btn-secondary menu-trigger-button">
           {triggerLabel}
           <span className="menu-trigger-chevron" aria-hidden="true">
-            <ChevronDown />
+            {renderIconNode('chevron-down')}
           </span>
         </Button>
       )}
@@ -411,6 +417,8 @@ export function TitanNotificationsMenu({
                   className="menu-item menu-item-notification"
                   textValue={typeof n.title === 'string' ? n.title : n.id}
                   onAction={() => onAction?.(n.id)}
+                  data-is-notification
+                  {...(n.destructive ? { 'data-is-destructive': '' } : {})}
                 >
                   <span className="menu-item-start">
                     {n.icon && <span className="menu-item-icon">{n.icon}</span>}

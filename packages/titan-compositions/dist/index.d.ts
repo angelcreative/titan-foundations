@@ -1,6 +1,6 @@
 import * as react_jsx_runtime from 'react/jsx-runtime';
 import { ReactNode, CSSProperties, Key, ComponentType } from 'react';
-import { ButtonProps, TextFieldProps, CellProps, ColumnProps, ResizableTableContainer, RowProps, Table, TableBodyProps, TableHeaderProps, TableLoadMoreItem } from 'react-aria-components';
+import { ButtonProps, TagProps, Key as Key$1, TextFieldProps, CellProps, ColumnProps, ResizableTableContainer, RowProps, Table, TableBodyProps, TableHeaderProps, TableLoadMoreItem } from 'react-aria-components';
 export { ColumnResizer } from 'react-aria-components';
 import { CalendarDate } from '@internationalized/date';
 export { CalendarDate } from '@internationalized/date';
@@ -49,6 +49,14 @@ interface TitanNavbarProps {
     onFeaturedAction?: () => void;
     onUserMenu?: () => void;
 }
+interface TitanNavBarProps {
+    children: ReactNode;
+}
+/**
+ * Faithful runtime mirror of the official NavBar primitive:
+ * a header wrapper with centered inner content.
+ */
+declare function TitanNavBar({ children }: TitanNavBarProps): react_jsx_runtime.JSX.Element;
 /**
  * Reusable navbar composition matching Titan contract:
  * left: Grip + themed logo
@@ -56,8 +64,27 @@ interface TitanNavbarProps {
  */
 declare function TitanNavbar({ theme, userInitial, logoAlt, logoBasePath, onChangeProduct, onNotifications, onSupport, onHelp, onSettings, onFeaturedAction, onUserMenu, }: TitanNavbarProps): react_jsx_runtime.JSX.Element;
 
-type TitanButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'link' | 'delete' | 'delete-secondary';
-type TitanIconButtonVariant = 'secondary' | 'ghost' | 'delete';
+type TitanButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'link' | 'text' | 'delete' | 'delete-secondary';
+type TitanIconButtonVariant = 'primary' | 'secondary' | 'ghost' | 'base' | 'base-l' | 'neutral-base' | 'neutral-base-l' | 'delete';
+declare const TitanButtonVariants: {
+    readonly Primary: "primary";
+    readonly Secondary: "secondary";
+    readonly Tertiary: "tertiary";
+    readonly Text: "text";
+    readonly Link: "link";
+    readonly Delete: "delete";
+    readonly DeleteSecondary: "delete-secondary";
+};
+declare const TitanIconButtonVariants: {
+    readonly Primary: "primary";
+    readonly Secondary: "secondary";
+    readonly Base: "base";
+    readonly BaseLarge: "base-l";
+    readonly NeutralBase: "neutral-base";
+    readonly NeutralBaseLarge: "neutral-base-l";
+    readonly Ghost: "ghost";
+    readonly Delete: "delete";
+};
 interface TitanButtonProps extends Omit<ButtonProps, 'className' | 'children'> {
     variant?: TitanButtonVariant;
     className?: string;
@@ -79,14 +106,52 @@ interface TitanToneStyle {
 declare function getToneStyle(tone: string, mode: 'pill' | 'tag'): CSSProperties & TitanToneStyle;
 declare function TitanButton({ variant, className, icon, children, ...props }: TitanButtonProps): react_jsx_runtime.JSX.Element;
 declare function TitanIconButton({ variant, className, children, ...props }: TitanIconButtonProps): react_jsx_runtime.JSX.Element;
-
-interface TitanPillProps {
-    id: string;
-    label: string;
-    tone: string;
-    onDismiss?: (id: string) => void;
+type TitanErrorButtonVariant = 'primary' | 'secondary' | 'text';
+type TitanDestructiveIconButtonVariant = 'primary' | 'secondary' | 'base' | 'base-l';
+declare const TitanErrorButtonVariants: {
+    readonly Primary: "primary";
+    readonly Secondary: "secondary";
+    readonly Text: "text";
+};
+declare const TitanDestructiveIconButtonVariants: {
+    readonly Primary: "primary";
+    readonly Secondary: "secondary";
+    readonly Base: "base";
+    readonly BaseLarge: "base-l";
+};
+interface TitanErrorButtonProps extends Omit<ButtonProps, 'className' | 'children'> {
+    variant?: TitanErrorButtonVariant;
+    className?: string;
+    children?: ReactNode;
 }
-declare function TitanPill({ id, label, tone, onDismiss }: TitanPillProps): react_jsx_runtime.JSX.Element;
+interface TitanDestructiveIconButtonProps extends Omit<ButtonProps, 'className' | 'children'> {
+    variant?: TitanDestructiveIconButtonVariant;
+    className?: string;
+    children: ReactNode;
+}
+declare function TitanErrorButton({ variant, className, children, ...props }: TitanErrorButtonProps): react_jsx_runtime.JSX.Element;
+declare function TitanDestructiveIconButton({ variant, className, children, ...props }: TitanDestructiveIconButtonProps): react_jsx_runtime.JSX.Element;
+
+declare const TitanPillStates: {
+    readonly Base: "base";
+    readonly Success: "success";
+    readonly Alert: "alert";
+    readonly Disabled: "disabled";
+    readonly Error: "error";
+    readonly Info: "info";
+};
+type TitanPillState = (typeof TitanPillStates)[keyof typeof TitanPillStates];
+interface TitanPillProps extends Omit<TagProps, 'children'> {
+    id?: string;
+    label?: string;
+    children?: ReactNode;
+    state?: TitanPillState;
+    tone: string;
+    removable?: boolean;
+    onDismiss?: (id: string) => void;
+    'aria-label'?: string;
+}
+declare function TitanPill({ id, label, children, state, tone, removable, onDismiss, ...tagProps }: TitanPillProps): react_jsx_runtime.JSX.Element;
 
 interface TitanTagProps {
     label: string;
@@ -101,6 +166,8 @@ interface TitanMenuOption {
     leftElement?: ReactNode;
     disabled?: boolean;
     destructive?: boolean;
+    mcp?: boolean;
+    user?: boolean;
     children?: TitanMenuOption[];
 }
 interface TitanMenuSearchOption {
@@ -121,6 +188,7 @@ interface TitanMenuNotification {
     icon?: ReactNode;
     title: ReactNode;
     date: string;
+    destructive?: boolean;
 }
 interface TitanMenuProps {
     triggerLabel?: string;
@@ -179,14 +247,20 @@ interface TitanSelectOption {
     disabled?: boolean;
 }
 interface TitanSelectProps {
-    label: string;
+    label?: string;
+    'aria-label'?: string;
     options: TitanSelectOption[];
     defaultSelectedKey?: string;
     selectedKey?: string;
     onSelectionChange?: (key: Key | null) => void;
+    placeholder?: string;
+    hintMessage?: string;
+    errorMessage?: string;
     isDisabled?: boolean;
+    isRequired?: boolean;
+    name?: string;
 }
-declare function TitanSelect({ label, options, defaultSelectedKey, selectedKey, onSelectionChange, isDisabled, }: TitanSelectProps): react_jsx_runtime.JSX.Element;
+declare function TitanSelect({ label, 'aria-label': ariaLabel, options, defaultSelectedKey, selectedKey, onSelectionChange, placeholder, hintMessage, errorMessage, isDisabled, isRequired, name, }: TitanSelectProps): react_jsx_runtime.JSX.Element;
 
 interface TitanTabItem {
     id: string;
@@ -197,24 +271,29 @@ interface TitanTabItem {
 interface TitanTabsProps {
     items: TitanTabItem[];
     defaultSelectedKey?: string;
+    selectedKey?: Key$1;
+    onSelectionChange?: (key: Key$1) => void;
     overflow?: boolean;
     orientation?: 'horizontal' | 'vertical';
     ariaLabel?: string;
 }
-declare function TitanTabs({ items, defaultSelectedKey, overflow, orientation, ariaLabel, }: TitanTabsProps): react_jsx_runtime.JSX.Element;
+declare function TitanTabs({ items, defaultSelectedKey, selectedKey, onSelectionChange, overflow, orientation, ariaLabel, }: TitanTabsProps): react_jsx_runtime.JSX.Element;
 
 type TitanPaginationPage = number | 'ellipsis';
 interface TitanPaginationProps {
-    ariaLabel: string;
-    pages: TitanPaginationPage[];
+    ariaLabel?: string;
+    'aria-label'?: string;
+    pages?: TitanPaginationPage[];
     currentPage: number;
+    totalPages?: number;
+    setPage?: (page: number) => void;
     previousDisabled?: boolean;
     nextDisabled?: boolean;
     onPageChange?: (page: number) => void;
     onPrevious?: () => void;
     onNext?: () => void;
 }
-declare function TitanPagination({ ariaLabel, pages, currentPage, previousDisabled, nextDisabled, onPageChange, onPrevious, onNext, }: TitanPaginationProps): react_jsx_runtime.JSX.Element;
+declare function TitanPagination({ ariaLabel, 'aria-label': ariaLabelProp, pages, currentPage, totalPages, setPage, previousDisabled, nextDisabled, onPageChange, onPrevious, onNext, }: TitanPaginationProps): react_jsx_runtime.JSX.Element | null;
 
 interface TitanDrawerProps {
     /** When provided, used as the trigger instead of the default button. */
@@ -227,17 +306,25 @@ interface TitanDrawerProps {
     triggerIcon?: ReactNode;
     title: string;
     children: ReactNode;
+    isOpen?: boolean;
+    onOpenChange?: (isOpen: boolean) => void;
+    onClose?: () => void;
 }
-declare function TitanDrawer({ trigger, triggerLabel, triggerClassName, triggerIcon, title, children }: TitanDrawerProps): react_jsx_runtime.JSX.Element;
+declare function TitanDrawer({ trigger, triggerLabel, triggerClassName, triggerIcon, title, children, isOpen, onOpenChange, onClose, }: TitanDrawerProps): react_jsx_runtime.JSX.Element;
 
 interface TitanDialogProps {
-    triggerLabel: string;
-    title: string;
-    body: ReactNode;
+    triggerLabel?: string;
+    title?: string;
+    body?: ReactNode;
     leftAction?: ReactNode;
     rightAction?: ReactNode;
+    isOpen?: boolean;
+    onOpenChange?: (isOpen: boolean) => void;
+    onClose?: () => void;
+    'aria-label'?: string;
+    children?: ReactNode;
 }
-declare function TitanDialog({ triggerLabel, title, body, leftAction, rightAction, }: TitanDialogProps): react_jsx_runtime.JSX.Element;
+declare function TitanDialog({ triggerLabel, title, body, leftAction, rightAction, isOpen, onOpenChange, onClose, children, 'aria-label': ariaLabel, }: TitanDialogProps): react_jsx_runtime.JSX.Element;
 
 type TitanTooltipPlacement = 'top' | 'top start' | 'top end' | 'bottom' | 'bottom start' | 'bottom end' | 'left' | 'left start' | 'left end' | 'right' | 'right start' | 'right end';
 interface TitanTooltipProps {
@@ -311,9 +398,16 @@ declare function TitanFormControlsGroup({ children }: TitanFormControlsGroupProp
 interface TitanInputFieldProps extends Omit<TextFieldProps, 'children'> {
     label?: string;
     hint?: string;
+    hintMessage?: string;
     counter?: string;
     leadingIcon?: ReactNode;
+    startIcon?: ReactNode;
     trailingIcon?: ReactNode;
+    endIcon?: ReactNode;
+    onEndIconClick?: () => void;
+    onClear?: () => void;
+    maxLength?: number;
+    onChange?: (value: string) => void;
     errorMessage?: string;
     placeholder?: string;
     className?: string;
@@ -321,16 +415,28 @@ interface TitanInputFieldProps extends Omit<TextFieldProps, 'children'> {
 interface TitanTextareaFieldProps extends Omit<TextFieldProps, 'children'> {
     label?: string;
     hint?: string;
+    hintMessage?: string;
     counter?: string;
     leadingIcon?: ReactNode;
+    startIcon?: ReactNode;
+    endIcon?: ReactNode;
+    onEndIconClick?: () => void;
     onClear?: () => void;
     autoExpand?: boolean;
+    maxLength?: number;
+    onChange?: (value: string) => void;
     errorMessage?: string;
     placeholder?: string;
     className?: string;
 }
-declare function TitanInputField({ label, hint, counter, leadingIcon, trailingIcon, errorMessage, placeholder, className, ...props }: TitanInputFieldProps): react_jsx_runtime.JSX.Element;
-declare function TitanTextareaField({ label, hint, counter, leadingIcon, onClear, autoExpand, errorMessage, placeholder, className, ...props }: TitanTextareaFieldProps): react_jsx_runtime.JSX.Element;
+type TitanTextInputProps = TitanInputFieldProps;
+type TitanTextAreaProps = TitanTextareaFieldProps;
+declare function TitanInputField({ label, hint, hintMessage, counter, leadingIcon, startIcon, trailingIcon, endIcon, onEndIconClick, onClear, maxLength, onChange, errorMessage, placeholder, className, ...props }: TitanInputFieldProps): react_jsx_runtime.JSX.Element;
+declare function TitanTextareaField({ label, hint, hintMessage, counter, leadingIcon, startIcon, endIcon, onEndIconClick, onClear, autoExpand, maxLength, onChange, errorMessage, placeholder, className, ...props }: TitanTextareaFieldProps): react_jsx_runtime.JSX.Element;
+/** Backward-compatible alias for consumers expecting TextInput naming. */
+declare function TitanTextInput(props: TitanTextInputProps): react_jsx_runtime.JSX.Element;
+/** Backward-compatible alias for consumers expecting TextArea naming. */
+declare function TitanTextArea(props: TitanTextAreaProps): react_jsx_runtime.JSX.Element;
 
 type TitanCardSpan = 4 | 8 | 12 | 16;
 interface TitanCardGridProps {
@@ -357,10 +463,14 @@ interface TitanTableProps extends Omit<React.ComponentProps<typeof Table>, 'clas
     noWrapper?: boolean;
     /** When true, thead stays visible when scrolling (use only for async/load-more tables). Default false. */
     stickyHeader?: boolean;
+    /** Number of left columns that remain sticky. */
+    stickyColumns?: number;
 }
-declare function TitanTable({ className, wrapperClassName, noWrapper, stickyHeader, ...props }: TitanTableProps): react_jsx_runtime.JSX.Element;
+declare function TitanTable({ className, wrapperClassName, noWrapper, stickyHeader, stickyColumns, ...props }: TitanTableProps): react_jsx_runtime.JSX.Element;
 declare function TitanTableHeader<T extends object>({ columns, children, ...props }: TableHeaderProps<T>): react_jsx_runtime.JSX.Element;
 interface TitanColumnProps extends ColumnProps {
+    alignment?: 'left' | 'center' | 'right';
+    numericSort?: boolean;
     allowsResizing?: boolean;
     /** When allowsSorting, put sort icon on the left ([sort] label) or right (label [sort]). Default 'left' for table-advanced. */
     sortIconPosition?: 'left' | 'right';
@@ -372,23 +482,26 @@ interface TitanColumnProps extends ColumnProps {
 declare function TitanColumn(props: TitanColumnProps): react_jsx_runtime.JSX.Element;
 declare function TitanTableBody<T extends object>(props: TableBodyProps<T>): react_jsx_runtime.JSX.Element;
 declare function TitanRow<T extends object>({ columns, children, ...props }: RowProps<T>): react_jsx_runtime.JSX.Element;
-declare function TitanCell(props: CellProps): react_jsx_runtime.JSX.Element;
+interface TitanCellProps extends CellProps {
+    alignment?: 'left' | 'center' | 'right';
+}
+declare function TitanCell(props: TitanCellProps): react_jsx_runtime.JSX.Element;
 declare function TitanResizableTableContainer({ className, children, ...props }: React.ComponentProps<typeof ResizableTableContainer>): react_jsx_runtime.JSX.Element;
 declare function TitanTableLoadMoreItem(props: React.ComponentProps<typeof TableLoadMoreItem>): react_jsx_runtime.JSX.Element;
 
 interface TitanTableCellDateProps {
-    /** Fecha: Date, string ISO o timestamp */
+    /** Date: Date, ISO string, or timestamp */
     value: Date | string | number;
-    /** Formato por defecto: "Nov 15, 2025" */
+    /** Default format: "Nov 15, 2025" */
     format?: (d: Date) => string;
     className?: string;
 }
 declare function TitanTableCellDate({ value, format, className }: TitanTableCellDateProps): react_jsx_runtime.JSX.Element;
 interface TitanTableCellInitialsProps {
-    /** Iniciales (ej. "AW") o nombre del que derivar (ej. "Alice Smith" → "AS") */
+    /** Initials (e.g. "AW") or a name to derive from (e.g. "Alice Smith" -> "AS") */
     initials?: string;
     name?: string;
-    /** Seed para color estable por fila (ej. id) */
+    /** Seed for stable per-row color (e.g. id) */
     seed?: string | number;
     className?: string;
 }
@@ -401,7 +514,7 @@ interface TitanTableCellActionsItem {
 interface TitanTableCellActionsProps {
     onEdit?: () => void;
     onDelete?: () => void;
-    /** Items extra (ej. "Rename", "Clone") */
+    /** Extra items (e.g. "Rename", "Clone") */
     extraItems?: TitanTableCellActionsItem[];
     ariaLabel?: string;
     className?: string;
@@ -478,7 +591,7 @@ interface TitanSidebarHeaderProps {
 declare function TitanSidebarHeader({ children }: TitanSidebarHeaderProps): react_jsx_runtime.JSX.Element;
 interface TitanSidebarItemProps {
     id: string;
-    /** Icon: component (e.g. from lucide-react) or string name (resolved Lucide first, then fallback if registered). */
+    /** Icon: component or string name (resolved via Titan-first icon pipeline). */
     icon?: ComponentType<{
         className?: string;
     }> | string;
@@ -557,6 +670,13 @@ declare function TitanCalendar({ defaultValue, value, onChange, showTime, defaul
 type IconComponent = LucideIcon;
 
 /**
+ * Register official Titan icons from your icon source exports.
+ * These are always preferred over Lucide/Tabler.
+ */
+declare function registerTitanIcons(map: Record<string, ComponentType<{
+    className?: string;
+}>>): void;
+/**
  * Register fallback icons (e.g. from @tabler/icons-react) for names not in Lucide.
  * Call once at app init if you want Tabler fallback:
  *   import { registerFallbackIcons } from 'titan-compositions'
@@ -567,7 +687,7 @@ declare function registerFallbackIcons(map: Record<string, ComponentType<{
     className?: string;
 }>>): void;
 /**
- * Resolve icon by name: Lucide first, then fallback (e.g. Tabler).
+ * Resolve icon by name: Titan official first, then Lucide, then fallback (e.g. Tabler).
  * Returns the component or null if not found.
  * Names are normalized to kebab-case; aliases (e.g. "empty-box" -> "box") are applied.
  */
@@ -585,4 +705,4 @@ interface RenderIconProps {
  */
 declare function renderIconNode(icon: ReactNode | ComponentType<RenderIconProps> | string | undefined, props?: RenderIconProps): ReactNode;
 
-export { type IconComponent, type RenderIconProps, TitanBadge, TitanBadgeAnchor, type TitanBadgeAnchorProps, type TitanBadgeProps, TitanBreadcrumb, type TitanBreadcrumbItem, type TitanBreadcrumbProps, TitanButton, type TitanButtonProps, type TitanButtonVariant, TitanCalendar, type TitanCalendarProps, TitanCard, TitanCardGrid, type TitanCardGridProps, type TitanCardProps, type TitanCardSpan, TitanCell, TitanCheckboxField, type TitanCheckboxFieldProps, TitanColumn, type TitanColumnProps, TitanDialog, type TitanDialogProps, TitanDrawer, type TitanDrawerProps, TitanFormControlsGroup, type TitanFormControlsGroupProps, TitanIconButton, type TitanIconButtonProps, type TitanIconButtonVariant, TitanInputField, type TitanInputFieldProps, TitanLoader, type TitanLoaderProps, TitanMenuDropdown, type TitanMenuNotification, type TitanMenuOption, type TitanMenuProfileOption, type TitanMenuProps, type TitanMenuSearchOption, TitanNavbar, type TitanNavbarProps, type TitanNavbarTheme, TitanNotificationsMenu, type TitanNotificationsMenuProps, TitanPagination, type TitanPaginationPage, type TitanPaginationProps, TitanPill, type TitanPillProps, TitanProfileMenu, type TitanProfileMenuProps, TitanProgressBar, type TitanProgressBarProps, TitanRadioGroupField, type TitanRadioGroupFieldProps, type TitanRadioOption, TitanRangeSlider, type TitanRangeSliderProps, TitanResizableTableContainer, TitanRow, TitanSearchMenu, type TitanSearchMenuProps, TitanSelect, type TitanSelectOption, type TitanSelectProps, TitanSidebar, TitanSidebarHeader, type TitanSidebarHeaderProps, TitanSidebarItem, type TitanSidebarItemProps, type TitanSidebarProps, TitanSlider, type TitanSliderProps, TitanSwitchField, type TitanSwitchFieldProps, type TitanTabItem, TitanTable, TitanTableBody, TitanTableCellActions, type TitanTableCellActionsItem, type TitanTableCellActionsProps, TitanTableCellDate, type TitanTableCellDateProps, TitanTableCellInitials, type TitanTableCellInitialsProps, TitanTableCellStatus, type TitanTableCellStatusProps, type TitanTableCellStatusVariant, TitanTableExampleAsync, TitanTableExampleBasic, TitanTableExampleCellTypes, TitanTableExampleClickableNameCell, TitanTableExampleDragDrop, TitanTableExampleDynamic, TitanTableExampleEmpty, TitanTableExampleHeaderVariants, TitanTableExampleLinks, TitanTableExampleResizable, TitanTableExampleSelection, TitanTableExampleSortable, TitanTableHeader, TitanTableLoadMoreItem, type TitanTableProps, TitanTabs, type TitanTabsProps, TitanTag, type TitanTagProps, TitanTextareaField, type TitanTextareaFieldProps, type TitanToastItem, TitanToastRegion, type TitanToastRegionProps, type TitanToastVariant, TitanToggleButtonGroup, type TitanToggleButtonGroupProps, type TitanToggleItem, TitanTooltip, type TitanTooltipPlacement, type TitanTooltipProps, TitanTwoUpOneDownLayout, type TitanTwoUpOneDownLayoutProps, getToneStyle, registerFallbackIcons, renderIconNode, resolveIcon };
+export { type IconComponent, type RenderIconProps, TitanBadge, TitanBadgeAnchor, type TitanBadgeAnchorProps, type TitanBadgeProps, TitanBreadcrumb, type TitanBreadcrumbItem, type TitanBreadcrumbProps, TitanButton, type TitanButtonProps, type TitanButtonVariant, TitanButtonVariants, TitanCalendar, type TitanCalendarProps, TitanCard, TitanCardGrid, type TitanCardGridProps, type TitanCardProps, type TitanCardSpan, TitanCell, type TitanCellProps, TitanCheckboxField, type TitanCheckboxFieldProps, TitanColumn, type TitanColumnProps, TitanDestructiveIconButton, type TitanDestructiveIconButtonProps, type TitanDestructiveIconButtonVariant, TitanDestructiveIconButtonVariants, TitanDialog, type TitanDialogProps, TitanDrawer, type TitanDrawerProps, TitanErrorButton, type TitanErrorButtonProps, type TitanErrorButtonVariant, TitanErrorButtonVariants, TitanFormControlsGroup, type TitanFormControlsGroupProps, TitanIconButton, type TitanIconButtonProps, type TitanIconButtonVariant, TitanIconButtonVariants, TitanInputField, type TitanInputFieldProps, TitanLoader, type TitanLoaderProps, TitanMenuDropdown, type TitanMenuNotification, type TitanMenuOption, type TitanMenuProfileOption, type TitanMenuProps, type TitanMenuSearchOption, TitanNavBar, type TitanNavBarProps, TitanNavbar, type TitanNavbarProps, type TitanNavbarTheme, TitanNotificationsMenu, type TitanNotificationsMenuProps, TitanPagination, type TitanPaginationPage, type TitanPaginationProps, TitanPill, type TitanPillProps, TitanProfileMenu, type TitanProfileMenuProps, TitanProgressBar, type TitanProgressBarProps, TitanRadioGroupField, type TitanRadioGroupFieldProps, type TitanRadioOption, TitanRangeSlider, type TitanRangeSliderProps, TitanResizableTableContainer, TitanRow, TitanSearchMenu, type TitanSearchMenuProps, TitanSelect, type TitanSelectOption, type TitanSelectProps, TitanSidebar, TitanSidebarHeader, type TitanSidebarHeaderProps, TitanSidebarItem, type TitanSidebarItemProps, type TitanSidebarProps, TitanSlider, type TitanSliderProps, TitanSwitchField, type TitanSwitchFieldProps, type TitanTabItem, TitanTable, TitanTableBody, TitanTableCellActions, type TitanTableCellActionsItem, type TitanTableCellActionsProps, TitanTableCellDate, type TitanTableCellDateProps, TitanTableCellInitials, type TitanTableCellInitialsProps, TitanTableCellStatus, type TitanTableCellStatusProps, type TitanTableCellStatusVariant, TitanTableExampleAsync, TitanTableExampleBasic, TitanTableExampleCellTypes, TitanTableExampleClickableNameCell, TitanTableExampleDragDrop, TitanTableExampleDynamic, TitanTableExampleEmpty, TitanTableExampleHeaderVariants, TitanTableExampleLinks, TitanTableExampleResizable, TitanTableExampleSelection, TitanTableExampleSortable, TitanTableHeader, TitanTableLoadMoreItem, type TitanTableProps, TitanTabs, type TitanTabsProps, TitanTag, type TitanTagProps, TitanTextArea, type TitanTextAreaProps, TitanTextInput, type TitanTextInputProps, TitanTextareaField, type TitanTextareaFieldProps, type TitanToastItem, TitanToastRegion, type TitanToastRegionProps, type TitanToastVariant, TitanToggleButtonGroup, type TitanToggleButtonGroupProps, type TitanToggleItem, TitanTooltip, type TitanTooltipPlacement, type TitanTooltipProps, TitanTwoUpOneDownLayout, type TitanTwoUpOneDownLayoutProps, getToneStyle, registerFallbackIcons, registerTitanIcons, renderIconNode, resolveIcon };

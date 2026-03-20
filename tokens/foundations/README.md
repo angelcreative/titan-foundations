@@ -17,6 +17,6 @@ This folder contains only token primitives consumed by `tokens/css/titan.css`:
 ## Separation of concerns
 
 - `tokens/foundations/` -> primitive token sources.
-- `foundations/` (repo root) -> component/layout specs used by generation rules (navbar, menu, select, grid, drawer, template, table-borderless, copy-and-links).
+- `component-specs/` (repo root) -> component/layout specs used by generation rules (navbar, menu, select, grid, drawer, template, table-borderless, copy-and-links).
 
-Keeping this separation avoids ambiguous resolution in MCP/tooling and ensures component specs like `foundations/navbar.json` are applied correctly.
+Keeping this separation avoids ambiguous resolution in MCP/tooling and ensures component specs like `component-specs/navbar.json` are applied correctly.

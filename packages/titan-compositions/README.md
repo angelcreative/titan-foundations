@@ -35,7 +35,7 @@ Consumer apps should install:
 - `react-dom`
 - `react-aria-components`
 - `lucide-react` (primary icon set; use **first**)
-- `@tabler/icons-react` (optional fallback when an icon is not in Lucide)
+- `@tabler/icons-react` (required; install in all consumer apps)
 
 And import composition styles:
 

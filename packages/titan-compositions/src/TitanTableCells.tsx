@@ -1,12 +1,12 @@
 /**
- * Celdas preparadas para usar dentro de TitanTable: fecha con icono, iniciales, acciones (menú), status.
+ * Cells prepared for TitanTable: date with icon, initials, actions menu, status.
  */
 import type { ReactNode } from 'react'
 import { Button, Menu, MenuItem, MenuTrigger, Popover } from 'react-aria-components'
-import { Calendar, MoreVertical, Pencil, Trash2 } from 'lucide-react'
+import { renderIconNode } from './icons'
 
 /* -------------------------------------------------------------------------- */
-/*  Colores Titan 500 para iniciales (sin gris ni slate)                      */
+/*  Titan 500 colors for initials (no gray/slate)                             */
 /* -------------------------------------------------------------------------- */
 
 const TITAN_500_COLORS = [
@@ -30,13 +30,13 @@ function getInitialsColor(seed: string | number): string {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  TableCellDate — fecha con icono calendario, formato por defecto            */
+/*  TableCellDate — date with calendar icon, default format                    */
 /* -------------------------------------------------------------------------- */
 
 export interface TitanTableCellDateProps {
-  /** Fecha: Date, string ISO o timestamp */
+  /** Date: Date, ISO string, or timestamp */
   value: Date | string | number
-  /** Formato por defecto: "Nov 15, 2025" */
+  /** Default format: "Nov 15, 2025" */
   format?: (d: Date) => string
   className?: string
 }
@@ -49,21 +49,21 @@ export function TitanTableCellDate({ value, format = defaultFormat, className = 
   const str = Number.isNaN(d.getTime()) ? String(value) : format(d)
   return (
     <span className={`table-cell-date ${className}`.trim()}>
-      <Calendar size={14} className="table-cell-date-icon" aria-hidden />
+      {renderIconNode('calendar', { className: 'table-cell-date-icon' })}
       <span>{str}</span>
     </span>
   )
 }
 
 /* -------------------------------------------------------------------------- */
-/*  TableCellInitials — iniciales en círculo con bg Titan 500 (random)       */
+/*  TableCellInitials — initials in a circle with Titan 500 bg (random)       */
 /* -------------------------------------------------------------------------- */
 
 export interface TitanTableCellInitialsProps {
-  /** Iniciales (ej. "AW") o nombre del que derivar (ej. "Alice Smith" → "AS") */
+  /** Initials (e.g. "AW") or a name to derive from (e.g. "Alice Smith" -> "AS") */
   initials?: string
   name?: string
-  /** Seed para color estable por fila (ej. id) */
+  /** Seed for stable per-row color (e.g. id) */
   seed?: string | number
   className?: string
 }
@@ -98,7 +98,7 @@ export function TitanTableCellInitials({
 }
 
 /* -------------------------------------------------------------------------- */
-/*  TableCellActions — icon button (kebab) + menú Titan (Edit / Delete)       */
+/*  TableCellActions — icon button (kebab) + Titan menu (Edit / Delete)        */
 /* -------------------------------------------------------------------------- */
 
 export interface TitanTableCellActionsItem {
@@ -110,7 +110,7 @@ export interface TitanTableCellActionsItem {
 export interface TitanTableCellActionsProps {
   onEdit?: () => void
   onDelete?: () => void
-  /** Items extra (ej. "Rename", "Clone") */
+  /** Extra items (e.g. "Rename", "Clone") */
   extraItems?: TitanTableCellActionsItem[]
   ariaLabel?: string
   className?: string
@@ -132,7 +132,7 @@ export function TitanTableCellActions({
     <div className={`table-cell-actions-wrap ${className}`.trim()}>
       <MenuTrigger>
         <Button className="icon-ghost table-cell-actions-trigger" aria-label={ariaLabel}>
-          <MoreVertical size={16} aria-hidden />
+          {renderIconNode('more-vertical')}
         </Button>
         <Popover
           className="menu-popover table-row-menu-popover"
@@ -162,7 +162,7 @@ export function TitanTableCellActions({
               <MenuItem id="edit" className="menu-item" textValue="Edit">
                 <span className="menu-item-start">
                   <span className="menu-item-icon" aria-hidden>
-                    <Pencil size={14} />
+                    {renderIconNode('edit')}
                   </span>
                   <span className="menu-item-label">Edit</span>
                 </span>
@@ -172,7 +172,7 @@ export function TitanTableCellActions({
               <MenuItem id="delete" className="menu-item menu-item-destructive" textValue="Delete">
                 <span className="menu-item-start">
                   <span className="menu-item-icon" aria-hidden>
-                    <Trash2 size={14} />
+                    {renderIconNode('delete')}
                   </span>
                   <span className="menu-item-label">Delete</span>
                 </span>

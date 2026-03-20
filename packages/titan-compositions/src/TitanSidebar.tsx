@@ -7,7 +7,6 @@ import {
   type ComponentType,
 } from 'react'
 import { Button } from 'react-aria-components'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { renderIconNode } from './icons/renderIconNode'
 
 /* ------------------------------------------------------------------ */
@@ -76,7 +75,7 @@ export function TitanSidebar({
             onPress={onToggle}
             aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           >
-            {collapsed ? <ChevronRight /> : <ChevronLeft />}
+            {collapsed ? renderIconNode('chevron-right') : renderIconNode('chevron-left')}
           </Button>
         )}
         {children}
@@ -103,7 +102,7 @@ export function TitanSidebarHeader({ children }: TitanSidebarHeaderProps) {
 
 export interface TitanSidebarItemProps {
   id: string
-  /** Icon: component (e.g. from lucide-react) or string name (resolved Lucide first, then fallback if registered). */
+  /** Icon: component or string name (resolved via Titan-first icon pipeline). */
   icon?: ComponentType<{ className?: string }> | string
   onPress?: () => void
   children: ReactNode

@@ -49,7 +49,8 @@ Every fallback component must define and verify:
 
 ## 6) Icon contract
 
-- Use **lucide-react** first; if the icon is not in Lucide, use **@tabler/icons-react** as fallback.
+- Both **lucide-react** and **@tabler/icons-react** are required dependencies in consumer apps.
+- Use **lucide-react** first for icon selection; use Tabler when the needed icon is not available in Lucide.
 - Keep icon size/color tied to Titan tokens, not fixed values.
 
 ## 7) Snowflake metadata (mandatory)

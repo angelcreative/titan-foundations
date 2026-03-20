@@ -1,0 +1,11 @@
+{
+  "drawer": {
+    "description": "Sliding panel from one side (right by default) with overlay. Header includes title and ghost close button.",
+    "anatomy": {
+      "overlay": "Layer between page and panel; uses --drawer-overlay-backdrop; blocks interaction.",
+      "panel": "Fixed-width surface container for drawer content.",
+      "header": "Title on the left + ghost close icon button on the right.",
+      "body": "Scrollable content region when needed."
+    }
+  }
+}

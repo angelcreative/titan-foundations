@@ -1,13 +1,14 @@
 {
   "$schema": "Titan component registry — machine-readable catalog for MCP code generation",
   "package": "titan-compositions",
-  "version": "0.1.0",
+  "version": "0.1.23+",
   "css": "titan-compositions/styles",
   "peerDependencies": [
     "react >=18.0.0",
     "react-dom >=18.0.0",
     "react-aria-components >=1.0.0",
     "lucide-react >=0.460.0",
+    "@tabler/icons-react >=3.0.0",
     "@internationalized/date >=3.0.0"
   ],
   "themeSetup": {
@@ -47,10 +48,10 @@
       "category": "feedback"
     },
     "TitanButton": {
-      "import": "import { TitanButton } from 'titan-compositions'",
-      "description": "Standard button with 6 visual variants. Wraps React Aria Button.",
+      "import": "import { TitanButton, TitanButtonVariants } from 'titan-compositions'",
+      "description": "Standard button with baseline-compatible variants and optional leading icon. Wraps React Aria Button.",
       "props": {
-        "variant": { "type": "'primary' | 'secondary' | 'tertiary' | 'link' | 'delete' | 'delete-secondary'", "default": "'primary'", "required": false },
+        "variant": { "type": "'primary' | 'secondary' | 'tertiary' | 'link' | 'text' | 'delete' | 'delete-secondary'", "default": "'primary'", "required": false },
         "icon": { "type": "ReactNode", "required": false, "description": "Leading icon (renders with-icon layout)" },
         "children": { "type": "ReactNode", "required": false, "description": "Button label text" },
         "className": { "type": "string", "required": false },
@@ -61,10 +62,10 @@
       "category": "action"
     },
     "TitanIconButton": {
-      "import": "import { TitanIconButton } from 'titan-compositions'",
-      "description": "Icon-only button with 3 variants. Must have aria-label.",
+      "import": "import { TitanIconButton, TitanIconButtonVariants } from 'titan-compositions'",
+      "description": "Icon-only button with baseline-compatible variants. Must have aria-label.",
       "props": {
-        "variant": { "type": "'secondary' | 'ghost' | 'delete'", "default": "'ghost'", "required": false },
+        "variant": { "type": "'primary' | 'secondary' | 'base' | 'base-l' | 'neutral-base' | 'neutral-base-l' | 'ghost' | 'delete'", "default": "'primary'", "required": false },
         "children": { "type": "ReactNode", "required": true, "description": "Icon element (e.g. Lucide icon)" },
         "className": { "type": "string", "required": false },
         "aria-label": { "type": "string", "required": true, "description": "Accessible name (mandatory for icon-only)" },
@@ -76,13 +77,18 @@
     },
     "TitanDialog": {
       "import": "import { TitanDialog } from 'titan-compositions'",
-      "description": "Centered modal dialog with trigger button, title, body, and footer actions. Wraps React Aria Dialog/Modal.",
+      "description": "Dialog supports trigger mode and controlled mode (isOpen/onOpenChange/onClose). Wraps React Aria Dialog/Modal.",
       "props": {
-        "triggerLabel": { "type": "string", "required": true, "description": "Label for the secondary button that opens the dialog" },
-        "title": { "type": "string", "required": true },
-        "body": { "type": "ReactNode", "required": true, "description": "Dialog body content — accepts any JSX (forms, text, etc.)" },
+        "triggerLabel": { "type": "string", "required": false, "description": "Optional label for trigger mode." },
+        "title": { "type": "string", "required": false },
+        "body": { "type": "ReactNode", "required": false, "description": "Dialog body content — accepts any JSX (forms, text, etc.)" },
         "leftAction": { "type": "ReactNode", "required": false, "description": "Left footer action (e.g. Cancel button)" },
-        "rightAction": { "type": "ReactNode", "required": false, "description": "Right footer action (e.g. Save/Delete button)" }
+        "rightAction": { "type": "ReactNode", "required": false, "description": "Right footer action (e.g. Save/Delete button)" },
+        "isOpen": { "type": "boolean", "required": false },
+        "onOpenChange": { "type": "(isOpen: boolean) => void", "required": false },
+        "onClose": { "type": "() => void", "required": false },
+        "aria-label": { "type": "string", "required": false },
+        "children": { "type": "ReactNode", "required": false }
       },
       "slots": ["body", "leftAction", "rightAction"],
       "composableWith": ["TitanButton", "TitanInputField", "TitanTextareaField", "TitanSelect", "TitanCheckboxField", "TitanRadioGroupField", "TitanSwitchField"],
@@ -90,26 +96,37 @@
     },
     "TitanDrawer": {
       "import": "import { TitanDrawer } from 'titan-compositions'",
-      "description": "Right-side slide-in panel with header, close button, and scrollable body. Wraps React Aria Dialog/Modal.",
+      "description": "Right-side slide-in panel with trigger mode or controlled mode (isOpen/onOpenChange/onClose). Wraps React Aria Dialog/Modal.",
       "props": {
-        "triggerLabel": { "type": "string", "required": true, "description": "Label for the secondary button that opens the drawer" },
+        "triggerLabel": { "type": "string", "required": false, "description": "Label for default trigger button." },
+        "trigger": { "type": "ReactNode", "required": false, "description": "Custom trigger element." },
         "title": { "type": "string", "required": true },
-        "children": { "type": "ReactNode", "required": true, "description": "Drawer body content" }
+        "children": { "type": "ReactNode", "required": true, "description": "Drawer body content" },
+        "isOpen": { "type": "boolean", "required": false },
+        "onOpenChange": { "type": "(isOpen: boolean) => void", "required": false },
+        "onClose": { "type": "() => void", "required": false }
       },
       "slots": ["children"],
       "composableWith": ["TitanInputField", "TitanTextareaField", "TitanSelect", "TitanCheckboxField", "TitanRadioGroupField", "TitanSwitchField", "TitanButton"],
       "category": "overlay"
     },
     "TitanInputField": {
-      "import": "import { TitanInputField } from 'titan-compositions'",
+      "import": "import { TitanInputField, TitanTextInput } from 'titan-compositions'",
       "description": "Text input field with optional label, hint, counter, leading/trailing icons, and error message. Wraps React Aria TextField.",
       "props": {
         "label": { "type": "string", "required": false },
         "placeholder": { "type": "string", "required": false },
         "hint": { "type": "string", "required": false, "description": "Helper text below the input" },
+        "hintMessage": { "type": "string", "required": false, "description": "Alias for hint." },
         "counter": { "type": "string", "required": false, "description": "Character counter text (e.g. '0/60')" },
         "leadingIcon": { "type": "ReactNode", "required": false, "description": "Icon before input text" },
+        "startIcon": { "type": "ReactNode", "required": false, "description": "Alias for leadingIcon." },
         "trailingIcon": { "type": "ReactNode", "required": false, "description": "Icon after input text" },
+        "endIcon": { "type": "ReactNode", "required": false, "description": "Alias for trailingIcon." },
+        "onEndIconClick": { "type": "() => void", "required": false },
+        "onClear": { "type": "() => void", "required": false },
+        "maxLength": { "type": "number", "required": false },
+        "onChange": { "type": "(value: string) => void", "required": false },
         "errorMessage": { "type": "string", "required": false, "description": "Error text shown when isInvalid is true" },
         "isInvalid": { "type": "boolean", "required": false },
         "isDisabled": { "type": "boolean", "required": false },
@@ -120,16 +137,22 @@
       "category": "form"
     },
     "TitanTextareaField": {
-      "import": "import { TitanTextareaField } from 'titan-compositions'",
+      "import": "import { TitanTextareaField, TitanTextArea } from 'titan-compositions'",
       "description": "Multi-line text input with optional label, hint, counter, leading icon, clear button, auto-expand, and error. Wraps React Aria TextField + TextArea.",
       "props": {
         "label": { "type": "string", "required": false },
         "placeholder": { "type": "string", "required": false },
         "hint": { "type": "string", "required": false },
+        "hintMessage": { "type": "string", "required": false, "description": "Alias for hint." },
         "counter": { "type": "string", "required": false },
         "leadingIcon": { "type": "ReactNode", "required": false, "description": "Icon displayed at the start of the textarea" },
+        "startIcon": { "type": "ReactNode", "required": false, "description": "Alias for leadingIcon." },
+        "endIcon": { "type": "ReactNode", "required": false },
+        "onEndIconClick": { "type": "() => void", "required": false },
         "onClear": { "type": "() => void", "required": false, "description": "Callback when clear button is pressed. Shows an X icon when provided." },
         "autoExpand": { "type": "boolean", "required": false, "default": "false", "description": "Textarea grows vertically as content increases" },
+        "maxLength": { "type": "number", "required": false },
+        "onChange": { "type": "(value: string) => void", "required": false },
         "errorMessage": { "type": "string", "required": false },
         "isInvalid": { "type": "boolean", "required": false },
         "isDisabled": { "type": "boolean", "required": false },
@@ -187,12 +210,20 @@
     },
     "TitanSelect": {
       "import": "import { TitanSelect } from 'titan-compositions'",
-      "description": "Dropdown select with label, trigger button, and popover list. Wraps React Aria Select.",
+      "description": "Dropdown select with label, trigger button, popover list, open-state chevron, and hint/error support. Wraps React Aria Select.",
       "props": {
-        "label": { "type": "string", "required": true },
+        "label": { "type": "string", "required": false },
         "options": { "type": "TitanSelectOption[]", "required": true, "description": "Array of { id, label, icon?, disabled? }" },
         "defaultSelectedKey": { "type": "string", "required": false },
-        "isDisabled": { "type": "boolean", "default": "false", "required": false }
+        "selectedKey": { "type": "string", "required": false },
+        "onSelectionChange": { "type": "(key: Key | null) => void", "required": false },
+        "placeholder": { "type": "string", "required": false },
+        "hintMessage": { "type": "string", "required": false },
+        "errorMessage": { "type": "string", "required": false },
+        "isDisabled": { "type": "boolean", "default": "false", "required": false },
+        "isRequired": { "type": "boolean", "default": "false", "required": false },
+        "name": { "type": "string", "required": false },
+        "aria-label": { "type": "string", "required": false }
       },
       "slots": [],
       "relatedTypes": {
@@ -213,7 +244,7 @@
       },
       "slots": [],
       "relatedTypes": {
-        "TitanMenuOption": { "id": "string", "label": "string", "icon?": "ReactNode", "disabled?": "boolean", "destructive?": "boolean", "children?": "TitanMenuOption[]" }
+        "TitanMenuOption": { "id": "string", "label": "string", "icon?": "ReactNode", "disabled?": "boolean", "destructive?": "boolean", "mcp?": "boolean", "user?": "boolean", "children?": "TitanMenuOption[]" }
       },
       "category": "navigation"
     },
@@ -223,6 +254,8 @@
       "props": {
         "items": { "type": "TitanTabItem[]", "required": true, "description": "Array of { id, label, content, disabled? }" },
         "defaultSelectedKey": { "type": "string", "required": false },
+        "selectedKey": { "type": "Key", "required": false },
+        "onSelectionChange": { "type": "(key: Key) => void", "required": false },
         "overflow": { "type": "boolean", "default": "false", "required": false, "description": "Enables horizontal scroll when tabs overflow (horizontal only)" },
         "orientation": { "type": "'horizontal' | 'vertical'", "default": "'horizontal'", "required": false, "description": "Horizontal = pill tabs in a row. Vertical = sidebar tabs with right accent border." },
         "ariaLabel": { "type": "string", "default": "'Tabs'", "required": false }
@@ -237,9 +270,12 @@
       "import": "import { TitanPagination } from 'titan-compositions'",
       "description": "Page navigation with numbered pages, ellipsis support, and prev/next buttons.",
       "props": {
-        "ariaLabel": { "type": "string", "required": true },
-        "pages": { "type": "(number | 'ellipsis')[]", "required": true, "description": "Page numbers and ellipsis markers" },
+        "ariaLabel": { "type": "string", "required": false },
+        "aria-label": { "type": "string", "required": false },
+        "pages": { "type": "(number | 'ellipsis')[]", "required": false, "description": "Page numbers and ellipsis markers" },
         "currentPage": { "type": "number", "required": true },
+        "totalPages": { "type": "number", "required": false },
+        "setPage": { "type": "(page: number) => void", "required": false },
         "previousDisabled": { "type": "boolean", "default": "false", "required": false },
         "nextDisabled": { "type": "boolean", "default": "false", "required": false },
         "onPageChange": { "type": "(page: number) => void", "required": false },
@@ -289,7 +325,7 @@
           "audiense": "logo-audiense.svg",
           "demand": "logo-demand.svg",
           "neutral": "logo-audiense.svg",
-          "linkedin": "logo-inkedin.svg",
+          "linkedin": "logo-linkedin.svg",
           "tweetbinder": "logo-tweetbinder.svg",
           "connect": "logo-connect.svg"
         },
@@ -332,20 +368,23 @@
       },
       "slots": ["TitanTableHeader (columns + render Column)", "TitanTableBody (items + render Row/Cell)"],
       "relatedTypes": {
-        "TitanColumn": "id (string), allowsSorting?, isRowHeader?, sortIconPosition? ('left'|'right'), showInfoIcon?, infoIconAriaLabel?. Header variants: [sort] label, label [info], [sort] label [info], label. Only sortable columns get sorted background.",
+        "TitanColumn": "id (string), allowsSorting?, isRowHeader?, alignment? ('left'|'center'|'right'), numericSort?, sortIconPosition? ('left'|'right'), showInfoIcon?, infoIconAriaLabel?. Header variants: [sort] label, label [info], [sort] label [info], label. Only sortable columns get sorted background.",
         "TitanRow": "id (row key), columns for cell render",
-        "TitanCell": "wraps cell content; use col.render(row) when using column config"
+        "TitanCell": "wraps cell content; supports alignment ('left'|'center'|'right'); use col.render(row) when using column config"
       },
       "category": "data"
     },
     "TitanPill": {
       "import": "import { TitanPill } from 'titan-compositions'",
-      "description": "Colored pill badge with optional dismiss button. Tone controls background/text color via CSS custom properties.",
+      "description": "Pill/tag token with official baseline-compatible state model (base/success/alert/disabled/error/info) and optional dismiss button. Supports legacy tone styling for backward compatibility.",
       "props": {
-        "id": { "type": "string", "required": true },
-        "label": { "type": "string", "required": true },
-        "tone": { "type": "string", "required": true, "description": "Color tone name (e.g. 'teal', 'mango', 'ocean', 'tomato', 'violet', 'magenta', 'indigo')" },
-        "onDismiss": { "type": "(id: string) => void", "required": false, "description": "When provided, renders close button" }
+        "id": { "type": "string", "required": false },
+        "label": { "type": "string", "required": false },
+        "children": { "type": "ReactNode", "required": false, "description": "Label content; if omitted, label prop is used." },
+        "state": { "type": "'base' | 'success' | 'alert' | 'disabled' | 'error' | 'info'", "required": false, "default": "'success'" },
+        "tone": { "type": "string", "required": true, "description": "Legacy tone override (kept for backwards compatibility)." },
+        "removable": { "type": "boolean", "required": false, "default": "true" },
+        "onDismiss": { "type": "(id: string) => void", "required": false, "description": "When provided + removable=true, renders close button." }
       },
       "slots": [],
       "category": "badge"

@@ -32,20 +32,20 @@ jobs:
         run: npm ci && npm run build
 
       - name: Install playground dependencies
-        working-directory: playground/react-buttons-app
+        working-directory: playground/web
         run: |
           rm -rf node_modules
           npm ci
 
       - name: Build playground
-        working-directory: playground/react-buttons-app
+        working-directory: playground/web
         run: npm run build
 
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: playground/react-buttons-app/dist
+          path: playground/web/dist
 
       - name: Deploy to GitHub Pages
         id: deployment

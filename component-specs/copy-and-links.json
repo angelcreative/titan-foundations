@@ -1,0 +1,5 @@
+{
+  "copyAndLinks": {
+    "description": "Titles, headers, and body text use steel/typography tokens; theme color is reserved for links and interactive elements."
+  }
+}

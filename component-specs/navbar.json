@@ -1,0 +1,79 @@
+{
+  "navbar": {
+    "sourceOfTruth": "titan-comp-doc/navbar.pdf",
+    "description": "NavBar superior para navegacion de producto. Contrato basado en PDF: izquierda con boton Change Product + lockup Anillo + Product Name; derecha con icon buttons de acciones + User Avatar + boton de chevron para desplegar menu de usuario.",
+    "canonicalTerminology": {
+      "groupNames": ["left-group", "right-group"],
+      "leftGroupItems": ["change-product-button", "brand-lockup"],
+      "rightGroupItems": ["action-icon-buttons", "user-avatar", "user-menu-chevron-button"],
+      "iconStateNames": ["chevron-down", "chevron-up"],
+      "rule": "Use canonical names in docs/rules/contracts; do not rename groups or items."
+    },
+    "width": "100%",
+    "height": "70px",
+    "baseViewport": "1440px",
+    "forbidden": "No usar placeholders de marca ni sustituir assets faltantes. Si falta lockup o ruta de logo, devolver BLOCKER.",
+    "structure": {
+      "leftGroup": ["changeProductButton", "brandLockup"],
+      "rightGroup": ["actionIconButtons", "userAvatar", "userMenuChevronButton"]
+    },
+    "leftOrder": ["changeProductButton", "brandLockup"],
+    "logosPath": "assets/logos",
+    "logoPublicPath": "/assets/logos",
+    "brandLockup": {
+      "name": "Anillo + Product Name",
+      "size": "165x70",
+      "maxHeightPx": 30,
+      "logoSrcRule": "Usar <img src=\"/assets/logos/{archivo}\" /> para el lockup de producto (anillo + nombre). No usar texto suelto ni icono de sustitucion.",
+      "logoSizeRule": "El lockup en navbar no debe superar 30px de alto; usar width auto para mantener proporcion.",
+      "stroke": "$stroke-s",
+      "strokeColor": "$color-steel-100"
+    },
+    "changeProductButton": {
+      "component": "Neutral Icon Button Base - L",
+      "token": "$icon-button-neutral-base-l",
+      "library": "lucide-react",
+      "name": "Grip",
+      "description": "Boton para cambiar de producto. El icono exacto puede variar por producto, pero debe ser icon button neutral grande."
+    },
+    "themeToLogo": {
+      "demand": "logo-demand.svg",
+      "audiense": "logo-audiense.svg",
+      "neutral": "logo-audiense.svg",
+      "insights": "logo-insights.svg",
+      "linkedin": "logo-linkedin.svg",
+      "tweetbinder": "logo-tweetbinder.svg",
+      "connect": "logo-connect.svg"
+    },
+    "actionIconButtons": {
+      "component": "Neutral Icon Button Base",
+      "token": "$icon-button-neutral-base",
+      "examples": ["ajustes", "notificaciones", "cambio de producto"],
+      "note": "Son botones de acciones basicas o triggers de menus desplegables.",
+      "iconRenderRule": "No forzar globalmente strokeWidth=1.5 ni un contrato 16/20; usar el estilo del componente/tema."
+    },
+    "userAvatar": {
+      "size": "40x40",
+      "description": "Avatar de usuario. Puede usar foto real o inicial."
+    },
+    "userMenuChevronButton": {
+      "defaultIcon": "ChevronDown",
+      "expandedIcon": "ChevronUp",
+      "behavior": "Alterna segun estado del menu desplegable de usuario."
+    },
+    "tokens": {
+      "background": "color-white-900",
+      "strokeColor": "color-steel-100",
+      "leftPadding": "$spacing-l",
+      "rightPadding": "$spacing-xl",
+      "gap1": "$spacing-4xs",
+      "gap2": "$spacing-l",
+      "gap3": "$spacing-3xs",
+      "bottomStroke": "$stroke-s"
+    },
+    "responsive": {
+      "rule": "Mantener grupos izquierdo y derecho. Ajustar espacio entre grupos segun viewport sin aumentar espaciado interno.",
+      "over1920": "La barra se expande en bordes, manteniendo posicion de elementos internos."
+    }
+  }
+}

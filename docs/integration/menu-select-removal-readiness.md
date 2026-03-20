@@ -9,9 +9,9 @@ This dry-run is the execution sheet for items 6 and 7 in `menu-select-deprecatio
 - Prepared by: TBD
 - Target Aria/titan-aria baseline: TBD
 - Planned removal scope:
-  - `foundations/menu.json`
-  - `foundations/select.json`
-  - `docs/menu-and-select.md` (convert to appendix or remove)
+  - `component-specs/menu.json`
+  - `component-specs/select.json`
+  - `docs/components/menu-and-select.md` (convert to appendix or remove)
   - `.cursor/rules/menu-and-select.mdc` (convert to fallback appendix or remove)
 
 ## Consumer evidence table

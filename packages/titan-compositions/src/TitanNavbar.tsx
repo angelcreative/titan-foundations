@@ -1,13 +1,6 @@
 import { Button } from 'react-aria-components'
-import {
-  Bell,
-  ChevronDown,
-  CircleHelp,
-  Grip,
-  Handshake,
-  Settings,
-  Sparkles,
-} from 'lucide-react'
+import type { ReactNode } from 'react'
+import { renderIconNode } from './icons'
 
 export type TitanNavbarTheme =
   | 'demand'
@@ -23,7 +16,7 @@ const THEME_TO_LOGO: Record<TitanNavbarTheme, string> = {
   audiense: 'logo-audiense.svg',
   neutral: 'logo-audiense.svg',
   insights: 'logo-insights.svg',
-  linkedin: 'logo-inkedin.svg',
+  linkedin: 'logo-linkedin.svg',
   tweetbinder: 'logo-tweetbinder.svg',
   connect: 'logo-connect.svg',
 }
@@ -44,6 +37,22 @@ export interface TitanNavbarProps {
   onSettings?: () => void
   onFeaturedAction?: () => void
   onUserMenu?: () => void
+}
+
+export interface TitanNavBarProps {
+  children: ReactNode
+}
+
+/**
+ * Faithful runtime mirror of the official NavBar primitive:
+ * a header wrapper with centered inner content.
+ */
+export function TitanNavBar({ children }: TitanNavBarProps) {
+  return (
+    <header className="navbar-shell">
+      <div className="navbar-shell-content">{children}</div>
+    </header>
+  )
 }
 
 /**
@@ -71,33 +80,33 @@ export function TitanNavbar({
       <div className="navbar-inner">
         <div className="navbar-left-group">
           <Button className="icon-ghost navbar-icon-button" aria-label="Change product" onPress={onChangeProduct}>
-            <Grip />
+            {renderIconNode('change-product')}
           </Button>
           <img className="navbar-logo" src={`${logoBasePath}/${logoFile}`} alt={logoAlt} />
         </div>
 
         <div className="navbar-right-group">
           <Button className="icon-ghost navbar-icon-button" aria-label="Notifications" onPress={onNotifications}>
-            <Bell />
+            {renderIconNode('notifications')}
           </Button>
           <Button className="icon-ghost navbar-icon-button" aria-label="Support and community" onPress={onSupport}>
-            <Handshake />
+            {renderIconNode('handshake')}
           </Button>
           <Button className="icon-ghost navbar-icon-button" aria-label="Help" onPress={onHelp}>
-            <CircleHelp />
+            {renderIconNode('question')}
           </Button>
           <Button className="icon-ghost navbar-icon-button" aria-label="Settings" onPress={onSettings}>
-            <Settings />
+            {renderIconNode('settings')}
           </Button>
           <Button className="icon-ghost navbar-icon-button" aria-label="Featured action" onPress={onFeaturedAction}>
-            <Sparkles />
+            {renderIconNode('sparks')}
           </Button>
           <div className="navbar-user">
             <span className="navbar-avatar" aria-hidden="true">
               {userInitial}
             </span>
             <Button className="icon-ghost navbar-chevron-button" aria-label="User menu" onPress={onUserMenu}>
-              <ChevronDown />
+              {renderIconNode('chevron-down')}
             </Button>
           </div>
         </div>

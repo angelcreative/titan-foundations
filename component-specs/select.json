@@ -1,0 +1,13 @@
+{
+  "select": {
+    "description": "Select pattern (button trigger + popover + options list) using React Aria structure.",
+    "structure": [
+      "Select",
+      "SelectValue",
+      "Button (trigger)",
+      "Popover",
+      "ListBox",
+      "ListBoxItem"
+    ]
+  }
+}

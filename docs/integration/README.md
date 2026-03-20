@@ -3,7 +3,7 @@
 Operational docs to integrate React Aria, `titan-aria` wrappers, and local foundations/tokens without ownership collisions.
 
 - `component-inventory.md`: ownership status and overlap inventory.
-- `decision-policy.md`: mandatory layer precedence and icon rule (lucide-react first, @tabler/icons-react fallback).
+- `decision-policy.md`: mandatory layer precedence and icon rule (Titan official icons first, Lucide/Tabler fallback catalogs).
 - `deduplication-roadmap.md`: migration and deprecation path for duplicated ownership.
 - `fallback-contract.md`: technical contract for snowflake implementations.
 - `post-update-audit-runbook.md`: manual audit workflow after integration changes.
@@ -18,3 +18,4 @@ Operational docs to integrate React Aria, `titan-aria` wrappers, and local found
 - `smoke-review-checklist.md`: 10-minute smoke pass for states, interaction, a11y, and token compliance.
 - `component-registry.json`: machine-readable catalog of all `titan-compositions` components — props, types, slots, composability, and coverage map for MCP code generation.
 - `composition-patterns.json`: real UI composition recipes extracted from Audiense/Demand/Insights/TweetBinder — page layouts, card patterns, dialog patterns, form patterns, and micro-patterns with JSX templates for MCP code generation.
+- `parity-qa-matrix.md`: parity validation matrix (API/visual/interaction/a11y) and release gate for this mirror phase.

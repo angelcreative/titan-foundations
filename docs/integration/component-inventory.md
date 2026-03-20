@@ -2,6 +2,9 @@
 
 This inventory is the decision baseline to avoid two active sources of truth.
 
+Reference note: MCP runtime generation uses `titan-compositions`. For components that also exist in the official baseline, compositions are expected to be a faithful mirror.
+Validation note: parity sign-off is tracked in `docs/integration/parity-qa-matrix.md`.
+
 ## Status model
 
 - `AriaBase`: built with `react-aria-components` + Titan tokens/foundations.
@@ -13,19 +16,19 @@ This inventory is the decision baseline to avoid two active sources of truth.
 
 | Item | Current source in this repo | Target status | Decision now |
 | --- | --- | --- | --- |
-| Navbar | `foundations/navbar.json`, `docs/logos-and-navbar.md`, `.cursor/rules/navbar-logos.mdc` | `AriaBase` | Keep as active operational pattern with strict structure and theme logo mapping. |
-| Button | `foundations/button.json`, `docs/button.md`, `.cursor/rules/button.mdc` | `AriaBase` | Keep button/icon/destructive hierarchy aligned to PDF contract. |
-| Dialog | `foundations/dialog.json`, `docs/dialog.md`, `.cursor/rules/dialog.mdc` | `AriaBase` | Keep modal contract with optional illustration and strict a11y behavior. |
-| Breadcrumb | `foundations/breadcrumb.json`, `docs/breadcrumb.md`, `.cursor/rules/breadcrumb.mdc` | `AriaBase` | Keep hierarchical navigation semantics and overflow rules consistent. |
-| Tabs | `foundations/tabs.json`, `docs/tabs.md`, `.cursor/rules/tabs.mdc` | `AriaBase` | Keep tablist semantics, single-selection and responsive overflow behavior. |
-| Pagination | `foundations/pagination.json`, `docs/pagination.md`, `.cursor/rules/pagination.mdc` | `AriaBase` | Keep paging semantics, single current page, and state clarity across dense and regular layouts. |
-| Drawer | `foundations/drawer.json`, `docs/drawer.md`, React Aria structure in `titan-aria` usage paths | `AriaBase` | Build with React Aria + Titan tokens; keep overlay behavior and state coverage. |
-| Menu | `foundations/menu.json`, `docs/menu-and-select.md`, `.cursor/rules/menu-and-select.mdc` | `AriaBase` | Keep React Aria structure and Titan token contract as primary. |
-| Select | `foundations/select.json`, `docs/menu-and-select.md`, `.cursor/rules/menu-and-select.mdc` | `AriaBase` | Keep React Aria structure and Titan token contract as primary. |
-| Grid/layout system | `foundations/grid.json`, `docs/grid.md`, `foundations/template.json` | `FoundationOnlySpec` | Keep as cross-cutting layout foundation. |
-| Table borderless pattern | `foundations/table-borderless.json`, `docs/table-borderless.md` | `FoundationOnlySpec` | Keep as optional borderless data-table pattern. |
-| Copy and links conventions | `foundations/copy-and-links.json`, `docs/copy-and-links.md` | `FoundationOnlySpec` | Keep as semantic writing/styling convention. |
-| Icons | `lucide-react` first, then `@tabler/icons-react` + Titan tokens | `AriaBase` | Use Lucide first, Tabler as fallback; token-driven color/size. |
+| Navbar | `component-specs/navbar.json`, `docs/components/logos-and-navbar.md`, `.cursor/rules/navbar-logos.mdc` | `AriaBase` | Keep as active operational pattern with strict structure and theme logo mapping. |
+| Button | `component-specs/button.json`, `docs/components/button.md`, `.cursor/rules/button.mdc` | `AriaBase` | Keep button/icon/destructive hierarchy aligned to PDF contract. |
+| Dialog | `component-specs/dialog.json`, `docs/components/dialog.md`, `.cursor/rules/dialog.mdc` | `AriaBase` | Keep modal contract with optional illustration and strict a11y behavior. |
+| Breadcrumb | `component-specs/breadcrumb.json`, `docs/components/breadcrumb.md`, `.cursor/rules/breadcrumb.mdc` | `AriaBase` | Keep hierarchical navigation semantics and overflow rules consistent. |
+| Tabs | `component-specs/tabs.json`, `docs/components/tabs.md`, `.cursor/rules/tabs.mdc` | `AriaBase` | Keep tablist semantics, single-selection and responsive overflow behavior. |
+| Pagination | `component-specs/pagination.json`, `docs/components/pagination.md`, `.cursor/rules/pagination.mdc` | `AriaBase` | Keep paging semantics, single current page, and state clarity across dense and regular layouts. |
+| Drawer | `component-specs/drawer.json`, `docs/components/drawer.md`, React Aria structure in `titan-aria` usage paths | `AriaBase` | Build with React Aria + Titan tokens; keep overlay behavior and state coverage. |
+| Menu | `component-specs/menu.json`, `docs/components/menu-and-select.md`, `.cursor/rules/menu-and-select.mdc` | `AriaBase` | Keep React Aria structure and Titan token contract as primary. |
+| Select | `component-specs/select.json`, `docs/components/menu-and-select.md`, `.cursor/rules/menu-and-select.mdc` | `AriaBase` | Keep React Aria structure and Titan token contract as primary. |
+| Grid/layout system | `component-specs/grid.json`, `docs/components/grid.md`, `component-specs/template.json` | `FoundationOnlySpec` | Keep as cross-cutting layout foundation. |
+| Table borderless pattern | `component-specs/table-borderless.json`, `docs/components/table-borderless.md` | `FoundationOnlySpec` | Keep as optional borderless data-table pattern. |
+| Copy and links conventions | `component-specs/copy-and-links.json`, `docs/components/copy-and-links.md` | `FoundationOnlySpec` | Keep as semantic writing/styling convention. |
+| Icons | Titan official icons + `lucide-react` + `@tabler/icons-react` + Titan tokens | `AriaBase` | Use Titan official icons first; keep Lucide then Tabler as fallback catalogs; token-driven color/size. |
 
 ## Supporting inventory (`titan-aria` package)
 
@@ -41,14 +44,14 @@ All other primitives are re-exported from `react-aria-components` through `packa
 
 Track these operational files in each audit cycle to ensure they stay aligned:
 
-- Navbar: `foundations/navbar.json`, `docs/logos-and-navbar.md`, `.cursor/rules/navbar-logos.mdc`
-- Button: `foundations/button.json`, `docs/button.md`, `.cursor/rules/button.mdc`
-- Dialog: `foundations/dialog.json`, `docs/dialog.md`, `.cursor/rules/dialog.mdc`
-- Breadcrumb: `foundations/breadcrumb.json`, `docs/breadcrumb.md`, `.cursor/rules/breadcrumb.mdc`
-- Tabs: `foundations/tabs.json`, `docs/tabs.md`, `.cursor/rules/tabs.mdc`
-- Pagination: `foundations/pagination.json`, `docs/pagination.md`, `.cursor/rules/pagination.mdc`
-- Menu: `foundations/menu.json`, `docs/menu-and-select.md`, `.cursor/rules/menu-and-select.mdc`
-- Select: `foundations/select.json`, `docs/menu-and-select.md`, `.cursor/rules/menu-and-select.mdc`
+- Navbar: `component-specs/navbar.json`, `docs/components/logos-and-navbar.md`, `.cursor/rules/navbar-logos.mdc`
+- Button: `component-specs/button.json`, `docs/components/button.md`, `.cursor/rules/button.mdc`
+- Dialog: `component-specs/dialog.json`, `docs/components/dialog.md`, `.cursor/rules/dialog.mdc`
+- Breadcrumb: `component-specs/breadcrumb.json`, `docs/components/breadcrumb.md`, `.cursor/rules/breadcrumb.mdc`
+- Tabs: `component-specs/tabs.json`, `docs/components/tabs.md`, `.cursor/rules/tabs.mdc`
+- Pagination: `component-specs/pagination.json`, `docs/components/pagination.md`, `.cursor/rules/pagination.mdc`
+- Menu: `component-specs/menu.json`, `docs/components/menu-and-select.md`, `.cursor/rules/menu-and-select.mdc`
+- Select: `component-specs/select.json`, `docs/components/menu-and-select.md`, `.cursor/rules/menu-and-select.mdc`
 
 ## Audit cadence
 

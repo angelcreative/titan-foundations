@@ -8,7 +8,7 @@ import {
   MenuTrigger,
   Popover,
 } from 'react-aria-components'
-import { ChevronRight } from 'lucide-react'
+import { renderIconNode } from './icons'
 
 export interface TitanBreadcrumbItem {
   id: string
@@ -79,7 +79,7 @@ export function TitanBreadcrumb({
             </Popover>
           </MenuTrigger>
           <span className="breadcrumb-separator" aria-hidden="true">
-            <ChevronRight />
+            {renderIconNode('chevron-right')}
           </span>
         </Breadcrumb>
       )}
@@ -113,7 +113,7 @@ function BreadcrumbNode({ item }: { item: TitanBreadcrumbItem }) {
         {item.label}
       </Button>
       <span className="breadcrumb-separator" aria-hidden="true">
-        <ChevronRight />
+        {renderIconNode('chevron-right')}
       </span>
     </Breadcrumb>
   )

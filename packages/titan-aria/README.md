@@ -107,7 +107,7 @@ import { Plus } from 'lucide-react';
 
 ### Drawer (Modal + overlay)
 
-Use `ModalOverlay` + `Modal` + `Dialog` with `data-slot="drawer"` on the overlay so it uses drawer tokens (overlay backdrop, panel from the right). The drawer always has a header (title + ghost close icon X) and a body. Use `data-slot="drawer-header"`, `data-slot="drawer-title"`, `data-slot="drawer-close"` (Button with Icon X, `slot="icon"`), and `data-slot="drawer-body"` for content. Tokens and spec: see [docs/drawer.md](../../docs/drawer.md) and `foundations/drawer.json` in titan-foundations.
+Use `ModalOverlay` + `Modal` + `Dialog` with `data-slot="drawer"` on the overlay so it uses drawer tokens (overlay backdrop, panel from the right). The drawer always has a header (title + ghost close icon X) and a body. Use `data-slot="drawer-header"`, `data-slot="drawer-title"`, `data-slot="drawer-close"` (Button with Icon X, `slot="icon"`), and `data-slot="drawer-body"` for content. Tokens and spec: see [docs/components/drawer.md](../../docs/components/drawer.md) and `component-specs/drawer.json` in titan-foundations.
 
 ### Other components
 

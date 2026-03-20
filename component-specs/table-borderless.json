@@ -1,0 +1,12 @@
+{
+  "table": {
+    "borderless": {
+      "description": "Borderless table with horizontal separators only, darker header separator, lighter row separators, and row hover.",
+      "interaction": {
+        "sorting": "Supported with consistent sort icon patterns.",
+        "rowActions": "Kebab trigger opens per-row action menu.",
+        "destructiveItem": "Delete action is visually distinct."
+      }
+    }
+  }
+}

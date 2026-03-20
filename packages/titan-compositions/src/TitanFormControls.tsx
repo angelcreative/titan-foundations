@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { Checkbox, Label, Radio, RadioGroup, Switch } from 'react-aria-components'
-import { Check } from 'lucide-react'
+import { renderIconNode } from './icons'
 
 export interface TitanCheckboxFieldProps {
   label: string
@@ -53,7 +53,7 @@ export function TitanCheckboxField({
       onChange={onChange}
     >
       <span className="checkbox-box" aria-hidden="true">
-        <Check className="checkbox-mark" />
+        {renderIconNode('check', { className: 'checkbox-mark' })}
       </span>
       <span className="choice-text">{label}</span>
     </Checkbox>

@@ -7,7 +7,7 @@ This folder is an isolated visual demo and smoke-review harness for all `titan-c
 Use the Vite React app (no CDN runtime conflicts):
 
 ```bash
-cd /Users/angelsanchez/Desktop/titan-foundations/playground/react-buttons-app
+cd /Users/angelsanchez/Desktop/titan-foundations/playground/web
 npm install
 npm run dev -- --host 127.0.0.1
 ```
@@ -25,13 +25,13 @@ Open:
 
 ## Components covered
 
-All 22 visual components exported by `titan-compositions` are imported and demonstrated:
+Core exported components from `titan-compositions` are imported and demonstrated:
 
 | Category | Components |
 |----------|------------|
 | Shell / Navigation | `TitanNavbar`, `TitanBreadcrumb` |
 | Layout | `TitanCardGrid`, `TitanCard` (span 8 / span 16 grid) |
-| Buttons | `TitanButton` (6 variants), `TitanIconButton` (3 variants) |
+| Buttons | `TitanButton`, `TitanIconButton`, `TitanErrorButton`, `TitanDestructiveIconButton` |
 | Badges | `TitanPill` (dismissable, multi-tone), `TitanTag` (7 tones) |
 | Menus | `TitanMenuDropdown` (normal, icon-only, cascading) |
 | Select | `TitanSelect` (with/without icons, disabled items) |
@@ -39,12 +39,12 @@ All 22 visual components exported by `titan-compositions` are imported and demon
 | Pagination | `TitanPagination` (with ellipsis) |
 | Overlays | `TitanDrawer`, `TitanDialog` |
 | Feedback | `TitanTooltip`, `TitanToastRegion` (success/error/info/warning) |
-| Forms | `TitanInputField`, `TitanTextareaField` (with label, hint, counter, icons, error) |
+| Forms | `TitanInputField`, `TitanTextareaField`, `TitanTextInput`, `TitanTextArea` (with label, hint, counter, icons, error) |
 | Form controls | `TitanCheckboxField`, `TitanRadioGroupField`, `TitanSwitchField`, `TitanFormControlsGroup` |
 | Data | `TitanTable` + TitanTableHeader/TitanColumn/TitanTableBody/TitanRow/TitanCell (inside card grid) |
 
-`getToneStyle` (utility) and `TitanTwoUpOneDownLayout` (convenience wrapper) are not shown separately but are covered indirectly through Pills/Tags and the CardGrid layout respectively.
+`getToneStyle` (utility), icon resolvers (`resolveIcon`, `renderIconNode`) and `TitanTwoUpOneDownLayout` are not shown as standalone docs blocks but are covered indirectly by rendered compositions.
 
 ## Legacy HTML
 
-`react-buttons.html` remains only as fallback, but the primary path is now `react-buttons-app` because it avoids `Invalid hook call` issues.
+`react-buttons.html` remains only as fallback, but the primary path is now `web` because it avoids `Invalid hook call` issues.

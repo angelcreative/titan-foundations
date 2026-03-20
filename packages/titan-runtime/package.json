@@ -1,0 +1,40 @@
+{
+  "name": "@titan-ds/runtime",
+  "version": "0.1.1",
+  "description": "Single-package Titan runtime: compositions, React Aria, Lucide, Tabler. One install for Cursor/Claude/V0.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./styles": "titan-compositions/styles"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --external titan-compositions",
+    "dev": "tsup src/index.ts --watch --format cjs,esm --dts --external titan-compositions"
+  },
+  "dependencies": {
+    "titan-compositions": "^0.1.22",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0",
+    "react-aria-components": ">=1.0.0",
+    "@internationalized/date": ">=3.0.0",
+    "lucide-react": ">=0.460.0",
+    "@tabler/icons-react": ">=3.0.0"
+  },
+  "peerDependencies": {},
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
+  }
+}

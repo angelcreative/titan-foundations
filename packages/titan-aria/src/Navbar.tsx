@@ -12,7 +12,7 @@ const THEME_TO_LOGO: Record<NavbarTheme, string> = {
   audiense: 'logo-audiense.svg',
   neutral: 'logo-audiense.svg',
   insights: 'logo-insights.svg',
-  linkedin: 'logo-inkedin.svg',
+  linkedin: 'logo-linkedin.svg',
   tweetbinder: 'logo-tweetbinder.svg',
   connect: 'logo-connect.svg',
 };

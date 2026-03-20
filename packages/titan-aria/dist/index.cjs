@@ -105,7 +105,7 @@ var THEME_TO_LOGO = {
   audiense: "logo-audiense.svg",
   neutral: "logo-audiense.svg",
   insights: "logo-insights.svg",
-  linkedin: "logo-inkedin.svg",
+  linkedin: "logo-linkedin.svg",
   tweetbinder: "logo-tweetbinder.svg",
   connect: "logo-connect.svg"
 };

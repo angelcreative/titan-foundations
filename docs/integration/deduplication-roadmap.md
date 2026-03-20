@@ -15,8 +15,8 @@ If a component has a stable Aria/token implementation path, this repo must not k
 
 ### Local files to demote from official ownership
 
-- `foundations/navbar.json`
-- `docs/logos-and-navbar.md`
+- `component-specs/navbar.json`
+- `docs/components/logos-and-navbar.md`
 - `.cursor/rules/navbar-logos.mdc`
 - Any template rule/doc that hardcodes local navbar ownership.
 
@@ -32,9 +32,9 @@ If a component has a stable Aria/token implementation path, this repo must not k
 
 ### Local files to demote from official ownership
 
-- `foundations/menu.json`
-- `foundations/select.json`
-- `docs/menu-and-select.md`
+- `component-specs/menu.json`
+- `component-specs/select.json`
+- `docs/components/menu-and-select.md`
 - Any rule/doc that defaults to local ownership for menu/select
 
 ### Transition mode

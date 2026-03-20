@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { Button } from 'react-aria-components'
-import { X } from 'lucide-react'
+import { renderIconNode } from './icons'
 
 export type TitanToastVariant = 'success' | 'error' | 'info' | 'warning'
 
@@ -34,7 +34,7 @@ export function TitanToastRegion({ toasts, onDismiss }: TitanToastRegionProps) {
             </div>
           </div>
           <Button className="icon-ghost toast-close-button" aria-label="Dismiss toast" onPress={() => onDismiss(toast.id)}>
-            <X />
+            {renderIconNode('x')}
           </Button>
         </article>
       ))}

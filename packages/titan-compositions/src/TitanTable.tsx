@@ -3,6 +3,7 @@
  * Same API as RAC Table; styling is Titan (borderless, sortable th, selection).
  */
 import type { ReactNode } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 import {
   Table as RACTable,
   TableHeader as RACTableHeader,
@@ -18,16 +19,16 @@ import {
   TableLoadMoreItem as RACTableLoadMoreItem,
 } from 'react-aria-components'
 import type { TableHeaderProps, TableBodyProps, ColumnProps, RowProps, CellProps } from 'react-aria-components'
-import { ArrowUp, ArrowDown, ArrowUpDown, GripVertical, Check, Minus, Info } from 'lucide-react'
 import { Button } from 'react-aria-components'
+import { renderIconNode } from './icons'
 
 function SortIcon({ sortDirection }: { sortDirection?: 'ascending' | 'descending' }) {
   return (
     <span className="column-sort-icon-wrap" aria-hidden>
       <span key={sortDirection ?? 'none'} className="column-sort-icon">
-        {sortDirection === 'ascending' && <ArrowUp size={14} strokeWidth={1.5} />}
-        {sortDirection === 'descending' && <ArrowDown size={14} strokeWidth={1.5} />}
-        {!sortDirection && <ArrowUpDown size={14} strokeWidth={1.5} />}
+        {sortDirection === 'ascending' && renderIconNode('arrow-up')}
+        {sortDirection === 'descending' && renderIconNode('arrow-down')}
+        {!sortDirection && renderIconNode('arrow-up-down')}
       </span>
     </span>
   )
@@ -53,7 +54,7 @@ function SortableHeaderContent({
       {sortIconPosition === 'right' && <SortIcon sortDirection={sortDirection} />}
       {showInfoIcon && (
         <span className="column-header-info-wrap" aria-hidden>
-          <Info size={14} strokeWidth={1.5} className="column-header-info-icon" aria-label={infoIconAriaLabel} />
+          {renderIconNode('info', { className: 'column-header-info-icon' })}
         </span>
       )}
     </span>
@@ -71,7 +72,7 @@ function HeaderWithInfoOnly({
     <span className="column-sort-header column-sort-header--info-only">
       {label}
       <span className="column-header-info-wrap" aria-hidden>
-        <Info size={14} strokeWidth={1.5} className="column-header-info-icon" aria-label={infoIconAriaLabel} />
+        {renderIconNode('info', { className: 'column-header-info-icon' })}
       </span>
     </span>
   )
@@ -84,11 +85,84 @@ export interface TitanTableProps extends Omit<React.ComponentProps<typeof RACTab
   noWrapper?: boolean
   /** When true, thead stays visible when scrolling (use only for async/load-more tables). Default false. */
   stickyHeader?: boolean
+  /** Number of left columns that remain sticky. */
+  stickyColumns?: number
 }
 
-export function TitanTable({ className, wrapperClassName, noWrapper, stickyHeader = false, ...props }: TitanTableProps) {
+function applyStickyColumns(table: HTMLTableElement, count: number) {
+  const headerRow = table.querySelector('thead tr')
+  if (!headerRow) return
+
+  const headerCells = Array.from(headerRow.querySelectorAll<HTMLElement>(':scope > th'))
+  const stickyCount = Math.min(count, headerCells.length)
+
+  const offsets: number[] = []
+  let left = 0
+  for (let i = 0; i < stickyCount; i++) {
+    offsets.push(left)
+    left += headerCells[i].offsetWidth
+  }
+
+  for (const row of table.querySelectorAll('tr')) {
+    const cells = Array.from(row.querySelectorAll<HTMLElement>(':scope > th, :scope > td'))
+    for (let i = 0; i < cells.length; i++) {
+      const cell = cells[i]
+      if (i < stickyCount) {
+        cell.setAttribute('data-sticky', '')
+        cell.style.left = `${offsets[i]}px`
+        if (i === stickyCount - 1) {
+          cell.setAttribute('data-sticky-last', '')
+        } else {
+          cell.removeAttribute('data-sticky-last')
+        }
+      } else {
+        cell.removeAttribute('data-sticky')
+        cell.removeAttribute('data-sticky-last')
+        cell.style.removeProperty('left')
+      }
+    }
+  }
+}
+
+export function TitanTable({
+  className,
+  wrapperClassName,
+  noWrapper,
+  stickyHeader = false,
+  stickyColumns = 0,
+  ...props
+}: TitanTableProps) {
+  const tableRef = useRef<HTMLTableElement>(null)
+
+  useLayoutEffect(() => {
+    const table = tableRef.current
+    if (!table || stickyColumns <= 0) return
+
+    applyStickyColumns(table, stickyColumns)
+
+    const mutationObserver = new MutationObserver(() => {
+      applyStickyColumns(table, stickyColumns)
+    })
+    mutationObserver.observe(table, { childList: true, subtree: true })
+
+    let resizeObserver: ResizeObserver | undefined
+    if (typeof ResizeObserver !== 'undefined') {
+      resizeObserver = new ResizeObserver(() => applyStickyColumns(table, stickyColumns))
+      const headerCells = table.querySelectorAll<HTMLElement>('thead tr > th')
+      for (const cell of Array.from(headerCells).slice(0, stickyColumns)) {
+        resizeObserver.observe(cell)
+      }
+    }
+
+    return () => {
+      mutationObserver.disconnect()
+      resizeObserver?.disconnect()
+    }
+  }, [stickyColumns])
+
   const table = (
     <RACTable
+      ref={tableRef}
       {...props}
       className={['table-borderless', 'table-sortable', 'table-aria', className].filter(Boolean).join(' ')}
     />
@@ -98,6 +172,7 @@ export function TitanTable({ className, wrapperClassName, noWrapper, stickyHeade
     <div
       className={['layout-table-wrap', 'layout-table-aria', wrapperClassName].filter(Boolean).join(' ')}
       {...(stickyHeader ? { 'data-sticky-header': '' } : {})}
+      {...(stickyColumns > 0 ? { 'data-sticky-cols': String(stickyColumns) } : {})}
     >
       {table}
     </div>
@@ -125,9 +200,9 @@ export function TitanTableHeader<T extends object>({
               {({ isIndeterminate }) => (
                 <span className="checkbox-box" aria-hidden>
                   {isIndeterminate ? (
-                    <Minus className="checkbox-mark" size={14} strokeWidth={2.5} />
+                    renderIconNode('minus', { className: 'checkbox-mark' })
                   ) : (
-                    <Check className="checkbox-mark" />
+                    renderIconNode('check', { className: 'checkbox-mark' })
                   )}
                 </span>
               )}
@@ -147,6 +222,8 @@ export function TitanTableHeader<T extends object>({
 }
 
 export interface TitanColumnProps extends ColumnProps {
+  alignment?: 'left' | 'center' | 'right'
+  numericSort?: boolean
   allowsResizing?: boolean
   /** When allowsSorting, put sort icon on the left ([sort] label) or right (label [sort]). Default 'left' for table-advanced. */
   sortIconPosition?: 'left' | 'right'
@@ -157,7 +234,15 @@ export interface TitanColumnProps extends ColumnProps {
 }
 
 export function TitanColumn(props: TitanColumnProps) {
-  const { allowsSorting, children, sortIconPosition = 'left', showInfoIcon = false, infoIconAriaLabel } = props
+  const {
+    allowsSorting,
+    children,
+    alignment = 'left',
+    numericSort = false,
+    sortIconPosition = 'left',
+    showInfoIcon = false,
+    infoIconAriaLabel,
+  } = props
   const allowsResizing = props.allowsResizing
 
   const resolvedLabel = (renderProps: { sortDirection?: 'ascending' | 'descending' }) =>
@@ -168,7 +253,15 @@ export function TitanColumn(props: TitanColumnProps) {
       ? (renderProps: { sortDirection?: 'ascending' | 'descending' }) => (
           <SortableHeaderContent
             label={resolvedLabel(renderProps)}
-            sortDirection={renderProps.sortDirection}
+            sortDirection={
+              numericSort
+                ? renderProps.sortDirection === 'ascending'
+                  ? 'descending'
+                  : renderProps.sortDirection === 'descending'
+                    ? 'ascending'
+                    : undefined
+                : renderProps.sortDirection
+            }
             sortIconPosition={sortIconPosition}
             showInfoIcon={showInfoIcon}
             infoIconAriaLabel={infoIconAriaLabel}
@@ -186,7 +279,16 @@ export function TitanColumn(props: TitanColumnProps) {
   return (
     <RACColumn
       {...props}
-      className={allowsSorting ? [props.className, 'table-col-sortable'].filter(Boolean).join(' ') : props.className}
+      className={
+        [
+          props.className,
+          allowsSorting ? 'table-col-sortable' : '',
+          alignment === 'center' ? 'table-align-center' : '',
+          alignment === 'right' ? 'table-align-right' : 'table-align-left',
+        ]
+          .filter(Boolean)
+          .join(' ')
+      }
     >
       {allowsResizing && typeof headerContent !== 'function' ? (
         <>
@@ -215,11 +317,19 @@ export function TitanRow<T extends object>({ columns, children, ...props }: RowP
   const { selectionBehavior, allowsDragging } = useTableOptions()
 
   return (
-    <RACRow {...props}>
+    <RACRow
+      {...props}
+      className={[
+        props.className,
+        props.onAction || props.href ? 'table-row-actionable' : '',
+      ]
+        .filter(Boolean)
+        .join(' ')}
+    >
       {allowsDragging && (
         <RACCell className="table-cell-drag">
           <Button slot="drag" className="icon-ghost" aria-label="Drag">
-            <GripVertical size={14} strokeWidth={1.5} />
+            {renderIconNode('grip-vertical')}
           </Button>
         </RACCell>
       )}
@@ -227,7 +337,7 @@ export function TitanRow<T extends object>({ columns, children, ...props }: RowP
         <RACCell className="table-cell-checkbox">
           <Checkbox slot="selection" aria-label="Select row" className="checkbox-root">
             <span className="checkbox-box" aria-hidden>
-              <Check className="checkbox-mark" />
+              {renderIconNode('check', { className: 'checkbox-mark' })}
             </span>
           </Checkbox>
         </RACCell>
@@ -243,8 +353,25 @@ export function TitanRow<T extends object>({ columns, children, ...props }: RowP
   )
 }
 
-export function TitanCell(props: CellProps) {
-  return <RACCell {...props} />
+export interface TitanCellProps extends CellProps {
+  alignment?: 'left' | 'center' | 'right'
+}
+
+export function TitanCell(props: TitanCellProps) {
+  const { alignment = 'left' } = props
+  return (
+    <RACCell
+      {...props}
+      className={[
+        props.className,
+        'table-cell-body',
+        alignment === 'center' ? 'table-align-center' : '',
+        alignment === 'right' ? 'table-align-right' : 'table-align-left',
+      ]
+        .filter(Boolean)
+        .join(' ')}
+    />
+  )
 }
 
 export function TitanResizableTableContainer({

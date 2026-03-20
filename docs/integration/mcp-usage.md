@@ -8,7 +8,7 @@ This is the practical usage contract so you can request interfaces and get consi
 2. Apply Titan semantic tokens/foundations for visuals.
 3. Reuse `titan-aria` wrappers when they fit and avoid rework.
 4. Reuse `titan-compositions` when available (import-first).
-5. Use **lucide-react** for icons first, then **@tabler/icons-react** as fallback; Titan token-driven size/color.
+5. Use **Titan official icons** first. Use **lucide-react** and then **@tabler/icons-react** only as fallback when an official Titan icon is not available; always bind size/color to Titan tokens.
 
 ## Import-first policy (mandatory)
 
@@ -20,6 +20,40 @@ Before generating JSX/CSS from scratch:
 4. If required package/component is missing in the consumer project, return `BLOCKER` with install steps: **`npm install titan-compositions react-aria-components lucide-react @tabler/icons-react`**.
 
 This prevents drift and keeps output aligned with validated Titan compositions.
+
+## Runtime model
+
+- **Runtime package for MCP generation:** `titan-compositions` (always).
+- **Execution rule in this phase:** never use private Titan packages at runtime; mirror/adapt official contracts into `titan-compositions`.
+- For any component in the official product baseline, `titan-compositions` must behave and render as a faithful mirror.
+- `titan-compositions` may add gap-only components/patterns that are not available in the official baseline.
+- Parity validation checklist is tracked in `docs/integration/parity-qa-matrix.md`.
+
+## Environment strategy (persistent vs ephemeral)
+
+This is critical to avoid confusion about repeated installs.
+
+- **Persistent filesystem environments** (Cursor, Claude Code on local folders):
+  - Install Titan dependencies once per workspace/root.
+  - Reuse the same workspace for subprojects/apps to avoid repeated installs.
+  - Recommended setup:
+    - monorepo flow via `cli-titan` (`titan init`, then `titan new <name>`)
+    - or single-package setup via `@titan-ds/runtime`.
+
+- **Ephemeral/no-folder-access environments** (Figma Make, v0, and similar hosted runtimes):
+  - Assume dependencies are not persisted between runs/projects.
+  - Repeated installation is expected behavior.
+  - Minimize setup overhead with a single command:
+    - `npm i @titan-ds/runtime`
+  - Then apply Titan load order (`titan.css` -> theme -> runtime/composition styles).
+
+- **Mixed/unknown environments** (chat-first Claude sessions without guaranteed local workspace):
+  - Treat as ephemeral unless persistence is explicitly confirmed.
+  - If dependencies are missing, return `BLOCKER` with install steps instead of guessing.
+
+Decision rule:
+- If filesystem persistence is available: optimize for one-time install + reuse.
+- If persistence is not available: optimize for deterministic one-command bootstrap.
 
 ## Hard constraints (non-negotiable)
 
@@ -36,7 +70,7 @@ If a Titan component does not render as expected, a prop seems missing, or behav
 
 1. **Verify the API** (registry/docs in this repo or via MCP).
 2. **Load the relevant anatomy/pattern** (skills + composition-patterns).
-3. **Choose the Titan-native alternative** (example: sortable table headers → use `TitanTable` + TitanTableHeader/TitanColumn/TitanTableBody/TitanRow/TitanCell + `docs/skills/table-advanced.md`).
+3. **Choose the Titan-native alternative** (example: sortable table headers → use `TitanTable` + TitanTableHeader/TitanColumn/TitanTableBody/TitanRow/TitanCell + `docs/anatomies/table-advanced.md`).
 4. If still not possible, propose a **temporary `snowflake`** that follows `docs/integration/fallback-contract.md` (and includes exit criteria). Do not silently invent look & feel.
 
 ## Next.js App Router (client boundary)
@@ -59,7 +93,7 @@ Create this UI with Titan rules:
 - Use react-aria-components as base behavior/accessibility layer.
 - Paint with Titan tokens/foundations from this repo.
 - Reuse titan-aria wrappers if already available and appropriate.
-- Use lucide-react first, then @tabler/icons-react for icons; token-based size/color.
+- Use Titan official icons first; use lucide-react and then @tabler/icons-react only when no Titan official icon exists; token-based size/color.
 - Do not create two active implementations of the same component.
 ```
 
@@ -97,7 +131,7 @@ Use the exact structure from `appLayoutWithSidebar` in composition-patterns.json
 ```text
 Build page shell with navbar:
 - Implement navbar with React Aria/titan-aria + tokens.
-- Use foundations/navbar.json + docs/logos-and-navbar.md as the required structural contract.
+- Use component-specs/navbar.json + docs/components/logos-and-navbar.md as the required structural contract.
 - Keep exact icon policy and theme logo mapping.
 ```
 
@@ -106,7 +140,7 @@ Build page shell with navbar:
 ```text
 Build filters area with Menu and Select:
 - Use React Aria/titan-aria structure for Menu and Select.
-- Use foundations/menu.json and foundations/select.json as operational token/structure contract.
+- Use component-specs/menu.json and component-specs/select.json as operational token/structure contract.
 - Keep tokens/theme behavior aligned with titan.css + active theme.
 ```
 
@@ -128,21 +162,21 @@ Create a new exploratory component pattern:
 - **Positive delta (e.g. +3%):** Always `--color-aquamarine-600` or `--color-aquamarine-700`. Never theme color.
 - **Negative delta (e.g. -2%):** Use `--text-error-primary`.
 - **Secondary/muted text** (counts, “Showing X–Y of Z”, descriptions): use `color: var(--copy-slot-secondary)` or `var(--copy-slot-muted)`; there is **no** `.copy-secondary` CSS class in Titan.
-- **Tables:** Standalone table (not inside a UI card) **never** has a card wrapper or border; it floats, full width. Table inside a card: the card is the container; do not add an extra wrapper. **TitanTable** primitives: use **`id`** on `TitanColumn` for column identity; `TitanRow` needs `id={row.id}`; pass `sortDescriptor` and `onSortChange` for sortable columns. See `docs/skills/table-advanced.md`.
+- **Tables:** Standalone table (not inside a UI card) **never** has a card wrapper or border; it floats, full width. Table inside a card: the card is the container; do not add an extra wrapper. **TitanTable** primitives: use **`id`** on `TitanColumn` for column identity; `TitanRow` needs `id={row.id}`; pass `sortDescriptor` and `onSortChange` for sortable columns. See `docs/anatomies/table-advanced.md`.
 
 ## Using UI anatomy skills (how the LLM knows what to use)
 
 When building or changing UI (with or without MCP), the LLM should **resolve user intent to a Titan UI anatomy skill** and **follow that skill** so output matches the common patterns.
 
 1. **Resolve intent → skill file**  
-   Use the index and mapping in **`docs/skills/README.md`** (section “How the LLM (or MCP) should choose a skill”). Examples:
-   - “Segment card”, “donut + keywords”, “affinities” → `docs/skills/audience-segment-card.md`
-   - “Comparison bars”, “Bio vs baseline”, “show full table” → `docs/skills/comparison-bar-cards.md`
-   - “Sortable table”, “table with column sort” → `docs/skills/table-advanced.md`
-   - “Drawer”, “panel that opens from the side” → `docs/drawer.md`
+   Use the index and mapping in **`docs/anatomies/README.md`** (section “How the LLM (or MCP) should choose a skill”). Examples:
+   - “Segment card”, “donut + keywords”, “affinities” → `docs/anatomies/audience-segment-card.md`
+   - “Comparison bars”, “Bio vs baseline”, “show full table” → `docs/anatomies/comparison-bar-cards.md`
+   - “Sortable table”, “table with column sort” → `docs/anatomies/table-advanced.md`
+   - “Drawer”, “panel that opens from the side” → `docs/components/drawer.md`
 
 2. **Load the skill**  
-   - **Without MCP:** Read the chosen file from the repo (e.g. `docs/skills/audience-segment-card.md`).
+   - **Without MCP:** Read the chosen file from the repo (e.g. `docs/anatomies/audience-segment-card.md`).
    - **With MCP:** If the Titan worker exposes a “get skill” (or similar) tool, call it with the pattern name (e.g. `audience-segment-card`) and use the returned text as the anatomy to follow.
 
 3. **Generate from the anatomy**  
@@ -152,7 +186,7 @@ If the consumer exposes **list_skills** / **get_skill** via MCP, the LLM should 
 
 ## Sources of truth
 
-- **UI patterns (skills):** `docs/skills/README.md` (index) + `docs/skills/*.md` (anatomy files).
+- **UI patterns (skills):** `docs/anatomies/README.md` (index) + `docs/anatomies/*.md` (anatomy files).
 - Policy: `docs/integration/decision-policy.md`
 - Inventory: `docs/integration/component-inventory.md`
 - Fallback contract: `docs/integration/fallback-contract.md`

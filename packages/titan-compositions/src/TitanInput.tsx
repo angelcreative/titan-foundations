@@ -9,14 +9,21 @@ import {
   TextField,
   type TextFieldProps,
 } from 'react-aria-components'
-import { X } from 'lucide-react'
+import { renderIconNode } from './icons'
 
 export interface TitanInputFieldProps extends Omit<TextFieldProps, 'children'> {
   label?: string
   hint?: string
+  hintMessage?: string
   counter?: string
   leadingIcon?: ReactNode
+  startIcon?: ReactNode
   trailingIcon?: ReactNode
+  endIcon?: ReactNode
+  onEndIconClick?: () => void
+  onClear?: () => void
+  maxLength?: number
+  onChange?: (value: string) => void
   errorMessage?: string
   placeholder?: string
   className?: string
@@ -25,30 +32,51 @@ export interface TitanInputFieldProps extends Omit<TextFieldProps, 'children'> {
 export interface TitanTextareaFieldProps extends Omit<TextFieldProps, 'children'> {
   label?: string
   hint?: string
+  hintMessage?: string
   counter?: string
   leadingIcon?: ReactNode
+  startIcon?: ReactNode
+  endIcon?: ReactNode
+  onEndIconClick?: () => void
   onClear?: () => void
   autoExpand?: boolean
+  maxLength?: number
+  onChange?: (value: string) => void
   errorMessage?: string
   placeholder?: string
   className?: string
 }
 
+export type TitanTextInputProps = TitanInputFieldProps
+export type TitanTextAreaProps = TitanTextareaFieldProps
+
 export function TitanInputField({
   label,
   hint,
+  hintMessage,
   counter,
   leadingIcon,
+  startIcon,
   trailingIcon,
+  endIcon,
+  onEndIconClick,
+  onClear,
+  maxLength,
+  onChange,
   errorMessage,
   placeholder,
   className = 'field-root',
   ...props
 }: TitanInputFieldProps) {
+  const resolvedHint = hint ?? hintMessage
+  const resolvedLeadingIcon = leadingIcon ?? startIcon
+  const resolvedTrailingIcon = trailingIcon ?? endIcon
+  const hasTrailingAction = !!(resolvedTrailingIcon && (onEndIconClick || onClear))
+
   const iconContainerClass = [
     'input-with-icons',
-    leadingIcon ? 'input-with-icons-left' : '',
-    trailingIcon ? 'input-with-icons-right' : '',
+    resolvedLeadingIcon ? 'input-with-icons-left' : '',
+    resolvedTrailingIcon ? 'input-with-icons-right' : '',
   ]
     .filter(Boolean)
     .join(' ')
@@ -56,20 +84,46 @@ export function TitanInputField({
   return (
     <TextField className={className} {...props}>
       {label ? <Label className="field-label">{label}</Label> : null}
-      {leadingIcon || trailingIcon ? (
+      {resolvedLeadingIcon || resolvedTrailingIcon ? (
         <Group className={iconContainerClass}>
-          {leadingIcon ? <span className="input-leading-icon">{leadingIcon}</span> : null}
-          <Input className="input-field" placeholder={placeholder} />
-          {trailingIcon ? <span className="input-trailing-icon">{trailingIcon}</span> : null}
+          {resolvedLeadingIcon ? <span className="input-leading-icon">{resolvedLeadingIcon}</span> : null}
+          <Input
+            className="input-field"
+            placeholder={placeholder}
+            maxLength={maxLength}
+            onChange={(event) => onChange?.(event.target.value)}
+          />
+          {resolvedTrailingIcon ? (
+            hasTrailingAction ? (
+              <button
+                type="button"
+                className="input-trailing-icon input-trailing-action"
+                onClick={() => {
+                  onEndIconClick?.()
+                  if (!onEndIconClick) onClear?.()
+                }}
+                aria-label="End icon button"
+              >
+                {resolvedTrailingIcon}
+              </button>
+            ) : (
+              <span className="input-trailing-icon">{resolvedTrailingIcon}</span>
+            )
+          ) : null}
         </Group>
       ) : (
-        <Input className="input-field" placeholder={placeholder} />
+        <Input
+          className="input-field"
+          placeholder={placeholder}
+          maxLength={maxLength}
+          onChange={(event) => onChange?.(event.target.value)}
+        />
       )}
-      {hint || counter ? (
+      {resolvedHint || counter ? (
         <div className="field-help-row">
-          {hint ? (
+          {resolvedHint ? (
             <Text slot="description" className="field-hint">
-              {hint}
+              {resolvedHint}
             </Text>
           ) : (
             <span />
@@ -85,15 +139,24 @@ export function TitanInputField({
 export function TitanTextareaField({
   label,
   hint,
+  hintMessage,
   counter,
   leadingIcon,
+  startIcon,
+  endIcon,
+  onEndIconClick,
   onClear,
   autoExpand = false,
+  maxLength,
+  onChange,
   errorMessage,
   placeholder,
   className = 'field-root',
   ...props
 }: TitanTextareaFieldProps) {
+  const resolvedHint = hint ?? hintMessage
+  const resolvedLeadingIcon = leadingIcon ?? startIcon
+  const resolvedEndIcon = endIcon ?? (onClear ? renderIconNode('x') : null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   const handleInput = useCallback(() => {
@@ -103,12 +166,12 @@ export function TitanTextareaField({
     el.style.height = `${el.scrollHeight}px`
   }, [autoExpand])
 
-  const hasIcons = !!(leadingIcon || onClear)
+  const hasIcons = !!(resolvedLeadingIcon || resolvedEndIcon)
 
   const containerClass = [
     'textarea-with-icons',
-    leadingIcon ? 'textarea-with-icons-left' : '',
-    onClear ? 'textarea-with-icons-right' : '',
+    resolvedLeadingIcon ? 'textarea-with-icons-left' : '',
+    resolvedEndIcon ? 'textarea-with-icons-right' : '',
   ].filter(Boolean).join(' ')
 
   return (
@@ -116,16 +179,26 @@ export function TitanTextareaField({
       {label ? <Label className="field-label">{label}</Label> : null}
       {hasIcons ? (
         <Group className={containerClass}>
-          {leadingIcon ? <span className="textarea-leading-icon">{leadingIcon}</span> : null}
+          {resolvedLeadingIcon ? <span className="textarea-leading-icon">{resolvedLeadingIcon}</span> : null}
           <TextArea
             ref={textareaRef}
             className="textarea-field"
             placeholder={placeholder}
+            maxLength={maxLength}
             onInput={handleInput}
+            onChange={(event) => onChange?.(event.target.value)}
           />
-          {onClear ? (
-            <button type="button" className="textarea-clear-icon" onClick={onClear} aria-label="Clear">
-              <X />
+          {resolvedEndIcon ? (
+            <button
+              type="button"
+              className="textarea-clear-icon"
+              onClick={() => {
+                onEndIconClick?.()
+                if (!onEndIconClick) onClear?.()
+              }}
+              aria-label="End icon button"
+            >
+              {resolvedEndIcon}
             </button>
           ) : null}
         </Group>
@@ -134,14 +207,16 @@ export function TitanTextareaField({
           ref={textareaRef}
           className="textarea-field"
           placeholder={placeholder}
+          maxLength={maxLength}
           onInput={handleInput}
+          onChange={(event) => onChange?.(event.target.value)}
         />
       )}
-      {hint || counter ? (
+      {resolvedHint || counter ? (
         <div className="field-help-row">
-          {hint ? (
+          {resolvedHint ? (
             <Text slot="description" className="field-hint">
-              {hint}
+              {resolvedHint}
             </Text>
           ) : (
             <span />
@@ -152,4 +227,14 @@ export function TitanTextareaField({
       {errorMessage ? <FieldError className="field-error">{errorMessage}</FieldError> : null}
     </TextField>
   )
+}
+
+/** Backward-compatible alias for consumers expecting TextInput naming. */
+export function TitanTextInput(props: TitanTextInputProps) {
+  return <TitanInputField {...props} />
+}
+
+/** Backward-compatible alias for consumers expecting TextArea naming. */
+export function TitanTextArea(props: TitanTextAreaProps) {
+  return <TitanTextareaField {...props} />
 }

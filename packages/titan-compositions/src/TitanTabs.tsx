@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Tab, TabList, TabPanel, Tabs } from 'react-aria-components'
+import type { Key } from 'react-aria-components'
 
 export interface TitanTabItem {
   id: string
@@ -11,6 +12,8 @@ export interface TitanTabItem {
 export interface TitanTabsProps {
   items: TitanTabItem[]
   defaultSelectedKey?: string
+  selectedKey?: Key
+  onSelectionChange?: (key: Key) => void
   overflow?: boolean
   orientation?: 'horizontal' | 'vertical'
   ariaLabel?: string
@@ -19,6 +22,8 @@ export interface TitanTabsProps {
 export function TitanTabs({
   items,
   defaultSelectedKey,
+  selectedKey,
+  onSelectionChange,
   overflow = false,
   orientation = 'horizontal',
   ariaLabel = 'Tabs',
@@ -41,6 +46,8 @@ export function TitanTabs({
     <Tabs
       className={rootClass}
       defaultSelectedKey={defaultSelectedKey}
+      selectedKey={selectedKey}
+      onSelectionChange={onSelectionChange}
       orientation={orientation}
     >
       <TabList className={listClass} aria-label={ariaLabel}>

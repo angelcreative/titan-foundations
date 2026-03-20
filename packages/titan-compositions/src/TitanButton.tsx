@@ -6,23 +6,59 @@ export type TitanButtonVariant =
   | 'secondary'
   | 'tertiary'
   | 'link'
+  | 'text'
   | 'delete'
   | 'delete-secondary'
 
-export type TitanIconButtonVariant = 'secondary' | 'ghost' | 'delete'
+export type TitanIconButtonVariant =
+  | 'primary'
+  | 'secondary'
+  | 'ghost'
+  | 'base'
+  | 'base-l'
+  | 'neutral-base'
+  | 'neutral-base-l'
+  | 'delete'
+
+export const TitanButtonVariants = {
+  Primary: 'primary',
+  Secondary: 'secondary',
+  Tertiary: 'tertiary',
+  Text: 'text',
+  Link: 'link',
+  Delete: 'delete',
+  DeleteSecondary: 'delete-secondary',
+} as const
+
+export const TitanIconButtonVariants = {
+  Primary: 'primary',
+  Secondary: 'secondary',
+  Base: 'base',
+  BaseLarge: 'base-l',
+  NeutralBase: 'neutral-base',
+  NeutralBaseLarge: 'neutral-base-l',
+  Ghost: 'ghost',
+  Delete: 'delete',
+} as const
 
 const BUTTON_VARIANT_CLASS: Record<TitanButtonVariant, string> = {
   primary: 'btn btn-primary',
   secondary: 'btn btn-secondary',
   tertiary: 'btn btn-tertiary',
   link: 'btn btn-link-text',
+  text: 'btn btn-link-text',
   delete: 'btn btn-delete',
   'delete-secondary': 'btn btn-delete-secondary',
 }
 
 const ICON_BUTTON_VARIANT_CLASS: Record<TitanIconButtonVariant, string> = {
+  primary: 'icon-primary',
   secondary: 'icon-secondary',
   ghost: 'icon-ghost',
+  base: 'icon-base',
+  'base-l': 'icon-base-l',
+  'neutral-base': 'icon-neutral-base',
+  'neutral-base-l': 'icon-neutral-base-l',
   delete: 'icon-delete',
 }
 
@@ -129,12 +165,83 @@ export function TitanButton({
 }
 
 export function TitanIconButton({
-  variant = 'ghost',
+  variant = 'primary',
   className = '',
   children,
   ...props
 }: TitanIconButtonProps) {
   const baseClass = ICON_BUTTON_VARIANT_CLASS[variant]
+  const mergedClassName = [baseClass, className].filter(Boolean).join(' ')
+  return (
+    <Button className={mergedClassName} {...props}>
+      {children}
+    </Button>
+  )
+}
+
+export type TitanErrorButtonVariant = 'primary' | 'secondary' | 'text'
+export type TitanDestructiveIconButtonVariant = 'primary' | 'secondary' | 'base' | 'base-l'
+
+export const TitanErrorButtonVariants = {
+  Primary: 'primary',
+  Secondary: 'secondary',
+  Text: 'text',
+} as const
+
+export const TitanDestructiveIconButtonVariants = {
+  Primary: 'primary',
+  Secondary: 'secondary',
+  Base: 'base',
+  BaseLarge: 'base-l',
+} as const
+
+export interface TitanErrorButtonProps extends Omit<ButtonProps, 'className' | 'children'> {
+  variant?: TitanErrorButtonVariant
+  className?: string
+  children?: ReactNode
+}
+
+export interface TitanDestructiveIconButtonProps extends Omit<ButtonProps, 'className' | 'children'> {
+  variant?: TitanDestructiveIconButtonVariant
+  className?: string
+  children: ReactNode
+}
+
+const ERROR_BUTTON_VARIANT_CLASS: Record<TitanErrorButtonVariant, string> = {
+  primary: 'btn btn-delete',
+  secondary: 'btn btn-delete-secondary',
+  text: 'btn btn-link-text btn-error-text',
+}
+
+const DESTRUCTIVE_ICON_BUTTON_VARIANT_CLASS: Record<TitanDestructiveIconButtonVariant, string> = {
+  primary: 'icon-delete',
+  secondary: 'icon-delete-secondary',
+  base: 'icon-delete-base',
+  'base-l': 'icon-delete-base-l',
+}
+
+export function TitanErrorButton({
+  variant = 'primary',
+  className = '',
+  children,
+  ...props
+}: TitanErrorButtonProps) {
+  const baseClass = ERROR_BUTTON_VARIANT_CLASS[variant]
+  const mergedClassName = [baseClass, className].filter(Boolean).join(' ')
+  return (
+    <Button className={mergedClassName} {...props}>
+      {children}
+    </Button>
+  )
+}
+
+export function TitanDestructiveIconButton({
+  variant = 'primary',
+  className = '',
+  children,
+  ...props
+}: TitanDestructiveIconButtonProps) {
+  const baseClass = DESTRUCTIVE_ICON_BUTTON_VARIANT_CLASS[variant]
   const mergedClassName = [baseClass, className].filter(Boolean).join(' ')
   return (
     <Button className={mergedClassName} {...props}>
