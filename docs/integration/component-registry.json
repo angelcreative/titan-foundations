@@ -1,7 +1,7 @@
 {
   "$schema": "Titan component registry — machine-readable catalog for MCP code generation",
   "package": "titan-compositions",
-  "version": "0.1.23+",
+  "version": "0.2.0",
   "css": "titan-compositions/styles",
   "peerDependencies": [
     "react >=18.0.0",
@@ -19,11 +19,23 @@
       "tokens/themes/_neutral.css",
       "tokens/themes/_demand.css",
       "tokens/themes/_linkedin.css",
-      "tokens/themes/_tweetbinder.css"
+      "tokens/themes/_tweetbinder.css",
+      "tokens/themes/_brand.css"
     ],
     "activation": "<html data-theme=\"insights\">"
   },
   "components": {
+    "TitanAvatar": {
+      "import": "import { TitanAvatar } from 'titan-compositions'",
+      "description": "User avatar circle. Shows the first letter of account name, or a user icon if no account is provided.",
+      "props": {
+        "account": { "type": "string", "required": false, "description": "User name — first letter is rendered as the avatar initial." },
+        "icon": { "type": "ReactNode", "required": false, "description": "Custom icon to show when no account is provided." },
+        "aria-label": { "type": "string", "required": false }
+      },
+      "slots": [],
+      "category": "display"
+    },
     "TitanBadge": {
       "import": "import { TitanBadge, TitanBadgeAnchor } from 'titan-compositions'",
       "description": "Notification count badge. TitanBadge renders the count pill; TitanBadgeAnchor positions it at the top-right corner of any child element.",
@@ -60,6 +72,40 @@
       },
       "slots": ["icon", "children"],
       "category": "action"
+    },
+    "TitanButtonGroup": {
+      "import": "import { TitanButtonGroup, TitanIndividualButton } from 'titan-compositions'",
+      "description": "Segmented toggle button group with single selection (radio behavior). Uses React Aria ToggleButtonGroup. Supports horizontal and vertical orientations.",
+      "props": {
+        "children": { "type": "ReactNode", "required": true, "description": "TitanIndividualButton children" },
+        "orientation": { "type": "'horizontal' | 'vertical'", "default": "'horizontal'", "required": false },
+        "className": { "type": "string", "required": false }
+      },
+      "slots": ["children"],
+      "composableWith": ["TitanIndividualButton"],
+      "category": "action"
+    },
+    "TitanCollapsible": {
+      "import": "import { TitanCollapsible } from 'titan-compositions'",
+      "description": "Expandable/collapsible content section with a header toggle button and chevron indicator.",
+      "props": {
+        "children": { "type": "ReactNode", "required": true, "description": "Content to show/hide" },
+        "title": { "type": "ReactNode", "required": false, "description": "Header label" },
+        "isCollapsed": { "type": "boolean", "required": false, "description": "Controlled collapsed state" },
+        "onChange": { "type": "(isCollapsed: boolean) => void", "required": false },
+        "aria-label": { "type": "string", "required": false }
+      },
+      "slots": ["children"],
+      "category": "layout"
+    },
+    "TitanDivider": {
+      "import": "import { TitanDivider } from 'titan-compositions'",
+      "description": "Horizontal rule divider styled with Titan tokens.",
+      "props": {
+        "className": { "type": "string", "required": false }
+      },
+      "slots": [],
+      "category": "layout"
     },
     "TitanIconButton": {
       "import": "import { TitanIconButton, TitanIconButtonVariants } from 'titan-compositions'",
@@ -305,7 +351,7 @@
       "import": "import { TitanNavbar } from 'titan-compositions'",
       "description": "Application navbar with themed logo, icon actions (Grip, Bell, Handshake, CircleHelp, Settings, Sparkles), and user avatar + menu. Logo auto-switches based on theme.",
       "props": {
-        "theme": { "type": "'demand' | 'audiense' | 'neutral' | 'insights' | 'linkedin' | 'tweetbinder' | 'connect'", "default": "'insights'", "required": false },
+        "theme": { "type": "'demand' | 'audiense' | 'neutral' | 'insights' | 'linkedin' | 'tweetbinder' | 'connect' | 'brand'", "default": "'insights'", "required": false },
         "userInitial": { "type": "string", "default": "'A'", "required": false },
         "logoAlt": { "type": "string", "default": "'Product logo'", "required": false },
         "logoBasePath": { "type": "string", "default": "CDN URL (jsdelivr)", "required": false, "description": "Base path/URL for logo assets. Defaults to CDN. Pass '/assets/logos' for local." },
@@ -327,7 +373,8 @@
           "neutral": "logo-audiense.svg",
           "linkedin": "logo-linkedin.svg",
           "tweetbinder": "logo-tweetbinder.svg",
-          "connect": "logo-connect.svg"
+          "connect": "logo-connect.svg",
+          "brand": "logo-audiense.svg"
         },
         "usage": "<img src=\"{cdnBase}/{byTheme[theme]}\" alt=\"Product logo\" style=\"max-height: 30px; width: auto;\" />"
       },
@@ -511,6 +558,33 @@
       "slots": [],
       "category": "feedback"
     },
+    "TitanLink": {
+      "import": "import { TitanLink } from 'titan-compositions'",
+      "description": "Accessible link component with size variants and optional trailing icon. Wraps React Aria Link.",
+      "props": {
+        "children": { "type": "ReactNode", "required": true },
+        "size": { "type": "'s' | 'm'", "default": "'m'", "required": false },
+        "withIcon": { "type": "boolean", "default": "false", "required": false, "description": "Show trailing redirect icon" },
+        "href": { "type": "string", "required": false },
+        "className": { "type": "string", "required": false }
+      },
+      "slots": [],
+      "category": "navigation"
+    },
+    "TitanPillGroup": {
+      "import": "import { TitanPillGroup, TitanPillList } from 'titan-compositions'",
+      "description": "Container for a group of TitanPill items with optional label and remove handler. Wraps React Aria TagGroup + TagList.",
+      "props": {
+        "children": { "type": "ReactNode", "required": true, "description": "TitanPillList containing TitanPill children" },
+        "label": { "type": "string", "required": false },
+        "onRemove": { "type": "(keys: Set<string>) => void", "required": false },
+        "aria-label": { "type": "string", "required": false },
+        "className": { "type": "string", "required": false }
+      },
+      "slots": ["children"],
+      "composableWith": ["TitanPill", "TitanPillList"],
+      "category": "badge"
+    },
     "TitanProgressBar": {
       "import": "import { TitanProgressBar } from 'titan-compositions'",
       "description": "Determinate progress bar with optional label and value display. Wraps React Aria ProgressBar.",
@@ -563,21 +637,15 @@
       "category": "form"
     }
   },
-  "utilities": {
-    "getToneStyle": {
-      "import": "import { getToneStyle } from 'titan-compositions'",
-      "description": "Returns CSS custom property object for pill or tag tone coloring.",
-      "signature": "getToneStyle(tone: string, mode: 'pill' | 'tag') => CSSProperties",
-      "usage": "Used internally by TitanPill and TitanTag. Rarely needed directly."
-    }
-  },
+  "utilities": {},
   "coverageMap": {
     "coveredByTitan": [
       "Button", "Dialog", "Drawer", "Input (TextField)", "Textarea", "Checkbox",
       "RadioGroup", "Switch", "Select", "Menu", "Tabs", "Table", "Tooltip",
       "Toast", "Breadcrumb", "Navbar", "Pagination", "Pill", "Tag/Label",
       "Badge", "Card", "CardGrid", "PageLayout", "ToggleButtonGroup", "Sidebar",
-      "Calendar", "Loader", "ProgressBar", "Slider", "RangeSlider"
+      "Calendar", "Loader", "ProgressBar", "Slider", "RangeSlider",
+      "Avatar", "ButtonGroup", "Collapsible", "Divider", "Link", "PillGroup"
     ],
     "fallbackToReactAria": [
       "DatePicker", "DateRangePicker", "ComboBox", "NumberField",
