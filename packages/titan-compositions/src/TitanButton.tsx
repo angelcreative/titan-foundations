@@ -66,6 +66,7 @@ export interface TitanButtonProps extends Omit<ButtonProps, 'className' | 'child
   variant?: TitanButtonVariant
   className?: string
   icon?: ReactNode
+  iconEnd?: ReactNode
   children?: ReactNode
 }
 
@@ -85,39 +86,39 @@ export interface TitanToneStyle {
 
 const PILL_TONE_MAP: Record<string, { bg: string; color: string; icon: string }> = {
   success: {
-    bg: 'var(--pill-slot-success-bg)',
-    color: 'var(--pill-slot-success-color)',
-    icon: 'var(--pill-slot-success-icon-color)',
+    bg: 'var(--pill-success-background)',
+    color: 'var(--pill-success-text)',
+    icon: 'var(--pill-success-icon-color)',
   },
   error: {
-    bg: 'var(--pill-slot-error-bg)',
-    color: 'var(--pill-slot-error-color)',
-    icon: 'var(--pill-slot-error-icon-color)',
+    bg: 'var(--pill-error-background)',
+    color: 'var(--pill-error-text)',
+    icon: 'var(--pill-error-icon-color)',
   },
   alert: {
-    bg: 'var(--pill-slot-alert-bg)',
-    color: 'var(--pill-slot-alert-color)',
-    icon: 'var(--pill-slot-alert-icon-color)',
+    bg: 'var(--pill-alert-background)',
+    color: 'var(--pill-alert-text)',
+    icon: 'var(--pill-alert-icon-color)',
   },
   warning: {
-    bg: 'var(--pill-slot-alert-bg)',
-    color: 'var(--pill-slot-alert-color)',
-    icon: 'var(--pill-slot-alert-icon-color)',
+    bg: 'var(--pill-alert-background)',
+    color: 'var(--pill-alert-text)',
+    icon: 'var(--pill-alert-icon-color)',
   },
   information: {
-    bg: 'var(--pill-slot-information-bg)',
-    color: 'var(--pill-slot-information-color)',
-    icon: 'var(--pill-slot-information-icon-color)',
+    bg: 'var(--pill-information-background)',
+    color: 'var(--pill-information-text)',
+    icon: 'var(--pill-information-icon-color)',
   },
   info: {
-    bg: 'var(--pill-slot-information-bg)',
-    color: 'var(--pill-slot-information-color)',
-    icon: 'var(--pill-slot-information-icon-color)',
+    bg: 'var(--pill-information-background)',
+    color: 'var(--pill-information-text)',
+    icon: 'var(--pill-information-icon-color)',
   },
   disabled: {
-    bg: 'var(--pill-slot-disabled-bg)',
-    color: 'var(--pill-slot-disabled-color)',
-    icon: 'var(--pill-slot-disabled-color)',
+    bg: 'var(--pill-disabled-background)',
+    color: 'var(--text-disabled)',
+    icon: 'var(--text-icon-disabled)',
   },
 }
 
@@ -135,14 +136,14 @@ export function getToneStyle(
       }
     }
     return {
-      '--pill-bg': `var(--color-${tone}-100, var(--pill-slot-bg))`,
-      '--pill-color': `var(--color-${tone}-700, var(--pill-slot-color))`,
-      '--pill-icon-color': `var(--color-${tone}-600, var(--pill-slot-icon-color))`,
+      '--pill-bg': `var(--color-${tone}-100, var(--pill-background))`,
+      '--pill-color': `var(--color-${tone}-700, var(--pill-text))`,
+      '--pill-icon-color': `var(--color-${tone}-600, var(--pill-icon-color))`,
     }
   }
   return {
-    '--tag-bg': `var(--color-${tone}-200, var(--pill-slot-bg))`,
-    '--tag-color': `var(--color-${tone}-600, var(--pill-slot-color))`,
+    '--tag-bg': `var(--color-${tone}-200, var(--pill-background))`,
+    '--tag-color': `var(--color-${tone}-600, var(--pill-text))`,
   }
 }
 
@@ -150,16 +151,18 @@ export function TitanButton({
   variant = 'primary',
   className = '',
   icon,
+  iconEnd,
   children,
   ...props
 }: TitanButtonProps) {
   const baseClass = BUTTON_VARIANT_CLASS[variant]
-  const withIconClass = icon ? 'with-icon' : ''
+  const withIconClass = icon || iconEnd ? 'with-icon' : ''
   const mergedClassName = [baseClass, withIconClass, className].filter(Boolean).join(' ')
   return (
     <Button className={mergedClassName} {...props}>
       {icon}
       {children}
+      {iconEnd}
     </Button>
   )
 }

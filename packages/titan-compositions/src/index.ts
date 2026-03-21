@@ -95,7 +95,6 @@ export {
   TitanCell,
   TitanResizableTableContainer,
   TitanTableLoadMoreItem,
-  ColumnResizer,
 } from './TitanTable'
 export type { TitanTableProps, TitanColumnProps, TitanCellProps } from './TitanTable'
 export {
@@ -128,8 +127,7 @@ export {
 } from './TitanTableExamples'
 export { TitanTwoUpOneDownLayout } from './TitanTwoUpOneDownLayout'
 export type { TitanTwoUpOneDownLayoutProps } from './TitanTwoUpOneDownLayout'
-export { TitanToggleButtonGroup } from './TitanToggleButtonGroup'
-export type { TitanToggleItem, TitanToggleButtonGroupProps } from './TitanToggleButtonGroup'
+
 export { TitanSidebar, TitanSidebarHeader, TitanSidebarItem } from './TitanSidebar'
 export type {
   TitanSidebarProps,
@@ -144,5 +142,17 @@ export { TitanProgressBar } from './TitanProgressBar'
 export type { TitanProgressBarProps } from './TitanProgressBar'
 export { TitanCalendar } from './TitanCalendar'
 export type { TitanCalendarProps, CalendarDate } from './TitanCalendar'
+export { TitanLink } from './TitanLink'
+export type { TitanLinkProps, TitanLinkSize } from './TitanLink'
+export { TitanAvatar } from './TitanAvatar'
+export type { TitanAvatarProps } from './TitanAvatar'
+export { TitanPillGroup, TitanPillList } from './TitanPillGroup'
+export type { TitanPillGroupProps, TitanPillListProps } from './TitanPillGroup'
+export { TitanButtonGroup, TitanIndividualButton } from './TitanButtonGroup'
+export type { TitanButtonGroupProps, TitanIndividualButtonProps, TitanButtonGroupOrientation } from './TitanButtonGroup'
+export { TitanDivider } from './TitanDivider'
+export type { TitanDividerProps } from './TitanDivider'
+export { TitanCollapsible } from './TitanCollapsible'
+export type { TitanCollapsibleProps } from './TitanCollapsible'
 export { resolveIcon, registerTitanIcons, registerFallbackIcons, renderIconNode } from './icons'
 export type { IconComponent, RenderIconProps } from './icons'

@@ -1,0 +1,274 @@
+/**
+ * Brand theme — primary: pulse (gold), neutral: ground (earth).
+ * html[data-theme="brand"]
+ *
+ * Special rules:
+ * - Primary buttons use pulse-600 bg with ground-900 label (dark on gold).
+ * - All non-primary buttons (secondary, tertiary, icon) use ground palette.
+ * - Error/destructive stays unchanged (Titan error-* tokens).
+ * - No focus ring in this theme.
+ * - Links use ocean-500.
+ * - Selected states (tabs, toggles, sidebar) use ground palette.
+ */
+html[data-theme="brand"] {
+	--font-audiense: "Poppins", sans-serif;
+
+	/* Background */
+	--background-body: var(--color-ground-100);
+	--background: var(--color-white-900);
+	--background-brand: var(--background);
+
+	/* Border */
+	--border: var(--color-ground-200);
+	--border-interactive: var(--color-ground-300);
+
+	/* Text */
+	--text-disabled: var(--color-disabled-500);
+	--text-error-primary: var(--color-error-600);
+	--text-error-primary-active: var(--color-error-800);
+	--text-error-primary-hover: var(--color-error-700);
+	--text-icon-disabled: var(--color-disabled-500);
+	--text-icon-on-color: var(--color-ground-900);
+	--text-icon-secondary: var(--color-ground-700);
+	--text-icon-secondary-active: var(--color-ground-500);
+	--text-icon-secondary-hover: var(--color-ground-600);
+	--text-on-color: var(--color-ground-900);
+	--text-primary: var(--color-ground-800);
+	--text-primary-active: var(--color-ground-600);
+	--text-secondary: var(--color-ground-900);
+
+	/* System — error/info/success/warning stay on Titan defaults */
+	--background-error: var(--color-error-200);
+	--background-information: var(--color-information-200);
+	--background-success: var(--color-success-200);
+	--background-warning: var(--color-warning-200);
+	--background-disabled: var(--color-ground-200);
+	--text-error-on-color: var(--color-error-700);
+	--text-icon-error: var(--color-error-600);
+	--text-icon-information: var(--color-information-600);
+	--text-icon-success: var(--color-success-600);
+	--text-icon-warning: var(--color-warning-600);
+	--text-information-on-color: var(--color-information-700);
+	--text-success-on-color: var(--color-success-700);
+	--text-warning-on-color: var(--color-warning-700);
+
+	/* ─── Buttons ─────────────────────────────────────── */
+	/* Primary: pulse bg, ground-900 label */
+	--button-disabled: var(--color-ground-200);
+	--button-primary: var(--color-pulse-600);
+	--button-primary-hover: var(--color-pulse-500);
+	--button-primary-active: var(--color-pulse-700);
+	/* Secondary: ground-100 bg, ground-900 label */
+	--button-secondary: var(--color-ground-100);
+	--button-secondary-hover: var(--color-ground-200);
+	--button-secondary-active: var(--color-ground-300);
+	/* Tertiary: transparent, ground label */
+	--button-tertiary: var(--color-white-900);
+	--button-tertiary-hover: var(--color-ground-100);
+	--button-tertiary-active: var(--color-ground-200);
+	/* Labels */
+	--text-on-primary: var(--color-ground-900);
+	--text-on-button-primary: var(--text-on-primary);
+	--text-button-color: var(--color-ground-900);
+	--text-button-hover-color: var(--color-ground-800);
+	--text-button-active-color: var(--color-ground-700);
+	--text-button-neutral-color: var(--color-ground-900);
+	--text-button-neutral-hover-color: var(--color-ground-800);
+	--text-button-neutral-active-color: var(--color-ground-700);
+
+	/* ErrorButton — unchanged */
+	--error-button-primary: var(--color-error-600);
+	--error-button-primary-hover: var(--color-error-700);
+	--error-button-primary-active: var(--color-error-800);
+	--error-button-secondary: var(--color-ground-100);
+	--error-button-secondary-hover: var(--color-error-100);
+	--error-button-secondary-active: var(--color-error-200);
+
+	/* Pill */
+	--pill-background: var(--color-ground-200);
+
+	/* Tab — ground selected */
+	--tab-background: var(--color-white-900);
+	--tab-text: var(--color-ground-600);
+	--tab-text-selected: var(--color-ground-900);
+	--tab-border-selected: var(--color-ground-600);
+	--tab-selected-background: var(--color-ground-100);
+
+	/* Tooltip */
+	--tooltip-background: var(--color-ground-800);
+
+	/* Checkbox — ground */
+	--checkbox-size: 20px;
+	--checkbox-checkmark: var(--color-white-900);
+	--checkbox-background: var(--color-white-900);
+	--checkbox-border: var(--color-ground-600);
+	--checkbox-border-hover: var(--color-ground-500);
+	--checkbox-border-focus: var(--color-ground-600);
+	--checkbox-border-disabled: var(--color-disabled-200);
+	--checkbox-border-error: var(--color-error-600);
+	--checkbox-border-error-hover: var(--color-error-400);
+	--checkbox-selected-border: var(--color-ground-700);
+	--checkbox-selected-background: var(--color-ground-700);
+	--checkbox-selected-background-hover: var(--color-ground-600);
+	--checkbox-selected-background-disabled: var(--color-disabled-300);
+
+	/* Radio — ground */
+	--radio-button-size: 20px;
+	--radio-button-border: var(--color-ground-600);
+	--radio-button-border-hover: var(--color-ground-700);
+	--radio-button-border-focus: var(--color-ground-600);
+	--radio-button-border-disabled: var(--color-disabled-200);
+	--radio-button-border-error: var(--color-error-600);
+	--radio-button-disabled: var(--color-disabled-500);
+	--radio-button-selected-border: var(--color-ground-700);
+	--radio-button-selected-border-hover: var(--color-ground-600);
+	--radio-button-alert-message-color: var(--color-error-600);
+	--radio-button-alert-icon-color: var(--color-error-500);
+
+	/* Pagination */
+	--pagination-color: var(--color-ground-900);
+	--pagination-page-button-background-hover: var(--color-ground-100);
+	--pagination-page-button-background-active: var(--color-ground-200);
+
+	/* Select chevron */
+	--select-slot-chevron: var(--text-button-color);
+
+	/* Menu */
+	--menu-min-width: 230px;
+	--menu-max-width: 330px;
+	--menu-background: var(--color-white-900);
+	--menu-color: var(--color-ground-800);
+	--menu-color-mcp: var(--color-white-900);
+	--menu-destructive-color: var(--color-error-600);
+	--menu-item-hover: var(--color-ground-100);
+	--menu-item-pressed: var(--color-ground-200);
+	--menu-item-selected: var(--color-ground-300);
+	--menu-item-disabled: var(--color-disabled-400);
+	--menu-item-disabled-icon: var(--color-disabled-400);
+	--menu-item-icon: var(--color-ground-600);
+	--menu-destructive-item-hover: var(--color-error-100);
+	--menu-destructive-item-pressed: var(--color-error-200);
+	--menu-destructive-item-icon: var(--color-error-500);
+
+	/* Table */
+	--table-actionable-row-hover: var(--color-ground-100);
+	--table-header-border-bottom: var(--color-ground-400);
+	--table-cell-border-bottom: var(--color-ground-200);
+
+	/* Overlay */
+	--overlay-color: var(--color-black-40);
+
+	/* Avatar */
+	--avatar-background: var(--color-ground-600);
+	--avatar-width: 40px;
+	--avatar-height: 40px;
+
+	/* Button Group — ground selected */
+	--button-group-background: var(--color-white-900);
+	--button-group-border: var(--color-ground-400);
+	--button-group-color: var(--color-ground-600);
+	--button-group-icon-color: var(--color-ground-500);
+	--button-group-hover-color: var(--color-ground-800);
+	--button-group-hover-icon-color: var(--color-ground-700);
+	--button-group-selected-icon-color: var(--color-ground-700);
+	--button-group-selected-background: var(--color-ground-200);
+	--button-group-selected-color: var(--color-ground-900);
+	--button-group-disabled-color: var(--color-disabled-500);
+	--button-group-disabled-icon-color: var(--color-disabled-400);
+
+	/* Label */
+	--label-color: var(--color-ground-800);
+	--label-background: var(--color-ground-200);
+
+	/* Select */
+	--select-button-border: var(--color-ground-300);
+	--select-button-color: var(--color-ground-700);
+	--select-popover-color: var(--color-ground-700);
+	--select-listbox-item-focused-background: var(--color-ground-100);
+	--select-listbox-item-pressed-background: var(--color-ground-200);
+	--select-listbox-item-selected-background: var(--color-ground-200);
+
+	/* NavBar */
+	--navbar-max-width: 1920px;
+	--navbar-height: 70px;
+	--navbar-background: var(--color-white-900);
+	--navbar-border-color: var(--color-ground-200);
+
+	/* Link — ocean-500 */
+	--link-color: var(--color-ocean-500);
+	--link-visited-color: var(--color-ocean-700);
+	--link-disabled-color: var(--color-disabled-500);
+	--link-icon-color: var(--color-ocean-500);
+	--link-visited-icon-color: var(--color-ocean-700);
+	--link-disabled-icon-color: var(--color-disabled-400);
+
+	/* Toggle — ground */
+	--toggle-color: var(--color-ground-900);
+	--toggle-background: var(--color-ground-400);
+	--toggle-background-hover: var(--color-ground-300);
+	--toggle-border-focus: var(--color-ground-600);
+	--toggle-selected-background: var(--color-ground-700);
+	--toggle-selected-background-hover: var(--color-ground-600);
+	--toggle-selected-border-focus: var(--color-ground-600);
+	--toggle-ball-background: var(--color-white-900);
+	--toggle-disabled-background: var(--color-disabled-200);
+
+	/* Text Input */
+	--input-placeholder-text: var(--color-ground-400);
+	--input-field-text: var(--color-ground-800);
+	--input-disabled-text: var(--color-disabled-500);
+	--input-background: var(--color-white-900);
+	--input-stroke: var(--color-ground-300);
+	--input-stroke-hover: var(--color-ground-600);
+	--input-stroke-focus: var(--color-ground-700);
+	--input-stroke-focus-visible: var(--color-ground-600);
+	--input-stroke-error: var(--color-error-700);
+	--input-stroke-disabled: var(--color-disabled-500);
+	--input-icon: var(--color-ground-400);
+	--input-icon-focus: var(--color-ground-700);
+	--input-icon-error: var(--color-error-400);
+	--input-icon-disabled: var(--color-disabled-500);
+	--input-element: var(--color-ground-600);
+	--input-element-error: var(--color-error-500);
+	--input-element-disabled: var(--color-disabled-500);
+
+	/* Interactive icon button */
+	--interactive-icon-button-bg: var(--button-secondary);
+	--interactive-icon-button-bg-hover: var(--button-secondary-hover);
+	--interactive-icon-button-bg-active: var(--button-secondary-active);
+	--interactive-icon-button-bg-fallback: var(--color-ground-100);
+	--interactive-icon-button-radius: 9999px;
+	--interactive-icon-button-icon: var(--text-button-color);
+	--interactive-icon-button-icon-disabled: var(--color-disabled-500);
+
+	--select-listbox-item-disabled-background: transparent;
+	--select-listbox-item-disabled-color: var(--color-disabled-500);
+	--select-listbox-item-disabled-icon: var(--color-disabled-500);
+
+	--tab-hover-background: var(--tab-selected-background);
+	--tab-disabled-background: transparent;
+	--tab-disabled-text: var(--color-disabled-500);
+
+	--pagination-page-button-background-selected: var(--pagination-page-button-background-active);
+	--pagination-page-button-background-disabled: transparent;
+	--pagination-page-button-color-disabled: var(--color-disabled-500);
+
+	--drawer-close-icon-disabled: var(--color-disabled-500);
+
+	--table-sort-icon-default: var(--color-ground-400);
+	--table-sort-icon-hover: var(--text-secondary);
+	--table-sort-icon-active: var(--text-primary-active);
+	--table-action-item-hover-bg: var(--menu-item-hover);
+	--table-action-item-pressed-bg: var(--menu-item-pressed);
+	--table-action-item-icon: var(--menu-item-icon);
+	--table-action-item-destructive-color: var(--text-error-primary);
+	--table-action-item-destructive-hover-bg: var(--background-error);
+
+	/* Calendar — dark label on pulse bg */
+	--calendar-slot-cell-selected-color: var(--color-ground-900);
+
+	/* ─── No focus ring in Brand theme ────────────────── */
+	--focus-ring-color: transparent;
+	--focus-ring-offset: 0;
+	--focus-ring-width: 0;
+}

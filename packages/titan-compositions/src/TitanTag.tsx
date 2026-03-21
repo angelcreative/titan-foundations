@@ -1,5 +1,3 @@
-import { getToneStyle } from './TitanButton'
-
 export interface TitanTagProps {
   label: string
   tone: string
@@ -7,7 +5,7 @@ export interface TitanTagProps {
 
 export function TitanTag({ label, tone }: TitanTagProps) {
   return (
-    <span className="tag-chip" style={getToneStyle(tone, 'tag')}>
+    <span className={['tag-chip', tone ? `tag-tone-${tone}` : ''].filter(Boolean).join(' ')}>
       {label}
     </span>
   )

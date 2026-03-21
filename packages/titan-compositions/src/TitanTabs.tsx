@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { Tab, TabList, TabPanel, Tabs } from 'react-aria-components'
+import { Collection, Tab, TabList, TabPanel, Tabs } from 'react-aria-components'
 import type { Key } from 'react-aria-components'
 
 export interface TitanTabItem {
@@ -51,22 +51,25 @@ export function TitanTabs({
       orientation={orientation}
     >
       <TabList className={listClass} aria-label={ariaLabel}>
-        {items.map((item) => (
-          <Tab
-            key={item.id}
-            id={item.id}
-            className={isVertical ? 'tab-trigger tab-trigger-vertical' : 'tab-trigger'}
-            isDisabled={item.disabled}
-          >
-            {item.label}
-          </Tab>
-        ))}
+        <Collection items={items}>
+          {(item) => (
+            <Tab
+              id={item.id}
+              className={isVertical ? 'tab-trigger tab-trigger-vertical' : 'tab-trigger'}
+              isDisabled={item.disabled}
+            >
+              {item.label}
+            </Tab>
+          )}
+        </Collection>
       </TabList>
-      {items.map((item) => (
-        <TabPanel key={item.id} id={item.id} className="tab-panel">
-          {item.content}
-        </TabPanel>
-      ))}
+      <Collection items={items}>
+        {(item) => (
+          <TabPanel id={item.id} className="tab-panel">
+            {item.content}
+          </TabPanel>
+        )}
+      </Collection>
     </Tabs>
   )
 }

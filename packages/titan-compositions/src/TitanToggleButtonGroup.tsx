@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { ToggleButton, ToggleButtonGroup } from 'react-aria-components'
+import { Collection, ToggleButton, ToggleButtonGroup } from 'react-aria-components'
 
 export interface TitanToggleItem {
   id: string
@@ -35,17 +35,19 @@ export function TitanToggleButtonGroup({
       }}
       aria-label={ariaLabel}
     >
-      {items.map((item) => (
-        <ToggleButton key={item.id} id={item.id} className="toggle-button-item">
-          {item.icon && item.iconPosition !== 'right' && (
-            <span className="toggle-button-icon">{item.icon}</span>
-          )}
-          <span>{item.label}</span>
-          {item.icon && item.iconPosition === 'right' && (
-            <span className="toggle-button-icon">{item.icon}</span>
-          )}
-        </ToggleButton>
-      ))}
+      <Collection items={items}>
+        {(item) => (
+          <ToggleButton id={item.id} className="toggle-button-item">
+            {item.icon && item.iconPosition !== 'right' && (
+              <span className="toggle-button-icon">{item.icon}</span>
+            )}
+            <span>{item.label}</span>
+            {item.icon && item.iconPosition === 'right' && (
+              <span className="toggle-button-icon">{item.icon}</span>
+            )}
+          </ToggleButton>
+        )}
+      </Collection>
     </ToggleButtonGroup>
   )
 }

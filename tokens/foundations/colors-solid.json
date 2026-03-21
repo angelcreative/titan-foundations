@@ -1280,5 +1280,95 @@
   "color-pomegranate-900": {
     "value": "#89250A",
     "type": "color"
+  },
+  "color-pulse-100": {
+    "value": "#FFF8E8",
+    "type": "color",
+    "description": "Brand — Pulse family"
+  },
+  "color-pulse-200": {
+    "value": "#FFECBF",
+    "type": "color",
+    "description": "Brand — Pulse family"
+  },
+  "color-pulse-300": {
+    "value": "#FFE096",
+    "type": "color",
+    "description": "Brand — Pulse family"
+  },
+  "color-pulse-400": {
+    "value": "#FFD46D",
+    "type": "color",
+    "description": "Brand — Pulse family"
+  },
+  "color-pulse-500": {
+    "value": "#FFC954",
+    "type": "color",
+    "description": "Brand — Pulse family"
+  },
+  "color-pulse-600": {
+    "value": "#FFC240",
+    "type": "color",
+    "description": "Brand — Pulse family (primary)"
+  },
+  "color-pulse-700": {
+    "value": "#D99B29",
+    "type": "color",
+    "description": "Brand — Pulse family"
+  },
+  "color-pulse-800": {
+    "value": "#B37A1A",
+    "type": "color",
+    "description": "Brand — Pulse family"
+  },
+  "color-pulse-900": {
+    "value": "#8A5B0F",
+    "type": "color",
+    "description": "Brand — Pulse family"
+  },
+  "color-ground-100": {
+    "value": "#F1EFED",
+    "type": "color",
+    "description": "Brand — Ground family"
+  },
+  "color-ground-200": {
+    "value": "#E3DDD9",
+    "type": "color",
+    "description": "Brand — Ground family"
+  },
+  "color-ground-300": {
+    "value": "#C6BBB3",
+    "type": "color",
+    "description": "Brand — Ground family"
+  },
+  "color-ground-400": {
+    "value": "#A9998D",
+    "type": "color",
+    "description": "Brand — Ground family"
+  },
+  "color-ground-500": {
+    "value": "#8C796A",
+    "type": "color",
+    "description": "Brand — Ground family"
+  },
+  "color-ground-600": {
+    "value": "#6E5947",
+    "type": "color",
+    "description": "Brand — Ground family (primary)"
+  },
+  "color-ground-700": {
+    "value": "#59483A",
+    "type": "color",
+    "description": "Brand — Ground family"
+  },
+  "color-ground-800": {
+    "value": "#44372C",
+    "type": "color",
+    "description": "Brand — Ground family"
+  },
+  "color-ground-900": {
+    "value": "#2F261E",
+    "type": "color",
+    "description": "Brand — Ground family"
   }
 }

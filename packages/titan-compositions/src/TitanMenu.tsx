@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import {
   Button,
+  Collection,
   Menu,
   MenuItem,
   MenuTrigger,
@@ -144,9 +145,9 @@ function TitanMenuNode({
         </MenuItem>
         <Popover className="menu-popover menu-popover-submenu" placement="end top">
           <Menu className="menu-list">
-            {item.children.map((child) => (
-              <TitanMenuNode key={child.id} item={child} onAction={onAction} />
-            ))}
+            <Collection items={item.children}>
+              {(child) => <TitanMenuNode item={child} onAction={onAction} />}
+            </Collection>
           </Menu>
         </Popover>
       </SubmenuTrigger>
@@ -202,9 +203,9 @@ export function TitanMenuDropdown({
       )}
       <Popover className="menu-popover" placement={placement} offset={8}>
         <Menu className="menu-list">
-          {items.map((item) => (
-            <TitanMenuNode key={item.id} item={item} onAction={onAction} />
-          ))}
+          <Collection items={items}>
+            {(item) => <TitanMenuNode item={item} onAction={onAction} />}
+          </Collection>
         </Menu>
       </Popover>
     </MenuTrigger>
@@ -251,21 +252,22 @@ export function TitanSearchMenu({
         <Menu className="menu-list">
           {hasResults ? (
             <>
-              {items.map((item) => (
-                <MenuItem
-                  key={item.id}
-                  className="menu-item menu-item-search"
-                  textValue={item.label}
-                  onAction={() => onAction?.(item.id)}
-                >
-                  <span className="menu-item-start">
-                    {item.icon && <span className="menu-item-icon">{item.icon}</span>}
-                    <span className="menu-item-label">
-                      {highlightMatch(item.label, query)}
+              <Collection items={items}>
+                {(item) => (
+                  <MenuItem
+                    className="menu-item menu-item-search"
+                    textValue={item.label}
+                    onAction={() => onAction?.(item.id)}
+                  >
+                    <span className="menu-item-start">
+                      {item.icon && <span className="menu-item-icon">{item.icon}</span>}
+                      <span className="menu-item-label">
+                        {highlightMatch(item.label, query)}
+                      </span>
                     </span>
-                  </span>
-                </MenuItem>
-              ))}
+                  </MenuItem>
+                )}
+              </Collection>
               {onAddNew && (
                 <>
                   <Separator className="menu-divider" />
@@ -345,33 +347,34 @@ export function TitanProfileMenu({
       )}
       <Popover className="menu-popover" placement={placement} offset={8}>
         <Menu className="menu-list">
-          {items.map((item) => (
-            <MenuItem
-              key={item.id}
-              className="menu-item menu-item-profile"
-              textValue={`${item.name} ${item.username}`}
-              onAction={() => onAction?.(item.id)}
-            >
-              <span className="menu-item-start">
-                {item.avatarUrl ? (
-                  <img
-                    className="menu-item-profile-avatar"
-                    src={item.avatarUrl}
-                    alt={item.name}
-                  />
-                ) : (
-                  <span className="menu-item-profile-avatar" aria-hidden="true" />
-                )}
-                <span className="menu-item-profile-info">
-                  <span className="menu-item-profile-name">{item.name}</span>
-                  <span className="menu-item-profile-username">@{item.username}</span>
+          <Collection items={items}>
+            {(item) => (
+              <MenuItem
+                className="menu-item menu-item-profile"
+                textValue={`${item.name} ${item.username}`}
+                onAction={() => onAction?.(item.id)}
+              >
+                <span className="menu-item-start">
+                  {item.avatarUrl ? (
+                    <img
+                      className="menu-item-profile-avatar"
+                      src={item.avatarUrl}
+                      alt={item.name}
+                    />
+                  ) : (
+                    <span className="menu-item-profile-avatar" aria-hidden="true" />
+                  )}
+                  <span className="menu-item-profile-info">
+                    <span className="menu-item-profile-name">{item.name}</span>
+                    <span className="menu-item-profile-username">@{item.username}</span>
+                  </span>
                 </span>
-              </span>
-              {item.metric && (
-                <span className="menu-item-profile-metric">{item.metric}</span>
-              )}
-            </MenuItem>
-          ))}
+                {item.metric && (
+                  <span className="menu-item-profile-metric">{item.metric}</span>
+                )}
+              </MenuItem>
+            )}
+          </Collection>
         </Menu>
       </Popover>
     </MenuTrigger>
@@ -411,24 +414,25 @@ export function TitanNotificationsMenu({
         <Menu className="menu-list menu-list-notifications">
           {hasNotifications ? (
             <>
-              {notifications.map((n) => (
-                <MenuItem
-                  key={n.id}
-                  className="menu-item menu-item-notification"
-                  textValue={typeof n.title === 'string' ? n.title : n.id}
-                  onAction={() => onAction?.(n.id)}
-                  data-is-notification
-                  {...(n.destructive ? { 'data-is-destructive': '' } : {})}
-                >
-                  <span className="menu-item-start">
-                    {n.icon && <span className="menu-item-icon">{n.icon}</span>}
-                    <span className="menu-item-notification-content">
-                      <span className="menu-item-notification-title">{n.title}</span>
-                      <span className="menu-item-notification-date">{n.date}</span>
+              <Collection items={notifications}>
+                {(n) => (
+                  <MenuItem
+                    className="menu-item menu-item-notification"
+                    textValue={typeof n.title === 'string' ? n.title : n.id}
+                    onAction={() => onAction?.(n.id)}
+                    data-is-notification
+                    {...(n.destructive ? { 'data-is-destructive': '' } : {})}
+                  >
+                    <span className="menu-item-start">
+                      {n.icon && <span className="menu-item-icon">{n.icon}</span>}
+                      <span className="menu-item-notification-content">
+                        <span className="menu-item-notification-title">{n.title}</span>
+                        <span className="menu-item-notification-date">{n.date}</span>
+                      </span>
                     </span>
-                  </span>
-                </MenuItem>
-              ))}
+                  </MenuItem>
+                )}
+              </Collection>
               {onMarkAll && (
                 <>
                   <Separator className="menu-divider" />

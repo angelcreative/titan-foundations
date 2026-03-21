@@ -1,0 +1,29 @@
+---
+description: Icon usage rules inside TitanTable and data table components
+globs: 
+  - "**/TitanTable*"
+  - "**/titan-compositions.css"
+  - "**/App.jsx"
+alwaysApply: false
+---
+
+# Table Icon Rules (titan-compositions)
+
+## Cell icons (tbody)
+
+- Icons inside table body cells (`<td>`) are **always decorative/informational** — never interactive buttons.
+- They must be plain SVGs without hover or pressed states (no `icon-ghost`, no `icon-secondary`).
+- Size: `--icon-size-m` (16px) with `stroke-width: var(--icon-stroke-m)` (1.5) — matching the navbar icon dimensions.
+- The CSS rule `.table-borderless tbody td svg` enforces this globally.
+- If a cell needs an actionable icon (e.g. kebab menu), wrap it in a `<Button className="icon-base">` — the basic icon button with no bg on any state.
+
+## Header icons (thead)
+
+- Sort arrows and info icons use `--icon-size-s` (12px) with `stroke-width: var(--icon-stroke-s)` (1.25).
+- Sort icons are inside `.column-sort-icon` spans; info icons get `className="column-header-info-icon"` directly on the `<svg>`.
+- Both wrappers (`.column-sort-icon-wrap`, `.column-header-info-wrap`) use identical `width/height: var(--icon-size-s)`.
+
+## Action columns
+
+- The actions column uses `icon-base` (basic icon button) for triggers — transparent bg, no hover/pressed bg, only color change.
+- Never use `icon-ghost` or `icon-secondary` for table row actions.

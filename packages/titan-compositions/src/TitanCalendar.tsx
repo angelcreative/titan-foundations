@@ -13,6 +13,7 @@ import {
   getLocalTimeZone,
   type CalendarDate,
 } from '@internationalized/date'
+import { renderIconNode } from './icons'
 
 export type { CalendarDate } from '@internationalized/date'
 
@@ -31,26 +32,6 @@ export interface TitanCalendarProps {
   isDisabled?: boolean
   className?: string
 }
-
-/* ── Icons ─────────────────────────────────────────────────────────── */
-
-const ChevronLeft = () => (
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-    <path d="M10 12L6 8l4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-)
-
-const ChevronRight = () => (
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-    <path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-)
-
-const ChevronDown = () => (
-  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-    <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-)
 
 /* ── CalendarDropdown (internal) ───────────────────────────────────── */
 
@@ -110,7 +91,7 @@ function CalendarDropdown({
         aria-expanded={open}
       >
         <span>{selected?.label ?? ''}</span>
-        <ChevronDown />
+        {renderIconNode('chevron-down')}
       </button>
       {open && (
         <ul
@@ -191,7 +172,7 @@ export function TitanCalendar({
       >
         <header className="calendar-header">
           <Button slot="previous" className="calendar-nav-btn">
-            <ChevronLeft />
+            {renderIconNode('chevron-left')}
           </Button>
 
           <div className="calendar-selects">
@@ -209,7 +190,7 @@ export function TitanCalendar({
           </div>
 
           <Button slot="next" className="calendar-nav-btn">
-            <ChevronRight />
+            {renderIconNode('chevron-right')}
           </Button>
         </header>
 

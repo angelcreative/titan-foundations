@@ -57,12 +57,12 @@ const TYPOGRAPHY = [
 ]
 
 const ICON_SIZES = [
-  { token: '--icon-size-s', size: '12px', stroke: '1.25px' },
-  { token: '--icon-size-m', size: '16px', stroke: '1.5px' },
-  { token: '--icon-size-l', size: '24px', stroke: '2px' },
+  { token: '--icon-size-s', size: '12px', box: '15px', stroke: '1.25px', use: 'Table headers, breadcrumbs' },
+  { token: '--icon-size-m', size: '16px', box: '20px', stroke: '1.5px', use: 'Buttons, menus, pills, tables' },
+  { token: '--icon-size-l', size: '24px', box: '30px', stroke: '2px', use: 'Empty states, hero icons' },
 ]
 
-const THEMES = ['insights', 'audiense', 'neutral', 'demand', 'linkedin', 'tweetbinder']
+const THEMES = ['insights', 'audiense', 'neutral', 'demand', 'linkedin', 'tweetbinder', 'brand']
 const THEME_COLORS = {
   insights: 'var(--color-blueberry-600)',
   audiense: 'var(--color-pomegranate-600)',
@@ -70,6 +70,7 @@ const THEME_COLORS = {
   demand: 'var(--color-aquamarine-600)',
   linkedin: 'var(--color-indigo-600)',
   tweetbinder: 'var(--color-ocean-600)',
+  brand: 'var(--color-pulse-600)',
 }
 
 const SOLID_COLOR_FAMILIES = [
@@ -77,6 +78,7 @@ const SOLID_COLOR_FAMILIES = [
   'pink', 'magenta', 'red', 'tomato', 'pomegranate', 'orange', 'mango', 'yellow', 'lime',
   'green', 'teal', 'aquamarine', 'turquoise', 'avocado', 'brown', 'cacao',
   'error', 'disabled', 'information', 'success', 'warning',
+  'pulse', 'ground',
 ]
 
 const OPACITY_COLOR_FAMILIES = [
@@ -192,9 +194,19 @@ function DSCard({ title, desc, icon: Icon, onClick }) {
 function FoundationsContent({ subLevel, goTo }) {
   if (!subLevel) {
     return (
-      <section className="card">
+      <section className="card ds-doc-card">
         <h2 className="ds-section-title">Foundations</h2>
-        <p className="ds-lead">Spacing, borders, and elevation tokens.</p>
+        <p className="ds-lead">The foundational layer defines the raw visual vocabulary: spacing, borders, and elevation. Every component in Titan is built from these primitives — never from magic numbers.</p>
+        <div className="ds-doc">
+          <h3>Why foundations matter</h3>
+          <p>Foundations enforce <strong>visual consistency</strong> across all products. When every padding, radius, and shadow comes from the same scale, users perceive a single coherent product even when features are built by different teams. It also makes theming possible — change the foundation, and everything downstream updates.</p>
+          <p>The three pillars are:</p>
+          <ul>
+            <li><strong>Spacing</strong> — Controls whitespace, padding, gaps, and margins. Built on a base-2 scale (multiples of 2px) for pixel-perfect alignment.</li>
+            <li><strong>Borders</strong> — Radius and stroke width. Radius creates the visual "softness" of the UI; stroke width creates hierarchy between separators, inputs, and focus rings.</li>
+            <li><strong>Elevation</strong> — Box shadows that create the z-axis layering: cards float above backgrounds, popovers float above cards, modals float above everything.</li>
+          </ul>
+        </div>
         <TitanCardGrid>
           <DSCard title="Spacing" desc="5xs → 5xl" icon={Ruler} onClick={() => goTo(['foundations', 'spacing'])} />
           <DSCard title="Borders" desc="Radius & stroke" icon={Ruler} onClick={() => goTo(['foundations', 'borders'])} />
@@ -205,9 +217,26 @@ function FoundationsContent({ subLevel, goTo }) {
   }
   if (subLevel === 'spacing') {
     return (
-      <section className="card">
+      <section className="card ds-doc-card">
         <h2 className="ds-section-title">Spacing</h2>
-        <p className="ds-lead">Multiples of 2. Use tokens for padding and gaps.</p>
+        <div className="ds-doc">
+          <p>The spacing scale uses <strong>multiples of 2px</strong> to guarantee subpixel-free rendering on all screens. Every value in the scale has a semantic name (5xs through 7xl) so you never hardcode pixel values.</p>
+          <h3>Why this scale?</h3>
+          <ul>
+            <li><strong>Density without cramming:</strong> SaaS dashboards show lots of data. Small steps (2, 4, 6, 8px) let you create dense UIs that still breathe, while large steps (48, 64, 80px) separate major content areas.</li>
+            <li><strong>Consistent rhythm:</strong> When every gap comes from the same scale, the eye perceives order. Jakob&apos;s Law — users spend most of their time on other apps that use consistent spacing.</li>
+            <li><strong>No magic numbers:</strong> If a designer says "a bit more space," you move one step up the scale instead of guessing pixels.</li>
+          </ul>
+          <h3>When to use what</h3>
+          <ul>
+            <li><code className="ds-code">5xs–4xs</code> (2–4px): Minimal gaps — icon-to-text, pill padding, inline elements.</li>
+            <li><code className="ds-code">3xs–2xs</code> (6–8px): Inner padding — inside buttons, form controls, table cells.</li>
+            <li><code className="ds-code">xs–s</code> (10–12px): Component gaps — between items in a list, between label and input.</li>
+            <li><code className="ds-code">m</code> (16px): Base rhythm — between paragraphs, card internal sections.</li>
+            <li><code className="ds-code">l–xl</code> (24–32px): Section gaps — between card groups, between sidebar and content.</li>
+            <li><code className="ds-code">2xl–5xl</code> (40–80px): Page-level — top margins, section dividers, hero spacing.</li>
+          </ul>
+        </div>
         <div className="ds-token-grid">
           {SPACING.map((s) => (
             <div key={s.token} className="ds-token-row">
@@ -222,9 +251,26 @@ function FoundationsContent({ subLevel, goTo }) {
   }
   if (subLevel === 'borders') {
     return (
-      <section className="card">
+      <section className="card ds-doc-card">
         <h2 className="ds-section-title">Borders</h2>
-        <p className="ds-lead">Radius and stroke tokens.</p>
+        <div className="ds-doc">
+          <p>Borders have two dimensions: <strong>radius</strong> (how rounded corners are) and <strong>stroke</strong> (how thick lines are). Both create visual hierarchy.</p>
+          <h3>Why these radius values?</h3>
+          <ul>
+            <li><code className="ds-code">rounded-xs</code> (4px): Subtle rounding for small elements — pills, tags, badges, table header corners. Just enough to soften without looking "bubbly."</li>
+            <li><code className="ds-code">rounded-s</code> (8px): Default for interactive elements — buttons, inputs, select triggers, cards. Friendly but professional.</li>
+            <li><code className="ds-code">rounded-m</code> (12px): Larger containers — dialogs, drawers, popovers. Creates a clear "floating" feel.</li>
+            <li><code className="ds-code">rounded-l</code> (16px): Feature cards, hero elements. Strong visual presence.</li>
+            <li><code className="ds-code">rounded-xl</code> (20px): Special emphasis — avatars, promotional elements.</li>
+          </ul>
+          <h3>Why these stroke values?</h3>
+          <ul>
+            <li><code className="ds-code">stroke-s</code> (1px): Default for separators, table borders, input borders. Visible but unobtrusive.</li>
+            <li><code className="ds-code">stroke-m</code> (2px): Focus rings, active state borders. Draws attention without being heavy.</li>
+            <li><code className="ds-code">stroke-l</code> (3px): Strong emphasis — selected tabs, progress indicators.</li>
+            <li><code className="ds-code">stroke-xl</code> (4px): Maximum emphasis — reserved for primary visual indicators.</li>
+          </ul>
+        </div>
         <h3 className="ds-subtitle">Radius</h3>
         <div className="ds-token-grid">
           {BORDERS.radius.map((r) => (
@@ -250,13 +296,22 @@ function FoundationsContent({ subLevel, goTo }) {
   }
   if (subLevel === 'elevation') {
     return (
-      <section className="card">
+      <section className="card ds-doc-card">
         <h2 className="ds-section-title">Elevation</h2>
-        <p className="ds-lead">Box shadows for depth.</p>
+        <div className="ds-doc">
+          <p>Elevation uses box-shadows to create a sense of <strong>physical depth</strong>. Higher elevation = more prominent shadow = element feels closer to the user.</p>
+          <h3>Why three levels?</h3>
+          <ul>
+            <li><strong>Level 1</strong> — Subtle lift. Used for cards, table containers, and panels that sit on the page background. The user perceives them as "on the surface" but distinct from it.</li>
+            <li><strong>Level 2</strong> — Medium lift. Used for dropdowns, popovers, select menus, and notification panels. These elements are temporary and need to feel like they float above the content.</li>
+            <li><strong>Level 3</strong> — Maximum lift. Used for dialogs and drawers — modal overlays that demand attention and must feel clearly separated from the rest of the UI.</li>
+          </ul>
+          <p>Shadows use <code className="ds-code">--color-steel-10</code> (an opacity color) to create neutral, theme-agnostic depth. This means shadows look correct across all six themes without adjustment.</p>
+        </div>
         <div className="ds-elevation-row">
-          <div className="ds-elevation-card" style={{ boxShadow: 'var(--elevation-slot-1)' }}>1</div>
-          <div className="ds-elevation-card" style={{ boxShadow: 'var(--elevation-slot-2)' }}>2</div>
-          <div className="ds-elevation-card" style={{ boxShadow: 'var(--elevation-slot-3)' }}>3</div>
+          <div className="ds-elevation-card" style={{ boxShadow: 'var(--elevation-slot-1)' }}><span>1</span><span className="ds-muted" style={{ fontSize: 12 }}>Cards, panels</span></div>
+          <div className="ds-elevation-card" style={{ boxShadow: 'var(--elevation-slot-2)' }}><span>2</span><span className="ds-muted" style={{ fontSize: 12 }}>Dropdowns, popovers</span></div>
+          <div className="ds-elevation-card" style={{ boxShadow: 'var(--elevation-slot-3)' }}><span>3</span><span className="ds-muted" style={{ fontSize: 12 }}>Dialogs, drawers</span></div>
         </div>
       </section>
     )
@@ -266,11 +321,24 @@ function FoundationsContent({ subLevel, goTo }) {
 
 function ThemesContent({ theme, onThemeChange }) {
   return (
-    <section className="card">
+    <section className="card ds-doc-card">
       <h2 className="ds-section-title">Themes</h2>
-      <p className="ds-lead">Set via data-theme on html.</p>
+      <div className="ds-doc">
+        <p>Titan powers <strong>six Audiense products</strong>, each with its own brand color. Themes let every product share the same components while looking distinct. This is achieved through a single CSS attribute: <code className="ds-code">data-theme</code> on the <code className="ds-code">&lt;html&gt;</code> tag.</p>
+        <h3>How it works</h3>
+        <p>Each theme CSS file overrides a small set of semantic tokens — primarily the "primary" color family (buttons, links, selected states, focus rings). Everything else (neutrals, error states, spacing) stays the same. This means:</p>
+        <ul>
+          <li>Components are <strong>theme-agnostic</strong> — they reference <code className="ds-code">--button-primary</code>, not <code className="ds-code">--color-blueberry-600</code>.</li>
+          <li>Switching themes is a <strong>single attribute change</strong>, not a CSS rebuild.</li>
+          <li>You can preview themes in real-time (try it below).</li>
+        </ul>
+        <h3>Activation</h3>
+        <pre className="ds-code-block">{`<html data-theme="insights">  <!-- Blueberry primary -->
+<html data-theme="demand">    <!-- Aquamarine primary -->
+<html data-theme="neutral">   <!-- Black primary -->`}</pre>
+      </div>
       <TitanSelect
-        label="Preview"
+        label="Preview theme"
         options={THEMES.map((t) => ({ id: t, label: t }))}
         selectedKey={theme}
         onSelectionChange={(k) => onThemeChange(String(k))}
@@ -295,9 +363,17 @@ function ThemesContent({ theme, onThemeChange }) {
 function TypographyContent({ subLevel, goTo }) {
   if (!subLevel) {
     return (
-      <section className="card">
+      <section className="card ds-doc-card">
         <h2 className="ds-section-title">Typography</h2>
-        <p className="ds-lead">Base 16px. Vertical rhythm via line-height.</p>
+        <div className="ds-doc">
+          <p>Typography is the most impactful foundation — users spend 80%+ of their time reading text. The type scale is designed for <strong>SaaS dashboards</strong>: data-dense, scannable, and clear at every size.</p>
+          <h3>Key decisions</h3>
+          <ul>
+            <li><strong>Base size: 14px</strong> (<code className="ds-code">font-size-m</code>) for body text in data-heavy interfaces. 16px (<code className="ds-code">font-size-l</code>) for content-heavy pages.</li>
+            <li><strong>Three weights only</strong> (400, 500, 600): Enough to create hierarchy without visual noise. 400 for body, 500 for emphasis/labels, 600 for headings.</li>
+            <li><strong>Paired line-heights:</strong> Each font size has a matching line-height token (<code className="ds-code">font-leading-*</code>) that creates consistent vertical rhythm.</li>
+          </ul>
+        </div>
         <TitanCardGrid>
           <DSCard title="Scale" desc="Sizes & line-heights" icon={Type} onClick={() => goTo(['typography', 'scale'])} />
           <DSCard title="Vertical rhythm" desc="Spacing between blocks" icon={Type} onClick={() => goTo(['typography', 'rhythm'])} />
@@ -307,8 +383,11 @@ function TypographyContent({ subLevel, goTo }) {
   }
   if (subLevel === 'scale') {
     return (
-      <section className="card">
+      <section className="card ds-doc-card">
         <h2 className="ds-section-title">Typography scale</h2>
+        <div className="ds-doc">
+          <p>The scale goes from 12px (labels, hints, captions) to 46px (page titles). Each step has a clear purpose:</p>
+        </div>
         <div className="ds-table-wrap">
           <table className="ds-table">
             <thead>
@@ -338,15 +417,23 @@ function TypographyContent({ subLevel, goTo }) {
   }
   if (subLevel === 'rhythm') {
     return (
-      <section className="card">
+      <section className="card ds-doc-card">
         <h2 className="ds-section-title">Vertical rhythm</h2>
-        <p className="ds-lead">Use --spacing-s or --spacing-m between blocks.</p>
+        <div className="ds-doc">
+          <p>Vertical rhythm is the consistent spacing between text blocks. It makes content feel <strong>organized</strong> even before you read it — your eye perceives the structure instantly (Law of Proximity).</p>
+          <ul>
+            <li>Use <code className="ds-code">--spacing-3xs</code> (6px) between a label and its input.</li>
+            <li>Use <code className="ds-code">--spacing-s</code> (12px) between paragraphs within a section.</li>
+            <li>Use <code className="ds-code">--spacing-m</code> (16px) between sections in a card.</li>
+            <li>Use <code className="ds-code">--spacing-l</code> (24px) between major content blocks.</li>
+          </ul>
+        </div>
         <div className="ds-rhythm-demo">
           <h3 className="ds-rhythm-title">Card title</h3>
           <p className="ds-rhythm-body">
-            Body text at 16px. Consistent spacing creates visual rhythm.
+            Body text at 16px. Consistent spacing creates visual rhythm that guides the eye down the page without effort.
           </p>
-          <p className="ds-rhythm-hint">Hints and labels at 12px.</p>
+          <p className="ds-rhythm-hint">Hints and labels at 12px — secondary information that supports but doesn&apos;t compete with the body.</p>
         </div>
       </section>
     )
@@ -357,9 +444,18 @@ function TypographyContent({ subLevel, goTo }) {
 function ColorsContent({ subLevel, goTo }) {
   if (!subLevel) {
     return (
-      <section className="card">
+      <section className="card ds-doc-card">
         <h2 className="ds-section-title">Colors</h2>
-        <p className="ds-lead">Solid (100–900) and opacity (10–90).</p>
+        <div className="ds-doc">
+          <p>Titan has <strong>25+ color families</strong>, each available in two variants: solid and opacity. This breadth exists because Audiense products deal heavily with data visualization — charts, pills, tags, and segments need distinct, accessible colors.</p>
+          <h3>Solid vs Opacity</h3>
+          <ul>
+            <li><strong>Solid (100–900):</strong> Full-opacity colors from light to dark. Use for backgrounds, text, borders, and any element that sits on a solid surface. 100 is the lightest tint, 900 is the darkest shade.</li>
+            <li><strong>Opacity (10–90):</strong> Colors with alpha transparency. Use for overlays, hover states, subtle tints, and elements that need to blend with whatever is behind them. 10 is nearly invisible, 90 is nearly opaque.</li>
+          </ul>
+          <h3>Special families</h3>
+          <p>Beyond brand colors, Titan defines <strong>semantic families</strong>: <code className="ds-code">error</code>, <code className="ds-code">success</code>, <code className="ds-code">warning</code>, <code className="ds-code">information</code>, and <code className="ds-code">disabled</code>. These are used for status states and should never be used for decorative purposes.</p>
+        </div>
         <TitanCardGrid>
           <DSCard title="Solid" desc="All palettes" icon={Sparkles} onClick={() => goTo(['colors', 'solid'])} />
           <DSCard title="Opacity" desc="All opacity variants" icon={Sparkles} onClick={() => goTo(['colors', 'opacity'])} />
@@ -371,7 +467,7 @@ function ColorsContent({ subLevel, goTo }) {
     return (
       <section className="card">
         <h2 className="ds-section-title">Solid colors</h2>
-        <p className="ds-lead">--color-{'{family}'}-100 to -900</p>
+        <p className="ds-lead">Each family has 9 steps (100–900). Lighter numbers = lighter tones. The 600 step is typically the "primary" for each family — it&apos;s the most vibrant and readable.</p>
         <div className="ds-colors-block">
           {SOLID_COLOR_FAMILIES.map((fam) => (
             <div key={fam} className="ds-color-row">
@@ -399,7 +495,7 @@ function ColorsContent({ subLevel, goTo }) {
     return (
       <section className="card">
         <h2 className="ds-section-title">Opacity colors</h2>
-        <p className="ds-lead">--color-{'{family}'}-10 to -90 (over white)</p>
+        <p className="ds-lead">Same families as solid, but with alpha transparency (10–90). Lower numbers are more transparent. Perfect for hover states, surface tints, and overlays that need to blend with the background.</p>
         <div className="ds-colors-block">
           {OPACITY_COLOR_FAMILIES.map((fam) => (
             <div key={fam} className="ds-color-row ds-color-row-opacity">
@@ -431,17 +527,20 @@ function TokensContent({ subLevel }) {
     return (
       <section className="card ds-doc-card">
         <h2 className="ds-section-title">Tokens</h2>
-        <p className="ds-lead">Source of truth: <code className="ds-code">tokens/foundations/*.json</code> and <code className="ds-code">tokens/css/titan.css</code>. JSON defines primitives; titan.css exposes them as CSS variables and adds the semantic layer.</p>
+        <p className="ds-lead">Tokens are the single source of truth for every visual decision in Titan. They replace hardcoded values with named, reusable, themeable references.</p>
         <div className="ds-doc">
           <h3>1. Architecture</h3>
-          <p>Tokens are organized in <strong>three layers</strong>:</p>
+          <p>Tokens are organized in <strong>three layers</strong>, each building on the one below:</p>
           <ul>
-            <li><strong>Layer 1 — Primitives</strong> (<code className="ds-code">tokens/foundations/*.json</code>): Raw values — hex colors, px, font weights.</li>
-            <li><strong>Layer 2 — Semantics + Slots</strong> (<code className="ds-code">tokens/css/titan.css</code>): CSS variables that reference primitives.</li>
-            <li><strong>Layer 3 — Themes</strong> (<code className="ds-code">tokens/themes/_*.css</code>): Product overrides — neutral, insights, demand, etc.</li>
+            <li><strong>Layer 1 — Primitives</strong> (<code className="ds-code">tokens/foundations/*.json</code>): Raw values — hex colors, px, font weights. These are the "atoms." They have no opinion about usage; <code className="ds-code">color-blueberry-600</code> is just a blue hex, not "the primary button color."</li>
+            <li><strong>Layer 2 — Semantics + Slots</strong> (<code className="ds-code">tokens/css/titan.css</code>): CSS variables that reference primitives and assign <strong>meaning</strong>. <code className="ds-code">--button-primary</code> references <code className="ds-code">color-blueberry-600</code> in the Insights theme — this is the layer that gives purpose to raw values.</li>
+            <li><strong>Layer 3 — Themes</strong> (<code className="ds-code">tokens/themes/_*.css</code>): Product overrides that re-point semantic tokens to different primitives. When you switch from Insights to Demand, <code className="ds-code">--button-primary</code> changes from blueberry to aquamarine — without touching any component code.</li>
           </ul>
+          <h4>Why three layers?</h4>
+          <p>This separation solves a real problem: <strong>design drift</strong>. Without it, teams hardcode <code className="ds-code">#3B82F6</code> in 400 places, then a rebrand means find-and-replace across the entire codebase. With tokens, you change one variable and the entire app updates. The semantic layer is critical because it decouples <em>what a color means</em> from <em>what it looks like</em>.</p>
 
           <h3>2. Token sources</h3>
+          <p>Understanding where tokens live helps you know what to read, what to reference, and what <strong>never</strong> to edit.</p>
           <h4>2.1 Primitive sources: <code className="ds-code">tokens/foundations/</code></h4>
           <div className="ds-table-wrap">
             <table className="ds-table">
@@ -470,6 +569,7 @@ function TokensContent({ subLevel }) {
           <p><strong>Automatic build:</strong> <code className="ds-code">npm run build:tokens</code> generates primitives from <code className="ds-code">tokens/foundations/*.json</code> (Style Dictionary) and concatenates with <code className="ds-code">titan-semantic.css</code>. Primitives go to <code className="ds-code">titan-foundations.generated.css</code>; the build produces <code className="ds-code">titan.css</code> (header + foundations + semantic).</p>
 
           <h3>3. Naming convention</h3>
+          <p>A predictable naming system means developers can <strong>guess the token name</strong> without looking it up. If you know the pattern, you know the token.</p>
           <h4>3.1 Primitives (JSON)</h4>
           <div className="ds-table-wrap">
             <table className="ds-table">
@@ -495,6 +595,7 @@ function TokensContent({ subLevel }) {
           <p><strong>Families:</strong> black, white, steel, blue, ocean, indigo, blueberry, violet, purple, pink, magenta, red, tomato, pomegranate, orange, mango, yellow, lime, green, teal, aquamarine, turquoise, avocado, brown, cacao, error, disabled, information, success, warning.</p>
 
           <h4>3.3 Spacing</h4>
+          <p>Spacing follows a <strong>base-2 scale</strong> — every value is a multiple of 2px, ensuring clean rendering on all screens (no subpixel issues).</p>
           <div className="ds-table-wrap">
             <table className="ds-table">
               <thead>
@@ -505,26 +606,27 @@ function TokensContent({ subLevel }) {
                 </tr>
               </thead>
               <tbody>
-                <tr><td><code className="ds-code">spacing-5xs</code></td><td>2px</td><td>Minimal gaps</td></tr>
-                <tr><td><code className="ds-code">spacing-4xs</code></td><td>4px</td><td>Icon-to-text</td></tr>
-                <tr><td><code className="ds-code">spacing-3xs</code></td><td>6px</td><td></td></tr>
-                <tr><td><code className="ds-code">spacing-2xs</code></td><td>8px</td><td>Inner padding</td></tr>
-                <tr><td><code className="ds-code">spacing-xs</code></td><td>10px</td><td></td></tr>
-                <tr><td><code className="ds-code">spacing-s</code></td><td>12px</td><td></td></tr>
-                <tr><td><code className="ds-code">spacing-m</code></td><td>16px</td><td>Base</td></tr>
-                <tr><td><code className="ds-code">spacing-l</code></td><td>24px</td><td></td></tr>
-                <tr><td><code className="ds-code">spacing-xl</code></td><td>32px</td><td></td></tr>
-                <tr><td><code className="ds-code">spacing-2xl</code></td><td>40px</td><td></td></tr>
-                <tr><td><code className="ds-code">spacing-3xl</code></td><td>48px</td><td></td></tr>
-                <tr><td><code className="ds-code">spacing-4xl</code></td><td>64px</td><td></td></tr>
-                <tr><td><code className="ds-code">spacing-5xl</code></td><td>80px</td><td></td></tr>
-                <tr><td><code className="ds-code">spacing-6xl</code></td><td>96px</td><td></td></tr>
-                <tr><td><code className="ds-code">spacing-7xl</code></td><td>160px</td><td></td></tr>
+                <tr><td><code className="ds-code">spacing-5xs</code></td><td>2px</td><td>Minimal gaps (border offsets, fine adjustments)</td></tr>
+                <tr><td><code className="ds-code">spacing-4xs</code></td><td>4px</td><td>Icon-to-text gap, badge padding, pill inline spacing</td></tr>
+                <tr><td><code className="ds-code">spacing-3xs</code></td><td>6px</td><td>Label-to-input gap, compact list items</td></tr>
+                <tr><td><code className="ds-code">spacing-2xs</code></td><td>8px</td><td>Inner padding (buttons, inputs, table cells), icon button padding</td></tr>
+                <tr><td><code className="ds-code">spacing-xs</code></td><td>10px</td><td>Between form fields, compact card padding</td></tr>
+                <tr><td><code className="ds-code">spacing-s</code></td><td>12px</td><td>Card section gaps, sidebar item padding, dialog header padding</td></tr>
+                <tr><td><code className="ds-code">spacing-m</code></td><td>16px</td><td>Base rhythm — paragraphs, card body padding, form field stacks</td></tr>
+                <tr><td><code className="ds-code">spacing-l</code></td><td>24px</td><td>Between card groups, section margins, drawer padding</td></tr>
+                <tr><td><code className="ds-code">spacing-xl</code></td><td>32px</td><td>Major section gaps, page-level vertical rhythm</td></tr>
+                <tr><td><code className="ds-code">spacing-2xl</code></td><td>40px</td><td>Large section dividers</td></tr>
+                <tr><td><code className="ds-code">spacing-3xl</code></td><td>48px</td><td>Hero spacing, page top margins</td></tr>
+                <tr><td><code className="ds-code">spacing-4xl</code></td><td>64px</td><td>Major layout gaps</td></tr>
+                <tr><td><code className="ds-code">spacing-5xl</code></td><td>80px</td><td>Full-page section separators</td></tr>
+                <tr><td><code className="ds-code">spacing-6xl</code></td><td>96px</td><td>Expanded layouts, marketing pages</td></tr>
+                <tr><td><code className="ds-code">spacing-7xl</code></td><td>160px</td><td>Maximum — rarely used outside hero sections</td></tr>
               </tbody>
             </table>
           </div>
 
           <h4>3.4 Typography</h4>
+          <p>Typography tokens come in three layers: <strong>sizes</strong> (how big), <strong>leading</strong> (how much vertical space), and <strong>compositions</strong> (pre-built combos). Compositions are the most useful — they bundle size + weight + leading into a single token.</p>
           <div className="ds-table-wrap">
             <table className="ds-table">
               <thead>
@@ -532,18 +634,29 @@ function TokensContent({ subLevel }) {
                   <th>Type</th>
                   <th>Pattern</th>
                   <th>Example</th>
+                  <th>Why</th>
                 </tr>
               </thead>
               <tbody>
-                <tr><td>Size</td><td><code className="ds-code">font-size-{'{s|m|l|xl|2xl|3xl|4xl}'}</code></td><td><code className="ds-code">font-size-s</code> (12px)</td></tr>
-                <tr><td>Line-height</td><td><code className="ds-code">font-leading-{'{s|m|l|xl|2xl|3xl|4xl|5xl}'}</code></td><td><code className="ds-code">font-leading-2xl</code> (24px)</td></tr>
-                <tr><td>Weight</td><td><code className="ds-code">font-weight-{'{400|500|600}'}</code></td><td><code className="ds-code">font-weight-500</code></td></tr>
-                <tr><td>Composition</td><td><code className="ds-code">{'{role}'}-{'{size}'}-{'{weight}'}</code></td><td><code className="ds-code">body-m-500</code>, <code className="ds-code">heading-xl-600</code></td></tr>
+                <tr><td>Size</td><td><code className="ds-code">font-size-{'{s|m|l|xl|2xl|3xl|4xl}'}</code></td><td><code className="ds-code">font-size-s</code> (12px)</td><td>Raw size, combine with weight + leading yourself</td></tr>
+                <tr><td>Line-height</td><td><code className="ds-code">font-leading-{'{s|m|l|xl|2xl|3xl|4xl|5xl}'}</code></td><td><code className="ds-code">font-leading-2xl</code> (24px)</td><td>Controls vertical rhythm; always pair with a size</td></tr>
+                <tr><td>Weight</td><td><code className="ds-code">font-weight-{'{400|500|600}'}</code></td><td><code className="ds-code">font-weight-500</code></td><td>400 = body, 500 = emphasis, 600 = headings</td></tr>
+                <tr><td>Composition</td><td><code className="ds-code">{'{role}'}-{'{size}'}-{'{weight}'}</code></td><td><code className="ds-code">body-m-500</code>, <code className="ds-code">heading-xl-600</code></td><td>Pre-built combos — use these when possible for consistency</td></tr>
               </tbody>
             </table>
           </div>
 
-          <h4>3.5 Slots (components)</h4>
+          <h4>3.5 Slots (component-level tokens)</h4>
+          <p><strong>Slots are the bridge between foundation tokens and component implementation.</strong> They are the reason you can override a card&apos;s background without touching its source code.</p>
+          <h5>What is a slot?</h5>
+          <p>A slot is a CSS variable scoped to a <strong>specific component property</strong>. Think of it as a "socket" — the component plugs into it, and you control what value comes out. For example, <code className="ds-code">--card-slot-bg</code> controls the card&apos;s background. By default it resolves to <code className="ds-code">var(--surface-slot-card)</code> (white), but you can override it in your app to be anything.</p>
+          <h5>Why slots instead of direct primitives?</h5>
+          <ul>
+            <li><strong>Theming:</strong> Slots are the mechanism that makes theming work. When a theme CSS file sets <code className="ds-code">--button-primary: var(--color-aquamarine-600)</code>, every button that uses the <code className="ds-code">--button-primary</code> slot automatically updates — no component code changes.</li>
+            <li><strong>Override without fork:</strong> If you need a custom card background in one section, you set <code className="ds-code">--card-slot-bg</code> in a CSS scope — no component props, no wrapper, no fork.</li>
+            <li><strong>Documentation as API:</strong> The list of slots <em>is</em> the component&apos;s visual API. Designers and developers can audit exactly what can be customized.</li>
+          </ul>
+          <h5>Slot naming patterns</h5>
           <div className="ds-table-wrap">
             <table className="ds-table">
               <thead>
@@ -551,18 +664,26 @@ function TokensContent({ subLevel }) {
                   <th>Pattern</th>
                   <th>Meaning</th>
                   <th>Example</th>
+                  <th>Resolves to</th>
                 </tr>
               </thead>
               <tbody>
-                <tr><td><code className="ds-code">{'{component}'}-slot-{'{property}'}</code></td><td>Component property</td><td><code className="ds-code">card-slot-bg</code>, <code className="ds-code">card-slot-radius</code></td></tr>
-                <tr><td><code className="ds-code">{'{category}'}-slot-{'{role}'}</code></td><td>Semantic role</td><td><code className="ds-code">copy-slot-title</code>, <code className="ds-code">icon-slot-secondary</code></td></tr>
-                <tr><td><code className="ds-code">surface-slot-{'{role}'}</code></td><td>Surface</td><td><code className="ds-code">surface-slot-hover</code>, <code className="ds-code">surface-slot-card</code></td></tr>
+                <tr><td><code className="ds-code">{'{component}'}-slot-{'{property}'}</code></td><td>A specific visual property of a component</td><td><code className="ds-code">card-slot-bg</code>, <code className="ds-code">card-slot-radius</code></td><td><code className="ds-code">var(--surface-slot-card)</code>, <code className="ds-code">var(--rounded-s)</code></td></tr>
+                <tr><td><code className="ds-code">{'{category}'}-slot-{'{role}'}</code></td><td>A semantic role shared across components</td><td><code className="ds-code">copy-slot-title</code>, <code className="ds-code">icon-slot-secondary</code></td><td><code className="ds-code">var(--color-steel-900)</code>, <code className="ds-code">var(--color-steel-700)</code></td></tr>
+                <tr><td><code className="ds-code">surface-slot-{'{role}'}</code></td><td>Background surfaces for different contexts</td><td><code className="ds-code">surface-slot-hover</code>, <code className="ds-code">surface-slot-card</code></td><td><code className="ds-code">var(--color-steel-100)</code>, <code className="ds-code">var(--color-white-900)</code></td></tr>
               </tbody>
             </table>
           </div>
+          <h5>How slot chains work</h5>
+          <p>Slots often reference other semantic tokens, creating a <strong>chain</strong>:</p>
+          <pre className="ds-code-block">{`/* Component slot → Semantic token → Primitive */
+--card-slot-bg: var(--surface-slot-card);
+--surface-slot-card: var(--color-white-900);
+--color-white-900: #ffffff;`}</pre>
+          <p>This chain means: when Titan changes the base surface color, every card updates. When a theme overrides <code className="ds-code">--surface-slot-card</code>, every card in that theme updates. Maximum flexibility with zero coupling.</p>
 
           <h4>3.6 Elevation (boxShadow)</h4>
-          <p>Shadows use <code className="ds-code">type: &quot;boxShadow&quot;</code> with <code className="ds-code">dropShadow</code>. Reference opacity colors with <code className="ds-code">{'{$color-steel-10}'}</code>:</p>
+          <p>Shadows create the <strong>z-axis hierarchy</strong> of the interface. They use <code className="ds-code">type: &quot;boxShadow&quot;</code> with <code className="ds-code">dropShadow</code>. Shadows reference opacity colors (<code className="ds-code">{'{$color-steel-10}'}</code>) instead of black so they appear neutral across all themes:</p>
           <pre className="ds-code-block">{`"box-shadow-1": {
   "value": {
     "x": "0",
@@ -708,7 +829,9 @@ html[data-theme="demand"] {
           </div>
 
           <h3>6. How themes work</h3>
+          <p>Titan supports <strong>six product themes</strong>. Each theme re-points a set of semantic tokens to different primitives — the components themselves never change. This is the core benefit of the three-layer architecture.</p>
           <h4>6.1 Load order</h4>
+          <p>The load order matters — each file can override variables from the previous one. Get it wrong and tokens won&apos;t resolve:</p>
           <ol>
             <li><code className="ds-code">tokens/css/titan.css</code> (primitives + base semantics)</li>
             <li>A theme: <code className="ds-code">tokens/themes/_insights.css</code>, <code className="ds-code">_neutral.css</code>, etc.</li>
@@ -717,6 +840,7 @@ html[data-theme="demand"] {
           <h4>6.2 Activation</h4>
           <pre className="ds-code-block">{`<html data-theme="insights">`}</pre>
           <h4>6.3 Available themes</h4>
+          <p>Each theme maps to one of Audiense&apos;s products. The primary color drives buttons, links, selected states, and focus rings:</p>
           <div className="ds-table-wrap">
             <table className="ds-table">
               <thead>
@@ -737,6 +861,7 @@ html[data-theme="demand"] {
           </div>
 
           <h3>7. Tokens by use (quick reference)</h3>
+          <p>When building a UI, start here. Find the <strong>intent</strong> (what you want to style) and use the corresponding token:</p>
           <div className="ds-table-wrap">
             <table className="ds-table">
               <thead>
@@ -917,9 +1042,39 @@ function IconsContent({ subLevel, goTo }) {
   ]
   if (!subLevel) {
     return (
-      <section className="card">
+      <section className="card ds-doc-card">
         <h2 className="ds-section-title">Icons</h2>
-        <p className="ds-lead">Lucide & Tabler. 16×16 base, 2px safe area. 4px icon-to-text, 8px in buttons.</p>
+        <div className="ds-doc">
+          <p>Titan uses <strong>Lucide</strong> and <strong>Tabler</strong> icon libraries, normalized to three consistent sizes with matched stroke widths. Titan also has its own icon set in titan-react for product-specific icons.</p>
+          <h3>Why normalize?</h3>
+          <p>Out of the box, Lucide renders at 24px with stroke-width 2, and Tabler at 24px with stroke-width 1.5. In a SaaS dashboard, most icons sit next to text or inside buttons at 16px — using the default size creates visual noise. Titan defines three sizes, each with a <strong>paired stroke width</strong> that maintains legibility without looking heavy.</p>
+          <h3>Icon-to-text spacing</h3>
+          <ul>
+            <li><code className="ds-code">--spacing-4xs</code> (4px): Default gap between an icon and its label (buttons, menu items, pills).</li>
+            <li><code className="ds-code">--spacing-2xs</code> (8px): Gap inside icon buttons (padding around the icon).</li>
+          </ul>
+          <h3>Where each size is used</h3>
+          <ul>
+            <li><strong>S (12px)</strong>: Table header sort arrows, info icons, breadcrumb separators — tiny helper icons that annotate without competing.</li>
+            <li><strong>M (16px)</strong>: Default for most UI — buttons, pills, menu items, sidebar items, table body cells. The workhorse size.</li>
+            <li><strong>L (24px)</strong>: Hero icons, empty states, standalone decorative icons. Used sparingly for visual impact.</li>
+          </ul>
+          <h3>Navbar exception</h3>
+          <p>Navbar icons use a custom size: <code className="ds-code">--navbar-slot-icon-size: 20px</code> (between M and L). This is because the navbar has more vertical space and the 16px M icons looked too small at that height. The stroke width stays at <code className="ds-code">--icon-stroke-s</code> (1.25) to keep them looking thin and refined.</p>
+          <h3>Icon buttons</h3>
+          <ul>
+            <li><strong>Ghost</strong> (<code className="ds-code">icon-ghost</code>): Transparent bg, subtle bg on hover/pressed. Used in navbars, toolbars.</li>
+            <li><strong>Secondary</strong> (<code className="ds-code">icon-neutral-base</code>): Neutral bg, used for standalone actions.</li>
+            <li><strong>Basic</strong> (<code className="ds-code">icon-base</code>): No bg on any state — only color change. Used in tables, dense lists, inline actions.</li>
+            <li><strong>Destructive</strong> (<code className="ds-code">icon-delete-base</code>, <code className="ds-code">icon-delete-secondary</code>): Error-toned variants for delete/remove actions.</li>
+          </ul>
+          <h3>Table icon rules</h3>
+          <ul>
+            <li>Body cell icons are always <strong>decorative</strong> (plain SVGs) or <strong>basic icon buttons</strong> (<code className="ds-code">icon-base</code>) — no hover/pressed bg.</li>
+            <li>Body cell icon size: <code className="ds-code">--icon-size-m</code> (16px).</li>
+            <li>Header icon size: <code className="ds-code">--icon-size-s</code> (12px).</li>
+          </ul>
+        </div>
         <TitanCardGrid>
           <DSCard title="Sizes" desc="12, 16, 24px" icon={Image} onClick={() => goTo(['icons', 'sizes'])} />
         </TitanCardGrid>
@@ -928,16 +1083,20 @@ function IconsContent({ subLevel, goTo }) {
   }
   if (subLevel === 'sizes') {
     return (
-      <section className="card">
+      <section className="card ds-doc-card">
         <h2 className="ds-section-title">Icon sizes</h2>
-        <p className="ds-lead">Stroke: 1.25, 1.5, 2. Spacing: 4px icon-to-text, 8px in buttons.</p>
+        <div className="ds-doc">
+          <p>Each size has a paired <strong>stroke width</strong>. This pairing is critical — a 12px icon with a 2px stroke looks chunky, while a 24px icon with a 1.25px stroke looks threadbare. The numbers below are the sweet spot for each size:</p>
+        </div>
         <div className="ds-table-wrap">
           <table className="ds-table">
             <thead>
               <tr>
                 <th>Token</th>
-                <th>Size</th>
+                <th>Icon size</th>
+                <th>Box (safe area)</th>
                 <th>Stroke</th>
+                <th>Where used</th>
                 <th>Search</th>
                 <th>User</th>
                 <th>Settings</th>
@@ -948,7 +1107,9 @@ function IconsContent({ subLevel, goTo }) {
                 <tr key={s.token}>
                   <td><code className="ds-code">{s.token}</code></td>
                   <td className="ds-muted">{s.size}</td>
+                  <td className="ds-muted">{s.box}</td>
                   <td className="ds-muted">{s.stroke}</td>
+                  <td className="ds-muted">{s.use}</td>
                   {icons.map(({ name, Icon }) => (
                     <td key={name}>
                       <Icon style={{ width: s.size, height: s.size, strokeWidth: parseFloat(s.stroke) }} />
@@ -958,6 +1119,10 @@ function IconsContent({ subLevel, goTo }) {
               ))}
             </tbody>
           </table>
+        </div>
+        <div className="ds-doc" style={{ marginTop: 'var(--spacing-m)' }}>
+          <h3>What is the "box" (safe area)?</h3>
+          <p>Each icon size has a corresponding <strong>box size</strong> (<code className="ds-code">--icon-box-s/m/l</code>). The box is the total space the icon occupies, including a small safe area around the glyph. This guarantees consistent touch targets and alignment — a 16px icon inside a 20px box has 2px of breathing room on each side, preventing it from feeling cramped against adjacent elements.</p>
         </div>
       </section>
     )

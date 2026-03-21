@@ -1,6 +1,7 @@
 import { useState, type Key, type ReactNode } from 'react'
 import {
   Button,
+  Collection,
   FieldError,
   Label,
   ListBox,
@@ -75,20 +76,21 @@ export function TitanSelect({
       </Button>
       <Popover className="select-popover" placement="bottom start">
         <ListBox className="select-list">
-          {options.map((option) => (
-            <ListBoxItem
-              key={option.id}
-              id={option.id}
-              className="select-item"
-              isDisabled={option.disabled}
-              textValue={option.label}
-            >
-              <span className="select-item-start">
-                {option.icon ? <span className="select-item-icon">{option.icon}</span> : null}
-                <span>{option.label}</span>
-              </span>
-            </ListBoxItem>
-          ))}
+          <Collection items={options}>
+            {(option) => (
+              <ListBoxItem
+                id={option.id}
+                className="select-item"
+                isDisabled={option.disabled}
+                textValue={option.label}
+              >
+                <span className="select-item-start">
+                  {option.icon ? <span className="select-item-icon">{option.icon}</span> : null}
+                  <span>{option.label}</span>
+                </span>
+              </ListBoxItem>
+            )}
+          </Collection>
         </ListBox>
       </Popover>
       {(errorMessage || hintMessage) && (

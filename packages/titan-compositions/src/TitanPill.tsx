@@ -1,6 +1,4 @@
 import type { ReactNode } from 'react'
-import { Button, Tag, type TagProps } from 'react-aria-components'
-import { getToneStyle } from './TitanButton'
 import { renderIconNode } from './icons'
 
 export const TitanPillStates = {
@@ -14,15 +12,17 @@ export const TitanPillStates = {
 
 export type TitanPillState = (typeof TitanPillStates)[keyof typeof TitanPillStates]
 
-export interface TitanPillProps extends Omit<TagProps, 'children'> {
+export interface TitanPillProps {
   id?: string
   label?: string
   children?: ReactNode
   state?: TitanPillState
   tone: string
   removable?: boolean
+  isDisabled?: boolean
   onDismiss?: (id: string) => void
   'aria-label'?: string
+  className?: string
 }
 
 function asText(value: ReactNode): string {
@@ -36,31 +36,32 @@ export function TitanPill({
   state = TitanPillStates.Success,
   tone,
   removable = true,
+  isDisabled = false,
   onDismiss,
-  ...tagProps
+  'aria-label': ariaLabel,
+  className,
 }: TitanPillProps) {
   const content = children ?? label ?? ''
   const idForDismiss = id ?? asText(content)
-  const toneStyle = tone && !tagProps.isDisabled ? getToneStyle(tone, 'pill') : undefined
-  const textValue = typeof content === 'string' ? content : tagProps.textValue
 
   return (
-    <Tag {...tagProps} textValue={textValue}>
-      {() => (
-        <div className={`pill pill-${state}`} style={toneStyle}>
-          <span className="pill-label">{content}</span>
-          {removable && onDismiss ? (
-            <Button
-              className={`pill-close pill-close-${state}`}
-              aria-label={`Remove ${typeof content === 'string' ? content : 'item'}`}
-              slot="remove"
-              onPress={() => onDismiss(idForDismiss)}
-            >
-              {renderIconNode('x')}
-            </Button>
-          ) : null}
-        </div>
-      )}
-    </Tag>
+    <span
+      className={['pill', `pill-${state}`, tone && !isDisabled ? `pill-tone-${tone}` : '', isDisabled ? 'pill-disabled' : '', className].filter(Boolean).join(' ')}
+      role="status"
+      aria-label={ariaLabel ?? (typeof content === 'string' ? content : undefined)}
+      {...(isDisabled ? { 'aria-disabled': true } : {})}
+    >
+      <span className="pill-label">{content}</span>
+      {removable && onDismiss && !isDisabled ? (
+        <button
+          type="button"
+          className="pill-close"
+          aria-label={`Remove ${typeof content === 'string' ? content : 'item'}`}
+          onClick={() => onDismiss(idForDismiss)}
+        >
+          {renderIconNode('x')}
+        </button>
+      ) : null}
+    </span>
   )
 }

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Button, Dialog, DialogTrigger, Modal, ModalOverlay } from 'react-aria-components'
+import { renderIconNode } from './icons'
 
 export interface TitanDialogProps {
   triggerLabel?: string
@@ -14,20 +15,26 @@ export interface TitanDialogProps {
   children?: ReactNode
 }
 
-export function TitanDialog({
-  triggerLabel,
+function DialogContent({
   title,
+  ariaLabel,
   body,
   leftAction,
   rightAction,
-  isOpen,
-  onOpenChange,
-  onClose,
-  children,
-  'aria-label': ariaLabel,
-}: TitanDialogProps) {
-  const content = children ?? (
+  close,
+}: {
+  title?: string
+  ariaLabel?: string
+  body?: ReactNode
+  leftAction?: ReactNode
+  rightAction?: ReactNode
+  close: () => void
+}) {
+  return (
     <>
+      <Button className="dialog-close-button" aria-label="Close dialog" onPress={close}>
+        {renderIconNode('x')}
+      </Button>
       {(title || ariaLabel) && (
         <header className="dialog-header">
           <h3 className="dialog-title">{title ?? ariaLabel}</h3>
@@ -42,7 +49,20 @@ export function TitanDialog({
       )}
     </>
   )
+}
 
+export function TitanDialog({
+  triggerLabel,
+  title,
+  body,
+  leftAction,
+  rightAction,
+  isOpen,
+  onOpenChange,
+  onClose,
+  children,
+  'aria-label': ariaLabel,
+}: TitanDialogProps) {
   if (triggerLabel == null) {
     return (
       <ModalOverlay
@@ -56,7 +76,18 @@ export function TitanDialog({
       >
         <Modal className="dialog-modal">
           <Dialog className="dialog-panel" aria-label={ariaLabel}>
-            {content}
+            {({ close }) =>
+              children ?? (
+                <DialogContent
+                  title={title}
+                  ariaLabel={ariaLabel}
+                  body={body}
+                  leftAction={leftAction}
+                  rightAction={rightAction}
+                  close={close}
+                />
+              )
+            }
           </Dialog>
         </Modal>
       </ModalOverlay>
@@ -69,7 +100,18 @@ export function TitanDialog({
       <ModalOverlay isDismissable className="dialog-overlay">
         <Modal className="dialog-modal">
           <Dialog className="dialog-panel" aria-label={ariaLabel}>
-            {content}
+            {({ close }) =>
+              children ?? (
+                <DialogContent
+                  title={title}
+                  ariaLabel={ariaLabel}
+                  body={body}
+                  leftAction={leftAction}
+                  rightAction={rightAction}
+                  close={close}
+                />
+              )
+            }
           </Dialog>
         </Modal>
       </ModalOverlay>

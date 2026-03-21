@@ -1,8 +1,16 @@
 /* Cursor pointer — all interactives */
 .btn,
+.icon-primary,
 .icon-secondary,
 .icon-ghost,
+.icon-base,
+.icon-base-l,
+.icon-neutral-base,
+.icon-neutral-base-l,
 .icon-delete,
+.icon-delete-secondary,
+.icon-delete-base,
+.icon-delete-base-l,
 .menu-item,
 .select-trigger,
 .select-item,
@@ -10,6 +18,7 @@
 .tab-trigger-vertical,
 .pagination-button,
 .drawer-close-button,
+.dialog-close-button,
 .breadcrumb-link,
 .checkbox-root,
 .radio-root,
@@ -22,12 +31,69 @@
   cursor: pointer;
 }
 
-/* No focus outlines — kill all focus rings globally */
-*:focus,
-*:focus-visible,
-*[data-focus-visible] {
-  outline: none !important;
-  box-shadow: none !important;
+/* Reset default outlines; restore via [data-focus-visible] per component */
+.btn:focus,
+.icon-primary:focus,
+.icon-secondary:focus,
+.icon-ghost:focus,
+.icon-base:focus,
+.icon-base-l:focus,
+.icon-neutral-base:focus,
+.icon-neutral-base-l:focus,
+.icon-delete:focus,
+.icon-delete-secondary:focus,
+.icon-delete-base:focus,
+.icon-delete-base-l:focus,
+.menu-item:focus,
+.select-trigger:focus,
+.select-item:focus,
+.tab-trigger:focus,
+.tab-trigger-vertical:focus,
+.pagination-button:focus,
+.drawer-close-button:focus,
+.dialog-close-button:focus,
+.breadcrumb-link:focus,
+.checkbox-root:focus,
+.radio-root:focus,
+.switch-root:focus,
+.toggle-root:focus,
+.navbar-icon-button:focus,
+.navbar-chevron-button:focus,
+.titan-sidebar-toggle:focus,
+.titan-sidebar-item:focus {
+  outline: none;
+}
+
+.btn[data-focus-visible],
+.icon-primary[data-focus-visible],
+.icon-secondary[data-focus-visible],
+.icon-ghost[data-focus-visible],
+.icon-base[data-focus-visible],
+.icon-base-l[data-focus-visible],
+.icon-neutral-base[data-focus-visible],
+.icon-neutral-base-l[data-focus-visible],
+.icon-delete[data-focus-visible],
+.icon-delete-secondary[data-focus-visible],
+.icon-delete-base[data-focus-visible],
+.icon-delete-base-l[data-focus-visible],
+.menu-item[data-focus-visible],
+.select-trigger[data-focus-visible],
+.select-item[data-focus-visible],
+.tab-trigger[data-focus-visible],
+.tab-trigger-vertical[data-focus-visible],
+.pagination-button[data-focus-visible],
+.drawer-close-button[data-focus-visible],
+.dialog-close-button[data-focus-visible],
+.breadcrumb-link[data-focus-visible],
+.checkbox-root[data-focus-visible],
+.radio-root[data-focus-visible],
+.switch-root[data-focus-visible],
+.toggle-root[data-focus-visible],
+.navbar-icon-button[data-focus-visible],
+.navbar-chevron-button[data-focus-visible],
+.titan-sidebar-toggle[data-focus-visible],
+.titan-sidebar-item[data-focus-visible] {
+  outline: auto;
 }
 
 .page {
@@ -319,18 +385,26 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 14px;
-  height: 14px;
+  width: var(--icon-size-s);
+  height: var(--icon-size-s);
+  flex-shrink: 0;
 }
 
 .table-sortable .column-sort-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 14px;
+  width: var(--icon-size-s);
+  height: var(--icon-size-s);
   color: var(--copy-slot-secondary);
   opacity: 0.9;
   animation: table-sort-icon-in 0.22s ease-out;
+}
+
+.table-sortable .column-sort-icon svg {
+  width: var(--icon-size-s);
+  height: var(--icon-size-s);
+  stroke-width: var(--icon-stroke-s);
 }
 
 @keyframes table-sort-icon-in {
@@ -355,11 +429,15 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 14px;
-  height: 14px;
+  width: var(--icon-size-s);
+  height: var(--icon-size-s);
+  flex-shrink: 0;
 }
 
-.table-sortable .column-header-info-icon {
+.table-sortable svg.column-header-info-icon {
+  width: var(--icon-size-s);
+  height: var(--icon-size-s);
+  stroke-width: var(--icon-stroke-s);
   color: var(--copy-slot-secondary);
   opacity: 0.9;
   flex-shrink: 0;
@@ -569,6 +647,18 @@
   flex-shrink: 0;
 }
 
+.table-cell-date-icon svg {
+  width: var(--icon-size-m);
+  height: var(--icon-size-m);
+  stroke-width: var(--icon-stroke-m);
+}
+
+.table-borderless tbody td svg {
+  width: var(--icon-size-m);
+  height: var(--icon-size-m);
+  stroke-width: var(--icon-stroke-m);
+}
+
 .table-cell-initials {
   display: inline-flex;
   align-items: center;
@@ -697,7 +787,7 @@
 .navbar .navbar-chevron-button svg {
   width: var(--navbar-slot-icon-size);
   height: var(--navbar-slot-icon-size);
-  stroke-width: var(--icon-stroke-m);
+  stroke-width: var(--icon-stroke-s);
 }
 
 .navbar-avatar {
@@ -742,16 +832,32 @@
 }
 
 .btn[data-disabled],
+.icon-primary[data-disabled],
 .icon-secondary[data-disabled],
 .icon-ghost[data-disabled],
-.icon-delete[data-disabled] {
+.icon-base[data-disabled],
+.icon-base-l[data-disabled],
+.icon-neutral-base[data-disabled],
+.icon-neutral-base-l[data-disabled],
+.icon-delete[data-disabled],
+.icon-delete-secondary[data-disabled],
+.icon-delete-base[data-disabled],
+.icon-delete-base-l[data-disabled] {
   cursor: not-allowed;
 }
 
 .btn,
+.icon-primary,
 .icon-secondary,
 .icon-ghost,
-.icon-delete {
+.icon-base,
+.icon-base-l,
+.icon-neutral-base,
+.icon-neutral-base-l,
+.icon-delete,
+.icon-delete-secondary,
+.icon-delete-base,
+.icon-delete-base-l {
   min-height: var(--button-slot-height-s);
   border-radius: var(--button-slot-radius);
   border: none;
@@ -768,17 +874,60 @@
 }
 
 .btn svg,
+.icon-primary svg,
 .icon-secondary svg,
 .icon-ghost svg,
-.icon-delete svg {
+.icon-base svg,
+.icon-base-l svg,
+.icon-neutral-base svg,
+.icon-neutral-base-l svg,
+.icon-delete svg,
+.icon-delete-secondary svg,
+.icon-delete-base svg,
+.icon-delete-base-l svg {
   width: var(--icon-size-m);
   height: var(--icon-size-m);
   stroke-width: var(--icon-stroke-m);
+  flex-shrink: 0;
+}
+
+/* Titan-native icons wrapped in IconBase (div > svg) */
+.btn > div,
+.icon-primary > div,
+.icon-secondary > div,
+.icon-ghost > div,
+.icon-base > div,
+.icon-base-l > div,
+.icon-neutral-base > div,
+.icon-neutral-base-l > div,
+.icon-delete > div,
+.icon-delete-secondary > div,
+.icon-delete-base > div,
+.icon-delete-base-l > div {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.btn > div > svg,
+.icon-primary > div > svg,
+.icon-secondary > div > svg,
+.icon-ghost > div > svg,
+.icon-base > div > svg,
+.icon-base-l > div > svg,
+.icon-neutral-base > div > svg,
+.icon-neutral-base-l > div > svg,
+.icon-delete > div > svg,
+.icon-delete-secondary > div > svg,
+.icon-delete-base > div > svg,
+.icon-delete-base-l > div > svg {
+  width: var(--icon-size-m);
+  height: var(--icon-size-m);
+  color: inherit;
 }
 
 .btn.with-icon {
-  padding-left: var(--spacing-s);
-  padding-right: var(--spacing-m);
   gap: var(--spacing-4xs);
 }
 
@@ -911,14 +1060,29 @@
   opacity: 1;
 }
 
+.icon-primary,
 .icon-secondary,
 .icon-ghost,
-.icon-delete {
+.icon-base,
+.icon-base-l,
+.icon-neutral-base,
+.icon-neutral-base-l,
+.icon-delete,
+.icon-delete-secondary,
+.icon-delete-base,
+.icon-delete-base-l {
   width: var(--button-icon-slot-size);
   height: var(--button-icon-slot-size);
   justify-content: center;
   padding: 0;
   border-radius: var(--button-icon-interactive-slot-radius);
+}
+
+.icon-base-l,
+.icon-neutral-base-l,
+.icon-delete-base-l {
+  width: var(--button-icon-slot-size-l, 36px);
+  height: var(--button-icon-slot-size-l, 36px);
 }
 
 .icon-secondary {
@@ -999,18 +1163,19 @@
 }
 
 .icon-delete-secondary {
-  background: var(--background-error);
+  background: transparent;
   color: var(--text-error-primary);
 }
 .icon-delete-secondary[data-hovered] {
-  opacity: 0.85;
+  background: var(--background-error);
 }
 .icon-delete-secondary[data-pressed] {
-  opacity: 0.7;
+  background: var(--background-error);
+  opacity: 0.85;
 }
 .icon-delete-secondary[data-disabled] {
   opacity: 1;
-  background: var(--button-icon-slot-bg-disabled);
+  background: transparent;
   color: var(--button-icon-slot-disabled-icon);
 }
 
@@ -1034,7 +1199,17 @@
 }
 
 .btn-error-text {
+  background: transparent;
   color: var(--text-error-primary);
+}
+.btn-error-text[data-hovered] {
+  background: var(--background-error);
+  color: var(--text-error-primary);
+}
+.btn-error-text[data-pressed] {
+  background: var(--background-error);
+  color: var(--text-error-primary);
+  opacity: 0.85;
 }
 
 .menu-popover {
@@ -1387,10 +1562,9 @@
   line-height: var(--font-leading-m);
   font-weight: var(--text-weight-regular);
   color: var(--menu-item-slot-color);
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .menu-item-notification-title strong {
@@ -1855,17 +2029,33 @@
 }
 
 .drawer-close-button {
-  width: var(--drawer-close-slot-size);
-  height: var(--drawer-close-slot-size);
-  border-radius: var(--drawer-close-slot-radius);
+  min-width: var(--icon-size-l);
+  min-height: var(--icon-size-l);
+  width: var(--icon-size-l);
+  height: var(--icon-size-l);
+  border-radius: var(--rounded-xs);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--text-secondary);
+}
+
+.drawer-close-button svg {
+  width: var(--icon-size-m);
+  height: var(--icon-size-m);
+  stroke-width: var(--icon-stroke-m);
 }
 
 .drawer-close-button[data-hovered] {
-  background: var(--drawer-close-slot-bg-hover);
+  background: transparent;
 }
 
 .drawer-close-button[data-pressed] {
-  background: var(--drawer-close-slot-bg-active);
+  background: transparent;
 }
 
 .drawer-body {
@@ -1902,6 +2092,29 @@
   display: grid;
   gap: var(--dialog-slot-gap);
   position: relative;
+}
+
+.dialog-close-button {
+  position: absolute;
+  top: var(--spacing-2xs);
+  right: var(--spacing-2xs);
+  width: var(--icon-size-l);
+  height: var(--icon-size-l);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--rounded-xs);
+  background: transparent;
+  color: var(--text-secondary);
+  padding: 0;
+  cursor: pointer;
+}
+
+.dialog-close-button svg {
+  width: var(--icon-size-m);
+  height: var(--icon-size-m);
+  stroke-width: var(--icon-stroke-m);
 }
 
 .dialog-header {
@@ -2220,23 +2433,28 @@
 }
 
 .pill {
-  --pill-bg: var(--pill-slot-bg);
-  --pill-color: var(--pill-slot-color);
-  --pill-icon-color: var(--pill-slot-icon-color);
+  --pill-bg: var(--pill-background);
+  --pill-color: var(--pill-text);
+  --pill-icon-clr: var(--pill-icon-color);
   min-height: calc(var(--button-slot-line-height) + (var(--spacing-3xs) * 2) + (var(--stroke-slot-width) * 2));
   border: none;
-  border-radius: var(--pill-slot-radius);
-  padding-inline: var(--pill-slot-pad-x);
+  border-radius: var(--rounded-s);
+  padding: var(--spacing-4xs) var(--spacing-xs);
   display: inline-flex;
   align-items: center;
-  gap: var(--pill-slot-gap);
+  gap: var(--spacing-4xs);
   width: fit-content;
+  max-width: 18.571rem;
   font-size: var(--button-slot-font-size);
   line-height: var(--button-slot-line-height);
   font-weight: var(--text-weight-medium);
   font-family: "Poppins", var(--font-audiense), sans-serif;
   background: var(--pill-bg);
   color: var(--pill-color);
+}
+
+.pill:has(:nth-child(2)) {
+  padding: var(--spacing-4xs) var(--spacing-2xs) var(--spacing-4xs) var(--spacing-xs);
 }
 
 .pill-label {
@@ -2246,7 +2464,7 @@
 }
 
 .pill svg {
-  color: var(--pill-icon-color);
+  color: var(--pill-icon-clr);
 }
 
 .pill-close {
@@ -2268,60 +2486,65 @@
 }
 
 .pill-base {
-  background-color: var(--pill-background, var(--pill-slot-bg));
-  color: var(--pill-text, var(--pill-slot-color));
-}
-.pill-close-base {
-  color: var(--pill-icon-color, var(--pill-slot-icon-color));
+  --pill-bg: var(--pill-background);
+  --pill-color: var(--pill-text);
+  --pill-icon-clr: var(--pill-icon-color);
 }
 
 .pill-success {
-  background-color: var(--pill-success-background, var(--pill-slot-bg));
-  color: var(--pill-success-text, var(--pill-slot-color));
-}
-.pill-close-success {
-  color: var(--pill-success-icon-color, var(--pill-slot-icon-color));
+  --pill-bg: var(--pill-success-background);
+  --pill-color: var(--pill-success-text);
+  --pill-icon-clr: var(--pill-success-icon-color);
 }
 
 .pill-alert {
-  background-color: var(--pill-alert-background, var(--pill-slot-bg));
-  color: var(--pill-alert-text, var(--pill-slot-color));
-}
-.pill-close-alert {
-  color: var(--pill-alert-icon-color, var(--pill-slot-icon-color));
+  --pill-bg: var(--pill-alert-background);
+  --pill-color: var(--pill-alert-text);
+  --pill-icon-clr: var(--pill-alert-icon-color);
 }
 
 .pill-error {
-  background-color: var(--pill-error-background, var(--pill-slot-bg));
-  color: var(--pill-error-text, var(--pill-slot-color));
-}
-.pill-close-error {
-  color: var(--pill-error-icon-color, var(--pill-slot-icon-color));
+  --pill-bg: var(--pill-error-background);
+  --pill-color: var(--pill-error-text);
+  --pill-icon-clr: var(--pill-error-icon-color);
 }
 
 .pill-info {
-  background-color: var(--pill-information-background, var(--pill-slot-bg));
-  color: var(--pill-information-text, var(--pill-slot-color));
-}
-.pill-close-info {
-  color: var(--pill-information-icon-color, var(--pill-slot-icon-color));
+  --pill-bg: var(--pill-information-background);
+  --pill-color: var(--pill-information-text);
+  --pill-icon-clr: var(--pill-information-icon-color);
 }
 
 .pill-disabled {
-  background-color: var(--pill-disabled-background, var(--pill-slot-bg));
-  color: var(--text-disabled, var(--pill-slot-color));
+  --pill-bg: var(--pill-disabled-background);
+  --pill-color: var(--text-disabled);
+  --pill-icon-clr: var(--text-icon-disabled);
 }
-.pill-close-disabled {
-  color: var(--text-icon-disabled, var(--pill-slot-icon-color));
-}
+
+/* Pill tone classes — override CSS custom properties without inline style */
+.pill-tone-success { --pill-bg: var(--pill-success-background); --pill-color: var(--pill-success-text); --pill-icon-clr: var(--pill-success-icon-color); }
+.pill-tone-error { --pill-bg: var(--pill-error-background); --pill-color: var(--pill-error-text); --pill-icon-clr: var(--pill-error-icon-color); }
+.pill-tone-alert { --pill-bg: var(--pill-alert-background); --pill-color: var(--pill-alert-text); --pill-icon-clr: var(--pill-alert-icon-color); }
+.pill-tone-info { --pill-bg: var(--pill-information-background); --pill-color: var(--pill-information-text); --pill-icon-clr: var(--pill-information-icon-color); }
+.pill-tone-teal { --pill-bg: var(--color-teal-100, var(--pill-background)); --pill-color: var(--color-teal-700, var(--pill-text)); --pill-icon-clr: var(--color-teal-600, var(--pill-icon-color)); }
+.pill-tone-mango { --pill-bg: var(--color-mango-100, var(--pill-background)); --pill-color: var(--color-mango-700, var(--pill-text)); --pill-icon-clr: var(--color-mango-600, var(--pill-icon-color)); }
+.pill-tone-ocean { --pill-bg: var(--color-ocean-100, var(--pill-background)); --pill-color: var(--color-ocean-700, var(--pill-text)); --pill-icon-clr: var(--color-ocean-600, var(--pill-icon-color)); }
+.pill-tone-tomato { --pill-bg: var(--color-tomato-100, var(--pill-background)); --pill-color: var(--color-tomato-700, var(--pill-text)); --pill-icon-clr: var(--color-tomato-600, var(--pill-icon-color)); }
+.pill-tone-violet { --pill-bg: var(--color-violet-100, var(--pill-background)); --pill-color: var(--color-violet-700, var(--pill-text)); --pill-icon-clr: var(--color-violet-600, var(--pill-icon-color)); }
+.pill-tone-magenta { --pill-bg: var(--color-magenta-100, var(--pill-background)); --pill-color: var(--color-magenta-700, var(--pill-text)); --pill-icon-clr: var(--color-magenta-600, var(--pill-icon-color)); }
+.pill-tone-indigo { --pill-bg: var(--color-indigo-100, var(--pill-background)); --pill-color: var(--color-indigo-700, var(--pill-text)); --pill-icon-clr: var(--color-indigo-600, var(--pill-icon-color)); }
+.pill-tone-blueberry { --pill-bg: var(--color-blueberry-100, var(--pill-background)); --pill-color: var(--color-blueberry-700, var(--pill-text)); --pill-icon-clr: var(--color-blueberry-600, var(--pill-icon-color)); }
+.pill-tone-pomegranate { --pill-bg: var(--color-pomegranate-100, var(--pill-background)); --pill-color: var(--color-pomegranate-700, var(--pill-text)); --pill-icon-clr: var(--color-pomegranate-600, var(--pill-icon-color)); }
+.pill-tone-aquamarine { --pill-bg: var(--color-aquamarine-100, var(--pill-background)); --pill-color: var(--color-aquamarine-700, var(--pill-text)); --pill-icon-clr: var(--color-aquamarine-600, var(--pill-icon-color)); }
+.pill-tone-steel { --pill-bg: var(--color-steel-100, var(--pill-background)); --pill-color: var(--color-steel-700, var(--pill-text)); --pill-icon-clr: var(--color-steel-600, var(--pill-icon-color)); }
 
 .tag-chip {
   --tag-bg: var(--color-black-200);
-  --tag-color: var(--copy-slot-primary);
+  --tag-color: var(--text-primary);
   min-height: calc(var(--button-slot-line-height) + (var(--spacing-3xs) * 2) + (var(--stroke-slot-width) * 2));
   border: none;
-  border-radius: var(--pill-slot-radius);
-  padding-inline: var(--pill-slot-pad-x);
+  border-radius: var(--rounded-s);
+  padding: var(--spacing-4xs) var(--spacing-xs);
   display: inline-flex;
   align-items: center;
   width: fit-content;
@@ -2332,6 +2555,19 @@
   background: var(--tag-bg);
   color: var(--tag-color);
 }
+
+/* Tag tone classes */
+.tag-tone-teal { --tag-bg: var(--color-teal-200, var(--color-black-200)); --tag-color: var(--color-teal-600, var(--text-primary)); }
+.tag-tone-mango { --tag-bg: var(--color-mango-200, var(--color-black-200)); --tag-color: var(--color-mango-600, var(--text-primary)); }
+.tag-tone-ocean { --tag-bg: var(--color-ocean-200, var(--color-black-200)); --tag-color: var(--color-ocean-600, var(--text-primary)); }
+.tag-tone-tomato { --tag-bg: var(--color-tomato-200, var(--color-black-200)); --tag-color: var(--color-tomato-600, var(--text-primary)); }
+.tag-tone-violet { --tag-bg: var(--color-violet-200, var(--color-black-200)); --tag-color: var(--color-violet-600, var(--text-primary)); }
+.tag-tone-magenta { --tag-bg: var(--color-magenta-200, var(--color-black-200)); --tag-color: var(--color-magenta-600, var(--text-primary)); }
+.tag-tone-indigo { --tag-bg: var(--color-indigo-200, var(--color-black-200)); --tag-color: var(--color-indigo-600, var(--text-primary)); }
+.tag-tone-blueberry { --tag-bg: var(--color-blueberry-200, var(--color-black-200)); --tag-color: var(--color-blueberry-600, var(--text-primary)); }
+.tag-tone-pomegranate { --tag-bg: var(--color-pomegranate-200, var(--color-black-200)); --tag-color: var(--color-pomegranate-600, var(--text-primary)); }
+.tag-tone-aquamarine { --tag-bg: var(--color-aquamarine-200, var(--color-black-200)); --tag-color: var(--color-aquamarine-600, var(--text-primary)); }
+.tag-tone-steel { --tag-bg: var(--color-steel-200, var(--color-black-200)); --tag-color: var(--color-steel-600, var(--text-primary)); }
 
 .form-controls-grid {
   display: grid;
@@ -3107,7 +3343,7 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--spacing-xs);
-  margin-bottom: var(--spacing-m);
+  margin-bottom: var(--spacing-2xs);
 }
 
 .calendar-nav-btn {
@@ -3228,6 +3464,7 @@
 .calendar-grid {
   border-collapse: separate;
   border-spacing: 0;
+  width: 100%;
 }
 
 .calendar-header-cell {
@@ -3298,12 +3535,14 @@
   flex-direction: column;
   gap: var(--spacing-4xs);
   flex: 1;
+  min-width: 0;
 }
 
 .calendar-time-label {
-  font-size: var(--font-size-xs);
-  color: var(--calendar-slot-time-label-color);
-  font-weight: var(--font-weight-400);
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+  color: var(--label-color);
+  font-weight: var(--text-weight-medium);
 }
 
 .calendar-time-input {
@@ -3314,8 +3553,10 @@
   font-family: inherit;
   font-size: var(--font-size-m);
   line-height: var(--font-leading-m);
-  padding: var(--spacing-xs) var(--spacing-s);
+  padding: var(--spacing-2xs) var(--spacing-xs);
   width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   text-align: left;
   outline: none;
 }
@@ -3326,4 +3567,256 @@
   color: var(--copy-slot-secondary);
   padding-bottom: var(--spacing-xs);
   line-height: 1;
+}
+
+/* ====================================================================== */
+/* LINK                                                                    */
+/* ====================================================================== */
+
+.titan-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-4xs);
+  color: var(--link-color);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.titan-link:visited {
+  color: var(--link-visited-color);
+}
+
+.titan-link:visited svg {
+  color: var(--link-visited-icon-color);
+}
+
+.titan-link svg {
+  color: var(--link-icon-color);
+  width: var(--icon-size-s);
+  height: var(--icon-size-s);
+  stroke-width: var(--icon-stroke-s);
+  flex-shrink: 0;
+}
+
+.titan-link[data-disabled] {
+  color: var(--link-disabled-color);
+  cursor: not-allowed;
+}
+
+.titan-link[data-disabled] svg {
+  color: var(--link-disabled-icon-color);
+}
+
+/* ====================================================================== */
+/* AVATAR                                                                  */
+/* ====================================================================== */
+
+.titan-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--avatar-background);
+  width: var(--avatar-width);
+  height: var(--avatar-height);
+  border-radius: 50%;
+  color: var(--text-on-color);
+  flex-shrink: 0;
+}
+
+.titan-avatar svg {
+  width: var(--icon-size-m);
+  height: var(--icon-size-m);
+}
+
+/* ====================================================================== */
+/* PILL GROUP + PILL LIST                                                  */
+/* ====================================================================== */
+
+.titan-pill-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3xs);
+}
+
+.titan-pill-group-label {
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+  color: var(--label-color);
+  font-weight: var(--text-weight-medium);
+}
+
+.titan-pill-list {
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: var(--rounded-xs);
+  gap: var(--spacing-4xs);
+}
+
+/* ====================================================================== */
+/* BUTTON GROUP                                                            */
+/* ====================================================================== */
+
+.titan-button-group {
+  display: inline-flex;
+  position: relative;
+}
+
+.titan-button-group > .titan-individual-button {
+  border: var(--stroke-s) solid var(--button-group-border);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  max-width: 112px;
+  gap: var(--spacing-4xs);
+  padding: var(--spacing-3xs) var(--spacing-2xs);
+  background-color: var(--button-group-background);
+  color: var(--button-group-color);
+  cursor: pointer;
+  z-index: 1;
+}
+
+.titan-button-group > .titan-individual-button svg {
+  color: var(--button-group-icon-color);
+}
+
+.titan-button-group > .titan-individual-button:first-child {
+  border-top-left-radius: var(--rounded-s);
+  border-bottom-left-radius: var(--rounded-s);
+}
+
+.titan-button-group > .titan-individual-button:not(:first-child):not(:last-child) {
+  border-radius: 0;
+  margin-left: -1px;
+}
+
+.titan-button-group > .titan-individual-button:last-child {
+  border-top-right-radius: var(--rounded-s);
+  border-bottom-right-radius: var(--rounded-s);
+  margin-left: -1px;
+}
+
+.titan-button-group[data-orientation="vertical"] {
+  flex-direction: column;
+}
+
+.titan-button-group[data-orientation="vertical"] > .titan-individual-button {
+  margin-left: 0;
+}
+
+.titan-button-group[data-orientation="vertical"] > .titan-individual-button:first-child {
+  border-radius: 0;
+  border-top-left-radius: var(--rounded-s);
+  border-top-right-radius: var(--rounded-s);
+}
+
+.titan-button-group[data-orientation="vertical"] > .titan-individual-button:not(:first-child):not(:last-child) {
+  border-radius: 0;
+  margin-top: -1px;
+}
+
+.titan-button-group[data-orientation="vertical"] > .titan-individual-button:last-child {
+  border-radius: 0;
+  border-bottom-left-radius: var(--rounded-s);
+  border-bottom-right-radius: var(--rounded-s);
+  margin-top: -1px;
+}
+
+.titan-individual-button[data-selected] {
+  color: var(--button-group-selected-color);
+  background-color: var(--button-group-selected-background);
+}
+
+.titan-individual-button[data-selected] svg {
+  color: var(--button-group-selected-icon-color);
+}
+
+.titan-individual-button[data-hovered]:not([data-selected]) {
+  color: var(--button-group-hover-color);
+  z-index: 2;
+}
+
+.titan-individual-button[data-hovered]:not([data-selected]) svg {
+  color: var(--button-group-hover-icon-color);
+}
+
+.titan-individual-button[data-hovered][data-selected] {
+  z-index: 2;
+}
+
+.titan-individual-button[data-focus-visible] {
+  outline: auto;
+  z-index: 3;
+}
+
+.titan-individual-button[data-disabled] {
+  color: var(--button-group-disabled-color);
+  cursor: not-allowed;
+}
+
+.titan-individual-button[data-disabled] svg {
+  color: var(--button-group-disabled-icon-color);
+  opacity: 0.4;
+}
+
+/* ====================================================================== */
+/* DIVIDER                                                                 */
+/* ====================================================================== */
+
+.titan-divider {
+  border: none;
+  border-top: var(--stroke-s) solid var(--border);
+  margin: 0;
+}
+
+/* ====================================================================== */
+/* COLLAPSIBLE                                                             */
+/* ====================================================================== */
+
+.titan-collapsible {
+  display: flex;
+  flex-direction: column;
+}
+
+.titan-collapsible-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-2xs);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: var(--spacing-2xs) 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  width: 100%;
+}
+
+.titan-collapsible-title {
+  flex: 1;
+  font-weight: var(--text-weight-medium);
+}
+
+.titan-collapsible-chevron {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+}
+
+.titan-collapsible-chevron svg {
+  width: var(--icon-size-s);
+  height: var(--icon-size-s);
+  stroke-width: var(--icon-stroke-s);
+}
+
+.titan-collapsible-content {
+  padding-bottom: var(--spacing-2xs);
+}
+
+/* ── Brand theme: no focus ring ───────────────────── */
+html[data-theme="brand"] *[data-focus-visible] {
+  outline: none !important;
+  box-shadow: none !important;
 }

@@ -395,4 +395,3 @@ export function TitanTableLoadMoreItem(props: React.ComponentProps<typeof RACTab
   return <RACTableLoadMoreItem {...props} />
 }
 
-export { ColumnResizer }

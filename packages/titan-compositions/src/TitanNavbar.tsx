@@ -10,6 +10,7 @@ export type TitanNavbarTheme =
   | 'linkedin'
   | 'tweetbinder'
   | 'connect'
+  | 'brand'
 
 const THEME_TO_LOGO: Record<TitanNavbarTheme, string> = {
   demand: 'logo-demand.svg',
@@ -19,6 +20,7 @@ const THEME_TO_LOGO: Record<TitanNavbarTheme, string> = {
   linkedin: 'logo-linkedin.svg',
   tweetbinder: 'logo-tweetbinder.svg',
   connect: 'logo-connect.svg',
+  brand: 'logo-audiense.svg',
 }
 
 const LOGO_CDN_BASE =
@@ -30,6 +32,15 @@ export interface TitanNavbarProps {
   logoAlt?: string
   /** Base path or URL for logo assets. Defaults to CDN. Pass "/assets/logos" for local. */
   logoBasePath?: string
+  /** Override icons with Titan-native icon components for pixel-perfect fidelity.
+   *  Call `registerTitanIcons()` at app init to ensure all resolved icons are Titan-native. */
+  changeProductIcon?: ReactNode
+  notificationsIcon?: ReactNode
+  supportIcon?: ReactNode
+  helpIcon?: ReactNode
+  settingsIcon?: ReactNode
+  featuredActionIcon?: ReactNode
+  userChevronIcon?: ReactNode
   onChangeProduct?: () => void
   onNotifications?: () => void
   onSupport?: () => void
@@ -65,6 +76,13 @@ export function TitanNavbar({
   userInitial = 'A',
   logoAlt = 'Product logo',
   logoBasePath = LOGO_CDN_BASE,
+  changeProductIcon,
+  notificationsIcon,
+  supportIcon,
+  helpIcon,
+  settingsIcon,
+  featuredActionIcon,
+  userChevronIcon,
   onChangeProduct,
   onNotifications,
   onSupport,
@@ -80,33 +98,33 @@ export function TitanNavbar({
       <div className="navbar-inner">
         <div className="navbar-left-group">
           <Button className="icon-ghost navbar-icon-button" aria-label="Change product" onPress={onChangeProduct}>
-            {renderIconNode('change-product')}
+            {changeProductIcon ?? renderIconNode('change-product')}
           </Button>
           <img className="navbar-logo" src={`${logoBasePath}/${logoFile}`} alt={logoAlt} />
         </div>
 
         <div className="navbar-right-group">
           <Button className="icon-ghost navbar-icon-button" aria-label="Notifications" onPress={onNotifications}>
-            {renderIconNode('notifications')}
+            {notificationsIcon ?? renderIconNode('notifications')}
           </Button>
           <Button className="icon-ghost navbar-icon-button" aria-label="Support and community" onPress={onSupport}>
-            {renderIconNode('handshake')}
+            {supportIcon ?? renderIconNode('handshake')}
           </Button>
           <Button className="icon-ghost navbar-icon-button" aria-label="Help" onPress={onHelp}>
-            {renderIconNode('question')}
+            {helpIcon ?? renderIconNode('question')}
           </Button>
           <Button className="icon-ghost navbar-icon-button" aria-label="Settings" onPress={onSettings}>
-            {renderIconNode('settings')}
+            {settingsIcon ?? renderIconNode('settings')}
           </Button>
           <Button className="icon-ghost navbar-icon-button" aria-label="Featured action" onPress={onFeaturedAction}>
-            {renderIconNode('sparks')}
+            {featuredActionIcon ?? renderIconNode('sparks')}
           </Button>
           <div className="navbar-user">
             <span className="navbar-avatar" aria-hidden="true">
               {userInitial}
             </span>
             <Button className="icon-ghost navbar-chevron-button" aria-label="User menu" onPress={onUserMenu}>
-              {renderIconNode('chevron-down')}
+              {userChevronIcon ?? renderIconNode('chevron-down')}
             </Button>
           </div>
         </div>

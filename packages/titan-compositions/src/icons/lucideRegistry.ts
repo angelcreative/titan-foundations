@@ -13,6 +13,7 @@ import {
   ChevronLeft,
   ChevronRight,
   CircleHelp,
+  ExternalLink,
   Grip,
   GripVertical,
   Handshake,
@@ -38,6 +39,7 @@ import {
   TextCursorInput,
   ToggleLeft,
   Type,
+  User,
   X,
 } from 'lucide-react'
 
@@ -92,4 +94,7 @@ export const LUCIDE_REGISTRY: Record<string, IconComponent> = {
   'type': Type,
   'x': X,
   'minus': Minus,
+  'external-link': ExternalLink,
+  'redirect': ExternalLink,
+  'user': User,
 }
