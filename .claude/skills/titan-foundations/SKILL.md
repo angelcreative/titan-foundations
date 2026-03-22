@@ -3,7 +3,9 @@ name: titan-foundations
 description: Navigate Titan foundations docs and enforce repo-native component specs, anatomies, and integration rules.
 ---
 
-Use this skill when working on UI generation, design-system implementation, or integration decisions in this repository.
+Use this skill when working **inside the titan-foundations repo** — editing tokens, component specs, anatomies, or titan-compositions source code.
+
+For **consuming** the design system in external apps (via MCP, npm package, or CDN), follow the `titan-ds` skill in the MCP worker instead. This skill and that one are complementary, not overlapping.
 
 ## Required navigation order
 

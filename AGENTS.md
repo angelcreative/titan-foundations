@@ -25,3 +25,7 @@ Apply this policy immediately when any of these conditions is true:
 ## Limited exception
 
 Raw HTML is allowed only for structural wrappers without a Titan equivalent (`main`, `section`, layout wrappers), and must still be styled with Titan tokens.
+
+## Detailed navigation
+
+For doc navigation order, token locations, and repo structure details, read `.claude/skills/titan-foundations/SKILL.md`. This file is the policy gate; the skill has the how-to.
