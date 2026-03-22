@@ -14,7 +14,7 @@ body {
 
 body {
   font-family: "Poppins", var(--font-audiense), sans-serif;
-  background: var(--color-black-100);
+  background: var(--background-body, var(--surface-slot-page, var(--color-white-900)));
   color: var(--copy-slot-primary);
 }
 
@@ -33,7 +33,7 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: var(--spacing-m);
-  background: var(--surface-slot-bg);
+  background: var(--surface-slot-navbar, var(--color-white-900));
   border-bottom: 1px solid var(--divider-strong);
   padding: 0 var(--spacing-xl);
 }

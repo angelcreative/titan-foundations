@@ -7,7 +7,7 @@ html[data-theme="neutral"] {
 	--font-audiense: "Poppins", sans-serif;
 
 	/* Background */
-	--background-body: var(--color-black-100);
+	--background-body: var(--color-white-900);
 	--background: var(--color-white-900);
 	--background-brand: var(--background);
 

@@ -102,6 +102,7 @@
   padding: var(--spacing-xl);
   display: grid;
   gap: var(--spacing-m);
+  background: var(--surface-slot-page, var(--color-white-900));
 }
 
 .card {

@@ -9,7 +9,7 @@
  * - Tabs (selected state)
  * - Button Group (selected state)
  * - Calendar selected cell label (ground-900 on pulse bg)
- * - Page background (background-body: ground-100)
+ * - Page background uses white-900 (same as main canvas; no gray page bg)
  *
  * Everything else uses neutral (black/steel) palette:
  * - Text (primary, secondary, icon-secondary)
@@ -27,7 +27,7 @@ html[data-theme="brand"] {
 	--font-audiense: "Poppins", sans-serif;
 
 	/* Background */
-	--background-body: var(--color-ground-100);
+	--background-body: var(--color-white-900);
 	--background: var(--color-white-900);
 	--background-brand: var(--background);
 

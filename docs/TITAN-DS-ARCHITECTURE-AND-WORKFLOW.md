@@ -39,6 +39,8 @@ Más detalle de política por entorno (persistente vs efímero): **`docs/integra
 | `AGENTS.md` | Política global para agentes (orden: compositions → contracts → anatomies → BLOCKER). |
 | `.claude/skills/titan-foundations/SKILL.md` | Skill para trabajo **dentro** de este repo (rutas, anatomías, specs). |
 
+**Superficie de página / contenido principal:** `--surface-page`, `--surface-slot-page` y `--background-body` apuntan a **`--color-white-900`** (fondo de app y main content; ya no se usa gris claro `black-100` como canvas de página).
+
 **Skill `titan-foundations` vs skill `titan-ds` (worker):** el primero es para **editar** foundations y composiciones en este repo. El segundo es para **consumir** el DS en apps externas vía MCP (registry, patterns, validate).
 
 ---

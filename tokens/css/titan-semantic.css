@@ -51,11 +51,11 @@
 
   /* ---------------------------- */
   /* Surfaces (default rules)     */
-  /* background ALWAYS black-100  */
-  /* surfaces ALWAYS white-900    */
+  /* page / main canvas ALWAYS white-900 (no gray page bg) */
+  /* elevated surfaces ALWAYS white-900    */
   /* navbar ALWAYS white-900      */
   /* ---------------------------- */
-  --surface-page: var(--color-black-100);
+  --surface-page: var(--color-white-900);
   --surface-navbar: var(--color-white-900);
   --surface-0: var(--color-white-900); /* cards, panels */
   --surface-1: var(--color-white-900); /* drawers, dialogs */
@@ -378,7 +378,7 @@
   --radius-control: var(--rounded-s); /* inputs/buttons/cards/etc */
   --radius-icon-only: 9999px;         /* icon-only buttons */
 
-  --surface-page: var(--color-black-100);   /* always */
+  --surface-page: var(--color-white-900);   /* page + main content canvas */
   --surface-navbar: var(--color-white-900); /* always */
   --surface-panel: var(--color-white-900);  /* always */
   --surface-popover: var(--color-white-900);
@@ -838,7 +838,7 @@
   /* ====================================================================== */
   /* SURFACES (slots)                                                        */
   /* ====================================================================== */
-  --surface-slot-page: var(--color-black-100);
+  --surface-slot-page: var(--color-white-900);
   --surface-slot-navbar: var(--color-white-900);
   --surface-slot-sidebar: var(--color-white-900);
   --surface-slot-panel: var(--color-white-900);
@@ -1679,7 +1679,7 @@
   /* ====================================================================== */
   /* COMPONENT: SIDEBAR                                                     */
   /* ====================================================================== */
-  --sidebar-slot-bg: var(--surface-slot-bg);
+  --sidebar-slot-bg: var(--surface-slot-sidebar);
   --sidebar-slot-border: var(--color-black-200);
   --sidebar-slot-width-collapsed: 72px;
   --sidebar-slot-width-expanded: 14rem;
