@@ -9,6 +9,7 @@ This folder is organized by documentation intent:
 
 ## Start here
 
+- **Architecture + MCP + user workflow (engineering & design):** `TITAN-DS-ARCHITECTURE-AND-WORKFLOW.md`
 - Global agent policy (highest priority): `../AGENTS.md`
 - Core overview: `core/tokens.md`
 - Inviolable LLM rules: `core/LLM-MANDATORY-RULES.md`
