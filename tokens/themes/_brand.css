@@ -1,14 +1,27 @@
 /**
- * Brand theme — primary: pulse (gold), neutral: ground (earth).
+ * Brand theme — primary: pulse (gold).
  * html[data-theme="brand"]
  *
- * Special rules:
- * - Primary buttons use pulse-600 bg with ground-900 label (dark on gold).
- * - All non-primary buttons (secondary, tertiary, icon) use ground palette.
- * - Error/destructive stays unchanged (Titan error-* tokens).
+ * Ground palette is ONLY used for:
+ * - Buttons (secondary, tertiary, icon button bg/labels)
+ * - Button labels (text-on-primary, text-button-*)
+ * - Form controls (checkbox, radio, toggle/switch)
+ * - Tabs (selected state)
+ * - Button Group (selected state)
+ * - Calendar selected cell label (ground-900 on pulse bg)
+ * - Page background (background-body: ground-100)
+ *
+ * Everything else uses neutral (black/steel) palette:
+ * - Text (primary, secondary, icon-secondary)
+ * - Borders (global)
+ * - Avatar, Inputs, Menus, Dividers, Select, Sidebar, Tooltips, Labels
+ * - Pagination, Table, Navbar border, Pills/Tags
+ *
+ * Other:
+ * - Primary buttons use pulse-600 bg.
+ * - Error/destructive stays on Titan error-* tokens.
  * - No focus ring in this theme.
  * - Links use ocean-500.
- * - Selected states (tabs, toggles, sidebar) use ground palette.
  */
 html[data-theme="brand"] {
 	--font-audiense: "Poppins", sans-serif;
@@ -18,31 +31,31 @@ html[data-theme="brand"] {
 	--background: var(--color-white-900);
 	--background-brand: var(--background);
 
-	/* Border */
-	--border: var(--color-ground-200);
-	--border-interactive: var(--color-ground-300);
+	/* Border — neutral */
+	--border: var(--color-black-200);
+	--border-interactive: var(--color-black-300);
 
-	/* Text */
+	/* Text — neutral (except on-color which is ground for pulse bg) */
 	--text-disabled: var(--color-disabled-500);
 	--text-error-primary: var(--color-error-600);
 	--text-error-primary-active: var(--color-error-800);
 	--text-error-primary-hover: var(--color-error-700);
 	--text-icon-disabled: var(--color-disabled-500);
 	--text-icon-on-color: var(--color-ground-900);
-	--text-icon-secondary: var(--color-ground-700);
-	--text-icon-secondary-active: var(--color-ground-500);
-	--text-icon-secondary-hover: var(--color-ground-600);
+	--text-icon-secondary: var(--color-black-800);
+	--text-icon-secondary-active: var(--color-black-600);
+	--text-icon-secondary-hover: var(--color-black-700);
 	--text-on-color: var(--color-ground-900);
-	--text-primary: var(--color-ground-800);
-	--text-primary-active: var(--color-ground-600);
-	--text-secondary: var(--color-ground-900);
+	--text-primary: var(--color-black-900);
+	--text-primary-active: var(--color-black-700);
+	--text-secondary: var(--color-black-900);
 
 	/* System — error/info/success/warning stay on Titan defaults */
 	--background-error: var(--color-error-200);
 	--background-information: var(--color-information-200);
 	--background-success: var(--color-success-200);
 	--background-warning: var(--color-warning-200);
-	--background-disabled: var(--color-ground-200);
+	--background-disabled: var(--color-black-200);
 	--text-error-on-color: var(--color-error-700);
 	--text-icon-error: var(--color-error-600);
 	--text-icon-information: var(--color-information-600);
@@ -84,8 +97,8 @@ html[data-theme="brand"] {
 	--error-button-secondary-hover: var(--color-error-100);
 	--error-button-secondary-active: var(--color-error-200);
 
-	/* Pill */
-	--pill-background: var(--color-ground-200);
+	/* Pill — neutral */
+	--pill-background: var(--color-black-200);
 
 	/* Tab — ground selected */
 	--tab-background: var(--color-white-900);
@@ -94,8 +107,8 @@ html[data-theme="brand"] {
 	--tab-border-selected: var(--color-ground-600);
 	--tab-selected-background: var(--color-ground-100);
 
-	/* Tooltip */
-	--tooltip-background: var(--color-ground-800);
+	/* Tooltip — neutral */
+	--tooltip-background: var(--color-black-800);
 
 	/* Checkbox — ground */
 	--checkbox-size: 20px;
@@ -125,41 +138,42 @@ html[data-theme="brand"] {
 	--radio-button-alert-message-color: var(--color-error-600);
 	--radio-button-alert-icon-color: var(--color-error-500);
 
-	/* Pagination */
-	--pagination-color: var(--color-ground-900);
-	--pagination-page-button-background-hover: var(--color-ground-100);
-	--pagination-page-button-background-active: var(--color-ground-200);
+	/* Pagination — neutral */
+	--pagination-color: var(--color-black-900);
+	--pagination-page-button-background-hover: var(--color-black-10);
+	--pagination-page-button-background-active: var(--color-black-40);
 
-	/* Select chevron */
-	--select-slot-chevron: var(--text-button-color);
+	/* Select chevron — neutral */
+	--select-slot-chevron: var(--color-black-900);
 
-	/* Menu */
+	/* Menu — neutral */
 	--menu-min-width: 230px;
 	--menu-max-width: 330px;
 	--menu-background: var(--color-white-900);
-	--menu-color: var(--color-ground-800);
+	--menu-color: var(--color-steel-800);
 	--menu-color-mcp: var(--color-white-900);
 	--menu-destructive-color: var(--color-error-600);
-	--menu-item-hover: var(--color-ground-100);
-	--menu-item-pressed: var(--color-ground-200);
-	--menu-item-selected: var(--color-ground-300);
+	--menu-item-hover: var(--color-steel-100);
+	--menu-item-pressed: var(--color-steel-200);
+	--menu-item-selected: var(--color-steel-300);
 	--menu-item-disabled: var(--color-disabled-400);
 	--menu-item-disabled-icon: var(--color-disabled-400);
-	--menu-item-icon: var(--color-ground-600);
+	--menu-item-icon: var(--color-steel-700);
 	--menu-destructive-item-hover: var(--color-error-100);
 	--menu-destructive-item-pressed: var(--color-error-200);
 	--menu-destructive-item-icon: var(--color-error-500);
 
-	/* Table */
-	--table-actionable-row-hover: var(--color-ground-100);
-	--table-header-border-bottom: var(--color-ground-400);
-	--table-cell-border-bottom: var(--color-ground-200);
+	/* Table — neutral */
+	--table-actionable-row-hover: var(--color-black-200);
+	--table-header-border-bottom: var(--color-black-700);
+	--table-cell-border-bottom: var(--color-black-200);
 
 	/* Overlay */
 	--overlay-color: var(--color-black-40);
 
-	/* Avatar */
-	--avatar-background: var(--color-ground-600);
+	/* Avatar — neutral */
+	--avatar-background: var(--color-steel-600);
+	--avatar-color: var(--color-white-900);
 	--avatar-width: 40px;
 	--avatar-height: 40px;
 
@@ -176,23 +190,38 @@ html[data-theme="brand"] {
 	--button-group-disabled-color: var(--color-disabled-500);
 	--button-group-disabled-icon-color: var(--color-disabled-400);
 
-	/* Label */
-	--label-color: var(--color-ground-800);
-	--label-background: var(--color-ground-200);
+	/* Label — neutral */
+	--label-color: var(--color-black-800);
+	--label-background: var(--color-black-200);
 
-	/* Select */
-	--select-button-border: var(--color-ground-300);
-	--select-button-color: var(--color-ground-700);
-	--select-popover-color: var(--color-ground-700);
-	--select-listbox-item-focused-background: var(--color-ground-100);
-	--select-listbox-item-pressed-background: var(--color-ground-200);
-	--select-listbox-item-selected-background: var(--color-ground-200);
+	/* Divider — neutral */
+	--divider: var(--color-steel-200);
+	--divider-strong: var(--color-steel-300);
+
+	/* Sidebar — neutral */
+	--sidebar-slot-item-color: var(--color-black-700);
+	--sidebar-slot-item-color-hover: var(--color-black-900);
+	--sidebar-slot-item-bg-hover: var(--color-black-100);
+	--sidebar-slot-item-color-active: var(--color-black-800);
+	--sidebar-slot-item-bg-active: var(--color-black-100);
+	--sidebar-slot-border: var(--color-black-200);
+	--sidebar-slot-header-color: var(--color-black-500);
+
+	/* Select — neutral */
+	--select-button-border: var(--color-black-300);
+	--select-button-color: var(--color-black-700);
+	--select-popover-color: var(--color-black-700);
+	--select-listbox-item-focused-background: var(--color-black-100);
+	--select-listbox-item-pressed-background: var(--color-black-200);
+	--select-listbox-item-selected-background: var(--color-black-200);
+	--select-slot-button-color-open: var(--color-black-700);
+	--select-slot-chevron-open: var(--color-black-700);
 
 	/* NavBar */
 	--navbar-max-width: 1920px;
 	--navbar-height: 70px;
 	--navbar-background: var(--color-white-900);
-	--navbar-border-color: var(--color-ground-200);
+	--navbar-border-color: var(--color-steel-100);
 
 	/* Link — ocean-500 */
 	--link-color: var(--color-ocean-500);
@@ -213,22 +242,22 @@ html[data-theme="brand"] {
 	--toggle-ball-background: var(--color-white-900);
 	--toggle-disabled-background: var(--color-disabled-200);
 
-	/* Text Input */
-	--input-placeholder-text: var(--color-ground-400);
-	--input-field-text: var(--color-ground-800);
+	/* Text Input — neutral */
+	--input-placeholder-text: var(--color-black-400);
+	--input-field-text: var(--color-black-800);
 	--input-disabled-text: var(--color-disabled-500);
 	--input-background: var(--color-white-900);
-	--input-stroke: var(--color-ground-300);
-	--input-stroke-hover: var(--color-ground-600);
-	--input-stroke-focus: var(--color-ground-700);
-	--input-stroke-focus-visible: var(--color-ground-600);
+	--input-stroke: var(--color-black-300);
+	--input-stroke-hover: var(--color-black-900);
+	--input-stroke-focus: var(--color-black-800);
+	--input-stroke-focus-visible: var(--color-information-600);
 	--input-stroke-error: var(--color-error-700);
 	--input-stroke-disabled: var(--color-disabled-500);
-	--input-icon: var(--color-ground-400);
-	--input-icon-focus: var(--color-ground-700);
+	--input-icon: var(--color-black-300);
+	--input-icon-focus: var(--color-black-700);
 	--input-icon-error: var(--color-error-400);
 	--input-icon-disabled: var(--color-disabled-500);
-	--input-element: var(--color-ground-600);
+	--input-element: var(--color-black-600);
 	--input-element-error: var(--color-error-500);
 	--input-element-disabled: var(--color-disabled-500);
 
@@ -236,7 +265,7 @@ html[data-theme="brand"] {
 	--interactive-icon-button-bg: var(--button-secondary);
 	--interactive-icon-button-bg-hover: var(--button-secondary-hover);
 	--interactive-icon-button-bg-active: var(--button-secondary-active);
-	--interactive-icon-button-bg-fallback: var(--color-ground-100);
+	--interactive-icon-button-bg-fallback: var(--color-black-100);
 	--interactive-icon-button-radius: 9999px;
 	--interactive-icon-button-icon: var(--text-button-color);
 	--interactive-icon-button-icon-disabled: var(--color-disabled-500);
@@ -255,7 +284,7 @@ html[data-theme="brand"] {
 
 	--drawer-close-icon-disabled: var(--color-disabled-500);
 
-	--table-sort-icon-default: var(--color-ground-400);
+	--table-sort-icon-default: var(--color-steel-500);
 	--table-sort-icon-hover: var(--text-secondary);
 	--table-sort-icon-active: var(--text-primary-active);
 	--table-action-item-hover-bg: var(--menu-item-hover);

@@ -1869,35 +1869,49 @@ function TitanLoader({
   );
 }
 
-// src/TitanTableExamples.tsx
+// src/TitanAvatar.tsx
 var import_jsx_runtime21 = require("react/jsx-runtime");
+function TitanAvatar({
+  account,
+  icon,
+  "aria-label": ariaLabel
+}) {
+  if (!account) {
+    return /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("div", { role: "img", className: "titan-avatar", "aria-label": ariaLabel, children: icon ?? renderIconNode("user") });
+  }
+  const firstLetter = account.charAt(0).toUpperCase();
+  return /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("div", { role: "img", className: "titan-avatar body-m-400", "aria-label": ariaLabel, children: firstLetter });
+}
+
+// src/TitanTableExamples.tsx
+var import_jsx_runtime22 = require("react/jsx-runtime");
 function TitanTableExampleBasic() {
-  return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanTable, { "aria-label": "Files", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanTableHeader, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { isRowHeader: true, children: "Name" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { children: "Type" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { children: "Date Modified" })
+  return /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanTable, { "aria-label": "Files", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanTableHeader, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { isRowHeader: true, children: "Name" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { children: "Type" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { children: "Date Modified" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanTableBody, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanRow, { id: "row-1", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: "Games" }),
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: "File folder" }),
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: "6/7/2020" })
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanTableBody, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanRow, { id: "row-1", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: "Games" }),
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: "File folder" }),
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: "6/7/2020" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanRow, { id: "row-2", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: "Program Files" }),
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: "File folder" }),
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: "4/7/2021" })
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanRow, { id: "row-2", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: "Program Files" }),
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: "File folder" }),
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: "4/7/2021" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanRow, { id: "row-3", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: "bootmgr" }),
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: "System file" }),
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: "11/20/2010" })
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanRow, { id: "row-3", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: "bootmgr" }),
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: "System file" }),
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: "11/20/2010" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanRow, { id: "row-4", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: "log.txt" }),
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: "Text Document" }),
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: "1/18/2016" })
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanRow, { id: "row-4", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: "log.txt" }),
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: "Text Document" }),
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: "1/18/2016" })
       ] })
     ] })
   ] });
@@ -1921,10 +1935,10 @@ function TitanTableExampleDynamic() {
     const date = (/* @__PURE__ */ new Date()).toLocaleDateString();
     setRows((prev) => [...prev, { id: prev.length + 1, name: "file.txt", type: "Text Document", date }]);
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { display: "flex", flexDirection: "column", gap: 12, alignItems: "flex-start", width: "100%" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("span", { style: { fontSize: 14, fontWeight: 600 }, children: "Show columns:" }),
-      dynamicColumns.map((c) => /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { display: "flex", flexDirection: "column", gap: 12, alignItems: "flex-start", width: "100%" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("span", { style: { fontSize: 14, fontWeight: 600 }, children: "Show columns:" }),
+      dynamicColumns.map((c) => /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
         TitanCheckboxField,
         {
           label: c.name,
@@ -1935,11 +1949,11 @@ function TitanTableExampleDynamic() {
         },
         c.id
       )),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanButton, { onPress: addRow, children: "Add row" })
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanButton, { onPress: addRow, children: "Add row" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanTable, { "aria-label": "Files", style: { width: "100%" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanTableHeader, { columns: visibleColumns, children: (column) => /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { isRowHeader: column.isRowHeader, children: column.name }, column.id) }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanTableBody, { items: rows, dependencies: [visibleColumns], children: (item) => /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanRow, { id: String(item.id), columns: visibleColumns, children: (column) => /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: item[column.id] }) }, item.id) })
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanTable, { "aria-label": "Files", style: { width: "100%" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanTableHeader, { columns: visibleColumns, children: (column) => /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { isRowHeader: column.isRowHeader, children: column.name }, column.id) }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanTableBody, { items: rows, dependencies: [visibleColumns], children: (item) => /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanRow, { id: String(item.id), columns: visibleColumns, children: (column) => /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: item[column.id] }) }, item.id) })
     ] })
   ] });
 }
@@ -1961,53 +1975,53 @@ function TitanTableExampleAsync() {
     getKey: (item) => item.id
   });
   const isLoadingMore = list.loadingState === "loadingMore";
-  return /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("div", { style: { minHeight: 200, maxHeight: 360, overflow: "auto", width: "100%" }, children: /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanTable, { "aria-label": "Star Wars characters", stickyHeader: true, style: { width: "100%" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanTableHeader, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { id: "name", isRowHeader: true, children: "Name" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { id: "height", children: "Height" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { id: "mass", children: "Mass" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { id: "birth", children: "Birth Year" })
+  return /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("div", { style: { minHeight: 200, maxHeight: 360, overflow: "auto", width: "100%" }, children: /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanTable, { "aria-label": "Star Wars characters", stickyHeader: true, style: { width: "100%" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanTableHeader, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { id: "name", isRowHeader: true, children: "Name" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { id: "height", children: "Height" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { id: "mass", children: "Mass" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { id: "birth", children: "Birth Year" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
       TitanTableBody,
       {
         items: list.items,
-        renderEmptyState: () => list.isLoading ? /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("div", { style: { display: "flex", justifyContent: "center", padding: 24 }, children: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanLoader, { "aria-label": "Loading..." }) }) : list.error ? /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("div", { style: { padding: 24, textAlign: "center", color: "var(--color-red-600)" }, children: list.error.message }) : /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("div", { style: { padding: 24, textAlign: "center", fontStyle: "italic" }, children: "No data." }),
+        renderEmptyState: () => list.isLoading ? /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("div", { style: { display: "flex", justifyContent: "center", padding: 24 }, children: /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanLoader, { "aria-label": "Loading..." }) }) : list.error ? /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("div", { style: { padding: 24, textAlign: "center", color: "var(--color-red-600)" }, children: list.error.message }) : /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("div", { style: { padding: 24, textAlign: "center", fontStyle: "italic" }, children: "No data." }),
         children: [
-          ((item) => /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanRow, { id: item.id, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: item.name }),
-            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: item.height }),
-            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: item.mass }),
-            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: item.birth })
+          ((item) => /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanRow, { id: item.id, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: item.name }),
+            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: item.height }),
+            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: item.mass }),
+            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: item.birth })
           ] })),
-          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanTableLoadMoreItem, { onLoadMore: list.loadMore, isLoading: isLoadingMore })
+          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanTableLoadMoreItem, { onLoadMore: list.loadMore, isLoading: isLoadingMore })
         ]
       }
     )
   ] }) });
 }
 function TitanTableExampleLinks() {
-  return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanTable, { "aria-label": "Links", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanTableHeader, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { isRowHeader: true, children: "Name" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { children: "URL" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { children: "Date added" })
+  return /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanTable, { "aria-label": "Links", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanTableHeader, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { isRowHeader: true, children: "Name" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { children: "URL" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { children: "Date added" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanTableBody, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanRow, { id: "row-1", href: "https://adobe.com/", target: "_blank", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: "Adobe" }),
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: "https://adobe.com/" }),
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: "January 28, 2023" })
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanTableBody, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanRow, { id: "row-1", href: "https://adobe.com/", target: "_blank", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: "Adobe" }),
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: "https://adobe.com/" }),
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: "January 28, 2023" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanRow, { id: "row-2", href: "https://google.com/", target: "_blank", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: "Google" }),
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: "https://google.com/" }),
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: "April 5, 2023" })
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanRow, { id: "row-2", href: "https://google.com/", target: "_blank", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: "Google" }),
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: "https://google.com/" }),
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: "April 5, 2023" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanRow, { id: "row-3", href: "https://nytimes.com/", target: "_blank", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: "New York Times" }),
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: "https://nytimes.com/" }),
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: "July 12, 2023" })
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanRow, { id: "row-3", href: "https://nytimes.com/", target: "_blank", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: "New York Times" }),
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: "https://nytimes.com/" }),
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: "July 12, 2023" })
       ] })
     ] })
   ] });
@@ -2018,14 +2032,14 @@ var clickableNameRows = [
   { id: "3", name: "bootmgr", type: "System file", date: "11/20/2010" }
 ];
 function TitanTableExampleClickableNameCell() {
-  return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanTable, { "aria-label": "Files with clickable names", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanTableHeader, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { isRowHeader: true, children: "Name" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { children: "Type" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { children: "Date Modified" })
+  return /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanTable, { "aria-label": "Files with clickable names", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanTableHeader, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { isRowHeader: true, children: "Name" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { children: "Type" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { children: "Date Modified" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanTableBody, { items: clickableNameRows, children: (item) => /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanRow, { id: item.id, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanTableBody, { items: clickableNameRows, children: (item) => /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanRow, { id: item.id, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
         "button",
         {
           type: "button",
@@ -2034,8 +2048,8 @@ function TitanTableExampleClickableNameCell() {
           children: item.name
         }
       ) }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: item.type }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: item.date })
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: item.type }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: item.date })
     ] }) })
   ] });
 }
@@ -2046,21 +2060,21 @@ var cellTypesRows = [
   { id: "4", name: "Jane Doe", date: "2025-08-12", status: "failed" }
 ];
 function TitanTableExampleCellTypes() {
-  return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanTable, { "aria-label": "Rows with date, initials, status, actions", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanTableHeader, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { isRowHeader: true, children: "Name" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { children: "Date" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { children: "Status" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { className: "table-col-actions", children: "Actions" })
+  return /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanTable, { "aria-label": "Rows with date, initials, status, actions", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanTableHeader, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { isRowHeader: true, children: "Name" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { children: "Date" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { children: "Status" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { className: "table-col-actions", children: "Actions" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanTableBody, { items: cellTypesRows, children: (item) => /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanRow, { id: item.id, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanCell, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanTableCellInitials, { name: item.name, seed: item.id }),
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("span", { style: { marginLeft: 8 }, children: item.name })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanTableCellDate, { value: item.date }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanTableCellStatus, { status: item.status }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { className: "table-cell-actions", children: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanTableBody, { items: cellTypesRows, children: (item) => /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanRow, { id: item.id, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("span", { className: "table-cell-avatar-group", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanAvatar, { account: item.name, "aria-label": `${item.name}'s avatar` }),
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("span", { children: item.name })
+      ] }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanTableCellDate, { value: item.date }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanTableCellStatus, { status: item.status }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { className: "table-cell-actions", children: /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
         TitanTableCellActions,
         {
           onEdit: () => alert(`Edit ${item.name}`),
@@ -2071,13 +2085,13 @@ function TitanTableExampleCellTypes() {
   ] });
 }
 function TitanTableExampleEmpty() {
-  return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanTable, { "aria-label": "Search results", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanTableHeader, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { isRowHeader: true, children: "Name" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { children: "Type" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { children: "Date Modified" })
+  return /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanTable, { "aria-label": "Search results", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanTableHeader, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { isRowHeader: true, children: "Name" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { children: "Type" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { children: "Date Modified" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanTableBody, { items: [], renderEmptyState: () => "No results found.", children: () => null })
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanTableBody, { items: [], renderEmptyState: () => "No results found.", children: () => null })
   ] });
 }
 var selectionRows = [
@@ -2088,8 +2102,8 @@ var selectionRows = [
 ];
 function TitanTableExampleSelection() {
   const [selected, setSelected] = (0, import_react5.useState)(/* @__PURE__ */ new Set());
-  return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { display: "flex", flexDirection: "column", gap: 8, width: "100%" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { display: "flex", flexDirection: "column", gap: 8, width: "100%" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
       TitanTable,
       {
         "aria-label": "Favorite pokemon",
@@ -2098,20 +2112,20 @@ function TitanTableExampleSelection() {
         onSelectionChange: setSelected,
         onRowAction: (key) => alert(`Clicked ${key}`),
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanTableHeader, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { isRowHeader: true, children: "Name" }),
-            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { children: "Type" }),
-            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { children: "Level" })
+          /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanTableHeader, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { isRowHeader: true, children: "Name" }),
+            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { children: "Type" }),
+            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { children: "Level" })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanTableBody, { items: selectionRows, children: (item) => /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanRow, { id: item.id, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: item.name }),
-            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: item.type }),
-            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: item.level })
+          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanTableBody, { items: selectionRows, children: (item) => /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanRow, { id: item.id, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: item.name }),
+            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: item.type }),
+            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: item.level })
           ] }) })
         ]
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("p", { style: { fontSize: 14, margin: 0 }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("p", { style: { fontSize: 14, margin: 0 }, children: [
       "Current selection: ",
       selected === "all" ? "all" : [...selected].join(", ")
     ] })
@@ -2138,22 +2152,22 @@ function TitanTableExampleSortable() {
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
     });
   }, [sortDescriptor]);
-  return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
     TitanTable,
     {
       "aria-label": "Favorite pokemon",
       sortDescriptor,
       onSortChange: setSortDescriptor,
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanTableHeader, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { id: "name", isRowHeader: true, allowsSorting: true, children: "Name" }),
-          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { id: "type", allowsSorting: true, children: "Type" }),
-          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { id: "level", allowsSorting: true, children: "Level" })
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanTableHeader, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { id: "name", isRowHeader: true, allowsSorting: true, children: "Name" }),
+          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { id: "type", allowsSorting: true, children: "Type" }),
+          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { id: "level", allowsSorting: true, children: "Level" })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanTableBody, { items: sortedRows, children: (item) => /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanRow, { id: String(item.id), children: [
-          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: item.name }),
-          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: item.type }),
-          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: item.level })
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanTableBody, { items: sortedRows, children: (item) => /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanRow, { id: String(item.id), children: [
+          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: item.name }),
+          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: item.type }),
+          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: item.level })
         ] }) })
       ]
     }
@@ -2176,24 +2190,24 @@ function TitanTableExampleHeaderVariants() {
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
     });
   }, [sortDescriptor]);
-  return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
     TitanTable,
     {
       "aria-label": "Table with header variants",
       sortDescriptor,
       onSortChange: setSortDescriptor,
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanTableHeader, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { id: "name", isRowHeader: true, allowsSorting: true, sortIconPosition: "left", children: "Name" }),
-          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { id: "metric", showInfoIcon: true, infoIconAriaLabel: "Metric definition", children: "Metric" }),
-          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { id: "note", allowsSorting: true, sortIconPosition: "left", showInfoIcon: true, infoIconAriaLabel: "Note tooltip", children: "Note" }),
-          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { id: "plain", children: "Plain" })
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanTableHeader, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { id: "name", isRowHeader: true, allowsSorting: true, sortIconPosition: "left", children: "Name" }),
+          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { id: "metric", showInfoIcon: true, infoIconAriaLabel: "Metric definition", children: "Metric" }),
+          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { id: "note", allowsSorting: true, sortIconPosition: "left", showInfoIcon: true, infoIconAriaLabel: "Note tooltip", children: "Note" }),
+          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { id: "plain", children: "Plain" })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanTableBody, { items: sortedRows, children: (item) => /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanRow, { id: String(item.id), children: [
-          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: item.name }),
-          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: item.metric }),
-          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: item.note }),
-          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: item.plain })
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanTableBody, { items: sortedRows, children: (item) => /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanRow, { id: String(item.id), children: [
+          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: item.name }),
+          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: item.metric }),
+          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: item.note }),
+          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: item.plain })
         ] }) })
       ]
     }
@@ -2206,16 +2220,16 @@ var resizableRows = [
   { id: 4, name: "Job Posting_8301", date: "May 30, 2025", size: "139 KB" }
 ];
 function TitanTableExampleResizable() {
-  return /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanResizableTableContainer, { style: { maxHeight: 320 }, children: /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanTable, { noWrapper: true, "aria-label": "Table with resizable columns", style: { width: "100%" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanTableHeader, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { id: "file", isRowHeader: true, allowsResizing: true, defaultWidth: 200, minWidth: 120, maxWidth: 500, children: "File Name" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { id: "size", allowsResizing: true, defaultWidth: 80, children: "Size" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { id: "date", allowsResizing: true, defaultWidth: 140, minWidth: 100, children: "Date Modified" })
+  return /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanResizableTableContainer, { style: { maxHeight: 320 }, children: /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanTable, { noWrapper: true, "aria-label": "Table with resizable columns", style: { width: "100%" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanTableHeader, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { id: "file", isRowHeader: true, allowsResizing: true, defaultWidth: 200, minWidth: 120, maxWidth: 500, children: "File Name" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { id: "size", allowsResizing: true, defaultWidth: 80, children: "Size" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { id: "date", allowsResizing: true, defaultWidth: 140, minWidth: 100, children: "Date Modified" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanTableBody, { items: resizableRows, children: (item) => /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanRow, { id: String(item.id), children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: item.name }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: item.size }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: item.date })
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanTableBody, { items: resizableRows, children: (item) => /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanRow, { id: String(item.id), children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: item.name }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: item.size }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: item.date })
     ] }) })
   ] }) });
 }
@@ -2240,22 +2254,22 @@ function TitanTableExampleDragDrop() {
       }
     }
   });
-  return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanTable, { "aria-label": "Files", selectionMode: "multiple", dragAndDropHooks, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanTableHeader, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { isRowHeader: true, children: "Name" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { children: "Type" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanColumn, { children: "Date Modified" })
+  return /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanTable, { "aria-label": "Files", selectionMode: "multiple", dragAndDropHooks, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanTableHeader, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { isRowHeader: true, children: "Name" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { children: "Type" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanColumn, { children: "Date Modified" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanTableBody, { items: list.items, children: (item) => /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(TitanRow, { id: String(item.id), children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: item.name }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: item.type }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TitanCell, { children: item.date })
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanTableBody, { items: list.items, children: (item) => /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanRow, { id: String(item.id), children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: item.name }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: item.type }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCell, { children: item.date })
     ] }) })
   ] });
 }
 
 // src/TitanTwoUpOneDownLayout.tsx
-var import_jsx_runtime22 = require("react/jsx-runtime");
+var import_jsx_runtime23 = require("react/jsx-runtime");
 function TitanTwoUpOneDownLayout({
   theme = "insights",
   userInitial = "A",
@@ -2265,14 +2279,14 @@ function TitanTwoUpOneDownLayout({
   rightTop,
   bottom
 }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(import_jsx_runtime22.Fragment, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanNavbar, { theme, userInitial }),
-    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("main", { className: "page", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("section", { className: "card", children: /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanBreadcrumb, { items: breadcrumbItems, currentLabel: breadcrumbCurrentLabel }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitanCardGrid, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCard, { span: 8, children: leftTop }),
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCard, { span: 8, children: rightTop }),
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitanCard, { span: 16, children: bottom })
+  return /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_jsx_runtime23.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(TitanNavbar, { theme, userInitial }),
+    /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("main", { className: "page", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("section", { className: "card", children: /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(TitanBreadcrumb, { items: breadcrumbItems, currentLabel: breadcrumbCurrentLabel }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(TitanCardGrid, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(TitanCard, { span: 8, children: leftTop }),
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(TitanCard, { span: 8, children: rightTop }),
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(TitanCard, { span: 16, children: bottom })
       ] })
     ] })
   ] });
@@ -2281,7 +2295,7 @@ function TitanTwoUpOneDownLayout({
 // src/TitanSidebar.tsx
 var import_react6 = require("react");
 var import_react_aria_components18 = require("react-aria-components");
-var import_jsx_runtime23 = require("react/jsx-runtime");
+var import_jsx_runtime24 = require("react/jsx-runtime");
 var SidebarContext = (0, import_react6.createContext)({
   collapsed: false,
   activeId: null,
@@ -2308,13 +2322,13 @@ function TitanSidebar({
     },
     [isControlled, onActiveChange]
   );
-  return /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(SidebarContext.Provider, { value: { collapsed, activeId, setActiveId }, children: /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(SidebarContext.Provider, { value: { collapsed, activeId, setActiveId }, children: /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
     "aside",
     {
       className: "titan-sidebar",
       ...collapsed ? { "data-collapsed": "" } : {},
       children: [
-        onToggle && /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
+        onToggle && /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
           import_react_aria_components18.Button,
           {
             className: "titan-sidebar-toggle",
@@ -2329,7 +2343,7 @@ function TitanSidebar({
   ) });
 }
 function TitanSidebarHeader({ children }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("div", { className: "titan-sidebar-header", children });
+  return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("div", { className: "titan-sidebar-header", children });
 }
 function TitanSidebarItem({
   id,
@@ -2339,7 +2353,7 @@ function TitanSidebarItem({
 }) {
   const { collapsed, activeId, setActiveId } = (0, import_react6.useContext)(SidebarContext);
   const isActive = activeId === id;
-  return /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
     import_react_aria_components18.Button,
     {
       className: "titan-sidebar-item",
@@ -2352,7 +2366,7 @@ function TitanSidebarItem({
       },
       children: [
         icon ? renderIconNode(icon) : null,
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("span", { className: "titan-sidebar-item-label", children })
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { className: "titan-sidebar-item-label", children })
       ]
     }
   );
@@ -2360,7 +2374,7 @@ function TitanSidebarItem({
 
 // src/TitanSlider.tsx
 var import_react_aria_components19 = require("react-aria-components");
-var import_jsx_runtime24 = require("react/jsx-runtime");
+var import_jsx_runtime25 = require("react/jsx-runtime");
 function TitanSlider({
   label,
   defaultValue = 50,
@@ -2373,7 +2387,7 @@ function TitanSlider({
   formatOptions,
   className = ""
 }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(
     import_react_aria_components19.Slider,
     {
       className: `slider-root ${className}`.trim(),
@@ -2385,19 +2399,19 @@ function TitanSlider({
       onChange,
       formatOptions,
       children: [
-        (label || showOutput) && /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { className: "slider-header", children: [
-          label && /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_react_aria_components19.Label, { className: "slider-label", children: label }),
-          showOutput && /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_react_aria_components19.SliderOutput, { className: "slider-output" })
+        (label || showOutput) && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { className: "slider-header", children: [
+          label && /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_react_aria_components19.Label, { className: "slider-label", children: label }),
+          showOutput && /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_react_aria_components19.SliderOutput, { className: "slider-output" })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_react_aria_components19.SliderTrack, { className: "slider-track", children: ({ state }) => /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_jsx_runtime24.Fragment, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_react_aria_components19.SliderTrack, { className: "slider-track", children: ({ state }) => /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_jsx_runtime25.Fragment, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
             "div",
             {
               className: "slider-track-fill",
               style: { width: `${state.getThumbPercent(0) * 100}%` }
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_react_aria_components19.SliderThumb, { className: "slider-thumb", index: 0 })
+          /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_react_aria_components19.SliderThumb, { className: "slider-thumb", index: 0 })
         ] }) })
       ]
     }
@@ -2415,7 +2429,7 @@ function TitanRangeSlider({
   formatOptions,
   className = ""
 }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(
     import_react_aria_components19.Slider,
     {
       className: `slider-root slider-root-range ${className}`.trim(),
@@ -2427,23 +2441,23 @@ function TitanRangeSlider({
       onChange,
       formatOptions,
       children: [
-        (label || showOutput) && /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { className: "slider-header", children: [
-          label && /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_react_aria_components19.Label, { className: "slider-label", children: label }),
-          showOutput && /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_react_aria_components19.SliderOutput, { className: "slider-output" })
+        (label || showOutput) && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { className: "slider-header", children: [
+          label && /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_react_aria_components19.Label, { className: "slider-label", children: label }),
+          showOutput && /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_react_aria_components19.SliderOutput, { className: "slider-output" })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_react_aria_components19.SliderTrack, { className: "slider-track", children: ({ state }) => {
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_react_aria_components19.SliderTrack, { className: "slider-track", children: ({ state }) => {
           const left = state.getThumbPercent(0) * 100;
           const right = state.getThumbPercent(1) * 100;
-          return /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_jsx_runtime24.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
+          return /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_jsx_runtime25.Fragment, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
               "div",
               {
                 className: "slider-track-fill",
                 style: { left: `${left}%`, width: `${right - left}%` }
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_react_aria_components19.SliderThumb, { className: "slider-thumb", index: 0 }),
-            /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_react_aria_components19.SliderThumb, { className: "slider-thumb", index: 1 })
+            /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_react_aria_components19.SliderThumb, { className: "slider-thumb", index: 0 }),
+            /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_react_aria_components19.SliderThumb, { className: "slider-thumb", index: 1 })
           ] });
         } })
       ]
@@ -2453,7 +2467,7 @@ function TitanRangeSlider({
 
 // src/TitanProgressBar.tsx
 var import_react_aria_components20 = require("react-aria-components");
-var import_jsx_runtime25 = require("react/jsx-runtime");
+var import_jsx_runtime26 = require("react/jsx-runtime");
 function TitanProgressBar({
   label,
   value = 0,
@@ -2464,7 +2478,7 @@ function TitanProgressBar({
   className = ""
 }) {
   const percent = (value - minValue) / (maxValue - minValue) * 100;
-  return /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
     import_react_aria_components20.ProgressBar,
     {
       className: `progress-root ${className}`.trim(),
@@ -2472,12 +2486,12 @@ function TitanProgressBar({
       minValue,
       maxValue,
       formatOptions,
-      children: ({ valueText }) => /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_jsx_runtime25.Fragment, { children: [
-        (label || showValue) && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { className: "progress-header", children: [
-          label && /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_react_aria_components20.Label, { className: "progress-label", children: label }),
-          showValue && /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { className: "progress-value", children: valueText })
+      children: ({ valueText }) => /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(import_jsx_runtime26.Fragment, { children: [
+        (label || showValue) && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { className: "progress-header", children: [
+          label && /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(import_react_aria_components20.Label, { className: "progress-label", children: label }),
+          showValue && /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("span", { className: "progress-value", children: valueText })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { className: "progress-track", children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { className: "progress-fill", style: { width: `${percent}%` } }) })
+        /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { className: "progress-track", children: /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { className: "progress-fill", style: { width: `${percent}%` } }) })
       ] })
     }
   );
@@ -2487,7 +2501,7 @@ function TitanProgressBar({
 var import_react7 = require("react");
 var import_react_aria_components21 = require("react-aria-components");
 var import_date = require("@internationalized/date");
-var import_jsx_runtime26 = require("react/jsx-runtime");
+var import_jsx_runtime27 = require("react/jsx-runtime");
 function CalendarDropdown({
   options,
   value,
@@ -2521,8 +2535,8 @@ function CalendarDropdown({
     const active = listRef.current.querySelector('[data-active="true"]');
     if (active) active.scrollIntoView({ block: "nearest" });
   }, [open]);
-  return /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { className: `cal-dropdown ${className}`.trim(), ref, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { className: `cal-dropdown ${className}`.trim(), ref, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(
       "button",
       {
         type: "button",
@@ -2531,18 +2545,18 @@ function CalendarDropdown({
         "aria-haspopup": "listbox",
         "aria-expanded": open,
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("span", { children: selected?.label ?? "" }),
+          /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("span", { children: selected?.label ?? "" }),
           renderIconNode("chevron-down")
         ]
       }
     ),
-    open && /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+    open && /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
       "ul",
       {
         className: `cal-dropdown-menu${flipUp ? " cal-dropdown-menu-flip" : ""}`,
         role: "listbox",
         ref: listRef,
-        children: options.map((o) => /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+        children: options.map((o) => /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
           "li",
           {
             role: "option",
@@ -2594,8 +2608,8 @@ function TitanCalendar({
     () => years.map((y) => ({ value: y, label: String(y) })),
     [years]
   );
-  return /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { className: `calendar-wrapper ${className}`.trim(), children: [
-    /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { className: `calendar-wrapper ${className}`.trim(), children: [
+    /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(
       import_react_aria_components21.Calendar,
       {
         "aria-label": "Calendar",
@@ -2608,10 +2622,10 @@ function TitanCalendar({
         maxValue,
         isDisabled,
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("header", { className: "calendar-header", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(import_react_aria_components21.Button, { slot: "previous", className: "calendar-nav-btn", children: renderIconNode("chevron-left") }),
-            /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { className: "calendar-selects", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("header", { className: "calendar-header", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(import_react_aria_components21.Button, { slot: "previous", className: "calendar-nav-btn", children: renderIconNode("chevron-left") }),
+            /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { className: "calendar-selects", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
                 CalendarDropdown,
                 {
                   options: months,
@@ -2619,7 +2633,7 @@ function TitanCalendar({
                   onChange: (m) => setFocusedDate(focusedDate.set({ month: m }))
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
                 CalendarDropdown,
                 {
                   className: "cal-dropdown-year",
@@ -2629,19 +2643,19 @@ function TitanCalendar({
                 }
               )
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(import_react_aria_components21.Button, { slot: "next", className: "calendar-nav-btn", children: renderIconNode("chevron-right") })
+            /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(import_react_aria_components21.Button, { slot: "next", className: "calendar-nav-btn", children: renderIconNode("chevron-right") })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(import_react_aria_components21.CalendarGrid, { className: "calendar-grid", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(import_react_aria_components21.CalendarGridHeader, { children: (day) => /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(import_react_aria_components21.CalendarHeaderCell, { className: "calendar-header-cell" }) }),
-            /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(import_react_aria_components21.CalendarGridBody, { children: (date) => /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(import_react_aria_components21.CalendarCell, { date, className: "calendar-cell" }) })
+          /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(import_react_aria_components21.CalendarGrid, { className: "calendar-grid", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(import_react_aria_components21.CalendarGridHeader, { children: (day) => /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(import_react_aria_components21.CalendarHeaderCell, { className: "calendar-header-cell" }) }),
+            /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(import_react_aria_components21.CalendarGridBody, { children: (date) => /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(import_react_aria_components21.CalendarCell, { date, className: "calendar-cell" }) })
           ] })
         ]
       }
     ),
-    showTime && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { className: "calendar-time", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { className: "calendar-time-field", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("label", { className: "calendar-time-label", children: "Hour" }),
-        /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+    showTime && /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { className: "calendar-time", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { className: "calendar-time-field", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("label", { className: "calendar-time-label", children: "Hour" }),
+        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
           "input",
           {
             type: "text",
@@ -2664,10 +2678,10 @@ function TitanCalendar({
           }
         )
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("span", { className: "calendar-time-separator", children: ":" }),
-      /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { className: "calendar-time-field", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("label", { className: "calendar-time-label", children: "Minute" }),
-        /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("span", { className: "calendar-time-separator", children: ":" }),
+      /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { className: "calendar-time-field", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("label", { className: "calendar-time-label", children: "Minute" }),
+        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
           "input",
           {
             type: "text",
@@ -2696,7 +2710,7 @@ function TitanCalendar({
 
 // src/TitanLink.tsx
 var import_react_aria_components22 = require("react-aria-components");
-var import_jsx_runtime27 = require("react/jsx-runtime");
+var import_jsx_runtime28 = require("react/jsx-runtime");
 function TitanLink({
   children,
   size = "m",
@@ -2705,24 +2719,10 @@ function TitanLink({
   ...props
 }) {
   const mergedClassName = [`titan-link`, `text-link-${size}`, className].filter(Boolean).join(" ");
-  return /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(import_react_aria_components22.Link, { className: mergedClassName, ...props, children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(import_react_aria_components22.Link, { className: mergedClassName, ...props, children: [
     children,
     withIcon && renderIconNode("redirect")
   ] });
-}
-
-// src/TitanAvatar.tsx
-var import_jsx_runtime28 = require("react/jsx-runtime");
-function TitanAvatar({
-  account,
-  icon,
-  "aria-label": ariaLabel
-}) {
-  if (!account) {
-    return /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("div", { role: "img", className: "titan-avatar", "aria-label": ariaLabel, children: icon ?? renderIconNode("user") });
-  }
-  const firstLetter = account.charAt(0).toUpperCase();
-  return /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("div", { role: "img", className: "titan-avatar body-m-400", "aria-label": ariaLabel, children: firstLetter });
 }
 
 // src/TitanPillGroup.tsx

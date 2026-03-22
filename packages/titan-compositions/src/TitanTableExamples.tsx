@@ -18,9 +18,9 @@ import {
 import { TitanButton } from './TitanButton'
 import { TitanLoader } from './TitanLoader'
 import { TitanCheckboxField } from './TitanFormControls'
+import { TitanAvatar } from './TitanAvatar'
 import {
   TitanTableCellDate,
-  TitanTableCellInitials,
   TitanTableCellActions,
   TitanTableCellStatus,
 } from './TitanTableCells'
@@ -297,8 +297,10 @@ export function TitanTableExampleCellTypes() {
         {(item) => (
           <TitanRow id={item.id}>
             <TitanCell>
-              <TitanTableCellInitials name={item.name} seed={item.id} />
-              <span style={{ marginLeft: 8 }}>{item.name}</span>
+              <span className="table-cell-avatar-group">
+                <TitanAvatar account={item.name} aria-label={`${item.name}'s avatar`} />
+                <span>{item.name}</span>
+              </span>
             </TitanCell>
             <TitanCell>
               <TitanTableCellDate value={item.date} />
