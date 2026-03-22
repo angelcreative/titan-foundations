@@ -1,5 +1,5 @@
 ---
-description: Icon usage rules inside TitanTable and data table components
+description: Icon usage rules and th/td alignment for TitanTable and data tables
 globs: 
   - "**/TitanTable*"
   - "**/titan-compositions.css"
@@ -7,7 +7,19 @@ globs:
 alwaysApply: false
 ---
 
-# Table Icon Rules (titan-compositions)
+# Table layout & icon rules (titan-compositions)
+
+## Cell and header alignment (mandatory)
+
+- **`th` and `td` default:** `text-align: left` for all copy, numbers, and mixed content (text + icon, avatar + label, etc.).
+- **`text-align: center` ONLY** when the cell contains **exclusively** one of:
+  - a **decorative / informational icon** (no text beside it),
+  - an **avatar alone** (no name or secondary text in the same cell),
+  - a **checkbox** (use `table-col-checkbox` / `table-cell-checkbox`),
+  - a **drag handle** (use `table-col-drag` / `table-cell-drag`),
+  - a **single action icon** (e.g. kebab column: `table-col-actions` / `table-cell-actions`).
+- For **avatar-only** or **icon-only** columns, use classes `table-col-avatar-only` / `table-cell-avatar-only` or `table-col-icon-only` / `table-cell-icon-only` (see `titan-compositions.css`), or `th.table-align-center` / `td.table-align-center` when appropriate.
+- Do **not** center normal data columns for aesthetics.
 
 ## Cell icons (tbody)
 

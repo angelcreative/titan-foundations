@@ -605,9 +605,22 @@
   text-align: center;
 }
 
+/* Avatar-only / icon-only columns: center — cell must contain only avatar or only decorative icon (no text) */
+.layout-table-wrap .table-borderless thead th.table-col-avatar-only,
+.layout-table-wrap .table-borderless tbody td.table-cell-avatar-only,
+.layout-table-wrap .table-borderless thead th.table-col-icon-only,
+.layout-table-wrap .table-borderless tbody td.table-cell-icon-only {
+  text-align: center;
+  vertical-align: middle;
+}
+
 /* Data columns: min-width para que la primera columna no salga aplastada */
-.layout-table-wrap .table-borderless thead th:not(.table-col-checkbox):not(.table-col-drag),
-.layout-table-wrap .table-borderless tbody td:not(.table-cell-checkbox):not(.table-cell-drag) {
+.layout-table-wrap .table-borderless thead th:not(.table-col-checkbox):not(.table-col-drag):not(
+    .table-col-avatar-only
+  ):not(.table-col-icon-only):not(.table-col-actions),
+.layout-table-wrap .table-borderless tbody td:not(.table-cell-checkbox):not(.table-cell-drag):not(
+    .table-cell-avatar-only
+  ):not(.table-cell-icon-only):not(.table-cell-actions) {
   min-width: 100px;
 }
 
@@ -715,14 +728,14 @@
 
 .table-col-actions,
 .table-cell-actions {
-  text-align: right;
+  text-align: center;
   white-space: nowrap;
 }
 
-/* Celda con icon button y menú (kebab) */
+/* Celda con icon button y menú (kebab) — single action icon: center-aligned */
 .table-cell-actions-wrap {
   display: inline-flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
 }
 .table-cell-actions-trigger {
