@@ -1657,14 +1657,14 @@
 .select-trigger[data-disabled],
 .select-trigger[data-disabled][data-hovered],
 .select-trigger[data-disabled][data-pressed] {
-  background: var(--button-secondary-slot-disabled-bg);
-  color: var(--button-secondary-slot-disabled-label);
+  background: var(--select-slot-disabled-bg, var(--background-disabled));
+  color: var(--select-slot-disabled-color, var(--color-disabled-500));
   cursor: not-allowed;
 }
 .select-trigger[data-disabled] .select-trigger-chevron,
 .select-trigger[data-disabled][data-hovered] .select-trigger-chevron,
 .select-trigger[data-disabled][data-pressed] .select-trigger-chevron {
-  color: var(--button-secondary-slot-disabled-label);
+  color: var(--select-slot-disabled-color, var(--color-disabled-500));
 }
 
 .select-trigger-chevron svg {
