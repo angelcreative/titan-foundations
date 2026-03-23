@@ -205,62 +205,93 @@ Purpose: guide AI when consuming Titan in external apps through MCP-assisted set
 
 ---
 
-## 8) MCP usage by environment
+## 8) Project setup with `titan_setup`
 
-## 8.1 Cursor and Claude Code (persistent local workspace)
+`titan_setup` is a full scaffold tool. It returns all the files needed to start a Titan project — the agent creates them and runs `npm install`. No manual configuration required.
 
-Recommended model:
+### 8.1 Single app (default)
 
-- Open the workspace root (especially for monorepos).
-- Install dependencies once at root.
-- Keep apps in `apps/*` (or equivalent) with their own `package.json`.
-- Reuse the same workspace; do not reinstall on every chat/session.
+Tell the AI: **"Set up this project for Titan"**
 
-MCP role:
+This calls `titan_setup({ structure: 'single' })` and creates:
 
-- use tools for discovery, theme/bootstrap guidance, and validation
-- implement using project files and installed runtime package
+```
+project-root/
+├── package.json       ← all Titan deps here
+├── vite.config.js
+├── index.html         ← Google Fonts + titan.css + theme CSS + data-theme
+└── src/
+    ├── main.jsx       ← imports titan-compositions/styles
+    └── App.jsx        ← starter component
+```
 
-### 8.2 One-time install + multi-app runtime pattern
+### 8.2 Monorepo (multiple apps, install once)
 
-This pattern is valid and recommended:
+Tell the AI: **"Set up this project for Titan as a monorepo"**
 
-1. Create root folder (any name).
-2. Configure workspaces (pnpm/npm/yarn).
-3. Install once in root.
-4. Create/use multiple app folders under `apps/*`.
-5. AI works from root context and can operate across apps.
+This calls `titan_setup({ structure: 'monorepo' })` and creates:
 
-`titan_setup` helps with command + skill content; it does not create monorepo structure for you.
+```
+project-root/
+├── package.json       ← workspaces: ["apps/*"], Titan deps here
+└── apps/
+    └── my-app/
+        ├── package.json   ← only name + vite devDeps (no Titan deps)
+        ├── vite.config.js
+        ├── index.html     ← Google Fonts + titan.css + theme CSS + data-theme
+        └── src/
+            ├── main.jsx
+            └── App.jsx
+```
 
-### 8.3 v0 and Figma Make (ephemeral/hosted contexts)
+Dependencies install **once** at the root. All apps in `apps/` inherit them via npm workspaces.
 
-- Use `titan_setup` with `target: "make"`.
-- In this target, no `.cursor`/`.claude` skill files are expected to be written.
+**To add a new app later:** tell the AI "Create a new app called dashboard in apps/". It creates the folder with package.json + index.html + src/. One `npm install` from root registers it. No dependency reinstall.
+
+**To run a specific app:**
+
+```bash
+npm run dev -w apps/my-app
+```
+
+### 8.3 Parameters
+
+| Parameter | Values | Default | Effect |
+|-----------|--------|---------|--------|
+| `structure` | `single` / `monorepo` | `single` | Project layout |
+| `theme` | Any supported theme | `insights` | Head links and `data-theme` attribute |
+| `appName` | Any name | `my-app` | Project name (single) or app folder name (monorepo) |
+| `target` | `cursor` / `claude-code` / `both` / `make` | `both` | Which skill files to write |
+
+### 8.4 Environment-specific usage
+
+**Cursor and Claude Code (persistent workspace):**
+- `titan_setup` creates the full scaffold + skill files.
+- Reuse the workspace; do not reinstall on every session.
+- For monorepo, open the workspace root.
+
+**v0 and Figma Make (ephemeral/hosted):**
+- Use `titan_setup({ target: 'make' })`. Only npm install, no skill files.
 - Repeated installs are normal in ephemeral environments.
-- Keep implementation import-first with `titan-compositions`.
 
-### 8.4 Figma (design tooling context)
-
-- Use Titan MCP as policy/reference source (themes, tokens, component availability, patterns).
-- Keep design generation aligned with Titan tokens/theme and composition semantics.
-- When environment does not persist local files, treat it like ephemeral setup.
+**Figma (design tooling):**
+- Use Titan MCP as policy/reference source (themes, tokens, components).
+- When environment does not persist files, treat as ephemeral.
 
 ---
 
 ## 9) Required packages for Titan UI generation
 
-Baseline install command used by `titan_setup`:
+These are installed automatically by `titan_setup`:
 
-```bash
-npm install titan-compositions react-aria-components lucide-react @tabler/icons-react
-```
+| Package | Purpose |
+|---------|---------|
+| `titan-compositions` | Runtime component library (import-first policy) |
+| `react-aria-components` | Accessibility/behavior foundation |
+| `lucide-react` | Fallback icon catalog |
+| `@tabler/icons-react` | Secondary fallback icon catalog |
 
-Why these:
-
-- `titan-compositions`: runtime component library
-- `react-aria-components`: accessibility/behavior foundation
-- `lucide-react` and `@tabler/icons-react`: fallback icon catalogs when Titan official icon is unavailable
+In monorepo mode, these live in the root `package.json` and are shared by all apps.
 
 ---
 

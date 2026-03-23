@@ -964,7 +964,7 @@ const WHAT_CAN_YOU_ASK = [
 ]
 
 const AVAILABLE_TOOLS = [
-  { tool: 'titan_setup', purpose: 'Auto-setup project: npm install + skill files for Cursor/Claude Code. Use target=\'make\' for Figma Make/v0 (npm only, no skill files).', progressive: '—' },
+  { tool: 'titan_setup', purpose: 'Full project scaffold (package.json, index.html, src/, skill files). Supports structure=\'single\' (default) or \'monorepo\' (npm workspaces + apps/*). Agent creates all files + runs npm install.', progressive: "structure='single'|'monorepo', theme, appName, target" },
   { tool: 'titan_syncFromGithub', purpose: 'Refresh live data from the titan-foundations repo', progressive: '—' },
   { tool: 'titan_getTheme', purpose: 'Resolve theme, get bootstrap snippets or full CSS', progressive: 'include=summary|bootstrap|css|all' },
   { tool: 'titan_getOverview', purpose: 'Architecture, workflow, available components/patterns', progressive: "Lightweight summary by default; include='full' for details" },
@@ -1024,14 +1024,72 @@ function SetupGuide() {
       {/* ── 2. First-time setup ── */}
       <section className="setup-section">
         <h2>2. First-time setup</h2>
-        <p>After installing the MCP, ask the AI to set up your project:</p>
+        <p>After installing the MCP, ask the AI to set up your project. <code>titan_setup</code> generates a <strong>complete project scaffold</strong> — package.json, index.html with Titan head links, src/ files, vite config, and skill files. The AI creates all files and runs <code>npm install</code>.</p>
+
+        <h3>Option A: Single app (default)</h3>
+        <p>One project, one app. Tell the AI:</p>
         <CodeBlock code={'"Set up this project for Titan"'} />
-        <p>This runs <code>titan_setup</code>, which automatically:</p>
-        <ul className="setup-auto-list">
-          <li>Installs npm dependencies (<code>titan-compositions</code>, <code>react-aria-components</code>, <code>lucide-react</code>, <code>@tabler/icons-react</code>)</li>
-          <li>Bootstraps layout and theme so the app is ready for Titan components</li>
-        </ul>
-        <p>Skills (anatomy patterns) are <strong>not</strong> copied into your project. The AI loads them via the MCP (<code>list_skills</code> / <code>get_skill</code>) or from the titan-foundations repo (<code>docs/anatomies/</code>).</p>
+        <p>This creates:</p>
+        <CodeBlock code={`project-root/
+├── package.json       ← all deps here
+├── vite.config.js
+├── index.html         ← Titan head links + data-theme
+└── src/
+    ├── main.jsx       ← imports titan-compositions/styles
+    └── App.jsx        ← starter component`} />
+
+        <h3>Option B: Monorepo (multiple apps, install once)</h3>
+        <p>One root with npm workspaces. Dependencies install <strong>once</strong> at the root. Each app in <code>apps/</code> inherits them — no reinstalling per app. Tell the AI:</p>
+        <CodeBlock code={'"Set up this project for Titan as a monorepo"'} />
+        <p>This creates:</p>
+        <CodeBlock code={`project-root/
+├── package.json       ← workspaces: ["apps/*"], Titan deps here
+└── apps/
+    └── my-app/
+        ├── package.json   ← only name + vite devDeps
+        ├── vite.config.js
+        ├── index.html     ← Titan head links + data-theme
+        └── src/
+            ├── main.jsx
+            └── App.jsx`} />
+        <p>To add a new app later, just say:</p>
+        <CodeBlock code={'"Create a new app called dashboard in apps/"'} />
+        <p>The AI will create the folder with its own <code>package.json</code>, <code>index.html</code>, and <code>src/</code>. Then one <code>npm install</code> from the root registers it. No dependency reinstall needed.</p>
+
+        <h3>What gets created</h3>
+        <table className="setup-table">
+          <thead>
+            <tr>
+              <th>File</th>
+              <th>Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><code>package.json</code></td><td>Dependencies (single) or workspace config + deps (monorepo)</td></tr>
+            <tr><td><code>index.html</code></td><td>Google Fonts + titan.css + theme CSS + <code>data-theme</code></td></tr>
+            <tr><td><code>src/main.jsx</code></td><td>React entry, imports <code>titan-compositions/styles</code></td></tr>
+            <tr><td><code>src/App.jsx</code></td><td>Starter component with Titan typography</td></tr>
+            <tr><td><code>vite.config.js</code></td><td>Vite + React plugin</td></tr>
+            <tr><td><code>.cursor/skills/</code></td><td>Local Titan knowledge files for the IDE</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Optional parameters</h3>
+        <table className="setup-table">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Values</th>
+              <th>Default</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><code>structure</code></td><td><code>single</code> | <code>monorepo</code></td><td><code>single</code></td></tr>
+            <tr><td><code>theme</code></td><td>Any supported theme name</td><td><code>insights</code></td></tr>
+            <tr><td><code>appName</code></td><td>Project/app folder name</td><td><code>my-app</code></td></tr>
+            <tr><td><code>target</code></td><td><code>cursor</code> | <code>claude-code</code> | <code>both</code> | <code>make</code></td><td><code>both</code></td></tr>
+          </tbody>
+        </table>
       </section>
 
       {/* ── 3. What can you ask? ── */}
