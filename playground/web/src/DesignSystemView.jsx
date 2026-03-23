@@ -647,6 +647,12 @@ function TokensContent({ subLevel }) {
           </div>
 
           <h4>3.5 Slots (component-level tokens)</h4>
+          <div className="ds-doc" style={{ background: 'var(--color-black-100)', padding: 'var(--spacing-m)', borderRadius: 'var(--rounded-s)', marginBottom: 'var(--spacing-m)' }}>
+            <p style={{ margin: '0 0 var(--spacing-xs)', fontWeight: 'var(--text-weight-semibold)' }}>TL;DR — what does &quot;-slot-&quot; mean in a token name?</p>
+            <p style={{ margin: '0 0 var(--spacing-xs)' }}><code className="ds-code">-slot-</code> is <strong>just a naming label</strong>. It does not activate any special CSS behavior. <code className="ds-code">--button-slot-bg</code> and <code className="ds-code">--button-bg</code> would work identically — both are regular CSS variables.</p>
+            <p style={{ margin: '0 0 var(--spacing-xs)' }}>The word &quot;slot&quot; simply tells you: <strong>&quot;this property is the public, configurable API of the component.&quot;</strong> If a token has <code className="ds-code">-slot-</code> in its name, it means the design system intentionally exposes it for you to customize — via themes, overrides, or scoped CSS.</p>
+            <p style={{ margin: 0 }}>Think of it as a label on a socket: it tells you &quot;plug in here&quot; but the electricity works the same either way.</p>
+          </div>
           <p><strong>Slots are the bridge between foundation tokens and component implementation.</strong> They are the reason you can override a card&apos;s background without touching its source code.</p>
           <h5>What is a slot?</h5>
           <p>A slot is a CSS variable scoped to a <strong>specific component property</strong>. Think of it as a "socket" — the component plugs into it, and you control what value comes out. For example, <code className="ds-code">--card-slot-bg</code> controls the card&apos;s background. By default it resolves to <code className="ds-code">var(--surface-slot-card)</code> (white), but you can override it in your app to be anything.</p>
