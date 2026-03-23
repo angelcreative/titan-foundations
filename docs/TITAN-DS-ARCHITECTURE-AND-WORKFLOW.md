@@ -67,7 +67,7 @@ The worker is a Cloudflare Worker MCP server that exposes Titan tools and policy
 
 ### 3.2 Supported themes in code
 
-`insights` (default), `neutral`, `default`, `audiense`, `demand`, `linkedin`, `tweetbinder`, `digital`, `brand`.
+`insights` (default), `neutral`, `default`, `audiense`, `demand`, `linkedin`, `tweetbinder`, `brand`.
 
 ### 3.3 MCP tools exposed
 
