@@ -1076,7 +1076,7 @@ function SetupGuide() {
 
         <h3>Option C: Figma Make</h3>
         <p>Figma Make runs in a <strong>sandbox where CDN @import fails</strong>. All CSS tokens must be local inline files. Tell the AI:</p>
-        <CodeBlock code={'"Set up this project for Titan in Figma Make"'} />
+        <CodeBlock code={'"Set up Titan MCP"'} />
         <p>This calls <code>titan_setup</code> with <code>target: 'figma-make'</code> and creates:</p>
         <CodeBlock code={`project-root/
 ├── package.json
