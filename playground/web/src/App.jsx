@@ -1074,6 +1074,28 @@ function SetupGuide() {
           </tbody>
         </table>
 
+        <h3>Option C: Figma Make</h3>
+        <p>Figma Make runs in a <strong>sandbox where CDN @import fails</strong>. All CSS tokens must be local inline files. Tell the AI:</p>
+        <CodeBlock code={'"Set up this project for Titan in Figma Make"'} />
+        <p>This calls <code>titan_setup</code> with <code>target: 'figma-make'</code> and creates:</p>
+        <CodeBlock code={`project-root/
+├── package.json
+├── vite.config.js
+├── index.html             ← Google Fonts ONLY (no CDN links for tokens)
+└── src/
+    ├── styles/
+    │   └── titan-base-tokens.css  ← titan.css + theme CSS (all values inline)
+    ├── index.css              ← import order: local tokens → compositions
+    ├── main.jsx
+    └── App.jsx`} />
+        <p>Key differences from Cursor/Claude Code:</p>
+        <ul className="setup-auto-list">
+          <li><strong>No CDN links</strong> in <code>index.html</code> for token CSS (only Google Fonts is external)</li>
+          <li><strong><code>titan-base-tokens.css</code></strong> contains the full <code>titan.css</code> + theme CSS concatenated with literal values</li>
+          <li><strong><code>index.css</code></strong> imports local tokens first, then <code>titan-compositions/styles</code></li>
+          <li><strong>No skill files</strong> — Figma Make does not use <code>.cursor/</code> or <code>.claude/</code></li>
+        </ul>
+
         <h3>Optional parameters</h3>
         <table className="setup-table">
           <thead>
@@ -1090,6 +1112,7 @@ function SetupGuide() {
             <tr><td><code>target</code></td><td><code>cursor</code> | <code>claude-code</code> | <code>both</code> | <code>figma-make</code></td><td><code>both</code></td></tr>
           </tbody>
         </table>
+        <p className="setup-note">Figma Make: CDN <code>@import</code> is unreliable in sandboxed environments. The <code>figma-make</code> target bundles all token CSS locally so <code>var(--token)</code> always resolves.</p>
       </section>
 
       {/* ── 3. What can you ask? ── */}

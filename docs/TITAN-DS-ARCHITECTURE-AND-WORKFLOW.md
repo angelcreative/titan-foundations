@@ -270,9 +270,13 @@ npm run dev -w apps/my-app
 - Reuse the workspace; do not reinstall on every session.
 - For monorepo, open the workspace root.
 
-**v0 and Figma Make (ephemeral/hosted):**
-- Use `titan_setup({ target: 'figma-make' })`. No skill files, local token files instead of CDN.
-- Repeated installs are normal in ephemeral environments.
+**Figma Make (sandboxed):**
+- Use `titan_setup({ target: 'figma-make' })`.
+- CDN `@import` is unreliable in Figma Make's sandbox — all tokens are bundled locally.
+- The tool fetches `titan.css` + theme CSS and returns them as `src/styles/titan-base-tokens.css` with all literal values.
+- `index.html` has no CDN `<link>` tags for token CSS (only Google Fonts is external).
+- `src/index.css` imports local tokens first, then `titan-compositions/styles`.
+- No skill files are written.
 
 **Figma (design tooling):**
 - Use Titan MCP as policy/reference source (themes, tokens, components).
@@ -328,7 +332,7 @@ No hardcoded hex/rgb. Use titan_getTheme, titan_getFoundations, titan_getCompone
 Environment-specific add-ons:
 
 - Cursor/Claude: "Workspace root is the monorepo root; dependencies are already installed."
-- Figma Make: "Use `titan_setup` target `figma-make`; treat environment as ephemeral, use local tokens."
+- Figma Make: "Use `titan_setup` target `figma-make`. CDN imports fail here — all tokens are local. Do NOT add `<link>` to CDN for CSS tokens."
 - All: "If component exists in titan-compositions, do not recreate custom HTML/CSS."
 
 ---
