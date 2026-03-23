@@ -959,7 +959,7 @@ const WHAT_CAN_YOU_ASK = [
   { ask: 'Show me all available button variants and when to use each one', result: 'Returns component details: props, states, slots' },
   { ask: 'Create a report list page with filters, table, and pagination', result: 'Combines multiple compositions into a real SaaS pattern' },
   { ask: 'Review this code and check it follows Titan rules', result: 'Validates against design system rules and auto-rewrites spacing' },
-  { ask: 'Bootstrap a new Vite + React project with the insights theme', result: 'Returns ready-to-paste setup: fonts, CSS links, theme config' },
+  { ask: 'Bootstrap a new Vite + React project with the audiense theme', result: 'Returns ready-to-paste setup: fonts, CSS links, theme config' },
   { ask: 'Sync the latest Titan foundations data', result: 'Refreshes components, patterns, and tokens from the repo' },
 ]
 
@@ -973,11 +973,12 @@ const AVAILABLE_TOOLS = [
   { tool: 'titan_validateAndRewrite', purpose: 'Validate code against Titan rules + auto-rewrite spacing', progressive: '—' },
   { tool: 'titan_getFoundations', purpose: 'Foundation tokens + semantic token categories', progressive: '—' },
   { tool: 'titan_getDesignQualityGuidelines', purpose: 'DO/DON\'T guidelines for design quality and anti-AI slop', progressive: '—' },
+  { tool: 'titan_getPreset', purpose: 'Instant Figma Make setup in 2 calls. Part 1 = scaffold + first half of CSS. Part 2 = second half. Concatenate into src/styles/titan-tokens.css.', progressive: "theme, part=1|2" },
 ]
 
 const SUPPORTED_THEMES = [
-  { theme: 'insights', product: 'Default. Used when no theme is specified.' },
-  { theme: 'audiense', product: 'Audiense core' },
+  { theme: 'audiense', product: 'Default. Used when no theme is specified.' },
+  { theme: 'insights', product: 'Insights product' },
   { theme: 'demand', product: 'Demand product' },
   { theme: 'linkedin', product: 'LinkedIn integration' },
   { theme: 'tweetbinder', product: 'TweetBinder' },
@@ -1075,25 +1076,29 @@ function SetupGuide() {
         </table>
 
         <h3>Option C: Figma Make</h3>
-        <p>Figma Make runs in a <strong>sandbox where CDN @import fails</strong>. All CSS tokens must be local inline files. Tell the AI:</p>
-        <CodeBlock code={'"Set up Titan MCP"'} />
-        <p>This calls <code>titan_setup</code> with <code>target: 'figma-make'</code> and creates:</p>
+        <p>Figma Make runs in a <strong>sandbox where CDN @import fails</strong>. All CSS tokens must be local inline files. Use <code>titan_getPreset</code> for an instant 2-call setup:</p>
+        <CodeBlock code={`// The agent calls:
+titan_getPreset({ theme: 'audiense', part: 1 })  → scaffold files + CSS half 1
+titan_getPreset({ theme: 'audiense', part: 2 })  → CSS half 2
+
+// Concatenate CSS from both parts → src/styles/titan-tokens.css
+// Then: npm install`} />
+        <p>This creates:</p>
         <CodeBlock code={`project-root/
 ├── package.json
 ├── vite.config.js
 ├── index.html             ← Google Fonts ONLY (no CDN links for tokens)
 └── src/
     ├── styles/
-    │   ├── titan-base-tokens.css  ← titan.css (downloaded from GitHub)
-    │   └── titan-theme.css        ← theme CSS (downloaded from GitHub)
-    ├── index.css              ← import order: local tokens → theme → compositions
+    │   └── titan-tokens.css   ← all tokens: base + theme (from titan_getPreset)
+    ├── index.css              ← imports: titan-tokens.css → titan-compositions/styles
     ├── main.jsx
     └── App.jsx`} />
         <p>Key differences from Cursor/Claude Code:</p>
         <ul className="setup-auto-list">
           <li><strong>No CDN links</strong> in <code>index.html</code> for token CSS (only Google Fonts is external)</li>
-          <li><strong>Token CSS files are downloaded</strong> from GitHub and saved locally — the tool returns URLs for the agent to fetch and write as local files (they are too large to inline in the response)</li>
-          <li><strong><code>index.css</code></strong> imports local tokens first, then theme, then <code>titan-compositions/styles</code></li>
+          <li><strong>Token CSS delivered via MCP</strong> in 2 fast calls (~47KB each) — base + theme merged into a single <code>titan-tokens.css</code> file</li>
+          <li><strong><code>index.css</code></strong> imports local tokens, then <code>titan-compositions/styles</code></li>
           <li><strong>No skill files</strong> — Figma Make does not use <code>.cursor/</code> or <code>.claude/</code></li>
         </ul>
 
@@ -1108,7 +1113,7 @@ function SetupGuide() {
           </thead>
           <tbody>
             <tr><td><code>structure</code></td><td><code>single</code> | <code>monorepo</code></td><td><code>single</code></td></tr>
-            <tr><td><code>theme</code></td><td>Any supported theme name</td><td><code>insights</code></td></tr>
+            <tr><td><code>theme</code></td><td>Any supported theme name</td><td><code>audiense</code></td></tr>
             <tr><td><code>appName</code></td><td>Project/app folder name</td><td><code>my-app</code></td></tr>
             <tr><td><code>target</code></td><td><code>cursor</code> | <code>claude-code</code> | <code>both</code> | <code>figma-make</code></td><td><code>both</code></td></tr>
           </tbody>
@@ -1137,9 +1142,9 @@ function SetupGuide() {
         </table>
       </section>
 
-      {/* ── 4. Available tools (8) ── */}
+      {/* ── 4. Available tools (10) ── */}
       <section className="setup-section">
-        <h2>4. Available tools (9)</h2>
+        <h2>4. Available tools (10)</h2>
         <p>The MCP exposes these tools. You don't need to call them directly — the AI uses them automatically. But knowing them helps you understand what's possible.</p>
         <table className="setup-table">
           <thead>
@@ -1749,7 +1754,7 @@ export function TitanToastRegion({ toasts, onDismiss }) {
 const CODE_TWOUPONEDOWN = `import { TitanTwoUpOneDownLayout } from 'titan-compositions'
 
 <TitanTwoUpOneDownLayout
-  theme="insights"
+  theme="audiense"
   breadcrumbItems={[{ id: 'home', label: 'Home' }, { id: 'reports', label: 'Reports' }]}
   breadcrumbCurrentLabel="Overview"
   leftTop={<div>Left panel content</div>}
@@ -1962,7 +1967,7 @@ export function TitanCalendar({ defaultValue, value, onChange, showTime = false,
 const CODE_NAVBAR = `import { Button } from 'react-aria-components'
 import { Bell, ChevronDown, CircleHelp, Grip, Handshake, Settings, Sparkles } from 'lucide-react'
 
-export function TitanNavbar({ theme = 'insights', userInitial = 'A', logoAlt, logoBasePath, onChangeProduct, onNotifications, onSupport, onHelp, onSettings, onFeaturedAction, onUserMenu }) {
+export function TitanNavbar({ theme = 'audiense', userInitial = 'A', logoAlt, logoBasePath, onChangeProduct, onNotifications, onSupport, onHelp, onSettings, onFeaturedAction, onUserMenu }) {
   const logoFile = THEME_TO_LOGO[theme]
   return (
     <header className="navbar" role="banner">
@@ -2029,7 +2034,7 @@ export function TitanSidebarItem({ id, icon: Icon, onPress, children }) {
 
 function App() {
   const [activeView, setActiveView] = useState('components')
-  const [theme, setTheme] = useState('insights')
+  const [theme, setTheme] = useState('audiense')
   const [pills, setPills] = useState(INITIAL_PILL_ITEMS)
   const [toasts, setToasts] = useState([])
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
@@ -3381,7 +3386,7 @@ function App() {
             <div className="row">
               <TitanSelect
                 label="Network"
-                defaultSelectedKey="insights"
+                defaultSelectedKey="audiense"
                 options={[
                   { id: 'insights', label: 'Insights' },
                   { id: 'audiense', label: 'Audiense', icon: <User /> },

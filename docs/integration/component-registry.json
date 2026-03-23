@@ -421,6 +421,56 @@
       },
       "category": "data"
     },
+    "TitanTableCellDate": {
+      "import": "import { TitanTableCellDate } from 'titan-compositions'",
+      "description": "Table cell helper: renders a date with a calendar icon. Accepts Date objects, ISO strings, or timestamps. Default format: 'Nov 15, 2025'. Use inside TitanCell.",
+      "props": {
+        "value": { "type": "Date | string | number", "required": true, "description": "Date object, ISO string, or timestamp" },
+        "format": { "type": "(d: Date) => string", "required": false, "description": "Custom date formatter. Default: en-US short (e.g. 'Nov 15, 2025')" },
+        "className": { "type": "string", "required": false }
+      },
+      "slots": [],
+      "category": "data"
+    },
+    "TitanTableCellInitials": {
+      "import": "import { TitanTableCellInitials } from 'titan-compositions'",
+      "description": "Table cell helper: renders initials in a colored circle. Pass initials directly or a name to auto-derive them. Color is stable per seed. Use inside TitanCell.",
+      "props": {
+        "initials": { "type": "string", "required": false, "description": "Explicit initials (e.g. 'AW'). Takes priority over name." },
+        "name": { "type": "string", "required": false, "description": "Full name to derive initials from (e.g. 'Alice Smith' → 'AS')" },
+        "seed": { "type": "string | number", "required": false, "description": "Seed for stable per-row color (e.g. row id)" },
+        "className": { "type": "string", "required": false }
+      },
+      "slots": [],
+      "category": "data"
+    },
+    "TitanTableCellActions": {
+      "import": "import { TitanTableCellActions } from 'titan-compositions'",
+      "description": "Table cell helper: kebab menu with Edit/Delete actions + optional extra items. Renders a MenuTrigger with icon button. Use inside TitanCell.",
+      "props": {
+        "onEdit": { "type": "() => void", "required": false, "description": "Edit action handler. If omitted, Edit item is hidden." },
+        "onDelete": { "type": "() => void", "required": false, "description": "Delete action handler. If omitted, Delete item is hidden." },
+        "extraItems": { "type": "TitanTableCellActionsItem[]", "required": false, "description": "Additional menu items (e.g. Rename, Clone). Each: { id, label, onAction }." },
+        "ariaLabel": { "type": "string", "required": false, "default": "'Actions'" },
+        "className": { "type": "string", "required": false }
+      },
+      "slots": [],
+      "relatedTypes": {
+        "TitanTableCellActionsItem": "{ id: string, label: string, onAction: () => void }"
+      },
+      "category": "data"
+    },
+    "TitanTableCellStatus": {
+      "import": "import { TitanTableCellStatus } from 'titan-compositions'",
+      "description": "Table cell helper: colored dot + label for row status. Built-in variants: processing (orange), finished (green), demo (blue), failed (red). Use inside TitanCell.",
+      "props": {
+        "status": { "type": "'processing' | 'finished' | 'demo' | 'failed'", "required": true },
+        "label": { "type": "string", "required": false, "description": "Custom label. If omitted, uses default label for the status variant." },
+        "className": { "type": "string", "required": false }
+      },
+      "slots": [],
+      "category": "data"
+    },
     "TitanPill": {
       "import": "import { TitanPill } from 'titan-compositions'",
       "description": "Pill/tag token with official baseline-compatible state model (base/success/alert/disabled/error/info) and optional dismiss button. Supports legacy tone styling for backward compatibility.",
@@ -475,7 +525,7 @@
       "import": "import { TitanTwoUpOneDownLayout } from 'titan-compositions'",
       "description": "Full page composition: Navbar + Breadcrumb + 2/4 + 2/4 top row + 4/4 bottom row. Convenience wrapper over TitanNavbar + TitanBreadcrumb + TitanCardGrid + TitanCard.",
       "props": {
-        "theme": { "type": "TitanNavbarTheme", "default": "'insights'", "required": false },
+        "theme": { "type": "TitanNavbarTheme", "default": "'audiense'", "required": false },
         "userInitial": { "type": "string", "default": "'A'", "required": false },
         "breadcrumbItems": { "type": "TitanBreadcrumbItem[]", "required": true },
         "breadcrumbCurrentLabel": { "type": "string", "required": true },
