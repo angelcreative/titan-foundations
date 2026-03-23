@@ -15,6 +15,10 @@ For **consuming** the design system in external apps (via MCP, npm package, or C
 4. For UI pattern requests, resolve via `docs/anatomies/README.md` then read the selected anatomy file.
 5. For implementation ownership and overlap, read `docs/integration/decision-policy.md` and `docs/integration/component-inventory.md`.
 
+## Page chrome (navbar / breadcrumb)
+
+When editing layouts in `titan-compositions`: **navbar + breadcrumb** together use `page page--flush-breadcrumb` and `page-breadcrumb-host` (see `TitanTwoUpOneDownLayout` and `titan-compositions.css`). **Navbar only** uses plain `page` (keep top padding). Full table: **`docs/TITAN-DS-ARCHITECTURE-AND-WORKFLOW.md`** §8.1.
+
 ## Mandatory behavior
 
 - If Titan MCP is available, or the request says/implies "Titan", "setup Titan", or "use Titan", enforce Titan-only execution (compositions -> component-specs + tokens -> anatomies -> BLOCKER).

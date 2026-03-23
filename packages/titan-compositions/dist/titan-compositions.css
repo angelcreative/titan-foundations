@@ -105,6 +105,25 @@
   background: var(--surface-slot-page, var(--color-white-900));
 }
 
+/*
+ * Navbar + breadcrumb as one chrome: removes main top padding so the strip sits flush under the navbar.
+ * Use ONLY with navbar + breadcrumb together. For navbar-only pages, use plain .page (keep padding-top).
+ * See: TitanTwoUpOneDownLayout, docs/TITAN-DS-ARCHITECTURE-AND-WORKFLOW.md §8.1
+ */
+.page.page--flush-breadcrumb {
+  padding-top: 0;
+}
+
+/* Breadcrumb row under navbar — not a .card (avoids extra inset + card border vs navbar). */
+.page-breadcrumb-host {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
 .card {
   width: 100%;
   background: var(--color-white-900);

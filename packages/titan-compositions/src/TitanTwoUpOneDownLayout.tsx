@@ -16,8 +16,12 @@ export interface TitanTwoUpOneDownLayoutProps {
 /**
  * Reusable page composition:
  * - Navbar
- * - Breadcrumb
+ * - Breadcrumb (flush under navbar via `page--flush-breadcrumb` + `page-breadcrumb-host`)
  * - Content: 2/4 + 2/4 in first row, 4/4 in second row
+ *
+ * For pages with **navbar only** (no breadcrumb), use `<main className="page">` without
+ * `page--flush-breadcrumb` so normal top padding remains. Do not use the flush classes
+ * unless navbar and breadcrumb appear together.
  */
 export function TitanTwoUpOneDownLayout({
   theme = 'insights',
@@ -31,8 +35,8 @@ export function TitanTwoUpOneDownLayout({
   return (
     <>
       <TitanNavbar theme={theme} userInitial={userInitial} />
-      <main className="page">
-        <section className="card">
+      <main className="page page--flush-breadcrumb">
+        <section className="page-breadcrumb-host">
           <TitanBreadcrumb items={breadcrumbItems} currentLabel={breadcrumbCurrentLabel} />
         </section>
         <TitanCardGrid>

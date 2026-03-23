@@ -2281,8 +2281,8 @@ function TitanTwoUpOneDownLayout({
 }) {
   return /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_jsx_runtime23.Fragment, { children: [
     /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(TitanNavbar, { theme, userInitial }),
-    /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("main", { className: "page", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("section", { className: "card", children: /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(TitanBreadcrumb, { items: breadcrumbItems, currentLabel: breadcrumbCurrentLabel }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("main", { className: "page page--flush-breadcrumb", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("section", { className: "page-breadcrumb-host", children: /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(TitanBreadcrumb, { items: breadcrumbItems, currentLabel: breadcrumbCurrentLabel }) }),
       /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(TitanCardGrid, { children: [
         /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(TitanCard, { span: 8, children: leftTop }),
         /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(TitanCard, { span: 8, children: rightTop }),

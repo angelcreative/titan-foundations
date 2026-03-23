@@ -184,6 +184,19 @@ Cada carpeta bajo `apps/` debe tener su propio `package.json`.
 
 Detalle: **`.cursor/skills/titan-ds/THEME_GUIDE.md`** (worker) o documentación de integración.
 
+### 8.1 Chrome de página: navbar y breadcrumb
+
+**Regla de espaciado (opt-in por clases, no automático):**
+
+| Pantalla | `main` | Espacio bajo el navbar |
+|----------|--------|-------------------------|
+| **Navbar + breadcrumb** (misma “franja” de app) | `className="page page--flush-breadcrumb"` y el breadcrumb en `section.page-breadcrumb-host` (no envolver en `.card`). | Sin el hueco extra: el breadcrumb queda pegado al navbar como chrome continuo. |
+| **Solo navbar** (sin breadcrumb) | `className="page"` (sin `page--flush-breadcrumb`). | Mantiene el `padding-top` habitual del área de página; es el patrón esperado. |
+
+- **`page--flush-breadcrumb`** solo debe usarse cuando hay **navbar y breadcrumb juntos**. No es un detector automático: si lo aplicas en una vista solo con navbar, perderías el aire superior sin motivo.
+- **Breadcrumb aislado** (sin navbar) no es un caso de producto contemplado aquí; el patrón *flush* está pensado para **navbar + breadcrumb**.
+- Referencia de implementación: `TitanTwoUpOneDownLayout` en `packages/titan-compositions/`, clases en `titan-compositions.css` (`.page--flush-breadcrumb`, `.page-breadcrumb-host`).
+
 ---
 
 ## 9. Reglas de iconos en tablas (implementación)

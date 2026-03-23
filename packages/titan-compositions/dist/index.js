@@ -2265,8 +2265,8 @@ function TitanTwoUpOneDownLayout({
 }) {
   return /* @__PURE__ */ jsxs20(Fragment6, { children: [
     /* @__PURE__ */ jsx23(TitanNavbar, { theme, userInitial }),
-    /* @__PURE__ */ jsxs20("main", { className: "page", children: [
-      /* @__PURE__ */ jsx23("section", { className: "card", children: /* @__PURE__ */ jsx23(TitanBreadcrumb, { items: breadcrumbItems, currentLabel: breadcrumbCurrentLabel }) }),
+    /* @__PURE__ */ jsxs20("main", { className: "page page--flush-breadcrumb", children: [
+      /* @__PURE__ */ jsx23("section", { className: "page-breadcrumb-host", children: /* @__PURE__ */ jsx23(TitanBreadcrumb, { items: breadcrumbItems, currentLabel: breadcrumbCurrentLabel }) }),
       /* @__PURE__ */ jsxs20(TitanCardGrid, { children: [
         /* @__PURE__ */ jsx23(TitanCard, { span: 8, children: leftTop }),
         /* @__PURE__ */ jsx23(TitanCard, { span: 8, children: rightTop }),

@@ -3119,7 +3119,7 @@ function App() {
             ariaDesc="Page composition: Navbar + Breadcrumb + 2-column top row (TitanCard 8+8) + full-width bottom row (TitanCard 16). Composes TitanNavbar, TitanBreadcrumb, TitanCardGrid, TitanCard."
             ariaComponents={['TitanNavbar', 'TitanBreadcrumb', 'TitanCardGrid', 'TitanCard']}
             foundations={[
-              { category: 'Layout', detail: 'Navbar at top; breadcrumb in first card; 16-column grid with 8+8 top, 16 bottom.' },
+              { category: 'Layout', detail: 'Navbar at top; breadcrumb strip (page--flush-breadcrumb + page-breadcrumb-host, not a card); 16-column grid with 8+8 top, 16 bottom.' },
               { category: 'Theme', detail: 'theme prop passed to Navbar (insights, audiense, etc.); userInitial for avatar.' },
               { category: 'Slots', detail: 'leftTop, rightTop, bottom accept any ReactNode.' },
             ]}
