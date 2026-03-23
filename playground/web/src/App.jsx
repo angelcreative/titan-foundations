@@ -951,7 +951,7 @@ Output:
 Input:
 [Flow description]`
 
-const CLAUDE_CODE_CMD = `claude mcp add titands --transport http https://mcp-remote-worker.titands.workers.dev/mcp`
+const CLAUDE_CODE_CMD = `claude mcp add --transport http titands https://mcp-remote-worker.titands.workers.dev/mcp`
 
 const WHAT_CAN_YOU_ASK = [
   { ask: 'Build a settings page with sidebar navigation, form fields, and a save button', result: 'Generates a full page layout using Titan components and tokens' },
@@ -964,14 +964,15 @@ const WHAT_CAN_YOU_ASK = [
 ]
 
 const AVAILABLE_TOOLS = [
-  { tool: 'titan_setup', purpose: 'Auto-setup project: npm install + bootstrap layout/theme; skills via MCP (list_skills/get_skill) or repo', progressive: '—' },
+  { tool: 'titan_setup', purpose: 'Auto-setup project: npm install + skill files for Cursor/Claude Code. Use target=\'make\' for Figma Make/v0 (npm only, no skill files).', progressive: '—' },
   { tool: 'titan_syncFromGithub', purpose: 'Refresh live data from the titan-foundations repo', progressive: '—' },
   { tool: 'titan_getTheme', purpose: 'Resolve theme, get bootstrap snippets or full CSS', progressive: 'include=summary|bootstrap|css|all' },
   { tool: 'titan_getOverview', purpose: 'Architecture, workflow, available components/patterns', progressive: "Lightweight summary by default; include='full' for details" },
-  { tool: 'titan_getComponentRegistry', purpose: 'Know WHAT components exist', progressive: "Names only by default; component='X' for full props/slots" },
+  { tool: 'titan_getComponentRegistry', purpose: 'Know WHAT components exist (discovery only)', progressive: "Names only by default; component='X' for full props/slots" },
   { tool: 'titan_getCompositionPattern', purpose: 'Know HOW to combine components into screens', progressive: "Compact index by default; pattern='X' for full JSX recipe" },
   { tool: 'titan_validateAndRewrite', purpose: 'Validate code against Titan rules + auto-rewrite spacing', progressive: '—' },
   { tool: 'titan_getFoundations', purpose: 'Foundation tokens + semantic token categories', progressive: '—' },
+  { tool: 'titan_getDesignQualityGuidelines', purpose: 'DO/DON\'T guidelines for design quality and anti-AI slop', progressive: '—' },
 ]
 
 const SUPPORTED_THEMES = [
@@ -980,16 +981,15 @@ const SUPPORTED_THEMES = [
   { theme: 'demand', product: 'Demand product' },
   { theme: 'linkedin', product: 'LinkedIn integration' },
   { theme: 'tweetbinder', product: 'TweetBinder' },
-  { theme: 'digital', product: 'Digital product' },
+  { theme: 'brand', product: 'Brand — Pulse (gold) primary, Ground (earth) neutral. No focus ring. Links use ocean-500.' },
   { theme: 'neutral', product: 'Neutral / white-label' },
-  { theme: 'default', product: 'Generic fallback' },
 ]
 
 const TROUBLESHOOTING = [
   { problem: 'MCP shows "failed" or "not authenticated"', solution: 'Check the URL ends in /mcp (not /sse). No auth is required.' },
   { problem: 'Components seem outdated', solution: 'Ask: "Sync the latest Titan foundations data"' },
   { problem: "AI doesn't use Titan tokens", solution: 'Ask: "Review this code and check it follows Titan rules"' },
-  { problem: "Claude Code can't connect", solution: 'Run claude mcp add titands --transport http https://mcp-remote-worker.titands.workers.dev/mcp' },
+  { problem: "Claude Code can't connect", solution: 'Run claude mcp add --transport http titands https://mcp-remote-worker.titands.workers.dev/mcp' },
 ]
 
 function SetupGuide() {
@@ -1057,7 +1057,7 @@ function SetupGuide() {
 
       {/* ── 4. Available tools (8) ── */}
       <section className="setup-section">
-        <h2>4. Available tools (8)</h2>
+        <h2>4. Available tools (9)</h2>
         <p>The MCP exposes these tools. You don't need to call them directly — the AI uses them automatically. But knowing them helps you understand what's possible.</p>
         <table className="setup-table">
           <thead>
