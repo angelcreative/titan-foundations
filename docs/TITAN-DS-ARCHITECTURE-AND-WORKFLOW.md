@@ -1,238 +1,328 @@
-# Titan DS: arquitectura, MCP, workflow de usuario
+# Titan DS Architecture and Workflow
 
-**Audiense Titan Design System** — documento de referencia para ingeniería y diseño. Describe el **estado actual** del monorepo `titan-foundations`, del paquete `titan-compositions` y del **worker MCP** que los consume. No sustituye otros documentos; enlaza donde haya detalle ya escrito.
+This document explains, in operational terms, how the Titan system works today across:
 
----
+- `titan-foundations` (source repository),
+- `mcp-remote-worker` (Titan MCP server),
+- `titan-compositions` (runtime npm package),
+- IDE/AI tools (Cursor, Claude Code, v0, Figma Make).
 
-## 1. Verificación del workflow “carpeta madre + apps”
-
-Este patrón es **correcto** y es estándar en la industria:
-
-| Afirmación | ¿Correcto? |
-|------------|------------|
-| Podés crear **cualquier carpeta** en local (nombre libre: `titan-main`, `MiProyecto`, `X`, etc.). | Sí. El nombre no afecta al mecanismo. |
-| En la **raíz** hacés **una instalación** de dependencias (p. ej. `pnpm install`). | Sí. |
-| Las **apps** viven en subcarpetas (`apps/midemod`, `apps/pencil`, …) con su propio `package.json`. | Sí, en un **monorepo con workspaces** (pnpm, npm o yarn). |
-| Eso evita reinstalar todo en cada subcarpeta como si fuera un repo independiente. | Sí, con la configuración de workspace adecuada. |
-| **Cursor / Claude Code** deben abrir la **carpeta raíz** del monorepo, no solo una app suelta. | Sí, para ver `node_modules`, lockfile y todas las apps. |
-
-**Qué no es este patrón:** no es una funcionalidad “especial” del MCP. El MCP **no crea** el `pnpm-workspace.yaml` ni la estructura de carpetas; eso lo definís vos o una plantilla de equipo.
-
-**Relación con MCP `titan_setup`:** esa herramienta devuelve un comando de instalación (`npm install titan-compositions react-aria-components lucide-react @tabler/icons-react`) y, según el `target`, archivos de skill para `.cursor/` o `.claude/`. **No** genera el monorepo. En un workspace, ese `install` suele ejecutarse en la **raíz** o las dependencias se declaran en el `package.json` raíz / por app según vuestra convención.
-
-Más detalle de política por entorno (persistente vs efímero): **`docs/integration/mcp-usage.md`**.
+Use this as the onboarding and day-to-day reference for developers and AI-assisted UI generation.
 
 ---
 
-## 2. Repositorio `titan-foundations` (monorepo DS)
+## 1) System map (what exists and where)
 
-| Área | Rol |
-|------|-----|
-| `tokens/foundations/` | Primitivos (JSON) — fuente del build de tokens. |
-| `tokens/themes/` | Temas (`_insights.css`, `_brand.css`, …). |
-| `tokens/css/titan.css` | Salida consolidada de tokens (tras `npm run build:tokens` en raíz). |
-| `packages/titan-compositions/` | Librería React publicable: componentes + `titan-compositions.css`. |
-| `playground/web/` | App de demostración local. |
-| `docs/` | Documentación técnica: `core/`, `components/`, `anatomies/`, `integration/`. |
-| `component-specs/` | Contratos de componentes (JSON). |
-| `docs/integration/component-registry.json` | Catálogo para herramientas MCP (componentes, temas, patterns). |
-| `AGENTS.md` | Política global para agentes (orden: compositions → contracts → anatomies → BLOCKER). |
-| `.claude/skills/titan-foundations/SKILL.md` | Skill para trabajo **dentro** de este repo (rutas, anatomías, specs). |
+| Layer | Location | Purpose |
+|---|---|---|
+| Source of truth | `titan-foundations` repo | Tokens, themes, docs, contracts, composition source code |
+| Runtime package | npm package `titan-compositions` | Components + CSS consumed by product apps |
+| Remote AI server | `mcp-remote-worker` (Cloudflare Worker) | Exposes Titan MCP tools for discovery, theme/bootstrap, validation, setup |
+| Registry/pattern data | `docs/integration/component-registry.json` and `docs/integration/composition-patterns.json` | Machine-readable data used by MCP tools |
+| Skills (repo-side) | `titan-foundations/.claude/skills/titan-foundations/SKILL.md` | Guidance for editing the DS repository itself |
+| Skills (worker-side) | `mcp-remote-worker/.cursor/skills/titan-ds/*.md` + embedded `SKILL_FILES` in worker code | Guidance delivered to consumer environments through `titan_setup` |
 
-**Superficie de página / contenido principal:** `--surface-page`, `--surface-slot-page` y `--background-body` apuntan a **`--color-white-900`** (fondo de app y main content; ya no se usa gris claro `black-100` como canvas de página).
+High-level flow:
 
-**Skill `titan-foundations` vs skill `titan-ds` (worker):** el primero es para **editar** foundations y composiciones en este repo. El segundo es para **consumir** el DS en apps externas vía MCP (registry, patterns, validate).
-
----
-
-## 3. Paquete `titan-compositions`
-
-- **Nombre npm:** `titan-compositions` (versión en `packages/titan-compositions/package.json`).
-- **Exports:** `titan-compositions` (JS/TS), `titan-compositions/styles` (CSS).
-- **Base:** React Aria Components + variables CSS Titan.
-- **Peers:** `react`, `react-dom`, `react-aria-components`, `@internationalized/date`, `lucide-react`, `@tabler/icons-react`.
-
-Política **import-first:** si existe el componente en `titan-compositions`, importarlo; no recrear markup/CSS equivalente. Ver `docs/integration/mcp-usage.md` y `AGENTS.md`.
+1. Developers maintain DS assets in `titan-foundations`.
+2. `titan-compositions` is built/published from there.
+3. The MCP worker fetches Titan metadata from GitHub raw/CDN and serves tooling to AI clients.
+4. Apps use `titan-compositions` at runtime; AI uses MCP for discovery/validation/orchestration.
 
 ---
 
-## 4. Worker MCP (`mcp-remote-worker`)
+## 2) What is in `titan-foundations` today
 
-### 4.1 Rol
+Core areas:
 
-Servidor **Model Context Protocol** desplegado como **Cloudflare Worker**. No empaqueta el repo completo: obtiene datos con **`fetch`** a GitHub raw y CDN (jsDelivr) del repo público `titan-foundations`, y expone **herramientas** para IDEs y agentes.
+- `tokens/foundations/`: primitive token JSON (spacing, typography, borders, elevation, colors).
+- `tokens/themes/`: theme CSS (`_insights.css`, `_brand.css`, etc.).
+- `tokens/css/titan.css`: consolidated token output used in apps.
+- `packages/titan-compositions/`: React component compositions + package build outputs.
+- `component-specs/`: machine-readable component contracts.
+- `docs/anatomies/`: reusable UI anatomy patterns for LLM mapping.
+- `docs/integration/component-registry.json`: component catalog for MCP.
+- `docs/integration/composition-patterns.json`: JSX composition recipes for MCP.
+- `docs/integration/*`: operational policies (ownership, usage, fallbacks).
+- `AGENTS.md`: mandatory global execution order for Titan work.
 
-### 4.2 Fuentes remotas (típicas)
+Repository skill (for contributors editing this repo):
 
-- `raw.githubusercontent.com/angelcreative/titan-foundations/main/…`
-- `cdn.jsdelivr.net/gh/angelcreative/titan-foundations@main/…`
-
-La versión del worker está definida en código (`WORKER_VERSION` en `src/index.ts`).
-
-### 4.3 Temas soportados (lista en código)
-
-Incluye entre otros: `insights` (default), `neutral`, `default`, `audiense`, `demand`, `linkedin`, `tweetbinder`, `digital`, `brand`. Cada nombre mapea a un fichero `tokens/themes/_<nombre>.css` en el repo.
-
-### 4.4 Herramientas MCP expuestas
-
-| Herramienta | Uso breve |
-|-------------|-----------|
-| `titan_syncFromGithub` | Sincronizar metadatos / mapas desde el repo. |
-| `titan_getTheme` | Tema, URLs de CSS, snippets bootstrap (antes de generar UI). |
-| `titan_getOverview` | Resumen o visión completa del design system. |
-| `titan_getComponentRegistry` | Qué componentes existen; detalle con `component='TitanX'`. |
-| `titan_getCompositionPattern` | Recetas JSX por patrón o categoría. |
-| `titan_validateAndRewrite` | Validar código Titan; rewrites seguros (p. ej. spacing). |
-| `titan_getFoundations` | Foundations JSON o categorías de tokens semánticos. |
-| `titan_getDesignQualityGuidelines` | Guías DO/DON'T (calidad visual, anti–“AI slop”). |
-| `titan_setup` | Comando `npm install` + skill files (según `target`). |
-
-Existen alias con nombres tipo `titan.getTheme` → `titan_getTheme` (ver `normalizeToolName` en `src/index.ts`).
-
-### 4.5 `titan_setup` — parámetro `target`
-
-| `target` | Comportamiento |
-|----------|----------------|
-| `cursor` | Escribir skills en `.cursor/skills/titan-ds/`. |
-| `claude-code` | Escribir skills en `.claude/skills/titan-ds/`. |
-| `both` | Ambos. |
-| `make` | Figma Make / entornos sin skills locales: **no** escribir `.cursor`/`.claude`; solo referencia al install + MCP. |
-
-### 4.6 Skills embebidos en el worker
-
-El fichero `src/index.ts` incluye un objeto `SKILL_FILES` con el mismo contenido que los `.md` bajo `.cursor/skills/titan-ds/` (p. ej. `SKILL.md`, `THEME_GUIDE.md`, `VALIDATION_RULES.md`). **Riesgo operativo:** si se editan solo los ficheros en disco y no el worker, el MCP puede servir texto desactualizado hasta el próximo deploy. Convención de equipo: al cambiar skills, actualizar **ambos** o automatizar la generación.
-
-### 4.7 Limitaciones
-
-- Dependencia de **red** (GitHub, jsDelivr) y posibles **límites de rate** o caché.
-- El **registry** embebido puede ir por detrás del último `npm publish` de `titan-compositions`; el skill ya indica verificar `node_modules` cuando haya duda.
-- **Límites de Workers** (CPU, tiempo, subrequests): ver documentación Cloudflare si aplica operación en producción.
-
-### 4.8 Despliegue
-
-Desde el repo del worker: `npx wrangler deploy` (y `wrangler dev` para local). Política Cloudflare: ver `AGENTS.md` del repo `mcp-remote-worker`.
+- `titan-foundations/.claude/skills/titan-foundations/SKILL.md`
+- Scope: navigation order, contracts/anatomy lookup, Titan-only rules inside the DS repo.
 
 ---
 
-## 5. Tema Brand (resumen)
+## 3) What is in `mcp-remote-worker` today
 
-En `tokens/themes/_brand.css`: primario **Pulse** (oro), reglas especiales de **Ground** solo donde el tema lo define (botones secundarios/terciarios, ciertos controles, etc.); muchos superficies/componentes usan paleta **neutral** (black/steel). Detalle narrativo: **`.cursor/skills/titan-ds/THEME_GUIDE.md`** (worker) o comentarios en `_brand.css`.
+The worker is a Cloudflare Worker MCP server that exposes Titan tools and policy.
+
+### 3.1 Runtime behavior
+
+- Worker version is declared in code (`WORKER_VERSION` in `mcp-remote-worker/src/index.ts`).
+- Data is fetched from:
+  - `https://raw.githubusercontent.com/angelcreative/titan-foundations/main/...`
+  - `https://cdn.jsdelivr.net/gh/angelcreative/titan-foundations@main/...`
+- It is stateless from a product-data perspective and hydrates Titan metadata via `titan_syncFromGithub`.
+
+### 3.2 Supported themes in code
+
+`insights` (default), `neutral`, `default`, `audiense`, `demand`, `linkedin`, `tweetbinder`, `digital`, `brand`.
+
+### 3.3 MCP tools exposed
+
+- `titan_setup`
+- `titan_syncFromGithub`
+- `titan_getTheme`
+- `titan_getOverview`
+- `titan_getComponentRegistry`
+- `titan_getCompositionPattern`
+- `titan_validateAndRewrite`
+- `titan_getFoundations`
+- `titan_getDesignQualityGuidelines`
+
+Dot-style aliases are normalized (for example `titan.getTheme` -> `titan_getTheme`).
+
+### 3.4 Worker skills model (important)
+
+Worker-side Titan skill content exists in two places:
+
+1. Markdown files under `mcp-remote-worker/.cursor/skills/titan-ds/`
+2. Embedded strings in `SKILL_FILES` inside `mcp-remote-worker/src/index.ts` (used by `titan_setup`)
+
+These two should stay aligned. If only one side is updated, consumers can receive stale guidance.
 
 ---
 
-## 6. Cómo decirle a cada herramienta que use Titan
+## 4) `titan-compositions` npm package (what consumers get)
 
-La palabra suelta **“Titan”** es ambigua (otras tecnologías con el mismo nombre). Usad siempre el nombre completo y el stack.
+From `packages/titan-compositions/package.json`:
 
-### 6.1 Frase base (copiar/pegar)
+- Name: `titan-compositions`
+- Current version in repo: `0.1.26`
+- Exports:
+  - `titan-compositions` (JS + types)
+  - `titan-compositions/styles` (CSS)
+- Build output is in `dist/` (CJS, ESM, d.ts, CSS)
+- Peer dependencies include:
+  - `react`
+  - `react-dom`
+  - `react-aria-components`
+  - `@internationalized/date`
+  - `lucide-react`
+  - `@tabler/icons-react`
+
+Operational rule: **import-first**.  
+If a component exists in `titan-compositions`, do not re-create it with custom markup/CSS.
+
+---
+
+## 5) Registry and pattern data (and how AI uses them)
+
+### 5.1 Component registry
+
+File: `docs/integration/component-registry.json`
+
+Contains:
+
+- package/css metadata
+- peer dependency hints
+- component entries (import, props, slots, category, composability)
+- coverage map (`covered` vs `fallbackToReactAria`)
+
+Used by: `titan_getComponentRegistry`
+
+### 5.2 Composition patterns
+
+File: `docs/integration/composition-patterns.json`
+
+Contains:
+
+- layout/page/card/dialog/form/micro patterns
+- pattern IDs, descriptions, Titan components used
+- JSX templates and known gaps
+
+Used by: `titan_getCompositionPattern`
+
+### 5.3 AI execution contract
+
+Expected order for AI-assisted UI generation:
+
+1. `titan_getTheme` + `titan_getFoundations`
+2. `titan_getComponentRegistry`
+3. `titan_getCompositionPattern`
+4. Implement with `titan-compositions` import-first
+5. `titan_validateAndRewrite`
+
+If registry and installed package disagree, verify local package exports before fallback.
+
+---
+
+## 6) How repo and worker work together
+
+### 6.1 Ownership split
+
+- `titan-foundations` owns source code, docs, registry JSON, patterns JSON.
+- `mcp-remote-worker` owns remote tooling behavior and setup responses.
+
+### 6.2 Practical interaction
+
+- Worker fetches DS metadata from `titan-foundations`.
+- Worker serves MCP tools to AI clients.
+- Apps run using npm/runtime artifacts (`titan-compositions` + token CSS/theme CSS).
+- MCP does not replace your filesystem/workspace; it augments discovery, setup, and validation.
+
+### 6.3 Deployment implications
+
+- DS code/docs changes: commit/push in `titan-foundations`.
+- MCP behavior/embedded skill changes: deploy `mcp-remote-worker` (`wrangler deploy`).
+- Runtime availability for external apps via npm: publish `titan-compositions`.
+
+---
+
+## 7) Skills inventory and purpose
+
+### 7.1 Repo skill (`titan-foundations`)
+
+- File: `.claude/skills/titan-foundations/SKILL.md`
+- Purpose: guide contributors editing DS internals (tokens/specs/anatomies/compositions)
+- Audience: maintainers working inside `titan-foundations`
+
+### 7.2 Worker skills (`titan-ds`)
+
+Files under `mcp-remote-worker/.cursor/skills/titan-ds/`:
+
+- `SKILL.md`: architecture + generation workflow
+- `THEME_GUIDE.md`: themes, load order, typography, brand rules
+- `BOOTSTRAP.md`: setup snippets and required packages
+- `VALIDATION_RULES.md`: rewrite/validation constraints
+- `SEMANTIC_TOKENS.md`: semantic token categories
+- `FOUNDATIONS.md`: foundation token files and usage
+- `COMPONENT_REGISTRY.md`: import-first and registry usage
+- `COMPOSITION_PATTERNS.md`: pattern retrieval and application
+
+Purpose: guide AI when consuming Titan in external apps through MCP-assisted setup.
+
+---
+
+## 8) MCP usage by environment
+
+## 8.1 Cursor and Claude Code (persistent local workspace)
+
+Recommended model:
+
+- Open the workspace root (especially for monorepos).
+- Install dependencies once at root.
+- Keep apps in `apps/*` (or equivalent) with their own `package.json`.
+- Reuse the same workspace; do not reinstall on every chat/session.
+
+MCP role:
+
+- use tools for discovery, theme/bootstrap guidance, and validation
+- implement using project files and installed runtime package
+
+### 8.2 One-time install + multi-app runtime pattern
+
+This pattern is valid and recommended:
+
+1. Create root folder (any name).
+2. Configure workspaces (pnpm/npm/yarn).
+3. Install once in root.
+4. Create/use multiple app folders under `apps/*`.
+5. AI works from root context and can operate across apps.
+
+`titan_setup` helps with command + skill content; it does not create monorepo structure for you.
+
+### 8.3 v0 and Figma Make (ephemeral/hosted contexts)
+
+- Use `titan_setup` with `target: "make"`.
+- In this target, no `.cursor`/`.claude` skill files are expected to be written.
+- Repeated installs are normal in ephemeral environments.
+- Keep implementation import-first with `titan-compositions`.
+
+### 8.4 Figma (design tooling context)
+
+- Use Titan MCP as policy/reference source (themes, tokens, component availability, patterns).
+- Keep design generation aligned with Titan tokens/theme and composition semantics.
+- When environment does not persist local files, treat it like ephemeral setup.
+
+---
+
+## 9) Required packages for Titan UI generation
+
+Baseline install command used by `titan_setup`:
+
+```bash
+npm install titan-compositions react-aria-components lucide-react @tabler/icons-react
+```
+
+Why these:
+
+- `titan-compositions`: runtime component library
+- `react-aria-components`: accessibility/behavior foundation
+- `lucide-react` and `@tabler/icons-react`: fallback icon catalogs when Titan official icon is unavailable
+
+---
+
+## 10) CSS/theme bootstrap contract
+
+Mandatory load order:
+
+1. Google Fonts (Poppins)
+2. `tokens/css/titan.css`
+3. Active theme CSS (`tokens/themes/_<theme>.css`)
+4. `titan-compositions/styles`
+5. `<html data-theme="<theme>">`
+
+References:
+
+- `docs/integration/mcp-usage.md`
+- worker skill `THEME_GUIDE.md`
+- worker skill `BOOTSTRAP.md`
+
+---
+
+## 11) How to instruct each tool to use Titan MCP reliably
+
+Use explicit wording. Avoid plain "Titan" alone.
+
+Base instruction:
 
 ```text
-Audiense Titan Design System: UI con React, paquete titan-compositions, estilos con variables CSS del repo titan-foundations (titan.css + tema). Colores: tokens semánticos (var(--text-primary), …), no hex sueltos. Comportamiento: react-aria-components.
+Use Audiense Titan Design System with Titan MCP.
+Implement UI with React + titan-compositions (import-first), react-aria-components behavior, and Titan semantic tokens from titan-foundations.
+No hardcoded hex/rgb. Use titan_getTheme, titan_getFoundations, titan_getComponentRegistry, titan_getCompositionPattern, and titan_validateAndRewrite.
 ```
 
-### 6.2 Cursor / Claude Code (workspace con repo)
+Environment-specific add-ons:
 
-- Abrí la **raíz** del proyecto (idealmente la raíz del monorepo).
-- Activá la política con: **“Titan DS”**, **“Titan foundations”**, o cumpliendo `AGENTS.md` del repo.
-- Con MCP: usad herramientas `titan_getComponentRegistry`, `titan_getCompositionPattern`, `titan_validateAndRewrite`, etc.
-- **MCP vs disco:** usad MCP para descubrimiento y validación; el código fuente y `node_modules` están en el workspace. No repetir `npm install` en cada chat si la carpeta ya está instalada.
-
-### 6.3 Figma Make / v0 (sin acceso a vuestro repo)
-
-- No leen `AGENTS.md` solos: pegad el **brief de la sección 6.1** y, si aplica, **“configurar MCP Titan”** para herramientas.
-- Para `titan_setup` usad `target: "make"` si el entorno no debe recibir skills en `.cursor`/`.claude`.
-
-### 6.4 Invocación mínima por entorno
-
-| Entorno | Qué decir |
-|---------|-----------|
-| Cursor / Claude | “Titan DS” + workspace en raíz del monorepo |
-| Con MCP | “Usa las herramientas Titan MCP (registry, patterns, validate)” |
-| v0 / Make | Brief 6.1 + enlace a CSS/bootstrap si lo tenéis |
+- Cursor/Claude: "Workspace root is the monorepo root; dependencies are already installed."
+- v0/Figma Make: "Use `titan_setup` target `make`; treat environment as ephemeral."
+- All: "If component exists in titan-compositions, do not recreate custom HTML/CSS."
 
 ---
 
-## 7. Workflow para usuario final (una carpeta, varias apps)
+## 12) Deployment and release checklist
 
-1. **Creá una carpeta** en tu equipo (cualquier nombre).
-2. **Configurá un monorepo** en esa raíz (p. ej. **pnpm**: `pnpm-workspace.yaml` que incluya `apps/*` u otra convención).
-3. **Instalación única en la raíz:** desde esa carpeta, `pnpm install` (o el gestor que uséis). Ahí queda el `node_modules` principal y el lockfile.
-4. **Añadí dependencias Titan** en el `package.json` raíz o en cada app, según vuestra política; el comando típico que sugiere MCP incluye `titan-compositions`, `react-aria-components`, `lucide-react`, `@tabler/icons-react`.
-5. **Cada app** bajo `apps/<nombre>` tiene su `package.json` y scripts (`dev`, `build`).
-6. **Abrí Cursor/Claude en la carpeta raíz**, no solo dentro de una app, para que el asistente vea todo el workspace.
-7. **MCP Titan** usalo para consultar componentes, patrones, temas y validar — no sustituye el monorepo; lo complementa.
+Use this to decide what to ship:
 
-Ejemplo mínimo de workspace (pnpm):
+1. `titan-foundations` changes only -> commit/push `titan-foundations`
+2. Need apps consuming npm to receive runtime changes -> publish `titan-compositions`
+3. Worker tool behavior/embedded skill updates -> deploy `mcp-remote-worker`
 
-```yaml
-# pnpm-workspace.yaml (en la raíz de tu carpeta X)
-packages:
-  - 'apps/*'
-```
-
-Cada carpeta bajo `apps/` debe tener su propio `package.json`.
+These are independent levers and should be executed based on the change scope.
 
 ---
 
-## 8. Orden de carga CSS (aplicaciones)
+## 13) Related references
 
-1. Fuentes (p. ej. Poppins).
-2. `titan.css` (tokens base).
-3. Tema (`_insights.css`, `_brand.css`, …).
-4. Estilos de `titan-compositions` (`titan-compositions/styles`).
-5. `document.documentElement.dataset.theme = '<tema>'` en el HTML/JS raíz.
-
-Detalle: **`.cursor/skills/titan-ds/THEME_GUIDE.md`** (worker) o documentación de integración.
-
-### 8.1 Chrome de página: navbar y breadcrumb
-
-**Regla de espaciado (opt-in por clases, no automático):**
-
-| Pantalla | `main` | Espacio bajo el navbar |
-|----------|--------|-------------------------|
-| **Navbar + breadcrumb** (misma “franja” de app) | `className="page page--flush-breadcrumb"` y el breadcrumb en `section.page-breadcrumb-host` (no envolver en `.card`). | Sin el hueco extra: el breadcrumb queda pegado al navbar como chrome continuo. |
-| **Solo navbar** (sin breadcrumb) | `className="page"` (sin `page--flush-breadcrumb`). | Mantiene el `padding-top` habitual del área de página; es el patrón esperado. |
-
-- **`page--flush-breadcrumb`** solo debe usarse cuando hay **navbar y breadcrumb juntos**. No es un detector automático: si lo aplicas en una vista solo con navbar, perderías el aire superior sin motivo.
-- **Breadcrumb aislado** (sin navbar) no es un caso de producto contemplado aquí; el patrón *flush* está pensado para **navbar + breadcrumb**.
-- Referencia de implementación: `TitanTwoUpOneDownLayout` en `packages/titan-compositions/`, clases en `titan-compositions.css` (`.page--flush-breadcrumb`, `.page-breadcrumb-host`).
+- `docs/README.md`
+- `docs/integration/mcp-usage.md`
+- `docs/integration/decision-policy.md`
+- `AGENTS.md`
+- `.claude/skills/titan-foundations/SKILL.md`
+- `mcp-remote-worker/.cursor/skills/titan-ds/*.md`
 
 ---
 
-## 9. Reglas de iconos en tablas (implementación)
-
-En el repo `titan-foundations`, reglas Cursor: **`.cursor/rules/table-icons.mdc`** (tamaños tbody vs thead, `icon-base` para acciones). Resumen en **VALIDATION_RULES** del skill `titan-ds` (worker).
-
----
-
-## 10. Documentos relacionados (no duplicados)
-
-| Documento | Contenido |
-|-----------|-----------|
-| `AGENTS.md` | Política global y orden de ejecución. |
-| `docs/README.md` | Índice de `docs/`. |
-| `docs/integration/mcp-usage.md` | Contrato MCP, prompts listos, Next.js `"use client"`, entornos. |
-| `docs/integration/decision-policy.md` | Decisiones de ownership. |
-| `.claude/skills/titan-foundations/SKILL.md` | Navegación dentro del monorepo DS. |
-| `mcp-remote-worker/.cursor/skills/titan-ds/` | Skills consumidor + THEME_GUIDE, BOOTSTRAP, etc. |
-
----
-
-## 11. Diagrama lógico (texto)
-
-```
-GitHub: titan-foundations (tokens, themes, titan-compositions fuente, docs, registry JSON)
-        │
-        ├──► npm: paquete titan-compositions + CSS
-        │
-        └──► CDN / raw GitHub ──fetch──► Cloudflare Worker (MCP)
-                                           │
-                                           └──► Herramientas (registry, theme, validate, …)
-                                                │
-App local (monorepo opcional) ◄────────────────┘
-  └── apps/* importan titan-compositions; IDE abre raíz; MCP asiste sin ser el filesystem
-```
-
----
-
-*Última actualización: documento generado para alinear ingeniería y diseño; revisar `WORKER_VERSION` y versiones de paquetes en los `package.json` cuando preparéis releases.*
+Last updated: architecture/workflow rewrite focused on operational clarity for developers and AI tooling.
