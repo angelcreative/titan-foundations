@@ -1084,15 +1084,16 @@ function SetupGuide() {
 ├── index.html             ← Google Fonts ONLY (no CDN links for tokens)
 └── src/
     ├── styles/
-    │   └── titan-base-tokens.css  ← titan.css + theme CSS (all values inline)
-    ├── index.css              ← import order: local tokens → compositions
+    │   ├── titan-base-tokens.css  ← titan.css (downloaded from GitHub)
+    │   └── titan-theme.css        ← theme CSS (downloaded from GitHub)
+    ├── index.css              ← import order: local tokens → theme → compositions
     ├── main.jsx
     └── App.jsx`} />
         <p>Key differences from Cursor/Claude Code:</p>
         <ul className="setup-auto-list">
           <li><strong>No CDN links</strong> in <code>index.html</code> for token CSS (only Google Fonts is external)</li>
-          <li><strong><code>titan-base-tokens.css</code></strong> contains the full <code>titan.css</code> + theme CSS concatenated with literal values</li>
-          <li><strong><code>index.css</code></strong> imports local tokens first, then <code>titan-compositions/styles</code></li>
+          <li><strong>Token CSS files are downloaded</strong> from GitHub and saved locally — the tool returns URLs for the agent to fetch and write as local files (they are too large to inline in the response)</li>
+          <li><strong><code>index.css</code></strong> imports local tokens first, then theme, then <code>titan-compositions/styles</code></li>
           <li><strong>No skill files</strong> — Figma Make does not use <code>.cursor/</code> or <code>.claude/</code></li>
         </ul>
 

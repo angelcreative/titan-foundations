@@ -272,10 +272,13 @@ npm run dev -w apps/my-app
 
 **Figma Make (sandboxed):**
 - Use `titan_setup({ target: 'figma-make' })`.
-- CDN `@import` is unreliable in Figma Make's sandbox — all tokens are bundled locally.
-- The tool fetches `titan.css` + theme CSS and returns them as `src/styles/titan-base-tokens.css` with all literal values.
+- CDN `@import` is unreliable in Figma Make's sandbox — all tokens must be local.
+- The tool returns a `token_files` array with URLs for the agent to download and save:
+  - `src/styles/titan-base-tokens.css` ← fetched from `tokens/css/titan.css` (~100KB)
+  - `src/styles/titan-theme.css` ← fetched from `tokens/themes/_<theme>.css`
+- Token files are too large to inline in the MCP response — the agent fetches them separately.
 - `index.html` has no CDN `<link>` tags for token CSS (only Google Fonts is external).
-- `src/index.css` imports local tokens first, then `titan-compositions/styles`.
+- `src/index.css` imports local tokens, then theme, then `titan-compositions/styles`.
 - No skill files are written.
 
 **Figma (design tooling):**
