@@ -261,7 +261,7 @@ npm run dev -w apps/my-app
 | `structure` | `single` / `monorepo` | `single` | Project layout |
 | `theme` | Any supported theme | `insights` | Head links and `data-theme` attribute |
 | `appName` | Any name | `my-app` | Project name (single) or app folder name (monorepo) |
-| `target` | `cursor` / `claude-code` / `both` / `make` | `both` | Which skill files to write |
+| `target` | `cursor` / `claude-code` / `both` / `figma-make` | `both` | Which skill files to write; `figma-make` uses local tokens instead of CDN |
 
 ### 8.4 Environment-specific usage
 
@@ -271,7 +271,7 @@ npm run dev -w apps/my-app
 - For monorepo, open the workspace root.
 
 **v0 and Figma Make (ephemeral/hosted):**
-- Use `titan_setup({ target: 'make' })`. Only npm install, no skill files.
+- Use `titan_setup({ target: 'figma-make' })`. No skill files, local token files instead of CDN.
 - Repeated installs are normal in ephemeral environments.
 
 **Figma (design tooling):**
@@ -328,7 +328,7 @@ No hardcoded hex/rgb. Use titan_getTheme, titan_getFoundations, titan_getCompone
 Environment-specific add-ons:
 
 - Cursor/Claude: "Workspace root is the monorepo root; dependencies are already installed."
-- v0/Figma Make: "Use `titan_setup` target `make`; treat environment as ephemeral."
+- Figma Make: "Use `titan_setup` target `figma-make`; treat environment as ephemeral, use local tokens."
 - All: "If component exists in titan-compositions, do not recreate custom HTML/CSS."
 
 ---

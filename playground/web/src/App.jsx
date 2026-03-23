@@ -1087,7 +1087,7 @@ function SetupGuide() {
             <tr><td><code>structure</code></td><td><code>single</code> | <code>monorepo</code></td><td><code>single</code></td></tr>
             <tr><td><code>theme</code></td><td>Any supported theme name</td><td><code>insights</code></td></tr>
             <tr><td><code>appName</code></td><td>Project/app folder name</td><td><code>my-app</code></td></tr>
-            <tr><td><code>target</code></td><td><code>cursor</code> | <code>claude-code</code> | <code>both</code> | <code>make</code></td><td><code>both</code></td></tr>
+            <tr><td><code>target</code></td><td><code>cursor</code> | <code>claude-code</code> | <code>both</code> | <code>figma-make</code></td><td><code>both</code></td></tr>
           </tbody>
         </table>
       </section>
