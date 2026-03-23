@@ -1197,11 +1197,83 @@ function SidebarDemo() {
   )
 }
 
-function ShowcaseCard({ id, title, ariaImports, ariaDesc, ariaComponents, foundations, tokenGroups, code, children }) {
+function TokenChainRow({ row }) {
+  return (
+    <tr>
+      <td style={{ fontWeight: 'var(--text-weight-medium)', color: 'var(--copy-slot-primary)' }}>{row.property}</td>
+      <td>
+        <span className="chain-step">
+          {row.chain.map((step, i) => (
+            <span key={i} className="chain-step">
+              {i > 0 && <span className="chain-arrow">→</span>}
+              {step.swatch && <span className="chain-swatch" style={{ background: step.swatch }} />}
+              <span className={`chain-token ${step.type || 'component'}`}>{step.label}</span>
+            </span>
+          ))}
+        </span>
+      </td>
+    </tr>
+  )
+}
+
+function TokenChainToggle({ title, children }) {
+  const [open, setOpen] = useState(false)
+  const btnRef = useRef(null)
+  function handleClick() {
+    setOpen(o => !o)
+    requestAnimationFrame(() => {
+      const scrollParent = btnRef.current?.closest('.page')
+      if (scrollParent) scrollParent.scrollLeft = 0
+    })
+  }
+  return (
+    <div className="token-chain-toggle">
+      <button ref={btnRef} type="button" className="token-chain-toggle-btn" aria-expanded={open} onClick={handleClick}>
+        <span>{title}</span>
+        <ChevronDown style={{ width: 16, height: 16, transition: 'transform .2s', transform: open ? 'rotate(180deg)' : 'rotate(0)', flexShrink: 0 }} />
+      </button>
+      {open && <div className="token-chain-toggle-body">{children}</div>}
+    </div>
+  )
+}
+
+function TokenChainExplainer({ variations }) {
+  if (!variations || variations.length === 0) return null
+  return (
+    <div className="token-chain-section">
+      {variations.map((v, vi) => (
+        <TokenChainToggle key={vi} title={v.name}>
+          {v.description && <p style={{ margin: '0 0 var(--spacing-xs)', fontSize: 'var(--font-size-s)', color: 'var(--copy-slot-secondary)' }}>{v.description}</p>}
+          <table className="token-chain-table">
+            <thead>
+              <tr>
+                <th>Property</th>
+                <th>Token chain</th>
+              </tr>
+            </thead>
+            <tbody>
+              {v.rows.map((row, ri) => <TokenChainRow key={ri} row={row} />)}
+            </tbody>
+          </table>
+          <div className="chain-legend">
+            <span className="chain-legend-item"><span className="chain-token component">component</span> Component token</span>
+            <span className="chain-legend-item"><span className="chain-token primitive">primitive</span> Primitive / foundation</span>
+            <span className="chain-legend-item"><span className="chain-token value">value</span> Resolved value</span>
+          </div>
+        </TokenChainToggle>
+      ))}
+    </div>
+  )
+}
+
+function ShowcaseCard({ id, title, ariaImports, ariaDesc, ariaComponents, foundations, tokenGroups, code, tokenChains, children }) {
   return (
     <section id={id} className="card">
       <h2>{title}</h2>
       <div className="showcase-demo">{children}</div>
+      {tokenChains && tokenChains.length > 0 && (
+        <TokenChainExplainer variations={tokenChains} />
+      )}
       <TitanTabs
         defaultSelectedKey="aria"
         items={[
@@ -2026,6 +2098,21 @@ function App() {
               { label: 'Avatar', tokens: ['--avatar-background', '--avatar-width', '--avatar-height', '--text-on-color'] },
             ]}
             code={`import { TitanAvatar } from 'titan-compositions'\n\n<TitanAvatar account="John" />\n<TitanAvatar />`}
+            tokenChains={[
+              { name: 'Avatar (with initial)', description: 'Circular badge showing the first letter of the account name.', rows: [
+                { property: 'Background', chain: [{ label: '--avatar-background', type: 'component' }, { label: '--color-steel-600', type: 'primitive' }, { label: '#6B7280', type: 'value' }] },
+                { property: 'Text color', chain: [{ label: '--text-on-color', type: 'component' }, { label: '--color-white-900', type: 'primitive' }, { label: '#FFFFFF', type: 'value', swatch: '#FFFFFF' }] },
+                { property: 'Width', chain: [{ label: '--avatar-width', type: 'component' }, { label: '40px', type: 'value' }] },
+                { property: 'Height', chain: [{ label: '--avatar-height', type: 'component' }, { label: '40px', type: 'value' }] },
+                { property: 'Border radius', chain: [{ label: 'border-radius: 50%', type: 'value' }] },
+                { property: 'Font weight', chain: [{ label: '--text-weight-semibold', type: 'primitive' }, { label: '600', type: 'value' }] },
+              ]},
+              { name: 'Avatar (fallback icon)', description: 'When no account name is provided, a User icon is shown.', rows: [
+                { property: 'Background', chain: [{ label: '--avatar-background', type: 'component' }, { label: '--color-steel-600', type: 'primitive' }, { label: '#6B7280', type: 'value' }] },
+                { property: 'Icon color', chain: [{ label: '--text-on-color', type: 'component' }, { label: '--color-white-900', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+                { property: 'Icon size', chain: [{ label: '--icon-size-m', type: 'primitive' }, { label: '20px', type: 'value' }] },
+              ]},
+            ]}
           >
             <div className="row">
               <TitanAvatar account="John" aria-label="John's avatar" />
@@ -2056,6 +2143,19 @@ function App() {
 <TitanBadgeAnchor count={3}>
   <TitanIconButton icon={<Bell />} variant="ghost" ariaLabel="Notifications" />
 </TitanBadgeAnchor>`}
+            tokenChains={[
+              { name: 'Badge (counter pill)', description: 'Red notification counter.', rows: [
+                { property: 'Background', chain: [{ label: '--badge-slot-bg', type: 'component' }, { label: '--color-pomegranate-600', type: 'primitive' }, { label: '#DC2626', type: 'value', swatch: '#DC2626' }] },
+                { property: 'Text color', chain: [{ label: '--badge-slot-color', type: 'component' }, { label: '--color-white-900', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+                { property: 'Font size', chain: [{ label: '--badge-slot-font-size', type: 'component' }, { label: '--font-size-s', type: 'primitive' }, { label: '12px', type: 'value' }] },
+                { property: 'Font weight', chain: [{ label: '--badge-slot-font-weight', type: 'component' }, { label: '600', type: 'value' }] },
+                { property: 'Border radius', chain: [{ label: '--badge-slot-radius', type: 'component' }, { label: '--rounded-full', type: 'primitive' }, { label: '9999px', type: 'value' }] },
+                { property: 'Padding', chain: [{ label: '--badge-slot-pad-x / --badge-slot-pad-y', type: 'component' }, { label: '4px / 2px', type: 'value' }] },
+              ]},
+              { name: 'Badge Anchor', description: 'Positions badge at top-right of child element.', rows: [
+                { property: 'Offset', chain: [{ label: '--badge-slot-offset', type: 'component' }, { label: '4px', type: 'value' }] },
+              ]},
+            ]}
           >
             <div className="row" style={{ gap: '24px', alignItems: 'center' }}>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
@@ -2101,6 +2201,23 @@ function App() {
               { label: 'Icons', tokens: ['--icon-size-s', '--icon-stroke-s'] },
             ]}
             code={CODE_BREADCRUMB}
+            tokenChains={[
+              { name: 'Breadcrumb link', description: 'Clickable breadcrumb item.', rows: [
+                { property: 'Text color', chain: [{ label: 'color', type: 'component' }, { label: '--color-steel-600', type: 'primitive' }, { label: '#6B7280', type: 'value', swatch: '#6B7280' }] },
+                { property: 'Font size', chain: [{ label: '--font-size-s', type: 'primitive' }, { label: '12px', type: 'value' }] },
+                { property: 'Font weight', chain: [{ label: '--text-weight-regular', type: 'primitive' }, { label: '400', type: 'value' }] },
+                { property: 'Font family', chain: [{ label: '--font-audiense', type: 'primitive' }, { label: 'Poppins', type: 'value' }] },
+              ]},
+              { name: 'Breadcrumb current page', description: 'Non-clickable current page label.', rows: [
+                { property: 'Text color', chain: [{ label: 'color', type: 'component' }, { label: '--color-steel-500', type: 'primitive' }, { label: '#9CA3AF', type: 'value', swatch: '#9CA3AF' }] },
+              ]},
+              { name: 'Breadcrumb nav bar', description: 'Full-width container with bottom border.', rows: [
+                { property: 'Min height', chain: [{ label: 'min-height', type: 'component' }, { label: '40px', type: 'value' }] },
+                { property: 'Padding', chain: [{ label: '--spacing-xs', type: 'primitive' }, { label: '8px', type: 'value' }] },
+                { property: 'Border bottom', chain: [{ label: '--stroke-slot-width', type: 'component' }, { label: '--color-black-200', type: 'primitive' }, { label: '#E5E7EB', type: 'value', swatch: '#E5E7EB' }] },
+                { property: 'Separator icon', chain: [{ label: '--icon-size-s', type: 'primitive' }, { label: '12px', type: 'value' }] },
+              ]},
+            ]}
           >
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '100%' }}>
               <div>
@@ -2156,6 +2273,23 @@ function App() {
               { label: 'Button Group', tokens: ['--button-group-background', '--button-group-border', '--button-group-color', '--button-group-icon-color', '--button-group-selected-background', '--button-group-selected-color', '--button-group-hover-color', '--button-group-disabled-color'] },
             ]}
             code={`import { TitanButtonGroup, TitanIndividualButton } from 'titan-compositions'\n\n<TitanButtonGroup>\n  <TitanIndividualButton id="list">List</TitanIndividualButton>\n  <TitanIndividualButton id="grid">Grid</TitanIndividualButton>\n</TitanButtonGroup>`}
+            tokenChains={[
+              { name: 'Button Group (horizontal)', description: 'Segmented toggle with single selection.', rows: [
+                { property: 'Background', chain: [{ label: '--toggle-group-slot-bg', type: 'component' }, { label: '--color-black-100', type: 'primitive' }, { label: '#F3F4F6', type: 'value', swatch: '#F3F4F6' }] },
+                { property: 'Border radius', chain: [{ label: '--toggle-group-slot-radius', type: 'component' }, { label: '--rounded-s', type: 'primitive' }, { label: '8px', type: 'value' }] },
+                { property: 'Gap', chain: [{ label: '--spacing-4xs', type: 'primitive' }, { label: '2px', type: 'value' }] },
+                { property: 'Padding', chain: [{ label: '--spacing-4xs', type: 'primitive' }, { label: '2px', type: 'value' }] },
+              ]},
+              { name: 'Individual button (selected)', rows: [
+                { property: 'Background', chain: [{ label: '--toggle-btn-slot-selected-bg', type: 'component' }, { label: '--color-white-900', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+                { property: 'Text color', chain: [{ label: '--toggle-btn-slot-selected-label', type: 'component' }, { label: '--color-steel-700', type: 'primitive' }, { label: '#374151', type: 'value' }] },
+                { property: 'Font weight', chain: [{ label: '--text-weight-semibold', type: 'primitive' }, { label: '600', type: 'value' }] },
+              ]},
+              { name: 'Individual button (unselected)', rows: [
+                { property: 'Background', chain: [{ label: 'transparent', type: 'value' }] },
+                { property: 'Text color', chain: [{ label: '--toggle-btn-slot-label', type: 'component' }, { label: '--color-steel-500', type: 'primitive' }, { label: '#9CA3AF', type: 'value' }] },
+              ]},
+            ]}
           >
             <div className="row">
               <TitanButtonGroup aria-label="View mode">
@@ -2199,6 +2333,52 @@ function App() {
               { label: 'Icons', tokens: ['--icon-size-m', '--icon-stroke-m'] },
             ]}
             code={CODE_BUTTONS}
+            tokenChains={[
+              { name: 'Button Primary', description: 'Main call-to-action.', rows: [
+                { property: 'Background', chain: [{ label: '--button-primary-slot-bg', type: 'component' }, { label: '--color-primary', type: 'primitive' }, { label: 'theme color', type: 'value' }] },
+                { property: 'Text color', chain: [{ label: '--button-primary-slot-label', type: 'component' }, { label: '--text-on-color', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+                { property: 'Padding vertical', chain: [{ label: '--button-slot-pad-y', type: 'component' }, { label: '--spacing-xs', type: 'primitive' }, { label: '10px', type: 'value' }] },
+                { property: 'Padding horizontal', chain: [{ label: '--button-slot-pad-x', type: 'component' }, { label: '--spacing-m', type: 'primitive' }, { label: '16px', type: 'value' }] },
+                { property: 'Border radius', chain: [{ label: '--button-slot-radius', type: 'component' }, { label: '--rounded-s', type: 'primitive' }, { label: '8px', type: 'value' }] },
+                { property: 'Font size', chain: [{ label: '--button-slot-font-size', type: 'component' }, { label: '--font-size-l', type: 'primitive' }, { label: '16px', type: 'value' }] },
+                { property: 'Line height', chain: [{ label: '--button-slot-line-height', type: 'component' }, { label: '--font-leading-m', type: 'primitive' }, { label: '18px', type: 'value' }] },
+                { property: 'Font weight', chain: [{ label: '--button-slot-font-weight', type: 'component' }, { label: '--text-weight-medium', type: 'primitive' }, { label: '500', type: 'value' }] },
+                { property: 'Font family', chain: [{ label: '--font-audiense', type: 'primitive' }, { label: 'Poppins', type: 'value' }] },
+              ]},
+              { name: 'Button Secondary', description: 'Secondary action with border.', rows: [
+                { property: 'Background', chain: [{ label: '--button-secondary-slot-bg', type: 'component' }, { label: '--color-white-900', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+                { property: 'Text color', chain: [{ label: '--button-secondary-slot-label', type: 'component' }, { label: '--color-steel-700', type: 'primitive' }, { label: '#374151', type: 'value' }] },
+                { property: 'Border', chain: [{ label: '--button-secondary-slot-border', type: 'component' }, { label: '--color-black-300', type: 'primitive' }, { label: '#D1D5DB', type: 'value', swatch: '#D1D5DB' }] },
+              ]},
+              { name: 'Button Tertiary', description: 'Subtle background action.', rows: [
+                { property: 'Background', chain: [{ label: '--button-tertiary-slot-bg', type: 'component' }, { label: 'transparent', type: 'value' }] },
+                { property: 'Text color', chain: [{ label: '--button-tertiary-slot-label', type: 'component' }, { label: '--color-steel-700', type: 'primitive' }, { label: '#374151', type: 'value' }] },
+              ]},
+              { name: 'Button Link', description: 'Text-only link-style button.', rows: [
+                { property: 'Text color', chain: [{ label: '--text-link', type: 'component' }, { label: '--color-primary', type: 'primitive' }, { label: 'theme color', type: 'value' }] },
+                { property: 'Text decoration (hover)', chain: [{ label: 'underline', type: 'value' }] },
+              ]},
+              { name: 'Button Delete', description: 'Destructive primary action.', rows: [
+                { property: 'Background', chain: [{ label: '--error-button-primary', type: 'component' }, { label: '--color-pomegranate-600', type: 'primitive' }, { label: '#DC2626', type: 'value', swatch: '#DC2626' }] },
+                { property: 'Text color', chain: [{ label: '--text-on-color', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+              ]},
+              { name: 'Button Disabled', description: 'Disabled state for all variants.', rows: [
+                { property: 'Background', chain: [{ label: '--button-primary-slot-disabled-bg', type: 'component' }, { label: '--color-disabled-100', type: 'primitive' }, { label: '#F3F4F6', type: 'value' }] },
+                { property: 'Text color', chain: [{ label: '--button-primary-slot-disabled-label', type: 'component' }, { label: '--color-disabled-300', type: 'primitive' }, { label: '#9CA3AF', type: 'value' }] },
+                { property: 'Cursor', chain: [{ label: 'not-allowed', type: 'value' }] },
+              ]},
+              { name: 'Icon Button (secondary)', description: 'Icon-only button.', rows: [
+                { property: 'Size', chain: [{ label: '--button-icon-slot-size', type: 'component' }, { label: '36px', type: 'value' }] },
+                { property: 'Background', chain: [{ label: '--button-icon-slot-bg', type: 'component' }, { label: '--color-white-900', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+                { property: 'Icon color', chain: [{ label: '--button-icon-slot-icon', type: 'component' }, { label: '--color-steel-600', type: 'primitive' }, { label: '#6B7280', type: 'value' }] },
+                { property: 'Border radius', chain: [{ label: '--button-icon-interactive-slot-radius', type: 'component' }, { label: '--rounded-s', type: 'primitive' }, { label: '8px', type: 'value' }] },
+              ]},
+              { name: 'Icon Button (ghost)', description: 'Transparent icon button.', rows: [
+                { property: 'Background', chain: [{ label: 'transparent', type: 'value' }] },
+                { property: 'Background (hover)', chain: [{ label: '--button-icon-slot-bg-hover', type: 'component' }, { label: '--color-black-100', type: 'primitive' }, { label: '#F3F4F6', type: 'value' }] },
+                { property: 'Icon color', chain: [{ label: '--button-icon-slot-icon', type: 'component' }, { label: '--color-steel-600', type: 'primitive' }, { label: '#6B7280', type: 'value' }] },
+              ]},
+            ]}
           >
             <div className="row">
               <TitanButton variant="primary">Primary</TitanButton>
@@ -2256,6 +2436,26 @@ function App() {
               { label: 'Time', tokens: ['--calendar-slot-time-border', '--calendar-slot-time-radius', '--calendar-slot-time-bg'] },
             ]}
             code={CODE_CALENDAR}
+            tokenChains={[
+              { name: 'Calendar container', description: 'Date picker panel.', rows: [
+                { property: 'Background', chain: [{ label: '--calendar-slot-bg', type: 'component' }, { label: '--color-white-900', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+                { property: 'Border radius', chain: [{ label: '--calendar-slot-radius', type: 'component' }, { label: '--rounded-m', type: 'primitive' }, { label: '12px', type: 'value' }] },
+                { property: 'Shadow', chain: [{ label: '--calendar-slot-shadow', type: 'component' }, { label: '--shadow-m', type: 'primitive' }, { label: '0 4px 16px rgba(0,0,0,.08)', type: 'value' }] },
+                { property: 'Padding', chain: [{ label: '--calendar-slot-pad', type: 'component' }, { label: '--spacing-m', type: 'primitive' }, { label: '16px', type: 'value' }] },
+              ]},
+              { name: 'Selected day', description: 'Highlighted active date cell.', rows: [
+                { property: 'Background', chain: [{ label: '--calendar-selected-bg', type: 'component' }, { label: '--color-primary', type: 'primitive' }, { label: 'theme color', type: 'value' }] },
+                { property: 'Text color', chain: [{ label: '--calendar-selected-color', type: 'component' }, { label: '--text-on-color', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+                { property: 'Border radius', chain: [{ label: '--rounded-s', type: 'primitive' }, { label: '8px', type: 'value' }] },
+              ]},
+              { name: 'Today indicator', description: 'Ring around current date.', rows: [
+                { property: 'Border', chain: [{ label: '--calendar-today-border', type: 'component' }, { label: '--color-primary', type: 'primitive' }, { label: 'theme color', type: 'value' }] },
+              ]},
+              { name: 'Header & nav', description: 'Month/year label and prev/next buttons.', rows: [
+                { property: 'Header text', chain: [{ label: '--calendar-header-color', type: 'component' }, { label: '--copy-slot-body', type: 'primitive' }, { label: '#1F2937', type: 'value' }] },
+                { property: 'Nav button icon', chain: [{ label: '--icon-size-m', type: 'primitive' }, { label: '20px', type: 'value' }] },
+              ]},
+            ]}
           >
             <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap', alignItems: 'flex-start' }}>
               <div>
@@ -2309,6 +2509,17 @@ function App() {
     <TitanCard span={16}><span className="cardgrid-label">4/4</span></TitanCard>
   </TitanCardGrid>
 </div>`}
+            tokenChains={[
+              { name: 'Card Grid layout', description: '16-column CSS grid container.', rows: [
+                { property: 'Grid gap', chain: [{ label: '--layout-grid-gap', type: 'component' }, { label: '16px', type: 'value' }] },
+              ]},
+              { name: 'Card', description: 'Individual card surface.', rows: [
+                { property: 'Background', chain: [{ label: '--card-slot-bg', type: 'component' }, { label: '--color-white-900', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+                { property: 'Border', chain: [{ label: '--card-slot-border-width', type: 'component' }, { label: '--color-black-300', type: 'primitive' }, { label: '#D1D5DB', type: 'value', swatch: '#D1D5DB' }] },
+                { property: 'Border radius', chain: [{ label: '--card-slot-radius', type: 'component' }, { label: '--rounded-m', type: 'primitive' }, { label: '12px', type: 'value' }] },
+                { property: 'Padding', chain: [{ label: '--dialog-slot-pad', type: 'component' }, { label: '--spacing-l', type: 'primitive' }, { label: '24px', type: 'value' }] },
+              ]},
+            ]}
           >
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--layout-grid-gap)' }}>
               <TitanCardGrid>
@@ -2345,6 +2556,18 @@ function App() {
               { label: 'Collapsible', tokens: ['--spacing-2xs', '--icon-size-s', '--icon-stroke-s', '--text-weight-medium'] },
             ]}
             code={`import { TitanCollapsible } from 'titan-compositions'\n\n<TitanCollapsible title="Section title">\n  <p>Content here</p>\n</TitanCollapsible>`}
+            tokenChains={[
+              { name: 'Collapsible trigger', description: 'Header button that toggles content.', rows: [
+                { property: 'Background', chain: [{ label: 'transparent', type: 'value' }] },
+                { property: 'Text color', chain: [{ label: '--copy-slot-body', type: 'component' }, { label: '--color-steel-800', type: 'primitive' }, { label: '#1F2937', type: 'value' }] },
+                { property: 'Font weight', chain: [{ label: '--text-weight-medium', type: 'primitive' }, { label: '500', type: 'value' }] },
+                { property: 'Chevron icon', chain: [{ label: '--icon-size-s', type: 'primitive' }, { label: '12px', type: 'value' }] },
+              ]},
+              { name: 'Collapsible content', description: 'Revealed panel area.', rows: [
+                { property: 'Padding', chain: [{ label: '--spacing-2xs', type: 'primitive' }, { label: '8px', type: 'value' }] },
+                { property: 'Text color', chain: [{ label: '--copy-slot-secondary', type: 'component' }, { label: '--color-steel-500', type: 'primitive' }, { label: '#9CA3AF', type: 'value' }] },
+              ]},
+            ]}
           >
             <div style={{ maxWidth: '400px' }}>
               <TitanCollapsible title="Advanced settings">
@@ -2379,6 +2602,23 @@ function App() {
               { label: 'Footer', tokens: ['--spacing-3xs'] },
             ]}
             code={CODE_DIALOG}
+            tokenChains={[
+              { name: 'Dialog overlay', description: 'Dimmed backdrop behind modal.', rows: [
+                { property: 'Background', chain: [{ label: '--overlay-backdrop', type: 'component' }, { label: 'rgba(0, 0, 0, 0.4)', type: 'value' }] },
+              ]},
+              { name: 'Dialog panel', description: 'Centered modal container.', rows: [
+                { property: 'Background', chain: [{ label: '--dialog-slot-bg', type: 'component' }, { label: '--color-white-900', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+                { property: 'Border radius', chain: [{ label: '--dialog-slot-radius', type: 'component' }, { label: '--rounded-m', type: 'primitive' }, { label: '12px', type: 'value' }] },
+                { property: 'Shadow', chain: [{ label: '--dialog-slot-shadow', type: 'component' }, { label: '--shadow-l', type: 'primitive' }, { label: '0 8px 32px rgba(0,0,0,.12)', type: 'value' }] },
+                { property: 'Padding', chain: [{ label: '--dialog-slot-pad', type: 'component' }, { label: '--spacing-l', type: 'primitive' }, { label: '24px', type: 'value' }] },
+                { property: 'Gap', chain: [{ label: '--dialog-slot-gap', type: 'component' }, { label: '--spacing-m', type: 'primitive' }, { label: '16px', type: 'value' }] },
+              ]},
+              { name: 'Dialog title', description: 'Modal heading text.', rows: [
+                { property: 'Font size', chain: [{ label: '--font-size-l', type: 'primitive' }, { label: '16px', type: 'value' }] },
+                { property: 'Font weight', chain: [{ label: '--text-weight-semibold', type: 'primitive' }, { label: '600', type: 'value' }] },
+                { property: 'Color', chain: [{ label: '--dialog-title-slot-color', type: 'component' }, { label: '--copy-slot-body', type: 'primitive' }, { label: '#1F2937', type: 'value' }] },
+              ]},
+            ]}
           >
             <TitanDialog
               triggerLabel="Open dialog"
@@ -2403,6 +2643,12 @@ function App() {
               { label: 'Divider', tokens: ['--border', '--stroke-s'] },
             ]}
             code={`import { TitanDivider } from 'titan-compositions'\n\n<TitanDivider />`}
+            tokenChains={[
+              { name: 'Divider', description: 'Horizontal separator line.', rows: [
+                { property: 'Border color', chain: [{ label: '--divider-slot-color', type: 'component' }, { label: '--color-black-200', type: 'primitive' }, { label: '#E5E7EB', type: 'value', swatch: '#E5E7EB' }] },
+                { property: 'Border width', chain: [{ label: '--stroke-slot-width', type: 'component' }, { label: '1px', type: 'value' }] },
+              ]},
+            ]}
           >
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-m)' }}>
               <span style={{ color: 'var(--copy-slot-secondary)', fontSize: 'var(--font-size-m)' }}>Content above</span>
@@ -2434,6 +2680,23 @@ function App() {
               { label: 'Body', tokens: ['--dialog-body-slot-color', '--button-slot-font-size', '--button-slot-line-height'] },
             ]}
             code={CODE_DRAWER}
+            tokenChains={[
+              { name: 'Drawer overlay', description: 'Dimmed backdrop behind drawer.', rows: [
+                { property: 'Background', chain: [{ label: '--drawer-overlay-slot-backdrop', type: 'component' }, { label: 'rgba(0, 0, 0, 0.4)', type: 'value' }] },
+              ]},
+              { name: 'Drawer panel', description: 'Slide-in panel from the right.', rows: [
+                { property: 'Background', chain: [{ label: '--drawer-slot-bg', type: 'component' }, { label: '--color-white-900', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+                { property: 'Width', chain: [{ label: '--drawer-slot-width', type: 'component' }, { label: '480px', type: 'value' }] },
+                { property: 'Border radius', chain: [{ label: '--drawer-slot-radius', type: 'component' }, { label: '--rounded-m', type: 'primitive' }, { label: '12px', type: 'value' }] },
+                { property: 'Shadow', chain: [{ label: '--drawer-slot-shadow', type: 'component' }, { label: '--shadow-l', type: 'primitive' }, { label: '0 8px 32px rgba(0,0,0,.12)', type: 'value' }] },
+                { property: 'Padding', chain: [{ label: '--drawer-slot-pad', type: 'component' }, { label: '--spacing-l', type: 'primitive' }, { label: '24px', type: 'value' }] },
+              ]},
+              { name: 'Drawer header', description: 'Title bar with close button.', rows: [
+                { property: 'Title color', chain: [{ label: '--dialog-title-slot-color', type: 'component' }, { label: '--copy-slot-body', type: 'primitive' }, { label: '#1F2937', type: 'value' }] },
+                { property: 'Title font', chain: [{ label: '--font-size-l', type: 'primitive' }, { label: '16px', type: 'value' }] },
+                { property: 'Border bottom', chain: [{ label: '--drawer-header-border-bottom', type: 'component' }, { label: '--color-black-200', type: 'primitive' }, { label: '#E5E7EB', type: 'value', swatch: '#E5E7EB' }] },
+              ]},
+            ]}
           >
             <TitanDrawer triggerLabel="Open drawer" title="Filter audience">
               <p>Use this panel to refine audience segments by geography, age, and interests.</p>
@@ -2464,6 +2727,29 @@ function App() {
               { label: 'Text', tokens: ['--copy-slot-body', '--copy-slot-secondary', '--copy-slot-disabled'] },
             ]}
             code={CODE_FORM_CONTROLS}
+            tokenChains={[
+              { name: 'Checkbox (checked)', description: 'Selected checkbox state.', rows: [
+                { property: 'Background', chain: [{ label: '--checkbox-slot-selected-bg', type: 'component' }, { label: '--color-primary', type: 'primitive' }, { label: 'theme color', type: 'value' }] },
+                { property: 'Check color', chain: [{ label: '--checkbox-slot-check', type: 'component' }, { label: '--color-white-900', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+                { property: 'Size', chain: [{ label: '--checkbox-slot-size', type: 'component' }, { label: '18px', type: 'value' }] },
+                { property: 'Border radius', chain: [{ label: '--checkbox-slot-radius', type: 'component' }, { label: '--rounded-xs', type: 'primitive' }, { label: '4px', type: 'value' }] },
+              ]},
+              { name: 'Radio (selected)', description: 'Selected radio button state.', rows: [
+                { property: 'Border', chain: [{ label: '--radio-slot-selected-border', type: 'component' }, { label: '--color-primary', type: 'primitive' }, { label: 'theme color', type: 'value' }] },
+                { property: 'Size', chain: [{ label: '--radio-slot-size', type: 'component' }, { label: '18px', type: 'value' }] },
+                { property: 'Border radius', chain: [{ label: '--radio-slot-radius', type: 'component' }, { label: '50%', type: 'value' }] },
+              ]},
+              { name: 'Switch (on)', description: 'Active toggle switch.', rows: [
+                { property: 'Track background', chain: [{ label: '--toggle-slot-selected-bg', type: 'component' }, { label: '--color-primary', type: 'primitive' }, { label: 'theme color', type: 'value' }] },
+                { property: 'Knob', chain: [{ label: '--toggle-slot-ball-bg', type: 'component' }, { label: '--color-white-900', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+                { property: 'Track width', chain: [{ label: '--toggle-slot-width', type: 'component' }, { label: '36px', type: 'value' }] },
+                { property: 'Track height', chain: [{ label: '--toggle-slot-height', type: 'component' }, { label: '20px', type: 'value' }] },
+              ]},
+              { name: 'Label text', description: 'Form control labels.', rows: [
+                { property: 'Color', chain: [{ label: '--copy-slot-body', type: 'component' }, { label: '--color-steel-800', type: 'primitive' }, { label: '#1F2937', type: 'value' }] },
+                { property: 'Font size', chain: [{ label: '--button-slot-font-size', type: 'primitive' }, { label: '14px', type: 'value' }] },
+              ]},
+            ]}
           >
             <TitanFormControlsGroup>
               <div className="choice-group">
@@ -2521,6 +2807,26 @@ function App() {
               { label: 'Field helpers', tokens: ['--field-slot-help-gap', '--field-slot-gap', '--field-error-color', '--copy-slot-secondary'] },
             ]}
             code={CODE_INPUTS}
+            tokenChains={[
+              { name: 'Input (default)', description: 'Standard text input field.', rows: [
+                { property: 'Background', chain: [{ label: '--input-slot-bg', type: 'component' }, { label: '--color-white-900', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+                { property: 'Border', chain: [{ label: '--input-slot-border', type: 'component' }, { label: '--color-black-300', type: 'primitive' }, { label: '#D1D5DB', type: 'value', swatch: '#D1D5DB' }] },
+                { property: 'Border (focus)', chain: [{ label: '--input-slot-border-focus', type: 'component' }, { label: '--color-primary', type: 'primitive' }, { label: 'theme color', type: 'value' }] },
+                { property: 'Text color', chain: [{ label: '--input-slot-color', type: 'component' }, { label: '--copy-slot-body', type: 'primitive' }, { label: '#1F2937', type: 'value' }] },
+                { property: 'Placeholder', chain: [{ label: '--input-slot-placeholder', type: 'component' }, { label: '--color-steel-400', type: 'primitive' }, { label: '#9CA3AF', type: 'value' }] },
+                { property: 'Border radius', chain: [{ label: '--input-slot-radius', type: 'component' }, { label: '--rounded-s', type: 'primitive' }, { label: '8px', type: 'value' }] },
+                { property: 'Height', chain: [{ label: '--input-slot-height', type: 'component' }, { label: '40px', type: 'value' }] },
+              ]},
+              { name: 'Textarea', description: 'Multi-line text input.', rows: [
+                { property: 'Min height', chain: [{ label: '--textarea-slot-min-height', type: 'component' }, { label: '80px', type: 'value' }] },
+                { property: 'Background', chain: [{ label: '--input-slot-bg', type: 'component' }, { label: '--color-white-900', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+                { property: 'Border', chain: [{ label: '--input-slot-border', type: 'component' }, { label: '--color-black-300', type: 'primitive' }, { label: '#D1D5DB', type: 'value' }] },
+              ]},
+              { name: 'Input (error)', description: 'Error state with red border.', rows: [
+                { property: 'Border', chain: [{ label: '--input-slot-border-error', type: 'component' }, { label: '--color-pomegranate-600', type: 'primitive' }, { label: '#DC2626', type: 'value', swatch: '#DC2626' }] },
+                { property: 'Error text', chain: [{ label: '--field-error-color', type: 'component' }, { label: '--color-pomegranate-600', type: 'primitive' }, { label: '#DC2626', type: 'value' }] },
+              ]},
+            ]}
           >
             <div className="field-showcase-grid">
               <TitanInputField placeholder="Simple input" />
@@ -2572,6 +2878,20 @@ function App() {
               { label: 'Link', tokens: ['--link-color', '--link-visited-color', '--link-disabled-color', '--link-icon-color', '--link-visited-icon-color', '--link-disabled-icon-color'] },
             ]}
             code={`import { TitanLink } from 'titan-compositions'\n\n<TitanLink href="https://audiense.com">Visit Audiense</TitanLink>\n<TitanLink href="#" withIcon>External link</TitanLink>\n<TitanLink href="#" size="s">Small link</TitanLink>`}
+            tokenChains={[
+              { name: 'Link (default)', description: 'Clickable text link.', rows: [
+                { property: 'Text color', chain: [{ label: '--link-color', type: 'component' }, { label: '--color-primary', type: 'primitive' }, { label: 'theme color', type: 'value' }] },
+                { property: 'Text color (hover)', chain: [{ label: '--link-color', type: 'component' }, { label: '--color-primary', type: 'primitive' }, { label: 'theme color', type: 'value' }] },
+                { property: 'Text decoration', chain: [{ label: 'underline on hover', type: 'value' }] },
+              ]},
+              { name: 'Link (visited)', description: 'Previously visited link.', rows: [
+                { property: 'Text color', chain: [{ label: '--link-visited-color', type: 'component' }, { label: '--color-steel-500', type: 'primitive' }, { label: '#9CA3AF', type: 'value' }] },
+              ]},
+              { name: 'Link (disabled)', description: 'Non-interactive link state.', rows: [
+                { property: 'Text color', chain: [{ label: '--link-disabled-color', type: 'component' }, { label: '--color-disabled-300', type: 'primitive' }, { label: '#9CA3AF', type: 'value' }] },
+                { property: 'Cursor', chain: [{ label: 'not-allowed', type: 'value' }] },
+              ]},
+            ]}
           >
             <div className="row">
               <TitanLink href="https://audiense.com" target="_blank">Visit Audiense</TitanLink>
@@ -2599,6 +2919,13 @@ function App() {
               { label: 'Animation', tokens: ['animation: titan-loader-fade-in 300ms ease-out both'] },
             ]}
             code={CODE_LOADER}
+            tokenChains={[
+              { name: 'Loader', description: 'Branded animated loading indicator.', rows: [
+                { property: 'Size (default)', chain: [{ label: '--titan-loader-size', type: 'component' }, { label: '120px', type: 'value' }] },
+                { property: 'Animation', chain: [{ label: 'titan-loader-fade-in', type: 'component' }, { label: '300ms ease-out', type: 'value' }] },
+                { property: 'Asset', chain: [{ label: '/assets/logos/loader-l.gif', type: 'value' }] },
+              ]},
+            ]}
           >
             <div style={{ display: 'flex', gap: '32px', alignItems: 'end' }}>
               <div style={{ textAlign: 'center' }}>
@@ -2640,6 +2967,28 @@ function App() {
               { label: 'Secondary text', tokens: ['--menu-item-secondary-color'] },
             ]}
             code={CODE_MENUS}
+            tokenChains={[
+              { name: 'Menu container', description: 'Floating dropdown panel.', rows: [
+                { property: 'Background', chain: [{ label: '--menu-slot-bg', type: 'component' }, { label: '--color-white-900', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+                { property: 'Border', chain: [{ label: '--popover-slot-border-color', type: 'component' }, { label: '--color-black-200', type: 'primitive' }, { label: '#E5E7EB', type: 'value', swatch: '#E5E7EB' }] },
+                { property: 'Shadow', chain: [{ label: '--menu-slot-shadow', type: 'component' }, { label: '--shadow-m', type: 'primitive' }, { label: '0 4px 16px rgba(0,0,0,.08)', type: 'value' }] },
+                { property: 'Border radius', chain: [{ label: '--menu-slot-radius', type: 'component' }, { label: '--rounded-m', type: 'primitive' }, { label: '12px', type: 'value' }] },
+              ]},
+              { name: 'Menu item', description: 'Standard dropdown option.', rows: [
+                { property: 'Text color', chain: [{ label: '--menu-item-slot-color', type: 'component' }, { label: '--copy-slot-body', type: 'primitive' }, { label: '#1F2937', type: 'value' }] },
+                { property: 'Hover background', chain: [{ label: '--menu-item-slot-bg-hover', type: 'component' }, { label: '--color-black-100', type: 'primitive' }, { label: '#F3F4F6', type: 'value', swatch: '#F3F4F6' }] },
+                { property: 'Height', chain: [{ label: '--menu-item-slot-height', type: 'component' }, { label: '40px', type: 'value' }] },
+                { property: 'Icon color', chain: [{ label: '--menu-item-slot-icon', type: 'component' }, { label: '--color-steel-600', type: 'primitive' }, { label: '#6B7280', type: 'value' }] },
+              ]},
+              { name: 'Menu separator', description: 'Divider between item groups.', rows: [
+                { property: 'Color', chain: [{ label: '--menu-divider-color', type: 'component' }, { label: '--color-black-200', type: 'primitive' }, { label: '#E5E7EB', type: 'value' }] },
+                { property: 'Width', chain: [{ label: '--menu-divider-width', type: 'component' }, { label: '1px', type: 'value' }] },
+              ]},
+              { name: 'Menu item (destructive)', description: 'Red destructive action.', rows: [
+                { property: 'Text color', chain: [{ label: '--menu-item-destructive-slot-color', type: 'component' }, { label: '--color-pomegranate-600', type: 'primitive' }, { label: '#DC2626', type: 'value', swatch: '#DC2626' }] },
+                { property: 'Hover background', chain: [{ label: '--menu-item-destructive-slot-bg-hover', type: 'component' }, { label: '--color-error-100', type: 'primitive' }, { label: '#FEE2E2', type: 'value', swatch: '#FEE2E2' }] },
+              ]},
+            ]}
           >
             <p style={{ fontSize: 'var(--font-size-s)', color: 'var(--copy-slot-secondary)', marginBottom: 'var(--spacing-s)' }}>Standard menu with icons, disabled, and destructive items:</p>
             <div className="row" style={{ marginBottom: 'var(--spacing-m)' }}>
@@ -2744,6 +3093,21 @@ function App() {
               { label: 'Padding', tokens: ['--navbar-slot-pad-x', '--navbar-slot-pad-y'] },
             ]}
             code={CODE_NAVBAR}
+            tokenChains={[
+              { name: 'Navbar container', description: 'Top navigation bar.', rows: [
+                { property: 'Background', chain: [{ label: '--navbar-slot-bg', type: 'component' }, { label: '--color-white-900', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+                { property: 'Border bottom', chain: [{ label: '--navbar-slot-border', type: 'component' }, { label: '--color-black-200', type: 'primitive' }, { label: '#E5E7EB', type: 'value', swatch: '#E5E7EB' }] },
+                { property: 'Height', chain: [{ label: '--navbar-slot-height', type: 'component' }, { label: '56px', type: 'value' }] },
+                { property: 'Padding', chain: [{ label: '--navbar-slot-pad-x', type: 'component' }, { label: '--spacing-m', type: 'primitive' }, { label: '16px', type: 'value' }] },
+              ]},
+              { name: 'Navbar logo', description: 'Brand logo area.', rows: [
+                { property: 'Max height', chain: [{ label: '--navbar-slot-logo-max-height', type: 'component' }, { label: '32px', type: 'value' }] },
+              ]},
+              { name: 'Navbar actions', description: 'Right-side icon buttons.', rows: [
+                { property: 'Icon color', chain: [{ label: '--button-icon-slot-icon', type: 'component' }, { label: '--color-steel-600', type: 'primitive' }, { label: '#6B7280', type: 'value' }] },
+                { property: 'Icon size', chain: [{ label: '--icon-size-m', type: 'primitive' }, { label: '20px', type: 'value' }] },
+              ]},
+            ]}
           >
             <div className="navbar-demo-wrap">
               <TitanNavbar theme={theme} userInitial="A" />
@@ -2771,6 +3135,21 @@ function App() {
               { label: 'Icons', tokens: ['--icon-size-m', '--icon-stroke-m'] },
             ]}
             code={CODE_PAGINATION}
+            tokenChains={[
+              { name: 'Page button (default)', description: 'Unselected page number.', rows: [
+                { property: 'Background', chain: [{ label: 'transparent', type: 'value' }] },
+                { property: 'Text color', chain: [{ label: '--pagination-slot-color', type: 'component' }, { label: '--color-steel-600', type: 'primitive' }, { label: '#6B7280', type: 'value' }] },
+                { property: 'Height', chain: [{ label: '--pagination-slot-height', type: 'component' }, { label: '36px', type: 'value' }] },
+                { property: 'Border radius', chain: [{ label: '--pagination-slot-radius', type: 'component' }, { label: '--rounded-s', type: 'primitive' }, { label: '8px', type: 'value' }] },
+              ]},
+              { name: 'Page button (selected)', description: 'Active/current page.', rows: [
+                { property: 'Background', chain: [{ label: '--pagination-slot-page-selected-bg', type: 'component' }, { label: '--color-primary', type: 'primitive' }, { label: 'theme color', type: 'value' }] },
+                { property: 'Text color', chain: [{ label: '--text-on-color', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+              ]},
+              { name: 'Page button (hover)', description: 'Hover state.', rows: [
+                { property: 'Background', chain: [{ label: '--pagination-slot-page-hover-bg', type: 'component' }, { label: '--color-black-100', type: 'primitive' }, { label: '#F3F4F6', type: 'value', swatch: '#F3F4F6' }] },
+              ]},
+            ]}
           >
             <div className="pagination-container">
               <TitanPagination
@@ -2801,6 +3180,22 @@ function App() {
               { label: 'Close icon', tokens: ['--icon-size-s', '--icon-stroke-s'] },
             ]}
             code={CODE_PILLS}
+            tokenChains={[
+              { name: 'Pill (default)', description: 'Dismissible tag with tone color.', rows: [
+                { property: 'Background', chain: [{ label: '--pill-slot-bg', type: 'component' }, { label: '--color-{tone}-100', type: 'primitive' }, { label: 'tone-based', type: 'value' }] },
+                { property: 'Text color', chain: [{ label: '--pill-slot-color', type: 'component' }, { label: '--color-{tone}-700', type: 'primitive' }, { label: 'tone-based', type: 'value' }] },
+                { property: 'Border radius', chain: [{ label: '--pill-slot-radius', type: 'component' }, { label: '--rounded-full', type: 'primitive' }, { label: '9999px', type: 'value' }] },
+                { property: 'Padding', chain: [{ label: '--pill-slot-pad-x', type: 'component' }, { label: '--spacing-xs', type: 'primitive' }, { label: '10px', type: 'value' }] },
+              ]},
+              { name: 'Pill (selected)', description: 'Active/highlighted pill state.', rows: [
+                { property: 'Background', chain: [{ label: '--pill-slot-selected-bg', type: 'component' }, { label: '--color-primary', type: 'primitive' }, { label: 'theme color', type: 'value' }] },
+                { property: 'Text color', chain: [{ label: '--pill-slot-selected-color', type: 'component' }, { label: '--text-on-color', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+              ]},
+              { name: 'Pill close icon', description: 'Dismiss button inside pill.', rows: [
+                { property: 'Icon color', chain: [{ label: '--pill-slot-icon-color', type: 'component' }, { label: '--color-{tone}-600', type: 'primitive' }, { label: 'tone-based', type: 'value' }] },
+                { property: 'Icon size', chain: [{ label: '--icon-size-s', type: 'primitive' }, { label: '12px', type: 'value' }] },
+              ]},
+            ]}
           >
             <div className="pill-row">
               {pills.map((pill) => (
@@ -2837,6 +3232,20 @@ function App() {
               { label: 'Typography', tokens: ['--progress-slot-label-color', '--progress-slot-value-color'] },
             ]}
             code={CODE_PROGRESS}
+            tokenChains={[
+              { name: 'Progress track', description: 'Background bar container.', rows: [
+                { property: 'Background', chain: [{ label: '--progress-slot-track-bg', type: 'component' }, { label: '--color-black-200', type: 'primitive' }, { label: '#E5E7EB', type: 'value', swatch: '#E5E7EB' }] },
+                { property: 'Height', chain: [{ label: '--progress-slot-track-height', type: 'component' }, { label: '8px', type: 'value' }] },
+                { property: 'Border radius', chain: [{ label: '--progress-slot-track-radius', type: 'component' }, { label: '--rounded-full', type: 'primitive' }, { label: '9999px', type: 'value' }] },
+              ]},
+              { name: 'Progress fill', description: 'Filled portion of the bar.', rows: [
+                { property: 'Background', chain: [{ label: '--progress-slot-fill-bg', type: 'component' }, { label: '--color-primary', type: 'primitive' }, { label: 'theme color', type: 'value' }] },
+              ]},
+              { name: 'Progress labels', description: 'Label and percentage text.', rows: [
+                { property: 'Label color', chain: [{ label: '--progress-slot-label-color', type: 'component' }, { label: '--copy-slot-body', type: 'primitive' }, { label: '#1F2937', type: 'value' }] },
+                { property: 'Value color', chain: [{ label: '--progress-slot-value-color', type: 'component' }, { label: '--copy-slot-secondary', type: 'primitive' }, { label: '#6B7280', type: 'value' }] },
+              ]},
+            ]}
           >
             <div style={{ display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 400, width: '100%' }}>
               <TitanProgressBar label="Upload progress" value={72} />
@@ -2868,6 +3277,24 @@ function App() {
               { label: 'Item states', tokens: ['--menu-item-slot-bg-hover', '--menu-item-slot-bg-active', '--menu-item-slot-bg-selected', '--select-slot-item-bg-disabled', '--select-slot-item-color-disabled'] },
             ]}
             code={CODE_SELECT}
+            tokenChains={[
+              { name: 'Select trigger', description: 'Dropdown button.', rows: [
+                { property: 'Background', chain: [{ label: '--select-slot-button-bg', type: 'component' }, { label: '--color-white-900', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+                { property: 'Border', chain: [{ label: '--select-slot-button-border', type: 'component' }, { label: '--color-black-300', type: 'primitive' }, { label: '#D1D5DB', type: 'value', swatch: '#D1D5DB' }] },
+                { property: 'Text color', chain: [{ label: '--select-slot-button-color', type: 'component' }, { label: '--copy-slot-body', type: 'primitive' }, { label: '#1F2937', type: 'value' }] },
+                { property: 'Height', chain: [{ label: '--select-slot-button-height', type: 'component' }, { label: '40px', type: 'value' }] },
+                { property: 'Border radius', chain: [{ label: '--select-slot-button-radius', type: 'component' }, { label: '--rounded-s', type: 'primitive' }, { label: '8px', type: 'value' }] },
+              ]},
+              { name: 'Select dropdown', description: 'Floating option list.', rows: [
+                { property: 'Background', chain: [{ label: '--select-slot-popover-bg', type: 'component' }, { label: '--color-white-900', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+                { property: 'Shadow', chain: [{ label: '--select-slot-popover-shadow', type: 'component' }, { label: '--shadow-m', type: 'primitive' }, { label: '0 4px 16px rgba(0,0,0,.08)', type: 'value' }] },
+                { property: 'Border radius', chain: [{ label: '--select-slot-popover-radius', type: 'component' }, { label: '--rounded-m', type: 'primitive' }, { label: '12px', type: 'value' }] },
+              ]},
+              { name: 'Select option (hover)', description: 'Highlighted list item.', rows: [
+                { property: 'Background', chain: [{ label: '--menu-item-slot-bg-hover', type: 'component' }, { label: '--color-black-100', type: 'primitive' }, { label: '#F3F4F6', type: 'value', swatch: '#F3F4F6' }] },
+                { property: 'Text color', chain: [{ label: '--select-slot-item-color', type: 'component' }, { label: '--copy-slot-body', type: 'primitive' }, { label: '#1F2937', type: 'value' }] },
+              ]},
+            ]}
           >
             <div className="row">
               <TitanSelect
@@ -2926,6 +3353,28 @@ function App() {
               { label: 'Icon & toggle', tokens: ['--sidebar-slot-icon-size'] },
             ]}
             code={CODE_SIDEBAR}
+            tokenChains={[
+              { name: 'Sidebar container', description: 'Left navigation panel.', rows: [
+                { property: 'Background', chain: [{ label: '--sidebar-slot-bg', type: 'component' }, { label: '--color-white-900', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+                { property: 'Border right', chain: [{ label: '--sidebar-slot-border', type: 'component' }, { label: '--color-black-200', type: 'primitive' }, { label: '#E5E7EB', type: 'value', swatch: '#E5E7EB' }] },
+                { property: 'Width (expanded)', chain: [{ label: '--sidebar-slot-width-expanded', type: 'component' }, { label: '240px', type: 'value' }] },
+                { property: 'Width (collapsed)', chain: [{ label: '--sidebar-slot-width-collapsed', type: 'component' }, { label: '64px', type: 'value' }] },
+              ]},
+              { name: 'Sidebar item (active)', description: 'Currently selected nav item.', rows: [
+                { property: 'Background', chain: [{ label: '--sidebar-slot-item-bg-active', type: 'component' }, { label: '--color-black-100', type: 'primitive' }, { label: '#F3F4F6', type: 'value', swatch: '#F3F4F6' }] },
+                { property: 'Text color', chain: [{ label: '--sidebar-slot-item-color-active', type: 'component' }, { label: '--color-steel-800', type: 'primitive' }, { label: '#1F2937', type: 'value' }] },
+                { property: 'Border radius', chain: [{ label: '--sidebar-slot-item-radius', type: 'component' }, { label: '--rounded-s', type: 'primitive' }, { label: '8px', type: 'value' }] },
+              ]},
+              { name: 'Sidebar item (default)', description: 'Inactive nav item.', rows: [
+                { property: 'Text color', chain: [{ label: '--sidebar-slot-item-color', type: 'component' }, { label: '--color-steel-600', type: 'primitive' }, { label: '#6B7280', type: 'value' }] },
+                { property: 'Hover bg', chain: [{ label: '--sidebar-slot-item-bg-hover', type: 'component' }, { label: '--color-black-50', type: 'primitive' }, { label: '#F9FAFB', type: 'value' }] },
+              ]},
+              { name: 'Sidebar header', description: 'Section header label.', rows: [
+                { property: 'Color', chain: [{ label: '--sidebar-slot-header-color', type: 'component' }, { label: '--color-steel-400', type: 'primitive' }, { label: '#9CA3AF', type: 'value' }] },
+                { property: 'Font size', chain: [{ label: '--sidebar-slot-header-font-size', type: 'component' }, { label: '--font-size-s', type: 'primitive' }, { label: '12px', type: 'value' }] },
+                { property: 'Font weight', chain: [{ label: '--sidebar-slot-header-font-weight', type: 'component' }, { label: '--text-weight-semibold', type: 'primitive' }, { label: '600', type: 'value' }] },
+              ]},
+            ]}
           >
             <SidebarDemo />
           </ShowcaseCard>
@@ -2950,6 +3399,21 @@ function App() {
               { label: 'Disabled', tokens: ['--slider-slot-disabled-track-fill', '--slider-slot-disabled-thumb-border'] },
             ]}
             code={CODE_SLIDER + '\n\n' + CODE_RANGE_SLIDER}
+            tokenChains={[
+              { name: 'Slider track', description: 'Horizontal track bar.', rows: [
+                { property: 'Background', chain: [{ label: '--slider-slot-track-bg', type: 'component' }, { label: '--color-black-200', type: 'primitive' }, { label: '#E5E7EB', type: 'value', swatch: '#E5E7EB' }] },
+                { property: 'Fill color', chain: [{ label: '--slider-slot-track-fill', type: 'component' }, { label: '--color-primary', type: 'primitive' }, { label: 'theme color', type: 'value' }] },
+                { property: 'Height', chain: [{ label: '--slider-slot-track-height', type: 'component' }, { label: '4px', type: 'value' }] },
+                { property: 'Border radius', chain: [{ label: '--slider-slot-track-radius', type: 'component' }, { label: '--rounded-full', type: 'primitive' }, { label: '9999px', type: 'value' }] },
+              ]},
+              { name: 'Slider thumb', description: 'Draggable handle.', rows: [
+                { property: 'Background', chain: [{ label: '--slider-slot-thumb-bg', type: 'component' }, { label: '--color-white-900', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+                { property: 'Border', chain: [{ label: '--slider-slot-thumb-border', type: 'component' }, { label: '--color-primary', type: 'primitive' }, { label: 'theme color', type: 'value' }] },
+                { property: 'Size', chain: [{ label: '--slider-slot-thumb-size', type: 'component' }, { label: '20px', type: 'value' }] },
+                { property: 'Border radius', chain: [{ label: '--slider-slot-thumb-radius', type: 'component' }, { label: '--rounded-full', type: 'primitive' }, { label: '9999px', type: 'value' }] },
+                { property: 'Shadow', chain: [{ label: '--slider-slot-thumb-shadow', type: 'component' }, { label: '0 1px 3px rgba(0,0,0,.1)', type: 'value' }] },
+              ]},
+            ]}
           >
             <div style={{ display: 'flex', flexDirection: 'column', gap: 32, maxWidth: 400, width: '100%' }}>
               <TitanSlider label="Volume" defaultValue={50} />
@@ -2986,6 +3450,28 @@ function App() {
               { label: 'Tab panel', tokens: ['--card-slot-bg', '--card-slot-border-width', '--card-slot-border', '--card-slot-radius', '--spacing-m', '--copy-slot-body'] },
             ]}
             code={CODE_TABS}
+            tokenChains={[
+              { name: 'Tab list', description: 'Container for tab triggers.', rows: [
+                { property: 'Background', chain: [{ label: '--tabs-slot-bg', type: 'component' }, { label: '--color-black-100', type: 'primitive' }, { label: '#F3F4F6', type: 'value', swatch: '#F3F4F6' }] },
+                { property: 'Border radius', chain: [{ label: '--tabs-slot-radius', type: 'component' }, { label: '--rounded-s', type: 'primitive' }, { label: '8px', type: 'value' }] },
+                { property: 'Padding', chain: [{ label: '--tabs-slot-pad', type: 'component' }, { label: '--spacing-4xs', type: 'primitive' }, { label: '2px', type: 'value' }] },
+              ]},
+              { name: 'Tab trigger (selected)', description: 'Active tab button.', rows: [
+                { property: 'Background', chain: [{ label: '--tab-slot-bg-selected', type: 'component' }, { label: '--color-white-900', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+                { property: 'Text color', chain: [{ label: '--tab-slot-color-selected', type: 'component' }, { label: '--color-steel-800', type: 'primitive' }, { label: '#1F2937', type: 'value' }] },
+                { property: 'Border', chain: [{ label: '--stroke-slot-width', type: 'component' }, { label: '--border-slot-default', type: 'primitive' }, { label: '#E5E7EB', type: 'value' }] },
+              ]},
+              { name: 'Tab trigger (default)', description: 'Unselected tab.', rows: [
+                { property: 'Text color', chain: [{ label: '--tab-slot-color', type: 'component' }, { label: '--color-steel-500', type: 'primitive' }, { label: '#9CA3AF', type: 'value' }] },
+                { property: 'Border radius', chain: [{ label: '--tab-slot-radius', type: 'component' }, { label: '--rounded-xs', type: 'primitive' }, { label: '6px', type: 'value' }] },
+              ]},
+              { name: 'Tab panel', description: 'Content area below tabs.', rows: [
+                { property: 'Background', chain: [{ label: '--card-slot-bg', type: 'component' }, { label: '--color-white-900', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+                { property: 'Border', chain: [{ label: '--card-slot-border-width', type: 'component' }, { label: '--card-slot-border', type: 'primitive' }, { label: '#E5E7EB', type: 'value' }] },
+                { property: 'Border radius', chain: [{ label: '--card-slot-radius', type: 'component' }, { label: '--rounded-m', type: 'primitive' }, { label: '12px', type: 'value' }] },
+                { property: 'Padding', chain: [{ label: '--spacing-m', type: 'primitive' }, { label: '16px', type: 'value' }] },
+              ]},
+            ]}
           >
             <TitanTabs
               defaultSelectedKey="overview"
@@ -3033,6 +3519,18 @@ function App() {
               { label: 'Typography', tokens: ['--button-slot-font-size', '--button-slot-line-height', '--text-weight-medium'] },
             ]}
             code={CODE_TAGS}
+            tokenChains={[
+              { name: 'Tag (default)', description: 'Non-interactive display label.', rows: [
+                { property: 'Background', chain: [{ label: '--color-black-200', type: 'primitive' }, { label: '#E5E7EB', type: 'value', swatch: '#E5E7EB' }] },
+                { property: 'Text color', chain: [{ label: '--copy-slot-primary', type: 'component' }, { label: '--color-steel-800', type: 'primitive' }, { label: '#1F2937', type: 'value' }] },
+                { property: 'Border radius', chain: [{ label: '--pill-slot-radius', type: 'component' }, { label: '--rounded-full', type: 'primitive' }, { label: '9999px', type: 'value' }] },
+                { property: 'Padding', chain: [{ label: '--pill-slot-pad-x', type: 'component' }, { label: '--spacing-xs', type: 'primitive' }, { label: '10px', type: 'value' }] },
+              ]},
+              { name: 'Tag (toned)', description: 'Color-coded variant using tone palette.', rows: [
+                { property: 'Background', chain: [{ label: '--color-{tone}-200', type: 'primitive' }, { label: 'tone-based', type: 'value' }] },
+                { property: 'Text color', chain: [{ label: '--color-{tone}-600', type: 'primitive' }, { label: 'tone-based', type: 'value' }] },
+              ]},
+            ]}
           >
             <div className="tag-row">
               {TAG_ITEMS.map((item) => (
@@ -3063,6 +3561,32 @@ function App() {
               { label: 'Icons & close', tokens: ['--icon-size-m', '--icon-stroke-m', '--button-icon-slot-size', '--copy-slot-secondary'] },
             ]}
             code={CODE_TOASTS}
+            tokenChains={[
+              { name: 'Toast (success)', description: 'Green success notification.', rows: [
+                { property: 'Background', chain: [{ label: '--toast-slot-bg', type: 'component' }, { label: '--color-white-900', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+                { property: 'Icon color', chain: [{ label: '--status-success-icon', type: 'component' }, { label: '--color-forest-600', type: 'primitive' }, { label: '#16A34A', type: 'value', swatch: '#16A34A' }] },
+                { property: 'Border', chain: [{ label: '--toast-slot-border', type: 'component' }, { label: '--color-black-200', type: 'primitive' }, { label: '#E5E7EB', type: 'value' }] },
+                { property: 'Border radius', chain: [{ label: '--toast-slot-radius', type: 'component' }, { label: '--rounded-m', type: 'primitive' }, { label: '12px', type: 'value' }] },
+                { property: 'Shadow', chain: [{ label: '--toast-slot-shadow', type: 'component' }, { label: '--shadow-m', type: 'primitive' }, { label: '0 4px 16px rgba(0,0,0,.08)', type: 'value' }] },
+              ]},
+              { name: 'Toast (error)', description: 'Red error notification.', rows: [
+                { property: 'Background', chain: [{ label: '--color-error-100', type: 'primitive' }, { label: '#FEE2E2', type: 'value', swatch: '#FEE2E2' }] },
+                { property: 'Icon color', chain: [{ label: '--status-error-icon', type: 'component' }, { label: '--color-pomegranate-600', type: 'primitive' }, { label: '#DC2626', type: 'value', swatch: '#DC2626' }] },
+              ]},
+              { name: 'Toast (warning)', description: 'Amber warning notification.', rows: [
+                { property: 'Background', chain: [{ label: '--color-mango-100', type: 'primitive' }, { label: '#FEF3C7', type: 'value', swatch: '#FEF3C7' }] },
+                { property: 'Icon color', chain: [{ label: '--status-warning-icon', type: 'component' }, { label: '--color-mango-600', type: 'primitive' }, { label: '#D97706', type: 'value', swatch: '#D97706' }] },
+              ]},
+              { name: 'Toast (info)', description: 'Blue informational notification.', rows: [
+                { property: 'Background', chain: [{ label: '--color-ocean-100', type: 'primitive' }, { label: '#DBEAFE', type: 'value', swatch: '#DBEAFE' }] },
+                { property: 'Icon color', chain: [{ label: '--status-info-icon', type: 'component' }, { label: '--color-ocean-600', type: 'primitive' }, { label: '#2563EB', type: 'value', swatch: '#2563EB' }] },
+              ]},
+              { name: 'Toast text', description: 'Title and body typography.', rows: [
+                { property: 'Title color', chain: [{ label: '--toast-slot-color', type: 'component' }, { label: '--copy-slot-body', type: 'primitive' }, { label: '#1F2937', type: 'value' }] },
+                { property: 'Title weight', chain: [{ label: '--text-weight-semibold', type: 'primitive' }, { label: '600', type: 'value' }] },
+                { property: 'Body font size', chain: [{ label: '--font-size-s', type: 'primitive' }, { label: '12px', type: 'value' }] },
+              ]},
+            ]}
           >
             <div className="row">
               <TitanButton variant="secondary" onPress={() => pushToast('success')}>Success toast</TitanButton>
@@ -3094,6 +3618,17 @@ function App() {
               { label: 'Typography', tokens: ['--font-size-s', '--font-leading-s', '--text-weight-medium'] },
             ]}
             code={CODE_TOOLTIP}
+            tokenChains={[
+              { name: 'Tooltip', description: 'Hoverable contextual hint.', rows: [
+                { property: 'Background', chain: [{ label: '--tooltip-slot-bg', type: 'component' }, { label: '--color-steel-800', type: 'primitive' }, { label: '#1F2937', type: 'value', swatch: '#1F2937' }] },
+                { property: 'Text color', chain: [{ label: '--tooltip-slot-color', type: 'component' }, { label: '--color-white-900', type: 'primitive' }, { label: '#FFFFFF', type: 'value' }] },
+                { property: 'Border radius', chain: [{ label: '--tooltip-slot-radius', type: 'component' }, { label: '--rounded-s', type: 'primitive' }, { label: '8px', type: 'value' }] },
+                { property: 'Shadow', chain: [{ label: '--tooltip-slot-shadow', type: 'component' }, { label: '--shadow-s', type: 'primitive' }, { label: '0 2px 8px rgba(0,0,0,.08)', type: 'value' }] },
+                { property: 'Padding', chain: [{ label: '--tooltip-slot-pad-y / --tooltip-slot-pad-x', type: 'component' }, { label: '6px / 10px', type: 'value' }] },
+                { property: 'Font size', chain: [{ label: '--font-size-s', type: 'primitive' }, { label: '12px', type: 'value' }] },
+                { property: 'Font weight', chain: [{ label: '--text-weight-medium', type: 'primitive' }, { label: '500', type: 'value' }] },
+              ]},
+            ]}
           >
             <div className="row">
               <TitanTooltip content="Refresh data">

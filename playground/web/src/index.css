@@ -1778,3 +1778,144 @@ h2 {
   font-size: var(--font-size-s) !important;
   color: var(--copy-slot-muted) !important;
 }
+
+/* ── Token Chain Explainer ─────────────────────────────────────────────── */
+.token-chain-section {
+  margin-top: var(--spacing-m);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.token-chain-toggle {
+  border: 1px solid var(--color-black-200);
+  border-radius: var(--rounded-s);
+  margin-bottom: var(--spacing-xs);
+  overflow: hidden;
+}
+
+.token-chain-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--spacing-xs) var(--spacing-s);
+  background: #FFFFFF;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: var(--font-size-m);
+  font-weight: var(--text-weight-semibold);
+  color: var(--copy-slot-primary);
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.token-chain-toggle-btn:hover {
+  background: var(--color-black-100);
+}
+
+.token-chain-toggle-body {
+  padding: var(--spacing-xs) var(--spacing-s) var(--spacing-s);
+}
+
+.token-chain-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+  table-layout: fixed;
+}
+
+.token-chain-table th {
+  text-align: left;
+  padding: var(--spacing-3xs) var(--spacing-xs);
+  font-weight: var(--text-weight-semibold);
+  color: var(--copy-slot-secondary);
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  border-bottom: var(--stroke-slot-width) solid var(--color-black-200);
+}
+
+.token-chain-table th:first-child,
+.token-chain-table td:first-child {
+  width: 25%;
+}
+
+.token-chain-table td:last-child {
+  overflow: hidden;
+}
+
+.token-chain-table td {
+  padding: var(--spacing-3xs) var(--spacing-xs);
+  border-bottom: var(--stroke-slot-width) solid var(--color-black-100);
+  vertical-align: middle;
+}
+
+.token-chain-table tr:last-child td {
+  border-bottom: none;
+}
+
+.chain-step {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-3xs);
+  flex-wrap: wrap;
+}
+
+.chain-token {
+  display: inline-block;
+  font-family: "Menlo", "Monaco", "Courier New", monospace;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  word-break: break-all;
+}
+
+.chain-token.component {
+  background: var(--color-black-100);
+  color: var(--copy-slot-primary);
+}
+
+.chain-token.primitive {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.chain-token.value {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.chain-arrow {
+  color: var(--copy-slot-muted);
+  font-size: 11px;
+}
+
+.chain-swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid var(--color-black-200);
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+.chain-legend {
+  display: flex;
+  gap: var(--spacing-m);
+  margin-top: var(--spacing-xs);
+  font-size: 11px;
+  color: var(--copy-slot-muted);
+}
+
+.chain-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.chain-legend-item .chain-token {
+  font-family: inherit;
+}
