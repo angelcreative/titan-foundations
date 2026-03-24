@@ -296,6 +296,19 @@ These are installed automatically by `titan_setup`:
 
 In monorepo mode, these live in the root `package.json` and are shared by all apps.
 
+### Updating Titan in an existing project
+
+When a new version of `titan-compositions` is published:
+
+| Structure | Where to run | Command | Effect |
+|-----------|-------------|---------|--------|
+| **Monorepo** | Monorepo root | `npm update titan-compositions` | All apps receive the update (shared dependency) |
+| **Single app** | App root | `npm update titan-compositions` | Only that app is updated |
+
+To pin a specific version: `npm install titan-compositions@0.1.27`
+
+Token CSS (loaded via CDN `<link>` tags in `index.html`) always fetches the latest from GitHub — no update needed for token/theme changes. Only `titan-compositions` (the npm package) requires an explicit `npm update`.
+
 ---
 
 ## 10) CSS/theme bootstrap contract

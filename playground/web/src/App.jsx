@@ -1110,6 +1110,35 @@ function SetupGuide() {
           </tbody>
         </table>
         <p className="setup-note">Figma Make uses the same CDN <code>&lt;link&gt;</code> approach as other targets. Only CSS <code>@import</code> inside <code>.css</code> files is unreliable in sandboxed environments — HTML <code>&lt;link&gt;</code> tags work fine.</p>
+
+        <h3>Updating Titan in an existing project</h3>
+        <p>When a new version of <code>titan-compositions</code> is published (bug fixes, new components, token changes), update your project:</p>
+        <table className="setup-table">
+          <thead>
+            <tr>
+              <th>Structure</th>
+              <th>Where to run</th>
+              <th>Command</th>
+              <th>Effect</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Monorepo</strong></td>
+              <td>Monorepo root</td>
+              <td><code>npm update titan-compositions</code></td>
+              <td>All apps receive the update (shared dependency)</td>
+            </tr>
+            <tr>
+              <td><strong>Single app</strong></td>
+              <td>App root</td>
+              <td><code>npm update titan-compositions</code></td>
+              <td>Only that app is updated</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>To pin a specific version: <code>npm install titan-compositions@0.1.27</code></p>
+        <p className="setup-note">Token CSS (loaded via CDN <code>&lt;link&gt;</code> tags) always fetches the latest from GitHub — no update needed for token/theme changes.</p>
       </section>
 
       {/* ── 3. What can you ask? ── */}
