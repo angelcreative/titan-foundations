@@ -1,3 +1,48 @@
+/* Box-sizing — all Titan components use border-box so that height/min-height
+   tokens include padding and border. Apps must NOT rely on a global reset. */
+.btn,
+.icon-primary,
+.icon-secondary,
+.icon-ghost,
+.icon-base,
+.icon-base-l,
+.icon-neutral-base,
+.icon-neutral-base-l,
+.icon-delete,
+.icon-delete-secondary,
+.icon-delete-base,
+.icon-delete-base-l,
+.menu-popover,
+.menu-list,
+.menu-item,
+.select-root,
+.select-trigger,
+.select-popover,
+.select-list,
+.select-item,
+.tab-trigger,
+.tab-trigger-vertical,
+.pagination-button,
+.pill,
+.tag-chip,
+.card,
+.drawer-close-button,
+.dialog-close-button,
+.breadcrumb-link,
+.checkbox-root,
+.radio-root,
+.switch-root,
+.toggle-root,
+.navbar,
+.navbar-icon-button,
+.navbar-chevron-button,
+.titan-sidebar-toggle,
+.titan-sidebar-item,
+.input-root,
+.textarea-root {
+  box-sizing: border-box;
+}
+
 /* Cursor pointer — all interactives */
 .btn,
 .icon-primary,
@@ -2597,12 +2642,16 @@
   display: inline-flex;
   align-items: center;
   width: fit-content;
+  max-width: 100%;
   font-size: var(--button-slot-font-size);
   line-height: var(--button-slot-line-height);
   font-weight: var(--text-weight-medium);
   font-family: "Poppins", var(--font-audiense), sans-serif;
   background: var(--tag-bg);
   color: var(--tag-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Tag tone classes */
