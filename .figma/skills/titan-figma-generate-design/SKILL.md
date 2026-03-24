@@ -344,6 +344,21 @@ Follow the figma-use error recovery process:
 
 Because this skill works incrementally (one section per call), errors are scoped to a single section. Previous sections remain intact.
 
+## Audiense theme — single-primary-CTA rule
+
+The Audiense theme follows the **Airbnb pattern**: only ONE pomegranate element per screen.
+
+| Color | Used for | Max per screen |
+|---|---|---|
+| **Pomegranate** | Primary CTA button or icon-button only | **1** |
+| **Steel** | Everything else: secondary buttons, icon buttons, menus, selects, tabs, toggles, checkboxes, radios, button groups | Unlimited |
+| **Ocean-500** | Links (text links, navigation links) | Unlimited |
+
+**Rules:**
+- If there is no clear primary action on a screen, NO element uses pomegranate — everything stays steel.
+- If a screen has a primary CTA, it is the ONLY pomegranate element. All other buttons/controls use steel.
+- Links are ALWAYS ocean-500, never pomegranate or steel.
+
 ## Forbidden behavior
 
 - NEVER skip loading `figma-use` skill before `use_figma` calls
@@ -353,6 +368,7 @@ Because this skill works incrementally (one section per call), errors are scoped
 - NEVER create a component from scratch without first checking `titan_getComponentRegistry`
 - NEVER skip the screenshot validation loop
 - NEVER place elements on bare canvas — always inside a Section or Frame
+- NEVER place two pomegranate (primary) buttons on the same screen in Audiense theme
 
 ## Examples
 
