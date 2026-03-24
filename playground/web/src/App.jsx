@@ -966,6 +966,7 @@ const WHAT_CAN_YOU_ASK = [
 const AVAILABLE_TOOLS = [
   { tool: 'titan_setup', purpose: 'Full project scaffold (package.json, index.html, src/, skill files). Supports structure=\'single\' (default) or \'monorepo\' (npm workspaces + apps/*). Agent creates all files + runs npm install.', progressive: "structure='single'|'monorepo', theme, appName, target" },
   { tool: 'titan_setupMonorepo', purpose: 'Monorepo-only runtime setup. Always creates root workspaces + apps/<app> with shared deps installed once at root.', progressive: "theme, appName, target='cursor'|'claude-code'|'both'" },
+  { tool: 'titan_getTokenFile', purpose: 'Returns official token CSS content via MCP (chunked). Use if the environment cannot fetch token_files URLs.', progressive: "file='base'|'theme', theme, part, chunkLines" },
   { tool: 'titan_syncFromGithub', purpose: 'Refresh live data from the titan-foundations repo', progressive: '—' },
   { tool: 'titan_getTheme', purpose: 'Resolve theme, get bootstrap snippets or full CSS', progressive: 'include=summary|bootstrap|css|all' },
   { tool: 'titan_getOverview', purpose: 'Architecture, workflow, available components/patterns', progressive: "Lightweight summary by default; include='full' for details" },
@@ -1094,6 +1095,7 @@ function SetupGuide() {
         <ul className="setup-auto-list">
           <li><strong>No CDN links</strong> in <code>index.html</code> for token CSS (only Google Fonts is external)</li>
           <li><strong>Token CSS files are downloaded</strong> via <code>token_files</code> URLs and saved locally</li>
+          <li><strong>Fallback when URL fetch is blocked:</strong> use <code>titan_getTokenFile</code> to get official CSS content via MCP and write it locally (no manual CSS generation)</li>
           <li><strong><code>index.css</code></strong> imports local tokens first, then theme, then <code>titan-compositions/styles</code></li>
           <li><strong>No skill files</strong> — Figma Make does not use <code>.cursor/</code> or <code>.claude/</code></li>
         </ul>
@@ -1138,9 +1140,9 @@ function SetupGuide() {
         </table>
       </section>
 
-      {/* ── 4. Available tools (10) ── */}
+      {/* ── 4. Available tools (11) ── */}
       <section className="setup-section">
-        <h2>4. Available tools (10)</h2>
+        <h2>4. Available tools (11)</h2>
         <p>The MCP exposes these tools. You don't need to call them directly — the AI uses them automatically. But knowing them helps you understand what's possible.</p>
         <table className="setup-table">
           <thead>
