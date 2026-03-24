@@ -272,17 +272,15 @@ npm run dev -w apps/my-app
 
 **Figma Make (sandboxed):**
 - Use `titan_setup({ target: 'figma-make' })`.
-- CDN `@import` is unreliable in Figma Make's sandbox — all tokens must be local.
-- The tool returns a `token_files` array with URLs for the agent to download and save:
-  - `src/styles/titan-base-tokens.css` ← fetched from `tokens/css/titan.css` (~100KB)
-  - `src/styles/titan-theme.css` ← fetched from `tokens/themes/_<theme>.css`
-- Token files are too large to inline in the MCP response — the agent fetches them separately.
-- If the environment cannot fetch external URLs, use `titan_getTokenFile`:
+- Fast mode is the default: setup is minimal and starts building UI immediately.
+- CDN `@import` is unreliable in Figma Make's sandbox.
+- If styles are missing for specific components, fetch official token CSS on demand using `titan_getTokenFile`:
   - `titan_getTokenFile({ file: 'base', part: 1..N })` → concatenate and save as `src/styles/titan-base-tokens.css`
   - `titan_getTokenFile({ file: 'theme', theme: '<theme>' })` → save as `src/styles/titan-theme.css`
-- Never generate token CSS manually; always use official content from `token_files` or `titan_getTokenFile`.
+- Never generate token CSS manually; always use official content from `titan_getTokenFile`.
 - `index.html` has no CDN `<link>` tags for token CSS (only Google Fonts is external).
-- `src/index.css` imports local tokens, then theme, then `titan-compositions/styles`.
+- In fast mode, `src/index.css` can import `titan-compositions/styles` only.
+- If token files are fetched, import local tokens first, then theme, then `titan-compositions/styles`.
 - No skill files are written.
 
 **Figma (design tooling):**
