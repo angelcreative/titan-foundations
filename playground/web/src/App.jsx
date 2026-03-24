@@ -966,7 +966,7 @@ const WHAT_CAN_YOU_ASK = [
 const AVAILABLE_TOOLS = [
   { tool: 'titan_setup', purpose: 'Full project scaffold (package.json, index.html, src/, skill files). Supports structure=\'single\' (default) or \'monorepo\' (npm workspaces + apps/*). In Figma Make it uses fast setup first; token CSS is fetched only on demand if missing styles are detected.', progressive: "structure='single'|'monorepo', theme, appName, target" },
   { tool: 'titan_setupMonorepo', purpose: 'Monorepo-only runtime setup. Always creates root workspaces + apps/<app> with shared deps installed once at root.', progressive: "theme, appName, target='cursor'|'claude-code'|'both'" },
-  { tool: 'titan_getTokenFile', purpose: 'Returns official token CSS content via MCP (chunked). Use on demand when Figma Make setup needs missing token styles.', progressive: "file='base'|'theme', theme, part, chunkLines" },
+  { tool: 'titan_getTokenFile', purpose: 'Returns official token CSS content via MCP (chunked). Emergency fallback only — all targets use CDN <link> tags by default.', progressive: "file='base'|'theme', theme, part, chunkLines" },
   { tool: 'titan_syncFromGithub', purpose: 'Refresh live data from the titan-foundations repo', progressive: '—' },
   { tool: 'titan_getTheme', purpose: 'Resolve theme, get bootstrap snippets or full CSS', progressive: 'include=summary|bootstrap|css|all' },
   { tool: 'titan_getOverview', purpose: 'Architecture, workflow, available components/patterns', progressive: "Lightweight summary by default; include='full' for details" },
@@ -1077,28 +1077,21 @@ function SetupGuide() {
         </table>
 
         <h3>Option C: Figma Make</h3>
-        <p>Figma Make runs in a <strong>sandbox where CDN @import fails</strong>. Use fast setup first, then fetch token CSS only if styles are missing. Tell the AI:</p>
+        <p>Figma Make works <strong>exactly like Cursor/Claude Code</strong> — tokens and theme load via CDN <code>&lt;link&gt;</code> tags in <code>index.html</code>. Tell the AI:</p>
         <CodeBlock code={'"Set up Titan MCP"'} />
         <p>This calls <code>titan_setup</code> with <code>target: \'figma-make\'</code> and creates:</p>
         <CodeBlock code={`project-root/
 ├── package.json
 ├── vite.config.js
-├── index.html             ← Google Fonts ONLY (no CDN links for tokens)
+├── index.html             ← Google Fonts + titan.css + theme CSS via CDN + data-theme
 └── src/
-    ├── styles/
-    │   ├── (optional) titan-base-tokens.css  ← fetched on demand via titan_getTokenFile
-    │   └── (optional) titan-theme.css        ← fetched on demand via titan_getTokenFile
-    ├── index.css              ← fast mode: titan-compositions/styles first
-    ├── main.jsx
+    ├── main.jsx           ← imports titan-compositions/styles
     └── App.jsx`} />
-        <p>Key differences from Cursor/Claude Code:</p>
+        <p>Only difference from Cursor/Claude Code:</p>
         <ul className="setup-auto-list">
-          <li><strong>No CDN links</strong> in <code>index.html</code> for token CSS (only Google Fonts is external)</li>
-          <li><strong>Fast setup by default:</strong> no mandatory token download at bootstrap</li>
-          <li><strong>On-demand token fetch:</strong> if styles are missing, use <code>titan_getTokenFile</code> to retrieve official CSS content via MCP (no manual CSS generation)</li>
-          <li><strong>When tokens are fetched:</strong> import local token files above <code>titan-compositions/styles</code> in <code>index.css</code></li>
           <li><strong>No skill files</strong> — Figma Make does not use <code>.cursor/</code> or <code>.claude/</code></li>
         </ul>
+        <p className="setup-note">Note: CSS <code>@import</code> inside <code>.css</code> files can be unreliable in Figma Make's sandbox, but HTML <code>&lt;link&gt;</code> tags work fine. That's why tokens are loaded via <code>&lt;link&gt;</code> in <code>index.html</code>, not via CSS imports.</p>
 
         <h3>Optional parameters</h3>
         <table className="setup-table">
@@ -1116,7 +1109,7 @@ function SetupGuide() {
             <tr><td><code>target</code></td><td><code>cursor</code> | <code>claude-code</code> | <code>both</code> | <code>figma-make</code></td><td><code>both</code></td></tr>
           </tbody>
         </table>
-        <p className="setup-note">Figma Make: CDN <code>@import</code> is unreliable in sandboxed environments. The <code>figma-make</code> target bundles all token CSS locally so <code>var(--token)</code> always resolves.</p>
+        <p className="setup-note">Figma Make uses the same CDN <code>&lt;link&gt;</code> approach as other targets. Only CSS <code>@import</code> inside <code>.css</code> files is unreliable in sandboxed environments — HTML <code>&lt;link&gt;</code> tags work fine.</p>
       </section>
 
       {/* ── 3. What can you ask? ── */}

@@ -261,7 +261,7 @@ npm run dev -w apps/my-app
 | `structure` | `single` / `monorepo` | `single` | Project layout |
 | `theme` | Any supported theme | `audiense` | Head links and `data-theme` attribute |
 | `appName` | Any name | `my-app` | Project name (single) or app folder name (monorepo) |
-| `target` | `cursor` / `claude-code` / `both` / `figma-make` | `both` | Which skill files to write; `figma-make` uses local tokens instead of CDN |
+| `target` | `cursor` / `claude-code` / `both` / `figma-make` | `both` | Which skill files to write; `figma-make` skips skill files but uses the same CDN token loading |
 
 ### 8.4 Environment-specific usage
 
@@ -272,16 +272,10 @@ npm run dev -w apps/my-app
 
 **Figma Make (sandboxed):**
 - Use `titan_setup({ target: 'figma-make' })`.
-- Fast mode is the default: setup is minimal and starts building UI immediately.
-- CDN `@import` is unreliable in Figma Make's sandbox.
-- If styles are missing for specific components, fetch official token CSS on demand using `titan_getTokenFile`:
-  - `titan_getTokenFile({ file: 'base', part: 1..N })` → concatenate and save as `src/styles/titan-base-tokens.css`
-  - `titan_getTokenFile({ file: 'theme', theme: '<theme>' })` → save as `src/styles/titan-theme.css`
-- Never generate token CSS manually; always use official content from `titan_getTokenFile`.
-- `index.html` has no CDN `<link>` tags for token CSS (only Google Fonts is external).
-- In fast mode, `src/index.css` can import `titan-compositions/styles` only.
-- If token files are fetched, import local tokens first, then theme, then `titan-compositions/styles`.
-- No skill files are written.
+- Works exactly like Cursor/Claude Code: tokens and theme load via CDN `<link>` tags in `index.html`.
+- `main.jsx` imports `titan-compositions/styles` directly.
+- Only difference: no skill files are written (Figma Make does not use `.cursor/` or `.claude/`).
+- Note: CSS `@import` inside `.css` files can be unreliable in Figma Make's sandbox, but HTML `<link>` tags work fine.
 
 **Figma (design tooling):**
 - Use Titan MCP as policy/reference source (themes, tokens, components).
@@ -337,7 +331,7 @@ No hardcoded hex/rgb. Use titan_getTheme, titan_getFoundations, titan_getCompone
 Environment-specific add-ons:
 
 - Cursor/Claude: "Workspace root is the monorepo root; dependencies are already installed."
-- Figma Make: "Use `titan_setup` target `figma-make`. CDN imports fail here — all tokens are local. Do NOT add `<link>` to CDN for CSS tokens."
+- Figma Make: "Use `titan_setup` target `figma-make`. Same CDN `<link>` tags as other targets — no local token files needed."
 - All: "If component exists in titan-compositions, do not recreate custom HTML/CSS."
 
 ---
