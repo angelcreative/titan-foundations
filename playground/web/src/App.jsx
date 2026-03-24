@@ -974,7 +974,6 @@ const AVAILABLE_TOOLS = [
   { tool: 'titan_validateAndRewrite', purpose: 'Validate code against Titan rules + auto-rewrite spacing', progressive: '—' },
   { tool: 'titan_getFoundations', purpose: 'Foundation tokens + semantic token categories', progressive: '—' },
   { tool: 'titan_getDesignQualityGuidelines', purpose: 'DO/DON\'T guidelines for design quality and anti-AI slop', progressive: '—' },
-  { tool: 'titan_getPreset', purpose: 'Instant Figma Make setup in 2 calls. Part 1 = scaffold + first half of CSS. Part 2 = second half. Concatenate into src/styles/titan-tokens.css.', progressive: "theme, part=1|2" },
 ]
 
 const SUPPORTED_THEMES = [
@@ -1077,29 +1076,25 @@ function SetupGuide() {
         </table>
 
         <h3>Option C: Figma Make</h3>
-        <p>Figma Make runs in a <strong>sandbox where CDN @import fails</strong>. All CSS tokens must be local inline files. Use <code>titan_getPreset</code> for an instant 2-call setup:</p>
-        <CodeBlock code={`// The agent calls:
-titan_getPreset({ theme: 'audiense', part: 1 })  → scaffold files + CSS half 1
-titan_getPreset({ theme: 'audiense', part: 2 })  → CSS half 2
-
-// Concatenate CSS from both parts → src/styles/titan-tokens.css
-// Then: npm install`} />
-        <p>This creates:</p>
+        <p>Figma Make runs in a <strong>sandbox where CDN @import fails</strong>. All CSS tokens must be local files. Tell the AI:</p>
+        <CodeBlock code={'"Set up Titan MCP"'} />
+        <p>This calls <code>titan_setup</code> with <code>target: \'figma-make\'</code> and creates:</p>
         <CodeBlock code={`project-root/
 ├── package.json
 ├── vite.config.js
 ├── index.html             ← Google Fonts ONLY (no CDN links for tokens)
 └── src/
     ├── styles/
-    │   └── titan-tokens.css   ← all tokens: base + theme (from titan_getPreset)
-    ├── index.css              ← imports: titan-tokens.css → titan-compositions/styles
+    │   ├── titan-base-tokens.css  ← titan.css (downloaded from GitHub)
+    │   └── titan-theme.css        ← theme CSS (downloaded from GitHub)
+    ├── index.css              ← import order: local tokens → theme → compositions
     ├── main.jsx
     └── App.jsx`} />
         <p>Key differences from Cursor/Claude Code:</p>
         <ul className="setup-auto-list">
           <li><strong>No CDN links</strong> in <code>index.html</code> for token CSS (only Google Fonts is external)</li>
-          <li><strong>Token CSS delivered via MCP</strong> in 2 fast calls (~47KB each) — base + theme merged into a single <code>titan-tokens.css</code> file</li>
-          <li><strong><code>index.css</code></strong> imports local tokens, then <code>titan-compositions/styles</code></li>
+          <li><strong>Token CSS files are downloaded</strong> via <code>token_files</code> URLs and saved locally</li>
+          <li><strong><code>index.css</code></strong> imports local tokens first, then theme, then <code>titan-compositions/styles</code></li>
           <li><strong>No skill files</strong> — Figma Make does not use <code>.cursor/</code> or <code>.claude/</code></li>
         </ul>
 
@@ -1143,9 +1138,9 @@ titan_getPreset({ theme: 'audiense', part: 2 })  → CSS half 2
         </table>
       </section>
 
-      {/* ── 4. Available tools (11) ── */}
+      {/* ── 4. Available tools (10) ── */}
       <section className="setup-section">
-        <h2>4. Available tools (11)</h2>
+        <h2>4. Available tools (10)</h2>
         <p>The MCP exposes these tools. You don't need to call them directly — the AI uses them automatically. But knowing them helps you understand what's possible.</p>
         <table className="setup-table">
           <thead>
