@@ -259,7 +259,7 @@ npm run dev -w apps/my-app
 | Parameter | Values | Default | Effect |
 |-----------|--------|---------|--------|
 | `structure` | `single` / `monorepo` | `single` | Project layout |
-| `theme` | Any supported theme | `insights` | Head links and `data-theme` attribute |
+| `theme` | Any supported theme | `audiense` | Head links and `data-theme` attribute |
 | `appName` | Any name | `my-app` | Project name (single) or app folder name (monorepo) |
 | `target` | `cursor` / `claude-code` / `both` / `figma-make` | `both` | Which skill files to write; `figma-make` uses local tokens instead of CDN |
 
@@ -277,6 +277,10 @@ npm run dev -w apps/my-app
   - `src/styles/titan-base-tokens.css` ← fetched from `tokens/css/titan.css` (~100KB)
   - `src/styles/titan-theme.css` ← fetched from `tokens/themes/_<theme>.css`
 - Token files are too large to inline in the MCP response — the agent fetches them separately.
+- If the environment cannot fetch external URLs, use `titan_getTokenFile`:
+  - `titan_getTokenFile({ file: 'base', part: 1..N })` → concatenate and save as `src/styles/titan-base-tokens.css`
+  - `titan_getTokenFile({ file: 'theme', theme: '<theme>' })` → save as `src/styles/titan-theme.css`
+- Never generate token CSS manually; always use official content from `token_files` or `titan_getTokenFile`.
 - `index.html` has no CDN `<link>` tags for token CSS (only Google Fonts is external).
 - `src/index.css` imports local tokens, then theme, then `titan-compositions/styles`.
 - No skill files are written.
