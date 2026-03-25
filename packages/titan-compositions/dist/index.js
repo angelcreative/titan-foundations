@@ -61,6 +61,8 @@ import {
   ChevronRight,
   CircleHelp,
   ExternalLink,
+  Folder,
+  FolderOpen,
   Grip,
   GripVertical,
   Handshake,
@@ -139,6 +141,8 @@ var LUCIDE_REGISTRY = {
   "x": X,
   "minus": Minus,
   "external-link": ExternalLink,
+  "folder": Folder,
+  "folder-open": FolderOpen,
   "redirect": ExternalLink,
   "user": User
 };
@@ -2373,6 +2377,109 @@ function TitanSidebarItem({
     }
   );
 }
+function TitanSidebarSection({ children }) {
+  return /* @__PURE__ */ jsx24("div", { className: "titan-sidebar-section", children });
+}
+function TitanSidebarSearch({
+  placeholder = "Search\u2026",
+  value,
+  onChange,
+  "aria-label": ariaLabel = "Search"
+}) {
+  const { collapsed } = useContext(SidebarContext);
+  if (collapsed) return null;
+  return /* @__PURE__ */ jsx24("div", { className: "titan-sidebar-search", children: /* @__PURE__ */ jsx24(
+    TitanInputField,
+    {
+      "aria-label": ariaLabel,
+      placeholder,
+      ...value !== void 0 ? { value } : {},
+      leadingIcon: renderIconNode("search"),
+      onChange,
+      className: "titan-sidebar-search-field field-root"
+    }
+  ) });
+}
+function TitanSidebarTree({ children }) {
+  return /* @__PURE__ */ jsx24("div", { className: "titan-sidebar-tree", children });
+}
+function TitanSidebarTreeItem({
+  id,
+  icon,
+  depth = 0,
+  onPress,
+  children
+}) {
+  const { collapsed, activeId, setActiveId } = useContext(SidebarContext);
+  const isActive = activeId === id;
+  const depthStyle = {
+    "--titan-sidebar-tree-depth": depth
+  };
+  return /* @__PURE__ */ jsxs21(
+    Button12,
+    {
+      className: "titan-sidebar-item titan-sidebar-tree-item",
+      style: depthStyle,
+      "data-active": isActive ? "true" : void 0,
+      "aria-current": isActive ? "page" : void 0,
+      "aria-label": collapsed && typeof children === "string" ? children : void 0,
+      onPress: () => {
+        setActiveId(id);
+        onPress?.();
+      },
+      children: [
+        icon ? renderIconNode(icon) : null,
+        /* @__PURE__ */ jsx24("span", { className: "titan-sidebar-item-label", children })
+      ]
+    }
+  );
+}
+function TitanSidebarFolder({
+  id,
+  label,
+  defaultExpanded = false,
+  expanded: controlledExpanded,
+  onExpandedChange,
+  depth = 0,
+  children
+}) {
+  const [uncontrolledOpen, setUncontrolledOpen] = useState3(defaultExpanded);
+  const isControlled = controlledExpanded !== void 0;
+  const open = isControlled ? controlledExpanded : uncontrolledOpen;
+  const setOpen = (next) => {
+    if (!isControlled) setUncontrolledOpen(next);
+    onExpandedChange?.(next);
+  };
+  const folderDepthStyle = {
+    "--titan-sidebar-folder-depth": depth
+  };
+  return /* @__PURE__ */ jsxs21("div", { className: "titan-sidebar-folder", "data-folder-id": id, children: [
+    /* @__PURE__ */ jsxs21("div", { className: "titan-sidebar-folder-row", style: folderDepthStyle, children: [
+      /* @__PURE__ */ jsx24(
+        Button12,
+        {
+          className: "titan-sidebar-folder-toggle",
+          "aria-expanded": open,
+          "aria-controls": `${id}-folder-children`,
+          onPress: () => setOpen(!open),
+          children: renderIconNode(open ? "chevron-down" : "chevron-right")
+        }
+      ),
+      /* @__PURE__ */ jsx24("span", { className: "titan-sidebar-folder-icon", "aria-hidden": true, children: renderIconNode(open ? "folder-open" : "folder") }),
+      /* @__PURE__ */ jsx24("span", { className: "titan-sidebar-folder-label", children: label })
+    ] }),
+    open && children ? /* @__PURE__ */ jsx24(
+      "div",
+      {
+        id: `${id}-folder-children`,
+        className: "titan-sidebar-folder-children",
+        role: "group",
+        "aria-label": typeof label === "string" ? label : "Folder contents",
+        children
+      }
+    ) : null
+  ] });
+}
 
 // src/TitanSlider.tsx
 import {
@@ -2895,8 +3002,13 @@ export {
   TitanSearchMenu,
   TitanSelect,
   TitanSidebar,
+  TitanSidebarFolder,
   TitanSidebarHeader,
   TitanSidebarItem,
+  TitanSidebarSearch,
+  TitanSidebarSection,
+  TitanSidebarTree,
+  TitanSidebarTreeItem,
   TitanSlider,
   TitanSwitchField,
   TitanTable,

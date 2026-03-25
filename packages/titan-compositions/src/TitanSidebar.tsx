@@ -5,8 +5,10 @@ import {
   useCallback,
   type ReactNode,
   type ComponentType,
+  type CSSProperties,
 } from 'react'
 import { Button } from 'react-aria-components'
+import { TitanInputField } from './TitanInput'
 import { renderIconNode } from './icons/renderIconNode'
 
 /* ------------------------------------------------------------------ */
@@ -136,5 +138,175 @@ export function TitanSidebarItem({
       {icon ? renderIconNode(icon) : null}
       <span className="titan-sidebar-item-label">{children}</span>
     </Button>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+/*  TitanSidebarSection — group (optional title + block of items)      */
+/* ------------------------------------------------------------------ */
+
+export interface TitanSidebarSectionProps {
+  children: ReactNode
+}
+
+/** Wraps a titled block or a cluster of items; use with `TitanSidebarHeader` + items. */
+export function TitanSidebarSection({ children }: TitanSidebarSectionProps) {
+  return <div className="titan-sidebar-section">{children}</div>
+}
+
+/* ------------------------------------------------------------------ */
+/*  TitanSidebarSearch — top search (hidden when sidebar collapsed)    */
+/* ------------------------------------------------------------------ */
+
+export interface TitanSidebarSearchProps {
+  placeholder?: string
+  value?: string
+  onChange?: (value: string) => void
+  'aria-label'?: string
+}
+
+export function TitanSidebarSearch({
+  placeholder = 'Search…',
+  value,
+  onChange,
+  'aria-label': ariaLabel = 'Search',
+}: TitanSidebarSearchProps) {
+  const { collapsed } = useContext(SidebarContext)
+  if (collapsed) return null
+
+  return (
+    <div className="titan-sidebar-search">
+      <TitanInputField
+        aria-label={ariaLabel}
+        placeholder={placeholder}
+        {...(value !== undefined ? { value } : {})}
+        leadingIcon={renderIconNode('search')}
+        onChange={onChange}
+        className="titan-sidebar-search-field field-root"
+      />
+    </div>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+/*  TitanSidebarTree — file-tree / nested nav container                */
+/* ------------------------------------------------------------------ */
+
+export interface TitanSidebarTreeProps {
+  children: ReactNode
+}
+
+export function TitanSidebarTree({ children }: TitanSidebarTreeProps) {
+  return <div className="titan-sidebar-tree">{children}</div>
+}
+
+/* ------------------------------------------------------------------ */
+/*  TitanSidebarTreeItem — nav row with depth indent                   */
+/* ------------------------------------------------------------------ */
+
+export interface TitanSidebarTreeItemProps {
+  id: string
+  icon?: ComponentType<{ className?: string }> | string
+  /** Nesting level (0 = align with top-level items). */
+  depth?: number
+  onPress?: () => void
+  children: ReactNode
+}
+
+export function TitanSidebarTreeItem({
+  id,
+  icon,
+  depth = 0,
+  onPress,
+  children,
+}: TitanSidebarTreeItemProps) {
+  const { collapsed, activeId, setActiveId } = useContext(SidebarContext)
+  const isActive = activeId === id
+
+  const depthStyle: CSSProperties = {
+    '--titan-sidebar-tree-depth': depth,
+  } as CSSProperties
+
+  return (
+    <Button
+      className="titan-sidebar-item titan-sidebar-tree-item"
+      style={depthStyle}
+      data-active={isActive ? 'true' : undefined}
+      aria-current={isActive ? 'page' : undefined}
+      aria-label={collapsed && typeof children === 'string' ? children : undefined}
+      onPress={() => {
+        setActiveId(id)
+        onPress?.()
+      }}
+    >
+      {icon ? renderIconNode(icon) : null}
+      <span className="titan-sidebar-item-label">{children}</span>
+    </Button>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+/*  TitanSidebarFolder — expandable folder (chevron + folder icon)     */
+/* ------------------------------------------------------------------ */
+
+export interface TitanSidebarFolderProps {
+  id: string
+  label: ReactNode
+  defaultExpanded?: boolean
+  expanded?: boolean
+  onExpandedChange?: (open: boolean) => void
+  /** Nesting level for row indent (0 = root). */
+  depth?: number
+  children?: ReactNode
+}
+
+export function TitanSidebarFolder({
+  id,
+  label,
+  defaultExpanded = false,
+  expanded: controlledExpanded,
+  onExpandedChange,
+  depth = 0,
+  children,
+}: TitanSidebarFolderProps) {
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultExpanded)
+  const isControlled = controlledExpanded !== undefined
+  const open = isControlled ? controlledExpanded : uncontrolledOpen
+  const setOpen = (next: boolean) => {
+    if (!isControlled) setUncontrolledOpen(next)
+    onExpandedChange?.(next)
+  }
+
+  const folderDepthStyle: CSSProperties = {
+    '--titan-sidebar-folder-depth': depth,
+  } as CSSProperties
+
+  return (
+    <div className="titan-sidebar-folder" data-folder-id={id}>
+      <div className="titan-sidebar-folder-row" style={folderDepthStyle}>
+        <Button
+          className="titan-sidebar-folder-toggle"
+          aria-expanded={open}
+          aria-controls={`${id}-folder-children`}
+          onPress={() => setOpen(!open)}
+        >
+          {renderIconNode(open ? 'chevron-down' : 'chevron-right')}
+        </Button>
+        <span className="titan-sidebar-folder-icon" aria-hidden>
+          {renderIconNode(open ? 'folder-open' : 'folder')}
+        </span>
+        <span className="titan-sidebar-folder-label">{label}</span>
+      </div>
+      {open && children ? (
+        <div
+          id={`${id}-folder-children`}
+          className="titan-sidebar-folder-children"
+          role="group"
+          aria-label={typeof label === 'string' ? label : 'Folder contents'}
+        >
+          {children}
+        </div>
+      ) : null}
+    </div>
   )
 }

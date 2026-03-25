@@ -65,8 +65,13 @@ __export(index_exports, {
   TitanSearchMenu: () => TitanSearchMenu,
   TitanSelect: () => TitanSelect,
   TitanSidebar: () => TitanSidebar,
+  TitanSidebarFolder: () => TitanSidebarFolder,
   TitanSidebarHeader: () => TitanSidebarHeader,
   TitanSidebarItem: () => TitanSidebarItem,
+  TitanSidebarSearch: () => TitanSidebarSearch,
+  TitanSidebarSection: () => TitanSidebarSection,
+  TitanSidebarTree: () => TitanSidebarTree,
+  TitanSidebarTreeItem: () => TitanSidebarTreeItem,
   TitanSlider: () => TitanSlider,
   TitanSwitchField: () => TitanSwitchField,
   TitanTable: () => TitanTable,
@@ -194,6 +199,8 @@ var LUCIDE_REGISTRY = {
   "x": import_lucide_react.X,
   "minus": import_lucide_react.Minus,
   "external-link": import_lucide_react.ExternalLink,
+  "folder": import_lucide_react.Folder,
+  "folder-open": import_lucide_react.FolderOpen,
   "redirect": import_lucide_react.ExternalLink,
   "user": import_lucide_react.User
 };
@@ -2382,6 +2389,109 @@ function TitanSidebarItem({
     }
   );
 }
+function TitanSidebarSection({ children }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("div", { className: "titan-sidebar-section", children });
+}
+function TitanSidebarSearch({
+  placeholder = "Search\u2026",
+  value,
+  onChange,
+  "aria-label": ariaLabel = "Search"
+}) {
+  const { collapsed } = (0, import_react6.useContext)(SidebarContext);
+  if (collapsed) return null;
+  return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("div", { className: "titan-sidebar-search", children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
+    TitanInputField,
+    {
+      "aria-label": ariaLabel,
+      placeholder,
+      ...value !== void 0 ? { value } : {},
+      leadingIcon: renderIconNode("search"),
+      onChange,
+      className: "titan-sidebar-search-field field-root"
+    }
+  ) });
+}
+function TitanSidebarTree({ children }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("div", { className: "titan-sidebar-tree", children });
+}
+function TitanSidebarTreeItem({
+  id,
+  icon,
+  depth = 0,
+  onPress,
+  children
+}) {
+  const { collapsed, activeId, setActiveId } = (0, import_react6.useContext)(SidebarContext);
+  const isActive = activeId === id;
+  const depthStyle = {
+    "--titan-sidebar-tree-depth": depth
+  };
+  return /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
+    import_react_aria_components18.Button,
+    {
+      className: "titan-sidebar-item titan-sidebar-tree-item",
+      style: depthStyle,
+      "data-active": isActive ? "true" : void 0,
+      "aria-current": isActive ? "page" : void 0,
+      "aria-label": collapsed && typeof children === "string" ? children : void 0,
+      onPress: () => {
+        setActiveId(id);
+        onPress?.();
+      },
+      children: [
+        icon ? renderIconNode(icon) : null,
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { className: "titan-sidebar-item-label", children })
+      ]
+    }
+  );
+}
+function TitanSidebarFolder({
+  id,
+  label,
+  defaultExpanded = false,
+  expanded: controlledExpanded,
+  onExpandedChange,
+  depth = 0,
+  children
+}) {
+  const [uncontrolledOpen, setUncontrolledOpen] = (0, import_react6.useState)(defaultExpanded);
+  const isControlled = controlledExpanded !== void 0;
+  const open = isControlled ? controlledExpanded : uncontrolledOpen;
+  const setOpen = (next) => {
+    if (!isControlled) setUncontrolledOpen(next);
+    onExpandedChange?.(next);
+  };
+  const folderDepthStyle = {
+    "--titan-sidebar-folder-depth": depth
+  };
+  return /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { className: "titan-sidebar-folder", "data-folder-id": id, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { className: "titan-sidebar-folder-row", style: folderDepthStyle, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
+        import_react_aria_components18.Button,
+        {
+          className: "titan-sidebar-folder-toggle",
+          "aria-expanded": open,
+          "aria-controls": `${id}-folder-children`,
+          onPress: () => setOpen(!open),
+          children: renderIconNode(open ? "chevron-down" : "chevron-right")
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { className: "titan-sidebar-folder-icon", "aria-hidden": true, children: renderIconNode(open ? "folder-open" : "folder") }),
+      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { className: "titan-sidebar-folder-label", children: label })
+    ] }),
+    open && children ? /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
+      "div",
+      {
+        id: `${id}-folder-children`,
+        className: "titan-sidebar-folder-children",
+        role: "group",
+        "aria-label": typeof label === "string" ? label : "Folder contents",
+        children
+      }
+    ) : null
+  ] });
+}
 
 // src/TitanSlider.tsx
 var import_react_aria_components19 = require("react-aria-components");
@@ -2885,8 +2995,13 @@ function TitanCollapsible({
   TitanSearchMenu,
   TitanSelect,
   TitanSidebar,
+  TitanSidebarFolder,
   TitanSidebarHeader,
   TitanSidebarItem,
+  TitanSidebarSearch,
+  TitanSidebarSection,
+  TitanSidebarTree,
+  TitanSidebarTreeItem,
   TitanSlider,
   TitanSwitchField,
   TitanTable,

@@ -14,6 +14,8 @@ import {
   ChevronRight,
   CircleHelp,
   ExternalLink,
+  Folder,
+  FolderOpen,
   Grip,
   GripVertical,
   Handshake,
@@ -99,6 +101,8 @@ export const LUCIDE_REGISTRY: Record<string, IconComponent> = {
   'x': X,
   'minus': Minus,
   'external-link': ExternalLink,
+  'folder': Folder,
+  'folder-open': FolderOpen,
   'redirect': ExternalLink,
   'user': User,
 }

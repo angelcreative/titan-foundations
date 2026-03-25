@@ -3151,6 +3151,8 @@
 /* --- Sidebar --- */
 
 .titan-sidebar {
+  --sidebar-tree-indent: var(--spacing-m);
+  --sidebar-tree-guide-color: var(--divider);
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
@@ -3240,12 +3242,18 @@
   color: var(--sidebar-slot-item-color-hover);
 }
 
-/* Active = same “pill” row as default/hover: full radius, fill + type; no left accent bar */
-.titan-sidebar-item[data-active="true"] {
+/* Active = same pill row as hover: full radius, no left accent (override any stray tab/legacy rules) */
+.titan-sidebar .titan-sidebar-item[data-active="true"],
+.titan-sidebar .titan-sidebar-item[aria-current="page"] {
   background: var(--sidebar-slot-item-bg-active);
   color: var(--sidebar-slot-item-color-active);
   font-weight: var(--font-weight-500);
   border-radius: var(--sidebar-slot-item-radius);
+  border: none;
+  border-left: none;
+  border-inline-start: none;
+  box-shadow: none;
+  background-image: none;
 }
 
 .titan-sidebar-item svg {
@@ -3262,6 +3270,140 @@
 }
 
 .titan-sidebar[data-collapsed] .titan-sidebar-item-label {
+  display: none;
+}
+
+/* Section groups (titled blocks) */
+.titan-sidebar-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sidebar-slot-nav-stack-gap);
+  width: 100%;
+}
+
+.titan-sidebar-section + .titan-sidebar-section {
+  margin-top: var(--spacing-s);
+}
+
+/* Top search (complex variant) */
+.titan-sidebar-search {
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.titan-sidebar-search .titan-sidebar-search-field {
+  width: 100%;
+}
+
+.titan-sidebar[data-collapsed] .titan-sidebar-search {
+  display: none;
+}
+
+/* Tree container */
+.titan-sidebar-tree {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sidebar-slot-nav-stack-gap);
+  width: 100%;
+}
+
+/* Indented tree row (depth via --titan-sidebar-tree-depth) */
+.titan-sidebar-tree-item {
+  --titan-sidebar-tree-depth: 0;
+  padding-inline-start: calc(
+    var(--spacing-m) + var(--sidebar-tree-indent) * var(--titan-sidebar-tree-depth)
+  ) !important;
+}
+
+.titan-sidebar[data-collapsed] .titan-sidebar-tree-item {
+  padding-inline-start: var(--spacing-s) !important;
+}
+
+/* Folder row */
+.titan-sidebar-folder {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sidebar-slot-nav-stack-gap);
+  width: 100%;
+}
+
+.titan-sidebar-folder-row {
+  --titan-sidebar-folder-depth: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4xs);
+  width: 100%;
+  min-height: 2.25rem;
+  padding-inline-start: calc(var(--sidebar-tree-indent) * var(--titan-sidebar-folder-depth));
+  color: var(--sidebar-slot-item-color);
+  font-family: "Poppins", var(--font-audiense), sans-serif;
+  font-size: var(--button-slot-font-size);
+  font-weight: var(--text-weight-medium);
+}
+
+.titan-sidebar-folder-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  border: none;
+  border-radius: var(--rounded-xs);
+  background: transparent;
+  color: var(--sidebar-slot-item-color);
+  cursor: pointer;
+}
+
+.titan-sidebar-folder-toggle[data-hovered] {
+  background: var(--sidebar-slot-item-bg-hover);
+  color: var(--sidebar-slot-item-color-hover);
+}
+
+.titan-sidebar-folder-toggle svg {
+  width: var(--icon-size-s);
+  height: var(--icon-size-s);
+  stroke-width: 2px;
+}
+
+.titan-sidebar-folder-icon svg {
+  width: var(--sidebar-slot-icon-size);
+  height: var(--sidebar-slot-icon-size);
+  flex-shrink: 0;
+  stroke-width: 1.5;
+  color: var(--sidebar-slot-item-color);
+}
+
+.titan-sidebar-folder-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.titan-sidebar-folder-children {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sidebar-slot-nav-stack-gap);
+  margin-inline-start: var(--spacing-s);
+  padding-inline-start: var(--spacing-s);
+  border-inline-start: 1px solid var(--sidebar-tree-guide-color);
+}
+
+.titan-sidebar[data-collapsed] .titan-sidebar-folder-toggle,
+.titan-sidebar[data-collapsed] .titan-sidebar-folder-label {
+  display: none;
+}
+
+.titan-sidebar[data-collapsed] .titan-sidebar-folder-row {
+  justify-content: center;
+  padding-inline-start: 0;
+}
+
+.titan-sidebar[data-collapsed] .titan-sidebar-folder-children {
   display: none;
 }
 

@@ -128,11 +128,25 @@ export {
 export { TitanTwoUpOneDownLayout } from './TitanTwoUpOneDownLayout'
 export type { TitanTwoUpOneDownLayoutProps } from './TitanTwoUpOneDownLayout'
 
-export { TitanSidebar, TitanSidebarHeader, TitanSidebarItem } from './TitanSidebar'
+export {
+  TitanSidebar,
+  TitanSidebarFolder,
+  TitanSidebarHeader,
+  TitanSidebarItem,
+  TitanSidebarSearch,
+  TitanSidebarSection,
+  TitanSidebarTree,
+  TitanSidebarTreeItem,
+} from './TitanSidebar'
 export type {
+  TitanSidebarFolderProps,
   TitanSidebarProps,
   TitanSidebarHeaderProps,
   TitanSidebarItemProps,
+  TitanSidebarSearchProps,
+  TitanSidebarSectionProps,
+  TitanSidebarTreeProps,
+  TitanSidebarTreeItemProps,
 } from './TitanSidebar'
 export { TitanLoader } from './TitanLoader'
 export type { TitanLoaderProps } from './TitanLoader'

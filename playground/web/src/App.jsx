@@ -135,6 +135,7 @@ import {
 import { today, getLocalTimeZone } from '@internationalized/date'
 import { DesignSystemView } from './DesignSystemView'
 import { ClusterGravityDemo } from './cluster-graph/ClusterGravityDemo'
+import { SidebarVariantsDemo } from './SidebarVariantsDemo'
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
@@ -183,6 +184,7 @@ const COMMON_PATTERN_NAV_ITEMS = [
   { id: 'comparison-bar-cards', label: 'Comparison Bar Cards', icon: BarChartHorizontal },
   { id: 'multimedia-grid-cards', label: 'Multimedia Grid Cards', icon: LayoutGrid },
   { id: 'cluster-graph', label: 'Cluster Graph', icon: Users },
+  { id: 'sidebar-variants', label: 'Sidebar variants', icon: PanelLeft },
   { id: 'table', label: 'Table (Advanced)', icon: Table2 },
 ]
 
@@ -4838,6 +4840,60 @@ import { Headphones, Gamepad2, MoreVertical, Pencil, Eye, Merge, Download, Globe
                   <h3 className="multimedia-tile-title">{item.title}</h3>
                 </TitanCard>
               ))}
+            </TitanCardGrid>
+          </ShowcaseCard>
+
+          {/* ── 2a13b. Sidebar variants ───────────────────────── */}
+          <ShowcaseCard
+            id="sidebar-variants"
+            title="Sidebar variants"
+            ariaImports="import { TitanSidebar, TitanSidebarFolder, TitanSidebarHeader, TitanSidebarItem, TitanSidebarSearch, TitanSidebarSection, TitanSidebarTree, TitanSidebarTreeItem } from 'titan-compositions'"
+            ariaDesc="Four app-chrome patterns: flat list; titled sections; file tree with folders and depth; tree plus top search. Each mini sidebar has its own expand/collapse control at the bottom."
+            ariaComponents={[
+              'TitanSidebar',
+              'TitanSidebarItem',
+              'TitanSidebarSection',
+              'TitanSidebarHeader',
+              'TitanSidebarTree',
+              'TitanSidebarTreeItem',
+              'TitanSidebarFolder',
+              'TitanSidebarSearch',
+            ]}
+            foundations={[
+              { category: 'Chrome', detail: 'Use TitanSidebar as the shell; toggle is always at the bottom of the rail.' },
+              { category: 'Tree', detail: 'TitanSidebarFolder + TitanSidebarTreeItem with depth for explorer-style hierarchy; search hides when collapsed.' },
+            ]}
+            tokenGroups={[
+              { label: 'Sidebar', tokens: ['--sidebar-slot-width-expanded', '--sidebar-slot-border', '--sidebar-tree-indent'] },
+            ]}
+            code={`import {
+  TitanSidebar,
+  TitanSidebarFolder,
+  TitanSidebarHeader,
+  TitanSidebarItem,
+  TitanSidebarSearch,
+  TitanSidebarSection,
+  TitanSidebarTree,
+  TitanSidebarTreeItem,
+} from 'titan-compositions'
+
+<TitanSidebar collapsed={false} onToggle={...} defaultActiveId="a">
+  <TitanSidebarSearch placeholder="Search…" />
+  <TitanSidebarSection>
+    <TitanSidebarHeader>Section</TitanSidebarHeader>
+    <TitanSidebarItem id="a" icon={LayoutDashboard}>Home</TitanSidebarItem>
+  </TitanSidebarSection>
+  <TitanSidebarTree>
+    <TitanSidebarFolder id="src" label="src" defaultExpanded>
+      <TitanSidebarTreeItem id="f1" depth={1}>index.ts</TitanSidebarTreeItem>
+    </TitanSidebarFolder>
+  </TitanSidebarTree>
+</TitanSidebar>`}
+          >
+            <TitanCardGrid>
+              <TitanCard span={16}>
+                <SidebarVariantsDemo />
+              </TitanCard>
             </TitanCardGrid>
           </ShowcaseCard>
 
