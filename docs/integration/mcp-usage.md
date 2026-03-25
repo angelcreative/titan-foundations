@@ -173,6 +173,7 @@ When building or changing UI (with or without MCP), the LLM should **resolve use
    - “Segment card”, “donut + keywords”, “affinities” → `docs/anatomies/audience-segment-card.md`
    - “Comparison bars”, “Bio vs baseline”, “show full table” → `docs/anatomies/comparison-bar-cards.md`
    - “Sortable table”, “table with column sort” → `docs/anatomies/table-advanced.md`
+   - “Cluster graph”, “network graph”, “force graph” → `docs/anatomies/cluster-graph.md`
    - “Drawer”, “panel that opens from the side” → `docs/components/drawer.md`
 
 2. **Load the skill**  

@@ -182,6 +182,7 @@ const COMMON_PATTERN_NAV_ITEMS = [
   { id: 'audience-segment-card', label: 'Audience Segment Card', icon: Users },
   { id: 'comparison-bar-cards', label: 'Comparison Bar Cards', icon: BarChartHorizontal },
   { id: 'multimedia-grid-cards', label: 'Multimedia Grid Cards', icon: LayoutGrid },
+  { id: 'cluster-graph', label: 'Cluster Graph', icon: Users },
   { id: 'table', label: 'Table (Advanced)', icon: Table2 },
 ]
 
@@ -291,6 +292,104 @@ function DoubleBarLegend() {
     <div className="double-bar-chart-legend">
       <span className="double-bar-legend-item"><i className="double-bar-legend-dot male" aria-hidden="true" /> Male</span>
       <span className="double-bar-legend-item"><i className="double-bar-legend-dot female" aria-hidden="true" /> Female</span>
+    </div>
+  )
+}
+
+const CLUSTER_GRAPH_NODES = Array.from({ length: 90 }, (_v, i) => ({
+  id: `node-${i + 1}`,
+  cluster: i % 3,
+  angle: (i / 90) * Math.PI * 2,
+  distance: 40 + (i % 10) * 7,
+  speed: 0.35 + ((i % 7) * 0.08),
+  radius: 3 + (i % 3),
+}))
+
+const CLUSTER_CENTERS = [
+  { x: 150, y: 110, color: 'var(--color-violet-500)', label: 'Creators' },
+  { x: 360, y: 165, color: 'var(--color-ocean-500)', label: 'Topics' },
+  { x: 245, y: 290, color: 'var(--color-aquamarine-600)', label: 'Brands' },
+]
+
+function ClusterGraphDemo() {
+  const [tick, setTick] = useState(0)
+  const frameRef = useRef(0)
+  const lastTsRef = useRef(0)
+
+  useEffect(() => {
+    const update = (ts) => {
+      // Limit to roughly 30fps to keep the demo cheap.
+      if (ts - lastTsRef.current > 33) {
+        setTick((prev) => (prev + 1) % 10000)
+        lastTsRef.current = ts
+      }
+      frameRef.current = requestAnimationFrame(update)
+    }
+    frameRef.current = requestAnimationFrame(update)
+    return () => cancelAnimationFrame(frameRef.current)
+  }, [])
+
+  const positionedNodes = useMemo(() => {
+    return CLUSTER_GRAPH_NODES.map((node) => {
+      const center = CLUSTER_CENTERS[node.cluster]
+      const t = tick * 0.02 * node.speed
+      return {
+        ...node,
+        x: center.x + Math.cos(node.angle + t) * node.distance,
+        y: center.y + Math.sin(node.angle + t) * node.distance,
+      }
+    })
+  }, [tick])
+
+  const links = useMemo(() => {
+    const out = []
+    for (let i = 0; i < positionedNodes.length - 1; i += 1) {
+      const from = positionedNodes[i]
+      const to = positionedNodes[(i + 9) % positionedNodes.length]
+      if (from.cluster === to.cluster || i % 7 === 0) out.push([from, to])
+    }
+    return out
+  }, [positionedNodes])
+
+  return (
+    <div style={{ display: 'grid', gap: 'var(--spacing-s)' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 'var(--spacing-s)' }}>
+        <p className="text-secondary" style={{ margin: 0 }}>Explore profile relationships by cluster</p>
+        <div style={{ display: 'flex', gap: 'var(--spacing-s)' }}>
+          {CLUSTER_CENTERS.map((center) => (
+            <span key={center.label} style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--spacing-4xs)', fontSize: 'var(--font-size-s)', color: 'var(--copy-slot-secondary)' }}>
+              <i style={{ width: 8, height: 8, borderRadius: '50%', background: center.color, display: 'inline-block' }} aria-hidden="true" />
+              {center.label}
+            </span>
+          ))}
+        </div>
+      </div>
+      <div style={{ border: '1px solid var(--divider)', borderRadius: 'var(--rounded-m)', background: 'var(--surface-0)', padding: 'var(--spacing-xs)' }}>
+        <svg viewBox="0 0 520 360" role="img" aria-label="Cluster graph demo" style={{ width: '100%', height: 'auto', display: 'block' }}>
+          {links.map(([from, to], index) => (
+            <line
+              key={`link-${from.id}-${to.id}-${index}`}
+              x1={from.x}
+              y1={from.y}
+              x2={to.x}
+              y2={to.y}
+              stroke="var(--divider)"
+              strokeOpacity={0.5}
+              strokeWidth={1}
+            />
+          ))}
+          {positionedNodes.map((node) => (
+            <circle
+              key={node.id}
+              cx={node.x}
+              cy={node.y}
+              r={node.radius}
+              fill={CLUSTER_CENTERS[node.cluster].color}
+              opacity={0.88}
+            />
+          ))}
+        </svg>
+      </div>
     </div>
   )
 }
@@ -4839,6 +4938,39 @@ import { Headphones, Gamepad2, MoreVertical, Pencil, Eye, Merge, Download, Globe
                   <h3 className="multimedia-tile-title">{item.title}</h3>
                 </TitanCard>
               ))}
+            </TitanCardGrid>
+          </ShowcaseCard>
+
+          {/* ── 2a14. Cluster Graph ─────────────────────────── */}
+          <ShowcaseCard
+            id="cluster-graph"
+            title="Cluster Graph"
+            ariaImports="import { TitanCard, TitanInputField, TitanSwitchField, TitanButton } from 'titan-compositions'"
+            ariaDesc="Force-like clustered relationship graph embedded in a Titan card shell with explicit dimensions, lightweight legend, and progressive disclosure controls. Uses memoized node/link derivation and requestAnimationFrame throttling for smooth interaction."
+            ariaComponents={['TitanCard layout shell + SVG/Canvas graph slot']}
+            foundations={[
+              { category: 'Layout', detail: 'Graph lives in a fixed-size slot inside Titan card/layout wrappers; avoid auto-height containers.' },
+              { category: 'Performance', detail: 'Single simulation/update loop, memoized graph derivations, throttled frame updates, labels hidden by default for dense datasets.' },
+              { category: 'States', detail: 'Keep dedicated overlays for loading, empty, and error without collapsing graph height.' },
+            ]}
+            tokenGroups={[
+              { label: 'Surface', tokens: ['--surface-0', '--card-slot-radius', '--dialog-slot-pad'] },
+              { label: 'Text', tokens: ['--text-title', '--copy-slot-body', '--copy-slot-secondary'] },
+              { label: 'Graph accents', tokens: ['--color-violet-500', '--color-ocean-500', '--color-aquamarine-600', '--divider'] },
+            ]}
+            code={`import { TitanCard } from 'titan-compositions'
+
+<TitanCard span={16}>
+  <header>{/* title + filters */}</header>
+  <section style={{ height: 360 }}>
+    {/* Graph slot (D3/SVG/Canvas) */}
+  </section>
+</TitanCard>`}
+          >
+            <TitanCardGrid>
+              <TitanCard span={16}>
+                <ClusterGraphDemo />
+              </TitanCard>
             </TitanCardGrid>
           </ShowcaseCard>
 

@@ -73,6 +73,12 @@ Each anatomy file includes a **Related patterns** section at the end with cross-
 |--------|------|----------|
 | Vertical Filter Panel | [vertical-filter-panel.md](./vertical-filter-panel.md) | Vertical panel: N collapsible filter sections + Clear All / Apply |
 
+### Data visualization
+
+| Pattern | File | Use when |
+|--------|------|----------|
+| Cluster Graph | [cluster-graph.md](./cluster-graph.md) | Force-directed network graph with clustered nodes, hover/click profile details, and large dataset exploration |
+
 ## How to add a new pattern
 
 1. Add a new `.md` file named after the pattern (e.g. `my-pattern.md`).
@@ -95,6 +101,7 @@ When the user asks for UI (in chat, via MCP, or in a prompt), the LLM must **res
 | KPI metric, single value + trend | `kpi-trend-card.md` or `kpi-chart-card.md` |
 | Top cities, ranked list, penetration by city | `top-cities-table.md` |
 | Media grid, image tiles, content library | `multimedia-grid-cards.md` |
+| Cluster graph, network graph, force graph, relation map, connected profiles | `cluster-graph.md` |
 | (others) | See full table in Index of patterns above |
 
 **Step 2 — Load the skill:** Read the full content of the chosen file. If using MCP, call the tool that returns the anatomy by name (e.g. get_skill("audience-segment-card")).
