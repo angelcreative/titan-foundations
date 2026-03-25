@@ -9,6 +9,21 @@ Beyond Titan’s design-system rules (tokens, components, validation), UI should
 
 **AI slop test:** If someone would say “AI made this” at first glance, strengthen hierarchy and differentiation.
 
+## Copy color rules (MANDATORY)
+
+All text must use steel-family semantic tokens. No exceptions.
+
+| Text type | Token | Resolves to |
+|-----------|-------|-------------|
+| Titles / headings | `var(--copy-slot-title)` | steel-900 |
+| Body / descriptions | `var(--copy-slot-body)` | steel-800 |
+| Secondary / helper | `var(--copy-slot-secondary)` | steel-600 |
+| Muted / captions | `var(--copy-slot-muted)` | steel-600 |
+| Disabled | `var(--copy-slot-disabled)` | disabled-500 |
+| Links (always) | `var(--link-slot-color)` | ocean-500 |
+
+**NEVER** use brand/accent colors (pomegranate, aquamarine, blueberry, pulse, coral, orange) as text color for body copy, descriptions, helper text, empty-state messages, or captions. Red is ONLY for error/destructive states (`var(--color-error-*)`). The only text that may use brand color is the label inside a primary CTA button.
+
 ## Titan-specific (layout, theme, cards)
 
 - **Typography:** In any layout or flow, apply `fontFamily: 'var(--font-audiense)', sans-serif` to the root container or to text blocks so all copy uses Poppins.
