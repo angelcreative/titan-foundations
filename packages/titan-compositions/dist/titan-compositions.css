@@ -3352,32 +3352,32 @@
 /*
  * Tree alignment model
  * --------------------
- * Every row (file or folder) inside a tree shares a single indent column
- * whose width = --sidebar-tree-chevron-col (1.25rem).
+ * Padding token shared by folder-row and tree-item = --sidebar-tree-row-pad-x.
+ * Chevron column width = --sidebar-tree-chevron-col.
+ * Row gap between items = --sidebar-tree-row-gap.
  *
- * Folder row: [chevron-col] [folder-icon] [label]
- * File row:   [chevron-col] [file-icon]   [label]
+ * Guide line position = row-pad-x + chevron-col / 2  (center of the chevron).
+ * Children margin-start = that same value so the border-left sits under it.
+ * Children padding-start = chevron-col / 2 + row-gap (items start past line).
  *
- * The guide line starts exactly at the left edge of the chevron column,
- * so children shift right by exactly that amount.
- *
- * CSS vars (set on .titan-sidebar):
- *   --sidebar-tree-indent  = per-depth offset (reused for extra nesting)
- *   --sidebar-tree-chevron-col = width of the toggle/chevron column (1.25rem)
+ * Folder row:  [pad] [chevron-col] [gap] [folder-icon] [gap] [label] [pad]
+ * File row:    [pad] ............. [gap] [file-icon]   [gap] [label] [pad]
+ *                    ^guide line center
  */
 
-/* Tree container */
 .titan-sidebar-tree {
+  --sidebar-tree-row-pad-x: var(--spacing-2xs);
+  --sidebar-tree-row-gap: var(--spacing-2xs);
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: var(--sidebar-tree-row-gap);
   width: 100%;
 }
 
 /* ---- File row (tree item) ---- */
 .titan-sidebar-tree-item {
-  padding: var(--spacing-3xs) var(--spacing-2xs);
-  gap: var(--spacing-3xs);
+  padding: var(--spacing-2xs) var(--sidebar-tree-row-pad-x);
+  gap: var(--spacing-2xs);
 }
 
 .titan-sidebar[data-collapsed] .titan-sidebar-tree-item {
@@ -3388,7 +3388,6 @@
 .titan-sidebar-folder {
   display: flex;
   flex-direction: column;
-  gap: 0;
   width: 100%;
 }
 
@@ -3396,10 +3395,10 @@
 .titan-sidebar-folder-row {
   display: flex;
   align-items: center;
-  gap: var(--spacing-3xs);
+  gap: var(--spacing-2xs);
   width: 100%;
   min-height: 2rem;
-  padding: var(--spacing-3xs) var(--spacing-2xs);
+  padding: var(--spacing-2xs) var(--sidebar-tree-row-pad-x);
   color: var(--sidebar-slot-item-color);
   background: transparent;
   border: none;
@@ -3505,14 +3504,17 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: var(--sidebar-tree-row-gap);
+  padding-top: var(--sidebar-tree-row-gap);
   /*
-   * The guide line sits at the horizontal center of the parent chevron.
-   * margin-left pushes children so the guide aligns with the chevron center.
-   * padding-left gives inner items their indent past the guide.
+   * Guide line = center of parent chevron.
+   * Parent chevron starts at row-pad-x, is chevron-col wide.
+   * Center = row-pad-x + chevron-col / 2.
+   * margin-start moves children box so border-left sits exactly there.
+   * padding-start pushes content past the guide line.
    */
-  margin-inline-start: calc(var(--sidebar-tree-chevron-col) / 2);
-  padding-inline-start: calc(var(--sidebar-tree-chevron-col) / 2 + var(--spacing-3xs));
+  margin-inline-start: calc(var(--sidebar-tree-row-pad-x) + var(--sidebar-tree-chevron-col) / 2);
+  padding-inline-start: calc(var(--sidebar-tree-chevron-col) / 2 + var(--sidebar-tree-row-gap));
   border-inline-start: 1px solid var(--sidebar-tree-guide-color);
 }
 
