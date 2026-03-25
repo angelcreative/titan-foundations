@@ -5,7 +5,7 @@
 import { useEffect, useRef, useLayoutEffect } from 'react';
 import * as d3 from 'd3';
 import type { GraphNode, GraphLink, GroupCenter } from './types';
-import { COLORS, GROUP_LABELS } from './constants';
+import { COLORS, getSegmentLabel } from './constants';
 
 interface ForceGraphProps {
   width: number;
@@ -59,13 +59,12 @@ export default function ForceGraph({
     const layoutRadius = 100;
     const centerPoint = { x: width / 2, y: height / 2 };
 
-    const labels = segmentLabels && segmentLabels.length >= groupCount ? segmentLabels : GROUP_LABELS;
     const groupFoci: GroupCenter[] = Array.from({ length: groupCount }, (_, i) => {
       const angle = (i * 2 * Math.PI) / groupCount - Math.PI / 2;
       return {
         x: centerPoint.x + layoutRadius * Math.cos(angle),
         y: centerPoint.y + layoutRadius * Math.sin(angle),
-        label: labels[i] ?? `Segment ${i + 1}`,
+        label: getSegmentLabel(i, groupCount, segmentLabels),
         color: COLORS[i] ?? '#999',
       };
     });

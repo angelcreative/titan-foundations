@@ -89,7 +89,6 @@ import {
   TitanRadioGroupField,
   TitanSelect,
   TitanSidebar,
-  TitanSidebarHeader,
   TitanSidebarItem,
   TitanSwitchField,
   TitanTabs,
@@ -1291,7 +1290,6 @@ function SidebarDemo() {
         activeId={activeId}
         onActiveChange={setActiveId}
       >
-        <TitanSidebarHeader>Navigation</TitanSidebarHeader>
         {DEMO_SIDEBAR_ITEMS.map((item) => (
           <TitanSidebarItem key={item.id} id={item.id} icon={item.icon}>
             {item.label}
@@ -2173,7 +2171,6 @@ function App() {
         >
           {activeView === 'commonpatterns' ? (
             <>
-              <TitanSidebarHeader>Common patterns</TitanSidebarHeader>
               {COMMON_PATTERN_NAV_ITEMS.map((nav) => (
                 <TitanSidebarItem key={nav.id} id={nav.id} icon={nav.icon}>
                   {nav.label}
@@ -3444,18 +3441,18 @@ function App() {
             id="sidebar"
             title="Sidebar"
             ariaImports="import { Button } from 'react-aria-components'"
-            ariaDesc="TitanSidebar uses React Aria Button for all interactive items (toggle, nav items). Active item is marked with aria-current='page'. When collapsed, items get explicit aria-label for screen readers. Toggle button has dynamic aria-label."
+            ariaDesc="TitanSidebar uses React Aria Button for the toggle and each nav item. Section titles use optional TitanSidebarHeader (omit by default). Active top-level item shows a left accent bar; pass nested on TitanSidebarItem for submenu rows without that bar. Stacked rows use --sidebar-slot-nav-stack-gap (8px). Toggle has dynamic aria-label; active item uses aria-current='page'."
             ariaComponents={['Button']}
             foundations={[
               { category: 'Sizing', detail: '--sidebar-slot-width-expanded / --sidebar-slot-width-collapsed for sidebar width. --sidebar-slot-icon-size for item icons.' },
               { category: 'Surface', detail: '--sidebar-slot-bg background; --sidebar-slot-border right border.' },
-              { category: 'Spacing', detail: '--sidebar-slot-padding for sidebar padding; --sidebar-slot-item-padding for item padding; --sidebar-slot-item-gap for icon-to-label gap.' },
+              { category: 'Spacing', detail: '--sidebar-slot-nav-stack-gap (8px) between stacked nav rows; --sidebar-slot-padding; --sidebar-slot-item-padding; --sidebar-slot-item-gap icon-to-label.' },
               { category: 'Shape', detail: '--sidebar-slot-item-radius for item corners.' },
               { category: 'Typography', detail: '--sidebar-slot-header-font-size / --sidebar-slot-header-font-weight for section headers; --button-slot-font-size for items.' },
               { category: 'Colors', detail: '--sidebar-slot-item-color default; --sidebar-slot-item-color-hover hover; --sidebar-slot-item-color-active active; --sidebar-slot-header-color for headers.' },
             ]}
             tokenGroups={[
-              { label: 'Container', tokens: ['--sidebar-slot-bg', '--sidebar-slot-border', '--sidebar-slot-padding', '--sidebar-slot-width-expanded', '--sidebar-slot-width-collapsed'] },
+              { label: 'Container', tokens: ['--sidebar-slot-bg', '--sidebar-slot-border', '--sidebar-slot-padding', '--sidebar-slot-nav-stack-gap', '--sidebar-slot-width-expanded', '--sidebar-slot-width-collapsed'] },
               { label: 'Items', tokens: ['--sidebar-slot-item-radius', '--sidebar-slot-item-color', '--sidebar-slot-item-gap', '--sidebar-slot-item-padding'] },
               { label: 'Item states', tokens: ['--sidebar-slot-item-bg-hover', '--sidebar-slot-item-color-hover', '--sidebar-slot-item-bg-active', '--sidebar-slot-item-color-active'] },
               { label: 'Header', tokens: ['--sidebar-slot-header-color', '--sidebar-slot-header-font-size', '--sidebar-slot-header-font-weight'] },

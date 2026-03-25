@@ -47,3 +47,13 @@ export const GROUP_LABELS = [
 
 export const NODE_COUNT = 450;
 export const DEFAULT_GROUP_COUNT = 8;
+
+/** Same label resolution as `ForceGraph` pill text for a group index. */
+export function getSegmentLabel(
+  groupIndex: number,
+  groupCount: number,
+  segmentLabels?: string[],
+): string {
+  const labels = segmentLabels && segmentLabels.length >= groupCount ? segmentLabels : GROUP_LABELS;
+  return labels[groupIndex] ?? `Segment ${groupIndex + 1}`;
+}

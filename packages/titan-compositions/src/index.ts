@@ -54,7 +54,7 @@ export type { TitanPaginationPage, TitanPaginationProps } from './TitanPaginatio
 export { TitanDrawer } from './TitanDrawer'
 export type { TitanDrawerProps } from './TitanDrawer'
 export { TitanDialog } from './TitanDialog'
-export type { TitanDialogProps } from './TitanDialog'
+export type { TitanDialogCloseButton, TitanDialogProps } from './TitanDialog'
 export { TitanTooltip } from './TitanTooltip'
 export type { TitanTooltipProps, TitanTooltipPlacement } from './TitanTooltip'
 export { TitanToastRegion } from './TitanToast'

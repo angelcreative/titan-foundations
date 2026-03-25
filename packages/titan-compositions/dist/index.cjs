@@ -1080,15 +1080,18 @@ var import_react_aria_components9 = require("react-aria-components");
 var import_jsx_runtime12 = require("react/jsx-runtime");
 function DialogContent({
   title,
-  ariaLabel,
   body,
   leftAction,
   rightAction,
-  close
+  close,
+  closeButton,
+  closeText
 }) {
+  const showTitleHeader = title != null && title !== "";
   return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_jsx_runtime12.Fragment, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_react_aria_components9.Button, { className: "dialog-close-button", "aria-label": "Close dialog", onPress: close, children: renderIconNode("x") }),
-    (title || ariaLabel) && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("header", { className: "dialog-header", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h3", { className: "dialog-title", children: title ?? ariaLabel }) }),
+    closeButton === "icon" && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_react_aria_components9.Button, { className: "dialog-close-button", "aria-label": "Close dialog", onPress: close, children: renderIconNode("x") }),
+    closeButton === "text" && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { className: "dialog-close-text-wrap", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(TitanButton, { variant: "secondary", onPress: close, children: closeText }) }),
+    showTitleHeader && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("header", { className: "dialog-header", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h3", { className: "dialog-title", children: title }) }),
     body != null && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { className: "dialog-body", children: body }),
     (leftAction || rightAction) && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("footer", { className: "dialog-footer", children: [
       leftAction,
@@ -1102,6 +1105,8 @@ function TitanDialog({
   body,
   leftAction,
   rightAction,
+  closeButton = "icon",
+  closeText = "Close",
   isOpen,
   onOpenChange,
   onClose,
@@ -1123,11 +1128,12 @@ function TitanDialog({
           DialogContent,
           {
             title,
-            ariaLabel,
             body,
             leftAction,
             rightAction,
-            close
+            close,
+            closeButton,
+            closeText
           }
         ) }) })
       }
@@ -1139,11 +1145,12 @@ function TitanDialog({
       DialogContent,
       {
         title,
-        ariaLabel,
         body,
         leftAction,
         rightAction,
-        close
+        close,
+        closeButton,
+        closeText
       }
     ) }) }) })
   ] });
@@ -2350,6 +2357,7 @@ function TitanSidebarHeader({ children }) {
 function TitanSidebarItem({
   id,
   icon,
+  nested = false,
   onPress,
   children
 }) {
@@ -2359,6 +2367,7 @@ function TitanSidebarItem({
     import_react_aria_components18.Button,
     {
       className: "titan-sidebar-item",
+      "data-nested": nested ? "true" : void 0,
       "data-active": isActive ? "true" : void 0,
       "aria-current": isActive ? "page" : void 0,
       "aria-label": collapsed && typeof children === "string" ? children : void 0,

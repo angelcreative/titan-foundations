@@ -6,8 +6,8 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import ForceGraph from './ForceGraph';
 import { buildMockGraphData } from './mockGraphData';
 import type { GraphData, GraphNode } from './types';
-import { COLORS, DEFAULT_GROUP_COUNT, GROUP_LABELS } from './constants';
-import { TitanButton } from 'titan-compositions';
+import { COLORS, DEFAULT_GROUP_COUNT, getSegmentLabel } from './constants';
+import { TitanButton, TitanDialog } from 'titan-compositions';
 
 export function ClusterGravityDemo() {
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -39,9 +39,6 @@ export function ClusterGravityDemo() {
   const onNodeClick = useCallback((node: GraphNode) => {
     setSelectedNode(node);
   }, []);
-
-  const segmentTitle = (groupIndex: number) =>
-    GROUP_LABELS[groupIndex]?.split(' ')[0] ?? `Segment ${groupIndex + 1}`;
 
   if (!data) {
     return (
@@ -117,44 +114,24 @@ export function ClusterGravityDemo() {
         />
       </div>
 
-      {selectedNode ? (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="cluster-node-name"
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 100,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: 'var(--overlay-color, rgba(0,0,0,0.25))',
-            padding: 'var(--spacing-m)',
-          }}
-          onClick={() => setSelectedNode(null)}
-          onKeyDown={(e) => {
-            if (e.key === 'Escape') setSelectedNode(null);
-          }}
-        >
-          <div
-            style={{
-              maxWidth: 400,
-              width: '100%',
-              background: 'var(--surface-0)',
-              borderRadius: 'var(--rounded-l)',
-              boxShadow: 'var(--elevation-m)',
-              padding: 'var(--spacing-l)',
-              border: '1px solid var(--divider)',
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 'var(--spacing-s)' }}>
-              <TitanButton variant="secondary" onPress={() => setSelectedNode(null)}>
-                Close
-              </TitanButton>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 'var(--spacing-s)' }}>
+      <TitanDialog
+        isOpen={selectedNode != null}
+        onOpenChange={(open) => {
+          if (!open) setSelectedNode(null);
+        }}
+        aria-label={selectedNode ? `Profile: ${selectedNode.name}` : 'Profile'}
+        closeButton="text"
+        body={
+          selectedNode ? (
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                textAlign: 'center',
+                gap: 'var(--spacing-s)',
+              }}
+            >
               <div
                 style={{
                   width: 96,
@@ -167,10 +144,23 @@ export function ClusterGravityDemo() {
                 <img
                   src={selectedNode.avatarUrl}
                   alt=""
-                  style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover', border: '4px solid var(--surface-0)' }}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: '50%',
+                    objectFit: 'cover',
+                    border: '4px solid var(--surface-0)',
+                  }}
                 />
               </div>
-              <h2 id="cluster-node-name" style={{ margin: 0, fontSize: 'var(--font-size-xl)', color: 'var(--copy-slot-title)' }}>
+              <h2
+                id="cluster-node-name"
+                style={{
+                  margin: 0,
+                  fontSize: 'var(--font-size-xl)',
+                  color: 'var(--copy-slot-title)',
+                }}
+              >
                 {selectedNode.name}
               </h2>
               <span
@@ -183,15 +173,24 @@ export function ClusterGravityDemo() {
                   background: COLORS[selectedNode.group] ?? COLORS[0],
                 }}
               >
-                {segmentTitle(selectedNode.group)}
+                {getSegmentLabel(selectedNode.group, groupCount)}
               </span>
-              <p style={{ margin: 0, textAlign: 'left', color: 'var(--copy-slot-body)', lineHeight: 1.5, maxHeight: 120, overflow: 'auto' }}>
+              <p
+                style={{
+                  margin: 0,
+                  textAlign: 'left',
+                  color: 'var(--copy-slot-body)',
+                  lineHeight: 1.5,
+                  maxHeight: 120,
+                  overflow: 'auto',
+                }}
+              >
                 {selectedNode.bio || 'No description'}
               </p>
             </div>
-          </div>
-        </div>
-      ) : null}
+          ) : null
+        }
+      />
     </div>
   );
 }

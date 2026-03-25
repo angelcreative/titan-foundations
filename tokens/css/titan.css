@@ -2273,6 +2273,8 @@
   --sidebar-slot-width-collapsed: 72px;
   --sidebar-slot-width-expanded: 14rem;
   --sidebar-slot-padding: var(--spacing-s) var(--spacing-2xs);
+  /* Vertical gap between stacked nav rows (collapsed + expanded); 8px */
+  --sidebar-slot-nav-stack-gap: var(--spacing-2xs);
 
   --sidebar-slot-item-color: var(--color-black-700);
   --sidebar-slot-item-color-hover: var(--color-black-900);

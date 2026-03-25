@@ -2214,6 +2214,13 @@
   stroke-width: var(--icon-stroke-m);
 }
 
+.dialog-close-text-wrap {
+  position: absolute;
+  top: var(--spacing-2xs);
+  right: var(--spacing-2xs);
+  z-index: 1;
+}
+
 .dialog-header {
   display: flex;
   align-items: center;
@@ -3151,6 +3158,7 @@
   background: var(--sidebar-slot-bg);
   border-right: 1px solid var(--sidebar-slot-border);
   padding: var(--sidebar-slot-padding);
+  gap: var(--sidebar-slot-nav-stack-gap);
   width: var(--sidebar-slot-width-expanded);
   transition: width 200ms ease;
   overflow: hidden;
@@ -3238,6 +3246,12 @@
   font-weight: var(--font-weight-500);
   border-left: 3px solid var(--sidebar-slot-item-accent-active);
   border-radius: 0 var(--sidebar-slot-item-radius) var(--sidebar-slot-item-radius) 0;
+}
+
+/* Submenu / nested row: same fill as active root item, without the left accent bar */
+.titan-sidebar-item[data-nested="true"][data-active="true"] {
+  border-left: none;
+  border-radius: var(--sidebar-slot-item-radius);
 }
 
 .titan-sidebar[data-collapsed] .titan-sidebar-item[data-active="true"] {

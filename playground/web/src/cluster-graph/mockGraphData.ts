@@ -1,5 +1,5 @@
 import type { GraphData, GraphLink, GraphNode } from './types';
-import { GROUP_LABELS, NODE_COUNT } from './constants';
+import { getSegmentLabel, NODE_COUNT } from './constants';
 
 const NAMES_FIRST = [
   'Alex',
@@ -46,7 +46,7 @@ export function buildMockGraphData(
 
   for (let i = 0; i < NODE_COUNT; i++) {
     const group = Math.floor(Math.random() * groupCount);
-    const groupName = (GROUP_LABELS[group] ?? `Segment ${group}`).split(' ')[0];
+    const groupName = getSegmentLabel(group, groupCount);
     const first = NAMES_FIRST[Math.floor(Math.random() * NAMES_FIRST.length)];
     const last = NAMES_LAST[Math.floor(Math.random() * NAMES_LAST.length)];
     const angle = Math.random() * 2 * Math.PI;

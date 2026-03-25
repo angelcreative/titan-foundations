@@ -92,6 +92,7 @@ export interface TitanSidebarHeaderProps {
   children: ReactNode
 }
 
+/** Optional section label (e.g. “Navigation”). Omit for a nav with no heading. */
 export function TitanSidebarHeader({ children }: TitanSidebarHeaderProps) {
   return <div className="titan-sidebar-header">{children}</div>
 }
@@ -104,6 +105,11 @@ export interface TitanSidebarItemProps {
   id: string
   /** Icon: component or string name (resolved via Titan-first icon pipeline). */
   icon?: ComponentType<{ className?: string }> | string
+  /**
+   * Submenu / nested row: same hover and active treatment as a root item, but active state
+   * does not show the left accent bar (only top-level items use that bar when selected).
+   */
+  nested?: boolean
   onPress?: () => void
   children: ReactNode
 }
@@ -111,6 +117,7 @@ export interface TitanSidebarItemProps {
 export function TitanSidebarItem({
   id,
   icon,
+  nested = false,
   onPress,
   children,
 }: TitanSidebarItemProps) {
@@ -120,6 +127,7 @@ export function TitanSidebarItem({
   return (
     <Button
       className="titan-sidebar-item"
+      data-nested={nested ? 'true' : undefined}
       data-active={isActive ? 'true' : undefined}
       aria-current={isActive ? 'page' : undefined}
       aria-label={collapsed && typeof children === 'string' ? children : undefined}
