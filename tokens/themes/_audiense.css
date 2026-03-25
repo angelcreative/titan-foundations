@@ -38,16 +38,16 @@ html[data-theme="audiense"] {
 	/* System (feedback colors — not interactive, keep distinct palettes) */
 	--background-error: var(--color-error-200);
 	--background-information: var(--color-information-200);
-	--background-success: var(--color-pomegranate-200);
+	--background-success: var(--color-success-200);
 	--background-warning: var(--color-warning-200);
 	--background-disabled: var(--color-black-200);
 	--text-error-on-color: var(--color-error-700);
 	--text-icon-error: var(--color-error-600);
 	--text-icon-information: var(--color-information-600);
-	--text-icon-success: var(--color-pomegranate-600);
+	--text-icon-success: var(--color-success-600);
 	--text-icon-warning: var(--color-warning-600);
 	--text-information-on-color: var(--color-information-700);
-	--text-success-on-color: var(--color-pomegranate-700);
+	--text-success-on-color: var(--color-success-700);
 	--text-warning-on-color: var(--color-warning-700);
 
 	/* Button — PRIMARY ONLY uses pomegranate (max 1 per screen) */
