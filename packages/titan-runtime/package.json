@@ -22,7 +22,7 @@
     "dev": "tsup src/index.ts --watch --format cjs,esm --dts --external titan-compositions"
   },
   "dependencies": {
-    "titan-compositions": "^0.1.31",
+    "titan-compositions": "^0.1.32",
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0",
     "react-aria-components": ">=1.0.0",
