@@ -199,6 +199,8 @@ var LUCIDE_REGISTRY = {
   "x": import_lucide_react.X,
   "minus": import_lucide_react.Minus,
   "external-link": import_lucide_react.ExternalLink,
+  "file-text": import_lucide_react.FileText,
+  "file": import_lucide_react.FileText,
   "folder": import_lucide_react.Folder,
   "folder-open": import_lucide_react.FolderOpen,
   "redirect": import_lucide_react.ExternalLink,
@@ -2344,7 +2346,7 @@ function TitanSidebar({
       className: "titan-sidebar",
       ...collapsed ? { "data-collapsed": "" } : {},
       children: [
-        children,
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("div", { className: "titan-sidebar-body", children }),
         onToggle && /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
           import_react_aria_components18.Button,
           {
@@ -2440,7 +2442,7 @@ function TitanSidebarTreeItem({
         onPress?.();
       },
       children: [
-        icon ? renderIconNode(icon) : null,
+        icon ? renderIconNode(icon) : renderIconNode("file-text"),
         /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { className: "titan-sidebar-item-label", children })
       ]
     }

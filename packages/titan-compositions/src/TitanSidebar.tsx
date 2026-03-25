@@ -71,7 +71,7 @@ export function TitanSidebar({
         className="titan-sidebar"
         {...(collapsed ? { 'data-collapsed': '' } : {})}
       >
-        {children}
+        <div className="titan-sidebar-body">{children}</div>
         {onToggle && (
           <Button
             className="titan-sidebar-toggle"
@@ -239,7 +239,7 @@ export function TitanSidebarTreeItem({
         onPress?.()
       }}
     >
-      {icon ? renderIconNode(icon) : null}
+      {icon ? renderIconNode(icon) : renderIconNode('file-text')}
       <span className="titan-sidebar-item-label">{children}</span>
     </Button>
   )

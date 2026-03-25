@@ -61,6 +61,7 @@ import {
   ChevronRight,
   CircleHelp,
   ExternalLink,
+  FileText,
   Folder,
   FolderOpen,
   Grip,
@@ -141,6 +142,8 @@ var LUCIDE_REGISTRY = {
   "x": X,
   "minus": Minus,
   "external-link": ExternalLink,
+  "file-text": FileText,
+  "file": FileText,
   "folder": Folder,
   "folder-open": FolderOpen,
   "redirect": ExternalLink,
@@ -2332,7 +2335,7 @@ function TitanSidebar({
       className: "titan-sidebar",
       ...collapsed ? { "data-collapsed": "" } : {},
       children: [
-        children,
+        /* @__PURE__ */ jsx24("div", { className: "titan-sidebar-body", children }),
         onToggle && /* @__PURE__ */ jsx24(
           Button12,
           {
@@ -2428,7 +2431,7 @@ function TitanSidebarTreeItem({
         onPress?.();
       },
       children: [
-        icon ? renderIconNode(icon) : null,
+        icon ? renderIconNode(icon) : renderIconNode("file-text"),
         /* @__PURE__ */ jsx24("span", { className: "titan-sidebar-item-label", children })
       ]
     }
