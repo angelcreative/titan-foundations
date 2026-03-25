@@ -154,6 +154,16 @@
       "jsx": "<TitanCard span={16}>\n  <h3 style={{ color: 'var(--text-title)' }}>Device</h3>\n  <p style={{ color: 'var(--copy-slot-secondary)' }}>This graph shows the devices used by the audience. <TitanButton variant=\"link\">Read more</TitanButton></p>\n  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 'var(--spacing-xl)' }}>\n    {categories.map(cat => (\n      <div key={cat.id}>\n        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-s)', marginBottom: 'var(--spacing-s)' }}>\n          {cat.icon}\n          <strong style={{ fontSize: 'var(--font-size-l)' }}>{cat.label}</strong>\n        </div>\n        {/* DualComparisonBar for each audience */}\n      </div>\n    ))}\n  </div>\n  {/* Shared legend */}\n  <div style={{ display: 'flex', gap: 'var(--spacing-m)', marginTop: 'var(--spacing-m)' }}>\n    {audiences.map(a => (\n      <span key={a.id} style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--spacing-4xs)', fontSize: 'var(--font-size-s)' }}>\n        <span style={{ width: 8, height: 8, borderRadius: '50%', background: a.color }} />\n        {a.name}\n      </span>\n    ))}\n  </div>\n</TitanCard>",
       "layout": "Full-width card. Internal grid columns (repeat 2 or 3). Legend row at bottom.",
       "gaps": ["DualComparisonBar"]
+    },
+
+    "clusterGraphCard": {
+      "id": "cluster-graph",
+      "name": "Cluster Graph",
+      "description": "Titan shell (title, optional search/filters, legend) around a fixed-height graph slot for clustered force-directed networks. Full anatomy, states, a11y, and performance: docs/anatomies/cluster-graph.md. Playground anchor id=\"cluster-graph\".",
+      "titanComponents": ["TitanCard", "TitanCardGrid", "TitanInputField", "TitanSwitchField", "TitanButton", "TitanTooltip"],
+      "jsx": "<TitanCardGrid>\n  <TitanCard span={16}>\n    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 'var(--spacing-m)' }}>\n      <div>\n        <h2 style={{ margin: 0, color: 'var(--copy-slot-title)' }}>Relationship map</h2>\n        <p style={{ margin: 'var(--spacing-3xs) 0 0', color: 'var(--copy-slot-secondary)' }}>Explore connections by cluster</p>\n      </div>\n      <TitanButton variant=\"secondary\">Reset view</TitanButton>\n    </div>\n    <div style={{ display: 'flex', gap: 'var(--spacing-m)', marginTop: 'var(--spacing-m)', flexWrap: 'wrap' }}>\n      <TitanInputField label=\"Search\" placeholder=\"Filter nodes\" />\n      <TitanSwitchField label=\"Show labels\" />\n    </div>\n    <div\n      style={{ height: 360, marginTop: 'var(--spacing-m)', border: '1px solid var(--divider)', borderRadius: 'var(--rounded-m)', background: 'var(--surface-0)' }}\n      role=\"img\"\n      aria-label=\"Cluster graph\"\n    >\n      {/* Graph slot: D3 / SVG or Canvas; parent must set explicit width + height */}\n    </div>\n  </TitanCard>\n</TitanCardGrid>",
+      "layout": "Full-width card (span 16). Header, optional filter row, then fixed-height graph region. The graph container must never rely on auto height.",
+      "gaps": ["Force-directed graph implementation (D3 simulation, SVG or Canvas) — see docs/anatomies/cluster-graph.md"]
     }
   },
 
