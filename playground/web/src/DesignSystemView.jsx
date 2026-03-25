@@ -332,8 +332,22 @@ function ThemesContent({ theme, onThemeChange }) {
           <li>Switching themes is a <strong>single attribute change</strong>, not a CSS rebuild.</li>
           <li>You can preview themes in real-time (try it below).</li>
         </ul>
+        <h3>Audiense theme — single-primary-CTA pattern</h3>
+        <p>The <code className="ds-code">audiense</code> theme follows a strict single-primary-CTA pattern (like Airbnb): <strong>only the primary button and primary icon button use pomegranate</strong> (max 1 per screen). Every other interactive element — secondary buttons, icon buttons, menus, selects, tabs, toggles, checkboxes, radios, button groups — uses <strong>steel</strong> shades exclusively. Links are always <code className="ds-code">ocean-500</code>.</p>
+        <h3>Copy color rules</h3>
+        <p>All text must use <strong>steel-family</strong> semantic tokens — no exceptions:</p>
+        <ul>
+          <li>Titles/headings: <code className="ds-code">var(--copy-slot-title)</code> → steel-900</li>
+          <li>Body/descriptions: <code className="ds-code">var(--copy-slot-body)</code> → steel-800</li>
+          <li>Secondary/helper: <code className="ds-code">var(--copy-slot-secondary)</code> → steel-600</li>
+          <li>Muted/captions: <code className="ds-code">var(--copy-slot-muted)</code> → steel-600</li>
+          <li>Disabled: <code className="ds-code">var(--copy-slot-disabled)</code> → disabled-500</li>
+          <li>Links: <code className="ds-code">var(--link-slot-color)</code> → ocean-500 (always)</li>
+        </ul>
+        <p><strong>Never</strong> use brand/accent colors (pomegranate, aquamarine, etc.) as text color for body copy, descriptions, or captions. Red is only for error states.</p>
         <h3>Activation</h3>
-        <pre className="ds-code-block">{`<html data-theme="insights">  <!-- Blueberry primary -->
+        <pre className="ds-code-block">{`<html data-theme="audiense">   <!-- Pomegranate primary CTA, steel everything else -->
+<html data-theme="insights">  <!-- Blueberry primary -->
 <html data-theme="demand">    <!-- Aquamarine primary -->
 <html data-theme="neutral">   <!-- Black primary -->`}</pre>
       </div>
