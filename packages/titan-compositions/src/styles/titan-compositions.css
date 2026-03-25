@@ -108,7 +108,8 @@
 .navbar-icon-button:focus,
 .navbar-chevron-button:focus,
 .titan-sidebar-toggle:focus,
-.titan-sidebar-item:focus {
+.titan-sidebar-item:focus,
+.titan-sidebar-folder-row:focus {
   outline: none;
 }
 
@@ -140,8 +141,9 @@
 .navbar-icon-button[data-focus-visible],
 .navbar-chevron-button[data-focus-visible],
 .titan-sidebar-toggle[data-focus-visible],
-.titan-sidebar-item[data-focus-visible] {
-  outline: auto;
+.titan-sidebar-item[data-focus-visible],
+.titan-sidebar-folder-row[data-focus-visible] {
+  outline: none;
 }
 
 .page {
@@ -3413,11 +3415,6 @@
 .titan-sidebar-folder-row[data-hovered] {
   background: var(--sidebar-slot-item-bg-hover);
   color: var(--sidebar-slot-item-color-hover);
-}
-
-.titan-sidebar-folder-row[data-focus-visible] {
-  outline: var(--focus-outline-width) solid var(--focus-outline-color);
-  outline-offset: var(--focus-outline-offset);
 }
 
 /* ---- Chevron toggle (visual only, not a separate button) ---- */
