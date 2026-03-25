@@ -3441,7 +3441,7 @@ function App() {
             id="sidebar"
             title="Sidebar"
             ariaImports="import { Button } from 'react-aria-components'"
-            ariaDesc="TitanSidebar uses React Aria Button for the toggle and each nav item. Section titles use optional TitanSidebarHeader (omit by default). Active top-level item shows a left accent bar; pass nested on TitanSidebarItem for submenu rows without that bar. Stacked rows use --sidebar-slot-nav-stack-gap (8px). Toggle has dynamic aria-label; active item uses aria-current='page'."
+            ariaDesc="TitanSidebar uses React Aria Button for the toggle and each nav item. Section titles use optional TitanSidebarHeader (omit by default). The selected item uses the same pill row as hover (background + full corner radius), no left border. Optional nested on TitanSidebarItem for hierarchy. Stacked rows use --sidebar-slot-nav-stack-gap (8px). Toggle has dynamic aria-label; active item uses aria-current='page'."
             ariaComponents={['Button']}
             foundations={[
               { category: 'Sizing', detail: '--sidebar-slot-width-expanded / --sidebar-slot-width-collapsed for sidebar width. --sidebar-slot-icon-size for item icons.' },

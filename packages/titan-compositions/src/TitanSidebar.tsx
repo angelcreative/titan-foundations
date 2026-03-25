@@ -105,10 +105,7 @@ export interface TitanSidebarItemProps {
   id: string
   /** Icon: component or string name (resolved via Titan-first icon pipeline). */
   icon?: ComponentType<{ className?: string }> | string
-  /**
-   * Submenu / nested row: same hover and active treatment as a root item, but active state
-   * does not show the left accent bar (only top-level items use that bar when selected).
-   */
+  /** Optional: submenu / hierarchy (e.g. future indent). Styling matches other items. */
   nested?: boolean
   onPress?: () => void
   children: ReactNode

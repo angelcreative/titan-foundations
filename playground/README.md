@@ -55,7 +55,7 @@ Core exported components from `titan-compositions` are imported and demonstrated
 
 ## Common patterns (second tab)
 
-Includes **Cluster Graph** (`playground/web/src/cluster-graph/`): D3 force layout + node detail `TitanDialog` with text Close, aligned segment labels.
+Includes **Cluster Graph** (`playground/web/src/cluster-graph/`): D3 force layout + profile `TitanDialog` (`closeButton="none"`; **Close** is a `TitanButton` in the body, no header X). Segment pill matches the SVG labels (light fill, colored stroke, full `getSegmentLabel` text).
 
 ## Legacy HTML
 

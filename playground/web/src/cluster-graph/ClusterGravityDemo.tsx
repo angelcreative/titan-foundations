@@ -120,7 +120,7 @@ export function ClusterGravityDemo() {
           if (!open) setSelectedNode(null);
         }}
         aria-label={selectedNode ? `Profile: ${selectedNode.name}` : 'Profile'}
-        closeButton="text"
+        closeButton="none"
         body={
           selectedNode ? (
             <div
@@ -132,6 +132,18 @@ export function ClusterGravityDemo() {
                 gap: 'var(--spacing-s)',
               }}
             >
+              <div
+                style={{
+                  alignSelf: 'stretch',
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  marginBottom: 'calc(-1 * var(--spacing-3xs))',
+                }}
+              >
+                <TitanButton variant="secondary" onPress={() => setSelectedNode(null)}>
+                  Close
+                </TitanButton>
+              </div>
               <div
                 style={{
                   width: 96,
@@ -163,14 +175,20 @@ export function ClusterGravityDemo() {
               >
                 {selectedNode.name}
               </h2>
+              {/* Same pill as ForceGraph labels: light fill, segment-colored stroke, dark text */}
               <span
                 style={{
-                  padding: 'var(--spacing-4xs) var(--spacing-s)',
-                  borderRadius: 9999,
-                  fontSize: 'var(--font-size-xs)',
+                  display: 'inline-block',
+                  padding: '8px 14px',
+                  borderRadius: 14,
+                  fontSize: '12px',
                   fontWeight: 600,
-                  color: 'var(--text-on-color)',
-                  background: COLORS[selectedNode.group] ?? COLORS[0],
+                  fontFamily: 'var(--font-audiense), sans-serif',
+                  lineHeight: 1.2,
+                  color: 'var(--copy-slot-title)',
+                  background: 'var(--surface-0)',
+                  border: `2px solid ${COLORS[selectedNode.group] ?? COLORS[0]}`,
+                  boxSizing: 'border-box',
                 }}
               >
                 {getSegmentLabel(selectedNode.group, groupCount)}

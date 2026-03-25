@@ -3240,22 +3240,11 @@
   color: var(--sidebar-slot-item-color-hover);
 }
 
+/* Active = same “pill” row as default/hover: full radius, fill + type; no left accent bar */
 .titan-sidebar-item[data-active="true"] {
   background: var(--sidebar-slot-item-bg-active);
   color: var(--sidebar-slot-item-color-active);
   font-weight: var(--font-weight-500);
-  border-left: 3px solid var(--sidebar-slot-item-accent-active);
-  border-radius: 0 var(--sidebar-slot-item-radius) var(--sidebar-slot-item-radius) 0;
-}
-
-/* Submenu / nested row: same fill as active root item, without the left accent bar */
-.titan-sidebar-item[data-nested="true"][data-active="true"] {
-  border-left: none;
-  border-radius: var(--sidebar-slot-item-radius);
-}
-
-.titan-sidebar[data-collapsed] .titan-sidebar-item[data-active="true"] {
-  border-left: none;
   border-radius: var(--sidebar-slot-item-radius);
 }
 
