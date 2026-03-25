@@ -1236,7 +1236,7 @@ function SetupGuide() {
             </tr>
           </tbody>
         </table>
-        <p>To pin a specific version: <code>npm install titan-compositions@0.1.27</code></p>
+        <p>To pin a specific version: <code>npm install titan-compositions@0.1.31</code></p>
         <p className="setup-note">Token CSS (loaded via CDN <code>&lt;link&gt;</code> tags) always fetches the latest from GitHub — no update needed for token/theme changes.</p>
       </section>
 

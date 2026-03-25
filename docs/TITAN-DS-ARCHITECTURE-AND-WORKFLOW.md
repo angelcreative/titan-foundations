@@ -99,7 +99,7 @@ These two should stay aligned. If only one side is updated, consumers can receiv
 From `packages/titan-compositions/package.json`:
 
 - Name: `titan-compositions`
-- Current version in repo: `0.1.26`
+- Current version in repo: `0.1.31`
 - Exports:
   - `titan-compositions` (JS + types)
   - `titan-compositions/styles` (CSS)
@@ -305,7 +305,7 @@ When a new version of `titan-compositions` is published:
 | **Monorepo** | Monorepo root | `npm update titan-compositions` | All apps receive the update (shared dependency) |
 | **Single app** | App root | `npm update titan-compositions` | Only that app is updated |
 
-To pin a specific version: `npm install titan-compositions@0.1.27`
+To pin a specific version: `npm install titan-compositions@0.1.31`
 
 Token CSS (loaded via CDN `<link>` tags in `index.html`) always fetches the latest from GitHub — no update needed for token/theme changes. Only `titan-compositions` (the npm package) requires an explicit `npm update`.
 
