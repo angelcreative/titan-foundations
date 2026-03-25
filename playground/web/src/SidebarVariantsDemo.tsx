@@ -86,18 +86,18 @@ export function SidebarVariantsDemo() {
             <TitanSidebar collapsed={collapsed} onToggle={onToggle} defaultActiveId="tree-index">
               <TitanSidebarHeader>Project</TitanSidebarHeader>
               <TitanSidebarTree>
-                <TitanSidebarTreeItem id="tree-readme" depth={0}>
+                <TitanSidebarTreeItem id="tree-readme">
                   README.md
                 </TitanSidebarTreeItem>
                 <TitanSidebarFolder id="fld-src" label="src" defaultExpanded>
-                  <TitanSidebarTreeItem id="tree-index" depth={0}>
+                  <TitanSidebarTreeItem id="tree-index">
                     index.ts
                   </TitanSidebarTreeItem>
-                  <TitanSidebarFolder id="fld-components" label="components" defaultExpanded depth={0}>
-                    <TitanSidebarTreeItem id="tree-btn" depth={0}>
+                  <TitanSidebarFolder id="fld-components" label="components" defaultExpanded>
+                    <TitanSidebarTreeItem id="tree-btn">
                       Button.tsx
                     </TitanSidebarTreeItem>
-                    <TitanSidebarTreeItem id="tree-card" depth={0}>
+                    <TitanSidebarTreeItem id="tree-card">
                       Card.tsx
                     </TitanSidebarTreeItem>
                   </TitanSidebarFolder>
@@ -107,10 +107,10 @@ export function SidebarVariantsDemo() {
               <TitanSidebarHeader>Library</TitanSidebarHeader>
               <TitanSidebarTree>
                 <TitanSidebarFolder id="fld-hooks" label="hooks" defaultExpanded>
-                  <TitanSidebarTreeItem id="tree-useData" depth={0}>
+                  <TitanSidebarTreeItem id="tree-useData">
                     useData.ts
                   </TitanSidebarTreeItem>
-                  <TitanSidebarTreeItem id="tree-useAuth" depth={0}>
+                  <TitanSidebarTreeItem id="tree-useAuth">
                     useAuth.ts
                   </TitanSidebarTreeItem>
                 </TitanSidebarFolder>
@@ -125,18 +125,18 @@ export function SidebarVariantsDemo() {
               <TitanSidebarSearch placeholder="Search files…" aria-label="Search files" />
               <TitanSidebarHeader>Project</TitanSidebarHeader>
               <TitanSidebarTree>
-                <TitanSidebarTreeItem id="cx-readme" depth={0}>
+                <TitanSidebarTreeItem id="cx-readme">
                   README.md
                 </TitanSidebarTreeItem>
                 <TitanSidebarFolder id="cx-src" label="src" defaultExpanded>
-                  <TitanSidebarTreeItem id="cx-index" depth={0}>
+                  <TitanSidebarTreeItem id="cx-index">
                     index.ts
                   </TitanSidebarTreeItem>
-                  <TitanSidebarFolder id="cx-ui" label="components" defaultExpanded depth={0}>
-                    <TitanSidebarTreeItem id="cx-sidebar" depth={0}>
+                  <TitanSidebarFolder id="cx-ui" label="components" defaultExpanded>
+                    <TitanSidebarTreeItem id="cx-sidebar">
                       Sidebar.tsx
                     </TitanSidebarTreeItem>
-                    <TitanSidebarTreeItem id="cx-table" depth={0}>
+                    <TitanSidebarTreeItem id="cx-table">
                       Table.tsx
                     </TitanSidebarTreeItem>
                   </TitanSidebarFolder>

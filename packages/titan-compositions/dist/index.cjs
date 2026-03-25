@@ -2420,20 +2420,15 @@ function TitanSidebarTree({ children }) {
 function TitanSidebarTreeItem({
   id,
   icon,
-  depth = 0,
   onPress,
   children
 }) {
   const { collapsed, activeId, setActiveId } = (0, import_react6.useContext)(SidebarContext);
   const isActive = activeId === id;
-  const depthStyle = {
-    "--titan-sidebar-tree-depth": depth
-  };
   return /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
     import_react_aria_components18.Button,
     {
       className: "titan-sidebar-item titan-sidebar-tree-item",
-      style: depthStyle,
       "data-active": isActive ? "true" : void 0,
       "aria-current": isActive ? "page" : void 0,
       "aria-label": collapsed && typeof children === "string" ? children : void 0,
@@ -2454,7 +2449,6 @@ function TitanSidebarFolder({
   defaultExpanded = false,
   expanded: controlledExpanded,
   onExpandedChange,
-  depth = 0,
   children
 }) {
   const [uncontrolledOpen, setUncontrolledOpen] = (0, import_react6.useState)(defaultExpanded);
@@ -2464,35 +2458,42 @@ function TitanSidebarFolder({
     if (!isControlled) setUncontrolledOpen(next);
     onExpandedChange?.(next);
   };
-  const folderDepthStyle = {
-    "--titan-sidebar-folder-depth": depth
-  };
-  return /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { className: "titan-sidebar-folder", "data-folder-id": id, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { className: "titan-sidebar-folder-row", style: folderDepthStyle, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
-        import_react_aria_components18.Button,
-        {
-          className: "titan-sidebar-folder-toggle",
-          "aria-expanded": open,
-          "aria-controls": `${id}-folder-children`,
-          onPress: () => setOpen(!open),
-          children: renderIconNode(open ? "chevron-down" : "chevron-right")
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { className: "titan-sidebar-folder-icon", "aria-hidden": true, children: renderIconNode(open ? "folder-open" : "folder") }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { className: "titan-sidebar-folder-label", children: label })
-    ] }),
-    open && children ? /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
-      "div",
-      {
-        id: `${id}-folder-children`,
-        className: "titan-sidebar-folder-children",
-        role: "group",
-        "aria-label": typeof label === "string" ? label : "Folder contents",
-        children
-      }
-    ) : null
-  ] });
+  return /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
+    "div",
+    {
+      className: "titan-sidebar-folder",
+      "data-folder-id": id,
+      ...open ? { "data-open": "true" } : {},
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
+          import_react_aria_components18.Button,
+          {
+            className: "titan-sidebar-folder-row",
+            "aria-expanded": open,
+            "aria-controls": `${id}-folder-children`,
+            onPress: () => setOpen(!open),
+            children: [
+              /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { className: "titan-sidebar-folder-toggle", "aria-hidden": true, children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { className: "titan-sidebar-folder-chevron", "aria-hidden": true, children: renderIconNode("chevron-right") }) }),
+              /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { className: "titan-sidebar-folder-icon", "aria-hidden": true, children: renderIconNode(open ? "folder-open" : "folder") }),
+              /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { className: "titan-sidebar-folder-label", children: label })
+            ]
+          }
+        ),
+        children ? /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
+          "div",
+          {
+            id: `${id}-folder-children`,
+            className: "titan-sidebar-folder-content",
+            role: "group",
+            "aria-hidden": !open,
+            "aria-label": typeof label === "string" ? label : "Folder contents",
+            ...open ? { "data-open": "true" } : {},
+            children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("div", { className: "titan-sidebar-folder-children", children })
+          }
+        ) : null
+      ]
+    }
+  );
 }
 
 // src/TitanSlider.tsx

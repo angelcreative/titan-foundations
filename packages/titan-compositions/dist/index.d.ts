@@ -633,7 +633,7 @@ interface TitanSidebarTreeItemProps {
     onPress?: () => void;
     children: ReactNode;
 }
-declare function TitanSidebarTreeItem({ id, icon, depth, onPress, children, }: TitanSidebarTreeItemProps): react_jsx_runtime.JSX.Element;
+declare function TitanSidebarTreeItem({ id, icon, onPress, children, }: TitanSidebarTreeItemProps): react_jsx_runtime.JSX.Element;
 interface TitanSidebarFolderProps {
     id: string;
     label: ReactNode;
@@ -644,7 +644,7 @@ interface TitanSidebarFolderProps {
     depth?: number;
     children?: ReactNode;
 }
-declare function TitanSidebarFolder({ id, label, defaultExpanded, expanded: controlledExpanded, onExpandedChange, depth, children, }: TitanSidebarFolderProps): react_jsx_runtime.JSX.Element;
+declare function TitanSidebarFolder({ id, label, defaultExpanded, expanded: controlledExpanded, onExpandedChange, children, }: TitanSidebarFolderProps): react_jsx_runtime.JSX.Element;
 
 interface TitanLoaderProps {
     /** Width and height in px. Defaults to 120. */
