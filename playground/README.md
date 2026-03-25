@@ -7,21 +7,28 @@ This folder is an isolated visual demo and smoke-review harness for all `titan-c
 Use the Vite React app (no CDN runtime conflicts):
 
 ```bash
-cd /Users/angelsanchez/Desktop/titan-foundations/playground/web
+cd playground/web
 npm install
 npm run dev -- --host 127.0.0.1
 ```
 
-Open:
+Open `http://127.0.0.1:5179/` (or the port Vite prints if that one is busy).
 
-- `http://127.0.0.1:5179/` (if free)
-- `http://127.0.0.1:5180/` (automatic fallback if 5179 is busy)
+Production build check:
+
+```bash
+cd playground/web
+npm run build
+```
 
 ## How it works
 
-- Imports all components directly from `titan-compositions` via `file:` link (not duplicated code).
-- Loads `titan.css` + all 6 theme files (`insights`, `audiense`, `neutral`, `demand`, `linkedin`, `tweetbinder`).
+- Imports components from `titan-compositions` via `file:../../packages/titan-compositions` (not duplicated code).
+- Loads `titan.css` + theme files (`insights`, `audiense`, `neutral`, `demand`, `linkedin`, `tweetbinder`, `brand`).
 - Includes a live theme switcher to validate visual parity across themes.
+- **Components** tab: long-form showcase of primitives (avatar through toasts, tables, etc.).
+- **Common patterns** tab: composed flows (KPI cards, segment cards, **Cluster Graph** D3 demo, etc.).
+- **Design system** view: separate entry for token/theme exploration (`DesignSystemView`).
 
 ## Components covered
 
@@ -29,22 +36,27 @@ Core exported components from `titan-compositions` are imported and demonstrated
 
 | Category | Components |
 |----------|------------|
-| Shell / Navigation | `TitanNavbar`, `TitanBreadcrumb` |
+| Shell / Navigation | `TitanNavbar`, `TitanBreadcrumb`, **`TitanSidebar`** (+ optional `TitanSidebarHeader`, `nested` items) |
 | Layout | `TitanCardGrid`, `TitanCard` (span 8 / span 16 grid) |
-| Buttons | `TitanButton`, `TitanIconButton`, `TitanErrorButton`, `TitanDestructiveIconButton` |
+| Buttons | `TitanButton`, `TitanIconButton`, `TitanErrorButton`, `TitanDestructiveIconButton`, `TitanButtonGroup` |
 | Badges | `TitanPill` (dismissable, multi-tone), `TitanTag` (7 tones) |
 | Menus | `TitanMenuDropdown` (normal, icon-only, cascading) |
 | Select | `TitanSelect` (with/without icons, disabled items) |
 | Tabs | `TitanTabs` (with disabled tab) |
 | Pagination | `TitanPagination` (with ellipsis) |
-| Overlays | `TitanDrawer`, `TitanDialog` |
+| Overlays | `TitanDrawer`, **`TitanDialog`** (`closeButton` icon / text / none) |
 | Feedback | `TitanTooltip`, `TitanToastRegion` (success/error/info/warning) |
-| Forms | `TitanInputField`, `TitanTextareaField`, `TitanTextInput`, `TitanTextArea` (with label, hint, counter, icons, error) |
+| Forms | `TitanInputField`, `TitanTextareaField`, `TitanTextInput`, `TitanTextArea` (label, hint, counter, icons, error) |
 | Form controls | `TitanCheckboxField`, `TitanRadioGroupField`, `TitanSwitchField`, `TitanFormControlsGroup` |
-| Data | `TitanTable` + TitanTableHeader/TitanColumn/TitanTableBody/TitanRow/TitanCell (inside card grid) |
+| Data | `TitanTable` + header/column/body/row/cell (inside card grid) |
+| Other | `TitanCalendar`, `TitanCollapsible`, `TitanDivider`, `TitanLink`, `TitanLoader`, `TitanProgressBar`, `TitanSlider`, etc. |
 
-`getToneStyle` (utility), icon resolvers (`resolveIcon`, `renderIconNode`) and `TitanTwoUpOneDownLayout` are not shown as standalone docs blocks but are covered indirectly by rendered compositions.
+`getToneStyle`, icon resolvers (`resolveIcon`, `renderIconNode`) and `TitanTwoUpOneDownLayout` are covered indirectly where compositions use them.
+
+## Common patterns (second tab)
+
+Includes **Cluster Graph** (`playground/web/src/cluster-graph/`): D3 force layout + node detail `TitanDialog` with text Close, aligned segment labels.
 
 ## Legacy HTML
 
-`react-buttons.html` remains only as fallback, but the primary path is now `web` because it avoids `Invalid hook call` issues.
+`react-buttons.html` remains only as fallback; the primary path is `web` because it avoids `Invalid hook call` issues.
