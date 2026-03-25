@@ -221,6 +221,16 @@ html[data-theme="neutral"] {
 	--input-element-error: var(--color-error-500);
 	--input-element-disabled: var(--color-disabled-500);
 
+	/* Sidebar — black (matches base) */
+	--sidebar-slot-border: var(--color-black-200);
+	--sidebar-slot-item-color: var(--color-black-700);
+	--sidebar-slot-item-color-hover: var(--color-black-900);
+	--sidebar-slot-item-bg-hover: var(--color-black-100);
+	--sidebar-slot-item-color-active: var(--color-black-800);
+	--sidebar-slot-item-bg-active: var(--color-black-100);
+	--sidebar-slot-item-accent-active: var(--color-black-600);
+	--sidebar-slot-header-color: var(--color-black-500);
+
 	/* Review-state extensions */
 	--interactive-icon-button-bg: var(--button-secondary);
 	--interactive-icon-button-bg-hover: var(--button-secondary-hover);

@@ -75,6 +75,8 @@ import {
   Minus,
   Navigation,
   PanelLeft,
+  PanelLeftClose,
+  PanelLeftOpen,
   PanelRight,
   Search,
   Settings,
@@ -120,6 +122,8 @@ var LUCIDE_REGISTRY = {
   "mouse-pointer-click": MousePointerClick,
   "navigation": Navigation,
   "panel-left": PanelLeft,
+  "panel-left-close": PanelLeftClose,
+  "panel-left-open": PanelLeftOpen,
   "panel-right": PanelRight,
   "search": Search,
   "settings": Settings,
@@ -2317,16 +2321,16 @@ function TitanSidebar({
       className: "titan-sidebar",
       ...collapsed ? { "data-collapsed": "" } : {},
       children: [
+        children,
         onToggle && /* @__PURE__ */ jsx24(
           Button12,
           {
             className: "titan-sidebar-toggle",
             onPress: onToggle,
             "aria-label": collapsed ? "Expand sidebar" : "Collapse sidebar",
-            children: collapsed ? renderIconNode("chevron-right") : renderIconNode("chevron-left")
+            children: collapsed ? renderIconNode("panel-left-open") : renderIconNode("panel-left-close")
           }
-        ),
-        children
+        )
       ]
     }
   ) });

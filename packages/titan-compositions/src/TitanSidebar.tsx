@@ -69,16 +69,16 @@ export function TitanSidebar({
         className="titan-sidebar"
         {...(collapsed ? { 'data-collapsed': '' } : {})}
       >
+        {children}
         {onToggle && (
           <Button
             className="titan-sidebar-toggle"
             onPress={onToggle}
             aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           >
-            {collapsed ? renderIconNode('chevron-right') : renderIconNode('chevron-left')}
+            {collapsed ? renderIconNode('panel-left-open') : renderIconNode('panel-left-close')}
           </Button>
         )}
-        {children}
       </aside>
     </SidebarContext.Provider>
   )

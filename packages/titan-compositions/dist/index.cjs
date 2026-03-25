@@ -177,6 +177,8 @@ var LUCIDE_REGISTRY = {
   "mouse-pointer-click": import_lucide_react.MousePointerClick,
   "navigation": import_lucide_react.Navigation,
   "panel-left": import_lucide_react.PanelLeft,
+  "panel-left-close": import_lucide_react.PanelLeftClose,
+  "panel-left-open": import_lucide_react.PanelLeftOpen,
   "panel-right": import_lucide_react.PanelRight,
   "search": import_lucide_react.Search,
   "settings": import_lucide_react.Settings,
@@ -2328,16 +2330,16 @@ function TitanSidebar({
       className: "titan-sidebar",
       ...collapsed ? { "data-collapsed": "" } : {},
       children: [
+        children,
         onToggle && /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
           import_react_aria_components18.Button,
           {
             className: "titan-sidebar-toggle",
             onPress: onToggle,
             "aria-label": collapsed ? "Expand sidebar" : "Collapse sidebar",
-            children: collapsed ? renderIconNode("chevron-right") : renderIconNode("chevron-left")
+            children: collapsed ? renderIconNode("panel-left-open") : renderIconNode("panel-left-close")
           }
-        ),
-        children
+        )
       ]
     }
   ) });

@@ -226,6 +226,16 @@ html[data-theme="audiense"] {
 	--input-element-error: var(--color-error-500);
 	--input-element-disabled: var(--color-disabled-500);
 
+	/* Sidebar — steel */
+	--sidebar-slot-border: var(--color-steel-200);
+	--sidebar-slot-item-color: var(--color-steel-700);
+	--sidebar-slot-item-color-hover: var(--color-steel-900);
+	--sidebar-slot-item-bg-hover: var(--color-steel-100);
+	--sidebar-slot-item-color-active: var(--color-steel-900);
+	--sidebar-slot-item-bg-active: var(--color-steel-100);
+	--sidebar-slot-item-accent-active: var(--color-steel-700);
+	--sidebar-slot-header-color: var(--color-steel-500);
+
 	/* Review-state extensions — icon buttons use steel (not primary CTA) */
 	--interactive-icon-button-bg: var(--button-secondary);
 	--interactive-icon-button-bg-hover: var(--button-secondary-hover);

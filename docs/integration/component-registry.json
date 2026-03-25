@@ -556,10 +556,10 @@
     },
     "TitanSidebar": {
       "import": "import { TitanSidebar, TitanSidebarHeader, TitanSidebarItem } from 'titan-compositions'",
-      "description": "Collapsible sidebar navigation with compound component pattern. Consumer composes headers and items freely. Wraps React Aria Button for items. Themed via Titan tokens.",
+      "description": "Collapsible sidebar navigation with compound component pattern. Active item shows a left accent bar. Toggle button sits at the bottom (panel-left-open/close icon). Consumer composes headers and items freely. Wraps React Aria Button for items. Themed via Titan tokens.",
       "props": {
         "collapsed": { "type": "boolean", "default": "false", "description": "Sidebar in icon-only mode" },
-        "onToggle": { "type": "() => void", "required": false, "description": "Callback for expand/collapse chevron" },
+        "onToggle": { "type": "() => void", "required": false, "description": "Callback for expand/collapse toggle (panel icon at bottom)" },
         "activeId": { "type": "string", "required": false, "description": "Controlled active item id" },
         "defaultActiveId": { "type": "string", "required": false, "description": "Uncontrolled default active item id" },
         "onActiveChange": { "type": "(id: string) => void", "required": false, "description": "Callback when active item changes" },

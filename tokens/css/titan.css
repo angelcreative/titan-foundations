@@ -2277,8 +2277,9 @@
   --sidebar-slot-item-color: var(--color-black-700);
   --sidebar-slot-item-color-hover: var(--color-black-900);
   --sidebar-slot-item-bg-hover: var(--color-black-100);
-  --sidebar-slot-item-color-active: var(--tab-border-selected, var(--tab-text-selected));
+  --sidebar-slot-item-color-active: var(--tab-text-selected, var(--color-black-900));
   --sidebar-slot-item-bg-active: var(--tab-selected-background, var(--color-black-100));
+  --sidebar-slot-item-accent-active: var(--tab-border-selected, var(--color-black-700));
   --sidebar-slot-item-radius: var(--radius-slot-control);
   --sidebar-slot-item-padding: var(--spacing-s) var(--spacing-m);
   --sidebar-slot-item-gap: var(--spacing-s);
