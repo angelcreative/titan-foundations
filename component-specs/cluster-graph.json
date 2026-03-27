@@ -1,0 +1,59 @@
+{
+  "cluster-graph": {
+    "lifecycle": {
+      "status": "aria-primary",
+      "sourceOfTruth": "docs/anatomies/cluster-graph.md + TitanClusterGraph implementation",
+      "usageRule": "Use TitanClusterGraph from titan-compositions for graph slot + node details dialog before custom graph wrappers.",
+      "migrationTrigger": "Sync spec when TitanClusterGraph props, state behavior, or anatomy guidance changes."
+    },
+    "description": "Force-directed clustered graph for exploring relationships between profiles/entities with detail-on-demand.",
+    "implementation": {
+      "component": "TitanClusterGraph",
+      "module": "titan-compositions",
+      "imports": [
+        "TitanClusterGraph",
+        "buildTitanClusterMockData"
+      ],
+      "types": [
+        "TitanClusterData",
+        "TitanClusterNode",
+        "TitanClusterLink"
+      ]
+    },
+    "structure": {
+      "required": [
+        "graph-canvas"
+      ],
+      "optional": [
+        "labels",
+        "node-details-dialog",
+        "external-controls"
+      ]
+    },
+    "states": {
+      "required": [
+        "ready"
+      ],
+      "feedback": [
+        "empty",
+        "loading",
+        "error"
+      ]
+    },
+    "interaction": {
+      "nodeSelect": "Click node to open details dialog (when withDetailsDialog=true).",
+      "dialogClose": "Close button or onOpenChange(false) resets selected node."
+    },
+    "tokens": {
+      "surface": "var(--surface-0)",
+      "divider": "var(--divider)",
+      "copyTitle": "var(--copy-slot-title)",
+      "copyBody": "var(--copy-slot-body)",
+      "link": "var(--link-slot-color)"
+    },
+    "blockingRules": [
+      "If you need a relationship graph in Titan, use TitanClusterGraph first.",
+      "Only build custom wrappers around TitanClusterGraph when domain-specific controls or data transforms require it."
+    ]
+  }
+}

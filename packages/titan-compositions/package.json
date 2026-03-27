@@ -1,6 +1,6 @@
 {
   "name": "titan-compositions",
-  "version": "0.1.31",
+  "version": "0.1.32",
   "description": "Reusable Titan page compositions built on React Aria + Titan tokens",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -21,6 +21,9 @@
     "build": "tsup src/index.ts --format cjs,esm --dts && cp src/styles/titan-compositions.css dist/",
     "dev": "tsup src/index.ts --watch --format cjs,esm --dts",
     "check:phase-policy": "node scripts/check-phase-policy.mjs"
+  },
+  "dependencies": {
+    "d3": "^7.9.0"
   },
   "peerDependencies": {
     "react": ">=18.0.0",

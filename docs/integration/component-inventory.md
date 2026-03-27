@@ -25,6 +25,7 @@ Validation note: parity sign-off is tracked in `docs/integration/parity-qa-matri
 | Drawer | `component-specs/drawer.json`, `docs/components/drawer.md`, React Aria structure in `titan-aria` usage paths | `AriaBase` | Build with React Aria + Titan tokens; keep overlay behavior and state coverage. |
 | Menu | `component-specs/menu.json`, `docs/components/menu-and-select.md`, `.cursor/rules/menu-and-select.mdc` | `AriaBase` | Keep React Aria structure and Titan token contract as primary. |
 | Select | `component-specs/select.json`, `docs/components/menu-and-select.md`, `.cursor/rules/menu-and-select.mdc` | `AriaBase` | Keep React Aria structure and Titan token contract as primary. |
+| Cluster graph | `docs/anatomies/cluster-graph.md`, `component-specs/cluster-graph.json`, `packages/titan-compositions/src/TitanClusterGraph.tsx` | `AriaBase` | Use `TitanClusterGraph` as import-first relationship graph slot; compose domain controls around it. |
 | Grid/layout system | `component-specs/grid.json`, `docs/components/grid.md`, `component-specs/template.json` | `FoundationOnlySpec` | Keep as cross-cutting layout foundation. |
 | Table borderless pattern | `component-specs/table-borderless.json`, `docs/components/table-borderless.md` | `FoundationOnlySpec` | Keep as optional borderless data-table pattern. |
 | Copy and links conventions | `component-specs/copy-and-links.json`, `docs/components/copy-and-links.md` | `FoundationOnlySpec` | Keep as semantic writing/styling convention. |

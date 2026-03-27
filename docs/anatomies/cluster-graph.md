@@ -21,6 +21,7 @@ Universal UI anatomy for a **force-directed clustered graph** to explore relatio
 ## Titan usage
 
 - **Shell/layout:** Use Titan structural wrappers (`main`, `section`) + `TitanCard` for framing controls/details when needed.
+- **Import-first component:** Prefer `TitanClusterGraph` from `titan-compositions` for the graph slot and node details dialog before building custom wrappers.
 - **Controls:** Use Titan form primitives for filters (`TitanInputField`, `TitanSelect`, `TitanSwitchField`) and actions (`TitanButton`, `TitanIconButton`).
 - **Copy and color:** Non-link text uses typography tokens (`--text-title`, `--copy-slot-body`, `--copy-slot-secondary`). Theme accent is reserved for links/interactive accents.
 - **Surface and spacing:** Use semantic spacing and surface tokens (`--spacing-*`, `--surface-*`, `--card-slot-radius`) in container and side panels.

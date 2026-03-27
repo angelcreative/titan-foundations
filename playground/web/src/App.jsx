@@ -4901,9 +4901,9 @@ import { Headphones, Gamepad2, MoreVertical, Pencil, Eye, Merge, Download, Globe
           <ShowcaseCard
             id="cluster-graph"
             title="Cluster Graph"
-            ariaImports="import { TitanCard, TitanInputField, TitanSwitchField, TitanButton } from 'titan-compositions'"
-            ariaDesc="D3 force-directed graph from angelcreative/Cluster: same ForceGraph simulation (radial + sector forces, drag, segment labels). Mock data matches that repo’s buildMockGraphData. Wrapped in TitanCard."
-            ariaComponents={['TitanCard', 'ForceGraph (D3)']}
+            ariaImports="import { TitanClusterGraph, buildTitanClusterMockData } from 'titan-compositions'"
+            ariaDesc="Import-first cluster graph component from titan-compositions. Includes D3 force simulation, labels, node click selection and optional TitanDialog profile details."
+            ariaComponents={['TitanClusterGraph']}
             foundations={[
               { category: 'Layout', detail: 'Graph lives in a fixed-size slot inside Titan card/layout wrappers; avoid auto-height containers.' },
               { category: 'Performance', detail: 'Single simulation/update loop, memoized graph derivations, throttled frame updates, labels hidden by default for dense datasets.' },
@@ -4914,14 +4914,17 @@ import { Headphones, Gamepad2, MoreVertical, Pencil, Eye, Merge, Download, Globe
               { label: 'Text', tokens: ['--text-title', '--copy-slot-body', '--copy-slot-secondary'] },
               { label: 'Graph accents', tokens: ['--color-violet-500', '--color-ocean-500', '--color-aquamarine-600', '--divider'] },
             ]}
-            code={`import { TitanCard } from 'titan-compositions'
+            code={`import { TitanClusterGraph, buildTitanClusterMockData } from 'titan-compositions'
 
-<TitanCard span={16}>
-  <header>{/* title + filters */}</header>
-  <section style={{ height: 360 }}>
-    {/* Graph slot (D3/SVG/Canvas) */}
-  </section>
-</TitanCard>`}
+const data = buildTitanClusterMockData(8, 960, 420)
+
+<TitanClusterGraph
+  data={data}
+  height={420}
+  showLabels
+  groupCount={8}
+  withDetailsDialog
+/>`}
           >
             <TitanCardGrid>
               <TitanCard span={16}>

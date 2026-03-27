@@ -2960,7 +2960,561 @@ function TitanCollapsible({
     !collapsed && /* @__PURE__ */ jsx31("div", { className: "titan-collapsible-content", children })
   ] });
 }
+
+// src/TitanClusterGraph.tsx
+import { useEffect as useEffect3, useMemo as useMemo3, useRef as useRef5, useState as useState6 } from "react";
+
+// src/cluster/constants.ts
+var TITAN_CLUSTER_COLORS = [
+  "#8e8de5",
+  "#7faffa",
+  "#92c9c2",
+  "#f29e77",
+  "#8cbddb",
+  "#f3c880",
+  "#f17bb7",
+  "#d2779b",
+  "#b878f8",
+  "#ad97f9",
+  "#7ed7de",
+  "#90d0ab",
+  "#9dea8d",
+  "#d5f389",
+  "#fae08a",
+  "#f1867f",
+  "#da797f",
+  "#FB876A",
+  "#cb998b",
+  "#9c706f"
+];
+var TITAN_CLUSTER_GROUP_LABELS = [
+  "Fashion Influence \u{1F457}",
+  "University Fitness \u{1F30D}",
+  "Fitness Entertainment \u{1F3CB}\uFE0F",
+  "Mom Life \u{1F3B6}",
+  "Wellness Coaching \u{1F4AA}",
+  "Lifestyle Branding \u2728",
+  "Canadian Family \u{1F1E8}\u{1F1E6}",
+  "Sports Marketing \u{1F947}",
+  "Tech Trends \u{1F4F1}",
+  "Eco Living \u{1F33F}",
+  "Urban Photography \u{1F4F8}",
+  "Gourmet Food \u{1F354}",
+  "Travel Diaries \u2708\uFE0F",
+  "Crypto News \u{1FA99}",
+  "Indie Gaming \u{1F3AE}",
+  "Pet Lovers \u{1F436}",
+  "DIY Crafts \u{1F9F6}",
+  "Mental Health \u{1F9E0}",
+  "Auto Enthusiasts \u{1F3CE}\uFE0F",
+  "Book Club \u{1F4DA}"
+];
+var TITAN_CLUSTER_DEFAULT_GROUP_COUNT = 8;
+var TITAN_CLUSTER_DEFAULT_NODE_COUNT = 450;
+function getTitanClusterSegmentLabel(groupIndex, groupCount, segmentLabels) {
+  const labels = segmentLabels && segmentLabels.length >= groupCount ? segmentLabels : TITAN_CLUSTER_GROUP_LABELS;
+  return labels[groupIndex] ?? `Segment ${groupIndex + 1}`;
+}
+
+// src/cluster/TitanClusterGraphCanvas.tsx
+import { useEffect as useEffect2, useLayoutEffect as useLayoutEffect2, useRef as useRef4 } from "react";
+import * as d3 from "d3";
+import { jsx as jsx32 } from "react/jsx-runtime";
+function TitanClusterGraphCanvas({
+  width,
+  height,
+  data,
+  onNodeClick,
+  showLabels,
+  groupCount,
+  segmentLabels
+}) {
+  const svgRef = useRef4(null);
+  const onNodeClickRef = useRef4(onNodeClick);
+  const showLabelsRef = useRef4(showLabels);
+  useEffect2(() => {
+    onNodeClickRef.current = onNodeClick;
+  }, [onNodeClick]);
+  useLayoutEffect2(() => {
+    showLabelsRef.current = showLabels;
+  }, [showLabels]);
+  useEffect2(() => {
+    if (!svgRef.current) return;
+    const svg = d3.select(svgRef.current);
+    const container = svg.select(".labels-container");
+    if (container.empty()) return;
+    container.transition().duration(200).style("opacity", showLabels ? 1 : 0).style("pointer-events", showLabels ? "all" : "none");
+  }, [showLabels]);
+  useEffect2(() => {
+    if (!svgRef.current) return;
+    const svg = d3.select(svgRef.current);
+    svg.selectAll("*").remove();
+    const layoutRadius = 100;
+    const centerPoint = { x: width / 2, y: height / 2 };
+    const groupFoci = Array.from(
+      { length: groupCount },
+      (_, i) => {
+        const angle = i * 2 * Math.PI / groupCount - Math.PI / 2;
+        return {
+          x: centerPoint.x + layoutRadius * Math.cos(angle),
+          y: centerPoint.y + layoutRadius * Math.sin(angle),
+          label: getTitanClusterSegmentLabel(i, groupCount, segmentLabels),
+          color: TITAN_CLUSTER_COLORS[i] ?? "#999"
+        };
+      }
+    );
+    const simulation = d3.forceSimulation(data.nodes).alphaDecay(0.08).velocityDecay(0.35).alphaMin(1e-3).force(
+      "link",
+      d3.forceLink(data.links).id((d) => d.id).strength((d) => d.value === 1 ? 0.05 : 1e-3)
+    ).force("charge", d3.forceManyBody().strength(-2)).force(
+      "collide",
+      d3.forceCollide((d) => d.radius + 1).strength(0.8)
+    ).force("center", d3.forceCenter(width / 2, height / 2).strength(0.2)).force("radial", d3.forceRadial(0, width / 2, height / 2).strength(0.55)).force(
+      "x",
+      d3.forceX((d) => (groupFoci[d.group] || groupFoci[0]).x).strength(0.28)
+    ).force(
+      "y",
+      d3.forceY((d) => (groupFoci[d.group] || groupFoci[0]).y).strength(0.28)
+    );
+    const link = svg.append("g").selectAll("line").data(data.links).join("line").attr("stroke", (d) => {
+      const sourceNode = typeof d.source === "object" ? d.source : data.nodes.find((n) => n.id === d.source);
+      if (!sourceNode) return "#ccc";
+      return TITAN_CLUSTER_COLORS[sourceNode.group] || TITAN_CLUSTER_COLORS[0];
+    }).attr("stroke-opacity", 0.15).attr("stroke-width", 0.5);
+    const node = svg.append("g").selectAll("circle").data(data.nodes).join("circle").attr("r", (d) => d.radius).attr("fill", (d) => TITAN_CLUSTER_COLORS[d.group] || TITAN_CLUSTER_COLORS[0]).attr("stroke", "#fff").attr("stroke-width", 0.5).style("cursor", "pointer").on("click", (event, d) => {
+      event.stopPropagation();
+      simulation.stop();
+      onNodeClickRef.current(d);
+    }).call(
+      d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended)
+    );
+    node.on("mouseover", function() {
+      d3.select(this).transition().duration(200).attr("stroke-width", 2).attr("stroke", "#333");
+    }).on("mouseout", function() {
+      d3.select(this).transition().duration(200).attr("stroke-width", 0.5).attr("stroke", "#fff");
+    });
+    const labelGroup = svg.append("g").attr("class", "labels-container").style("opacity", 0).style("pointer-events", "none").selectAll("g").data(groupFoci).join("g").style("cursor", "pointer");
+    labelGroup.append("rect").attr("rx", 14).attr("ry", 14).attr("fill", "var(--surface-0, #fff)").attr("stroke", (d) => d.color).attr("stroke-width", 2);
+    labelGroup.append("text").attr("text-anchor", "middle").attr("dy", "0.35em").style("font-family", "var(--font-audiense), sans-serif").style("font-size", "12px").style("font-weight", "600").attr("fill", "var(--copy-slot-title)").style("pointer-events", "none").text((d) => d.label);
+    labelGroup.each(function() {
+      const g = d3.select(this);
+      const text = g.select("text").node();
+      if (!text) return;
+      const bbox = text.getBBox();
+      const paddingX = 28;
+      const paddingY = 16;
+      g.select("rect").attr("x", -bbox.width / 2 - paddingX / 2).attr("y", -bbox.height / 2 - paddingY / 2).attr("width", bbox.width + paddingX).attr("height", bbox.height + paddingY);
+    });
+    const MIN_LABEL_GAP = 92;
+    const ATTRACTION = 0.22;
+    const REPULSION_STRENGTH = 2.8;
+    const MAX_DIST_FROM_ANCHOR = 90;
+    const ANCHOR_NUDGE = 1.15;
+    let labelPositions = [];
+    const clampToAnchor = (pos, anchor, maxDist) => {
+      const dx = pos.x - anchor.x;
+      const dy = pos.y - anchor.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist <= maxDist || dist < 1e-6) return pos;
+      const scale = maxDist / dist;
+      return { x: anchor.x + dx * scale, y: anchor.y + dy * scale };
+    };
+    const doLabelTick = () => {
+      const centroids = {};
+      data.nodes.forEach((n) => {
+        if (n.x === void 0 || n.y === void 0) return;
+        if (!centroids[n.group]) centroids[n.group] = { x: 0, y: 0, count: 0 };
+        centroids[n.group].x += n.x;
+        centroids[n.group].y += n.y;
+        centroids[n.group].count += 1;
+      });
+      const anchors = [];
+      for (let i = 0; i < groupCount; i++) {
+        const c = centroids[i];
+        if (c && c.count > 0) {
+          const cx = c.x / c.count;
+          const cy = c.y / c.count;
+          const dx = cx - centerPoint.x;
+          const dy = cy - centerPoint.y;
+          anchors[i] = {
+            x: centerPoint.x + dx * ANCHOR_NUDGE,
+            y: centerPoint.y + dy * ANCHOR_NUDGE
+          };
+        } else {
+          anchors[i] = {
+            x: (groupFoci[i] || groupFoci[0]).x,
+            y: (groupFoci[i] || groupFoci[0]).y
+          };
+        }
+      }
+      if (labelPositions.length !== groupCount) {
+        labelPositions = anchors.map((a) => ({ ...a }));
+      }
+      let maxMove = 0;
+      for (let i = 0; i < groupCount; i++) {
+        const anchor = anchors[i];
+        let px = labelPositions[i].x;
+        let py = labelPositions[i].y;
+        const prevX = px;
+        const prevY = py;
+        px += (anchor.x - px) * ATTRACTION;
+        py += (anchor.y - py) * ATTRACTION;
+        for (let j = 0; j < groupCount; j++) {
+          if (j === i) continue;
+          const qx = labelPositions[j].x;
+          const qy = labelPositions[j].y;
+          const dx = px - qx;
+          const dy = py - qy;
+          const dist = Math.sqrt(dx * dx + dy * dy) || 1e-6;
+          if (dist < MIN_LABEL_GAP) {
+            const overlap = MIN_LABEL_GAP - dist;
+            const nx = dx / dist;
+            const ny = dy / dist;
+            px += nx * overlap * REPULSION_STRENGTH;
+            py += ny * overlap * REPULSION_STRENGTH;
+          }
+        }
+        const clamped = clampToAnchor({ x: px, y: py }, anchor, MAX_DIST_FROM_ANCHOR);
+        labelPositions[i] = clamped;
+        maxMove = Math.max(maxMove, Math.abs(clamped.x - prevX), Math.abs(clamped.y - prevY));
+      }
+      return maxMove;
+    };
+    const applyLabelTransforms = () => {
+      labelGroup.attr(
+        "transform",
+        (_d, i) => `translate(${labelPositions[i]?.x ?? centerPoint.x}, ${labelPositions[i]?.y ?? centerPoint.y})`
+      );
+    };
+    simulation.on("tick", () => {
+      link.attr("x1", (d) => d.source.x).attr("y1", (d) => d.source.y).attr("x2", (d) => d.target.x).attr("y2", (d) => d.target.y);
+      node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
+      doLabelTick();
+      applyLabelTransforms();
+    });
+    const labelsContainer = svg.select(".labels-container");
+    simulation.on("end", () => {
+      let frameCount = 0;
+      let stableCount = 0;
+      const STABLE_THRESHOLD = 0.4;
+      const MAX_FRAMES = 80;
+      const runSettling = () => {
+        const maxMove = doLabelTick();
+        applyLabelTransforms();
+        frameCount++;
+        stableCount = maxMove < STABLE_THRESHOLD ? stableCount + 1 : 0;
+        if (stableCount >= 3 || frameCount >= MAX_FRAMES) {
+          labelsContainer.transition().duration(200).style("opacity", showLabelsRef.current ? 1 : 0).style("pointer-events", showLabelsRef.current ? "all" : "none");
+          simulation.stop();
+          return;
+        }
+        requestAnimationFrame(runSettling);
+      };
+      requestAnimationFrame(runSettling);
+    });
+    function dragstarted(_event, d) {
+      d.fx = d.x;
+      d.fy = d.y;
+    }
+    function dragged(event, d) {
+      if (!event.active) simulation.alphaTarget(0.3).restart();
+      d.fx = event.x;
+      d.fy = event.y;
+    }
+    function dragended(event, d) {
+      if (!event.active) simulation.alphaTarget(0);
+      d.fx = null;
+      d.fy = null;
+      simulation.stop();
+    }
+    return () => {
+      simulation.stop();
+    };
+  }, [width, height, data, groupCount, segmentLabels]);
+  return /* @__PURE__ */ jsx32(
+    "svg",
+    {
+      ref: svgRef,
+      width,
+      height,
+      style: { display: "block", width: "100%", height: "100%" }
+    }
+  );
+}
+
+// src/TitanClusterGraph.tsx
+import { jsx as jsx33, jsxs as jsxs28 } from "react/jsx-runtime";
+function TitanClusterGraph({
+  data,
+  height = 420,
+  minWidth = 320,
+  showLabels = true,
+  segmentLabels,
+  groupCount,
+  selectedNode: controlledSelectedNode,
+  defaultSelectedNode = null,
+  onSelectedNodeChange,
+  withDetailsDialog = true,
+  emptyState = "No graph data available.",
+  className,
+  style
+}) {
+  const wrapRef = useRef5(null);
+  const [width, setWidth] = useState6(minWidth);
+  const [uncontrolledSelectedNode, setUncontrolledSelectedNode] = useState6(defaultSelectedNode);
+  const isControlled = controlledSelectedNode !== void 0;
+  const selectedNode = isControlled ? controlledSelectedNode : uncontrolledSelectedNode;
+  const computedGroupCount = useMemo3(() => {
+    if (groupCount !== void 0) return groupCount;
+    if (data.nodes.length === 0) return TITAN_CLUSTER_DEFAULT_GROUP_COUNT;
+    return Math.max(...data.nodes.map((node) => node.group)) + 1;
+  }, [groupCount, data.nodes]);
+  useEffect3(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const measure = () => {
+      const nextWidth = Math.max(minWidth, el.clientWidth);
+      setWidth(nextWidth);
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [minWidth]);
+  const setSelectedNode = (node) => {
+    if (!isControlled) setUncontrolledSelectedNode(node);
+    onSelectedNodeChange?.(node);
+  };
+  if (data.nodes.length === 0) {
+    return /* @__PURE__ */ jsx33("div", { className, style, children: /* @__PURE__ */ jsx33("p", { className: "text-secondary", style: { margin: 0 }, children: emptyState }) });
+  }
+  return /* @__PURE__ */ jsxs28(
+    "div",
+    {
+      ref: wrapRef,
+      className,
+      style: {
+        width: "100%",
+        minHeight: Math.max(280, height),
+        border: "1px solid var(--divider)",
+        borderRadius: "var(--rounded-m)",
+        background: "var(--surface-0)",
+        overflow: "hidden",
+        ...style
+      },
+      children: [
+        /* @__PURE__ */ jsx33("div", { style: { width: "100%", height }, children: /* @__PURE__ */ jsx33(
+          TitanClusterGraphCanvas,
+          {
+            width,
+            height,
+            data,
+            onNodeClick: (node) => setSelectedNode(node),
+            showLabels,
+            groupCount: computedGroupCount,
+            segmentLabels
+          }
+        ) }),
+        withDetailsDialog && /* @__PURE__ */ jsx33(
+          TitanDialog,
+          {
+            isOpen: selectedNode != null,
+            onOpenChange: (open) => {
+              if (!open) setSelectedNode(null);
+            },
+            "aria-label": selectedNode ? `Profile: ${selectedNode.name}` : "Profile",
+            closeButton: "none",
+            body: selectedNode ? /* @__PURE__ */ jsxs28(
+              "div",
+              {
+                style: {
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  textAlign: "center",
+                  gap: "var(--spacing-s)"
+                },
+                children: [
+                  /* @__PURE__ */ jsx33(
+                    "div",
+                    {
+                      style: {
+                        alignSelf: "stretch",
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        marginBottom: "calc(-1 * var(--spacing-3xs))"
+                      },
+                      children: /* @__PURE__ */ jsx33(TitanButton, { variant: "secondary", onPress: () => setSelectedNode(null), children: "Close" })
+                    }
+                  ),
+                  /* @__PURE__ */ jsx33(
+                    "div",
+                    {
+                      style: {
+                        width: 96,
+                        height: 96,
+                        borderRadius: "50%",
+                        padding: 4,
+                        background: TITAN_CLUSTER_COLORS[selectedNode.group] ?? TITAN_CLUSTER_COLORS[0]
+                      },
+                      children: /* @__PURE__ */ jsx33(
+                        "img",
+                        {
+                          src: selectedNode.avatarUrl,
+                          alt: "",
+                          style: {
+                            width: "100%",
+                            height: "100%",
+                            borderRadius: "50%",
+                            objectFit: "cover",
+                            border: "4px solid var(--surface-0)"
+                          }
+                        }
+                      )
+                    }
+                  ),
+                  /* @__PURE__ */ jsx33(
+                    "h2",
+                    {
+                      id: "cluster-node-name",
+                      style: {
+                        margin: 0,
+                        fontSize: "var(--font-size-xl)",
+                        color: "var(--copy-slot-title)"
+                      },
+                      children: selectedNode.name
+                    }
+                  ),
+                  /* @__PURE__ */ jsx33(
+                    "span",
+                    {
+                      style: {
+                        display: "inline-block",
+                        padding: "8px 14px",
+                        borderRadius: 14,
+                        fontSize: "12px",
+                        fontWeight: 600,
+                        fontFamily: "var(--font-audiense), sans-serif",
+                        lineHeight: 1.2,
+                        color: "var(--copy-slot-title)",
+                        background: "var(--surface-0)",
+                        border: `2px solid ${TITAN_CLUSTER_COLORS[selectedNode.group] ?? TITAN_CLUSTER_COLORS[0]}`,
+                        boxSizing: "border-box"
+                      },
+                      children: getTitanClusterSegmentLabel(
+                        selectedNode.group,
+                        computedGroupCount,
+                        segmentLabels
+                      )
+                    }
+                  ),
+                  /* @__PURE__ */ jsx33(
+                    "p",
+                    {
+                      style: {
+                        margin: 0,
+                        textAlign: "left",
+                        color: "var(--copy-slot-body)",
+                        lineHeight: 1.5,
+                        maxHeight: 120,
+                        overflow: "auto"
+                      },
+                      children: selectedNode.bio || "No description"
+                    }
+                  )
+                ]
+              }
+            ) : null
+          }
+        )
+      ]
+    }
+  );
+}
+
+// src/cluster/buildTitanClusterMockData.ts
+var NAMES_FIRST = [
+  "Alex",
+  "Jordan",
+  "Taylor",
+  "Casey",
+  "Morgan",
+  "Riley",
+  "Avery",
+  "Quinn",
+  "Skyler",
+  "Charlie"
+];
+var NAMES_LAST = [
+  "Smith",
+  "Johnson",
+  "Williams",
+  "Brown",
+  "Jones",
+  "Garcia",
+  "Miller",
+  "Davis",
+  "Rodriguez",
+  "Martinez"
+];
+var BIOS_TEMPLATES = [
+  "Passionate about {topic} and building communities.",
+  "Digital creator focused on {topic}.",
+  "Sharing my journey in {topic}.",
+  "Professional expert in {topic}.",
+  "{topic} enthusiast and storyteller."
+];
+function buildTitanClusterMockData(groupCount, width, height, nodeCount = TITAN_CLUSTER_DEFAULT_NODE_COUNT) {
+  const nodes = [];
+  const links = [];
+  const centerX = width / 2;
+  const centerY = height / 2;
+  for (let i = 0; i < nodeCount; i++) {
+    const group = Math.floor(Math.random() * groupCount);
+    const groupName = getTitanClusterSegmentLabel(group, groupCount);
+    const first = NAMES_FIRST[Math.floor(Math.random() * NAMES_FIRST.length)];
+    const last = NAMES_LAST[Math.floor(Math.random() * NAMES_LAST.length)];
+    const angle = Math.random() * 2 * Math.PI;
+    const r = Math.sqrt(Math.random()) * 140;
+    nodes.push({
+      id: `node-${i}`,
+      group,
+      radius: Math.random() > 0.92 ? 12 + Math.random() * 10 : 5 + Math.random() * 5,
+      x: centerX + r * Math.cos(angle),
+      y: centerY + r * Math.sin(angle),
+      name: `${first} ${last}`,
+      bio: BIOS_TEMPLATES[Math.floor(Math.random() * BIOS_TEMPLATES.length)].replace(
+        "{topic}",
+        groupName
+      ),
+      avatarUrl: `https://i.pravatar.cc/150?u=${i}`
+    });
+  }
+  nodes.forEach((source) => {
+    const sameGroup = nodes.filter((n) => n.group === source.group && n.id !== source.id);
+    const internalConnections = Math.floor(Math.random() * 2) + 1;
+    for (let j = 0; j < internalConnections; j++) {
+      if (sameGroup.length === 0) break;
+      const target = sameGroup[Math.floor(Math.random() * sameGroup.length)];
+      links.push({ source: source.id, target: target.id, value: 1 });
+    }
+  });
+  nodes.forEach((source) => {
+    if (Math.random() > 0.9) {
+      const differentGroupNodes = nodes.filter((n) => n.group !== source.group);
+      if (differentGroupNodes.length > 0) {
+        const target = differentGroupNodes[Math.floor(Math.random() * differentGroupNodes.length)];
+        links.push({ source: source.id, target: target.id, value: 0.5 });
+      }
+    }
+  });
+  return { nodes, links };
+}
 export {
+  TITAN_CLUSTER_COLORS,
+  TITAN_CLUSTER_DEFAULT_GROUP_COUNT,
+  TITAN_CLUSTER_DEFAULT_NODE_COUNT,
+  TITAN_CLUSTER_GROUP_LABELS,
   TitanAvatar,
   TitanBadge,
   TitanBadgeAnchor,
@@ -2973,6 +3527,7 @@ export {
   TitanCardGrid,
   TitanCell,
   TitanCheckboxField,
+  TitanClusterGraph,
   TitanCollapsible,
   TitanColumn,
   TitanDestructiveIconButton,
@@ -3043,6 +3598,8 @@ export {
   TitanToastRegion,
   TitanTooltip,
   TitanTwoUpOneDownLayout,
+  buildTitanClusterMockData,
+  getTitanClusterSegmentLabel,
   getToneStyle,
   registerFallbackIcons,
   registerTitanIcons,

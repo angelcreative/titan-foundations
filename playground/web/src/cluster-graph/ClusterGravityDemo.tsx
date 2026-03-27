@@ -1,13 +1,11 @@
 /**
- * Embeds the Cluster gravity graph (D3 + ForceGraph) from
- * https://github.com/angelcreative/Cluster — mock data path matches that repo’s `buildMockGraphData`.
+ * Playground wrapper around TitanClusterGraph using Cluster-like mock data.
  */
-import { useState, useEffect, useRef, useCallback } from 'react';
-import ForceGraph from './ForceGraph';
+import { useState, useEffect, useRef } from 'react';
 import { buildMockGraphData } from './mockGraphData';
 import type { GraphData, GraphNode } from './types';
-import { COLORS, DEFAULT_GROUP_COUNT, getSegmentLabel } from './constants';
-import { TitanButton, TitanDialog } from 'titan-compositions';
+import { DEFAULT_GROUP_COUNT } from './constants';
+import { TitanButton, TitanClusterGraph } from 'titan-compositions';
 
 export function ClusterGravityDemo() {
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -35,10 +33,6 @@ export function ClusterGravityDemo() {
     if (dims.width < 1 || dims.height < 1) return;
     setData(buildMockGraphData(groupCount, dims.width, dims.height));
   }, [groupCount, dims.width, dims.height]);
-
-  const onNodeClick = useCallback((node: GraphNode) => {
-    setSelectedNode(node);
-  }, []);
 
   if (!data) {
     return (
@@ -95,120 +89,18 @@ export function ClusterGravityDemo() {
       </div>
       <div
         ref={wrapRef}
-        style={{
-          width: '100%',
-          minHeight: 360,
-          border: '1px solid var(--divider)',
-          borderRadius: 'var(--rounded-m)',
-          background: 'var(--surface-0)',
-          overflow: 'hidden',
-        }}
+        style={{ width: '100%' }}
       >
-        <ForceGraph
-          width={dims.width}
-          height={dims.height}
+        <TitanClusterGraph
           data={data}
-          onNodeClick={onNodeClick}
+          height={dims.height}
+          selectedNode={selectedNode}
+          onSelectedNodeChange={setSelectedNode}
           showLabels={showLabels}
           groupCount={groupCount}
+          withDetailsDialog
         />
       </div>
-
-      <TitanDialog
-        isOpen={selectedNode != null}
-        onOpenChange={(open) => {
-          if (!open) setSelectedNode(null);
-        }}
-        aria-label={selectedNode ? `Profile: ${selectedNode.name}` : 'Profile'}
-        closeButton="none"
-        body={
-          selectedNode ? (
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                textAlign: 'center',
-                gap: 'var(--spacing-s)',
-              }}
-            >
-              <div
-                style={{
-                  alignSelf: 'stretch',
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                  marginBottom: 'calc(-1 * var(--spacing-3xs))',
-                }}
-              >
-                <TitanButton variant="secondary" onPress={() => setSelectedNode(null)}>
-                  Close
-                </TitanButton>
-              </div>
-              <div
-                style={{
-                  width: 96,
-                  height: 96,
-                  borderRadius: '50%',
-                  padding: 4,
-                  background: COLORS[selectedNode.group] ?? COLORS[0],
-                }}
-              >
-                <img
-                  src={selectedNode.avatarUrl}
-                  alt=""
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    borderRadius: '50%',
-                    objectFit: 'cover',
-                    border: '4px solid var(--surface-0)',
-                  }}
-                />
-              </div>
-              <h2
-                id="cluster-node-name"
-                style={{
-                  margin: 0,
-                  fontSize: 'var(--font-size-xl)',
-                  color: 'var(--copy-slot-title)',
-                }}
-              >
-                {selectedNode.name}
-              </h2>
-              {/* Same pill as ForceGraph labels: light fill, segment-colored stroke, dark text */}
-              <span
-                style={{
-                  display: 'inline-block',
-                  padding: '8px 14px',
-                  borderRadius: 14,
-                  fontSize: '12px',
-                  fontWeight: 600,
-                  fontFamily: 'var(--font-audiense), sans-serif',
-                  lineHeight: 1.2,
-                  color: 'var(--copy-slot-title)',
-                  background: 'var(--surface-0)',
-                  border: `2px solid ${COLORS[selectedNode.group] ?? COLORS[0]}`,
-                  boxSizing: 'border-box',
-                }}
-              >
-                {getSegmentLabel(selectedNode.group, groupCount)}
-              </span>
-              <p
-                style={{
-                  margin: 0,
-                  textAlign: 'left',
-                  color: 'var(--copy-slot-body)',
-                  lineHeight: 1.5,
-                  maxHeight: 120,
-                  overflow: 'auto',
-                }}
-              >
-                {selectedNode.bio || 'No description'}
-              </p>
-            </div>
-          ) : null
-        }
-      />
     </div>
   );
 }
