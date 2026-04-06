@@ -2460,15 +2460,44 @@ function App() {
             id="appshell"
             title="App shell (navbar + sidebar + breadcrumb + main)"
             ariaImports="import { TitanAppShell, TitanNavbar, TitanSidebar, TitanSidebarItem, TitanBreadcrumb } from 'titan-compositions'"
-            ariaDesc="Page chrome: navbar spans the viewport; sidebar is fixed to the left below the navbar; breadcrumb and main share the column to the right (viewport minus sidebar). Inner content uses .titan-app-content-inner (max 1280px, 1440px from 1440px viewport up), centered."
+            ariaDesc="Page chrome: navbar spans the viewport; sidebar is fixed to the left below the navbar; breadcrumb and main share the column to the right (viewport minus sidebar). Inner content uses .titan-app-content-inner (max 1280px, 1440px from 1440px viewport up), centered. Breadcrumb row height follows --breadcrumb-slot-min-height (default var(--spacing-3xl), 48px) on .breadcrumb-nav inside .titan-app-breadcrumb-strip."
             ariaComponents={['TitanAppShell', 'TitanNavbar', 'TitanSidebar', 'TitanBreadcrumb']}
             foundations={[
               { category: 'Layout', detail: 'titan-app-root → titan-app-body → [ titan-app-sidebar-slot | titan-app-main-column ] (breadcrumb strip + main).' },
               { category: 'Widths', detail: 'Navbar inner .navbar-inner max 1440px; app column inner uses --layout-chrome-inner-max-width via media query.' },
+              { category: 'Breadcrumb strip', detail: 'Same tokens as standalone Breadcrumb: --breadcrumb-slot-bg; min-height --breadcrumb-slot-min-height (→ --spacing-3xl, 48px); --breadcrumb-slot-border-bottom (default none).' },
             ]}
             tokenGroups={[
               { label: 'Breadcrumb strip', tokens: ['--breadcrumb-slot-bg', '--breadcrumb-slot-min-height', '--breadcrumb-slot-border-bottom'] },
               { label: 'Chrome', tokens: ['--layout-chrome-inner-max-width', '--layout-content-max-width-sm', '--layout-content-max-width-md'] },
+            ]}
+            tokenChains={[
+              {
+                name: 'App shell breadcrumb strip',
+                description: 'TitanBreadcrumb in .titan-app-breadcrumb-strip uses the same .breadcrumb-nav min-height as the Breadcrumb demo.',
+                rows: [
+                  {
+                    property: 'Min height',
+                    chain: [
+                      { label: '--breadcrumb-slot-min-height', type: 'component' },
+                      { label: '--spacing-3xl', type: 'primitive' },
+                      { label: '48px', type: 'value' },
+                    ],
+                  },
+                  {
+                    property: 'Background',
+                    chain: [
+                      { label: '--breadcrumb-slot-bg', type: 'component' },
+                      { label: '--color-black-100', type: 'primitive' },
+                      { label: '#F3F4F6', type: 'value', swatch: '#F3F4F6' },
+                    ],
+                  },
+                  {
+                    property: 'Border bottom',
+                    chain: [{ label: '--breadcrumb-slot-border-bottom', type: 'component' }, { label: 'none', type: 'value' }],
+                  },
+                ],
+              },
             ]}
             code={`import { TitanAppShell, TitanNavbar, TitanSidebar, TitanSidebarItem, TitanBreadcrumb } from 'titan-compositions'
 import { LayoutDashboard, User, Settings } from 'lucide-react'

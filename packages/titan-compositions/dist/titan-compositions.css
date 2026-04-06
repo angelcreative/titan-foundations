@@ -243,6 +243,7 @@
 }
 
 .titan-app-breadcrumb-strip .breadcrumb-nav {
+  min-height: var(--breadcrumb-slot-min-height);
   background: transparent;
   border-bottom: none;
   padding-left: 0;
