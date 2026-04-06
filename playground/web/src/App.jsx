@@ -2410,9 +2410,9 @@ import { LayoutDashboard, User, Settings } from 'lucide-react'
   navbar={<TitanNavbar theme="audiense" userInitial="A" />}
   sidebar={
     <TitanSidebar collapsed={collapsed} onToggle={() => setCollapsed((c) => !c)}>
-      <TitanSidebarItem id="nav-1" icon={<LayoutDashboard />}>Dashboard</TitanSidebarItem>
-      <TitanSidebarItem id="nav-2" icon={<User />}>Audience</TitanSidebarItem>
-      <TitanSidebarItem id="nav-3" icon={<Settings />}>Settings</TitanSidebarItem>
+      <TitanSidebarItem id="nav-1" icon={LayoutDashboard}>Dashboard</TitanSidebarItem>
+      <TitanSidebarItem id="nav-2" icon={User}>Audience</TitanSidebarItem>
+      <TitanSidebarItem id="nav-3" icon={Settings}>Settings</TitanSidebarItem>
     </TitanSidebar>
   }
   breadcrumb={
