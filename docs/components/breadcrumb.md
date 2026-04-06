@@ -10,6 +10,17 @@ Canonical terminology (mandatory): `breadcrumb-nav`, `ordered-list`, `item`, `se
 
 Breadcrumb communicates user location in a hierarchy and enables quick back-navigation.
 
+## Navigation contract (apps)
+
+`TitanBreadcrumb` **does not** own routing or internal path state. The parent supplies:
+
+- `items`: ancestor segments (each may include `onPress` / router `href`).
+- `currentLabel`: the current page (last segment).
+
+When the user activates an ancestor (visible link or **ellipsis** menu entry), the parent **must** update props to reflect the new location — typically by **truncating** the path to that segment so it becomes the new current page (e.g. `path.slice(0, index + 1)` from a full `segments[]` array). The playground **Components → Breadcrumb** demo shows this pattern with `useState` + `useMemo`.
+
+Overflow (`…`) uses the same `onPress` callbacks as the collapsed middle segments; there is no separate “expand” path inside the component.
+
 ## Required structure
 
 - `nav` with `aria-label="Breadcrumb"`

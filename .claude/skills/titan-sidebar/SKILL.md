@@ -21,6 +21,8 @@ description: Titan sidebar layout variants — flat nav, titled sections, file t
 
 For full-page chrome, compose the sidebar **inside** `TitanAppShell` as the `sidebar` prop. The sidebar stays **left-aligned** under the navbar; **breadcrumb** and **main** occupy the remaining column (`titan-app-main-column`). See `docs/components/breadcrumb.md` and `.cursor/rules/breadcrumb.mdc`.
 
+**Spacing:** vertical gap between stacked nav rows is **`--sidebar-slot-nav-stack-gap`** (8px / `--spacing-2xs`). Defined in `tokens/css/titan-semantic.css` → built `titan.css`.
+
 ## Components
 
 | Component | Purpose |

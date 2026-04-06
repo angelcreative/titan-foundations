@@ -34,7 +34,8 @@
       "clickableItems": "All previous hierarchy items are interactive links/buttons.",
       "currentItem": "Current location is read-only text with aria-current='page'.",
       "keyboard": "Tab navigation only through interactive breadcrumb items.",
-      "overflow": "Collapse middle segments with ellipsis when space is insufficient."
+      "overflow": "Collapse middle segments with ellipsis when space is insufficient.",
+      "parentOwnsPath": "Component does not mutate items/currentLabel; on activation parent updates route/state (e.g. truncate path to chosen segment). Ellipsis menu items use the same onPress as collapsed segments."
     },
     "states": {
       "interactiveItem": ["default", "hover", "pressed", "focus-visible", "disabled when applicable"],

@@ -13,6 +13,7 @@ Incremental exports:
 - `TitanCardGrid` / `TitanCard` (implemented)
 - `TitanTable` + TitanTableHeader, TitanColumn, TitanTableBody, TitanRow, TitanCell (React Aria Table; implemented)
 - `TitanTwoUpOneDownLayout` (implemented)
+- `TitanAppShell` (navbar + optional sidebar + breadcrumb + main; `titan-app-*` layout)
 - `TitanButton` / `TitanIconButton` (implemented)
 - `TitanPill` (implemented)
 - `TitanTag` (implemented)
@@ -60,6 +61,11 @@ TypeError: createContext is not a function
 **Rule:** Any module that imports from `titan-compositions` in a Next.js App Router app must be a **Client Component**: add `"use client"` at the top of that file, or only import Titan from components that already have `"use client"`. See **`docs/integration/nextjs-app-router.md`** for patterns (page-level `"use client"` vs client shell).
 
 In Vite, CRA, Remix, etc., there is no Server/Client split; this rule does not apply and adding `"use client"` is harmless (directives are ignored).
+
+## Breadcrumb & app shell
+
+- **`TitanBreadcrumb`** is **presentational**: pass `items` (ancestor segments, each with optional `onPress`) and `currentLabel`. On navigation (including the **ellipsis** menu), update parent state / router so the path reflects the new page (truncate to chosen level). See `docs/components/breadcrumb.md` and the playground Components demo.
+- **`TitanAppShell`** composes full chrome: use for **navbar + sidebar + breadcrumb + main** when the sidebar should sit beside the main column (not under the navbar strip).
 
 ## Quick usage
 

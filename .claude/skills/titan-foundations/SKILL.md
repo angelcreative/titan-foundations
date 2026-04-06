@@ -23,6 +23,8 @@ For **consuming** the design system in external apps (via MCP, npm package, or C
 
 Details: **`docs/components/breadcrumb.md`** (layout + tokens), **`.cursor/rules/breadcrumb.mdc`**.
 
+**Breadcrumb data:** `TitanBreadcrumb` is presentational. The **app** owns the path: pass `items` (ancestors + `onPress`) and `currentLabel`. On navigation (including **ellipsis** menu), **truncate** state to the chosen segment (see `component-specs/breadcrumb.json` → `interaction.parentOwnsPath`). Reference: **playground** Components → Breadcrumb → interactive demo.
+
 ## Mandatory behavior
 
 - If Titan MCP is available, or the request says/implies "Titan", "setup Titan", or "use Titan", enforce Titan-only execution (compositions -> component-specs + tokens -> anatomies -> BLOCKER).

@@ -10,7 +10,7 @@ globs:
 
 - Contract: `component-specs/breadcrumb.json`, `docs/components/breadcrumb.md`. PDF in `titan-comp-doc/breadcrumb.pdf` wins on conflict.
 - Current page is **never** a link; use `aria-current="page"` on the last segment.
-- Overflow: `TitanBreadcrumb` collapses middle segments into a `…` menu; each item must use `onPress` for navigation — the component does not change `items` by itself.
+- Overflow: `TitanBreadcrumb` collapses middle segments into a `…` menu; each item uses `onPress` — **parent state** must update `items` / `currentLabel` (e.g. truncate path to chosen segment). Same for visible ancestor links.
 - Strip styling: `--breadcrumb-slot-bg`, `--breadcrumb-slot-border-bottom` on `.breadcrumb-nav` (or parent strip: `.page-breadcrumb-host`, `.titan-app-breadcrumb-strip`).
 
 # App shell

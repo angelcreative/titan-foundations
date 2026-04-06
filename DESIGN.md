@@ -141,9 +141,14 @@ Never use brand accent colors for paragraph/body/helper text.
 
 ### Navbar
 - Height 70px, white background, steel-100 bottom border
-- Max width 1920px
+- Full viewport width; **inner row** centered at **max 1440px** (`--layout-chrome-inner-max-width`), not full 1920px content bleed
 - Left: change-product button + brand lockup
 - Right: action icons + avatar + menu trigger
+
+### App shell & breadcrumb
+- **TitanAppShell:** navbar (full width) → row `[ sidebar? | main column ]`. Sidebar **below** navbar, flush left; **breadcrumb strip + main** share the right column (width = viewport − sidebar). Inner column content: **max 1280px** by default, **max 1440px** from a **1440px** viewport up — `.titan-app-content-inner`.
+- **Breadcrumb:** `TitanBreadcrumb` is **presentational** — it does not mutate the path. The **app** (router/state) owns the trail; pass `items` (ancestors with `onPress`) + `currentLabel`. On navigation (link or **…** menu), update state so the path **truncates** to the chosen level (e.g. `Home › Apps › Games › Sports` → pick **Apps** → `Home › Apps`; with `…` hiding **Games**, open menu and pick **Games** → `Home › Apps › Games`).
+- **Sidebar:** stacked nav rows use `--sidebar-slot-nav-stack-gap` (**8px** / `--spacing-2xs`).
 
 ### Checkbox / Radio / Toggle
 - Steel family for base and selected states
@@ -164,8 +169,7 @@ Never use brand accent colors for paragraph/body/helper text.
 
 ### Grid
 - 16 columns
-- max width 1920px
-- centered container
+- Main content max width follows **1280 / 1440** rules (`--layout-content-max-width-sm` / `-md`) for centered chrome; outer grid may still reference **1920px** for rare full-bleed layouts
 - tokenized gap and horizontal padding
 
 ### Whitespace philosophy

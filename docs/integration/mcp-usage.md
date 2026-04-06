@@ -118,13 +118,15 @@ Vertical spacing (mandatory):
 
 ### Layout with sidebar (scroll rules — mandatory)
 
-When the layout includes a **sidebar** (appLayoutWithSidebar in composition-patterns.json):
+Prefer **`TitanAppShell`** from `titan-compositions` for navbar + sidebar + breadcrumb + main — it applies `titan-app-*` classes so only **`.titan-app-main`** scrolls.
+
+When building manually or using **appLayoutWithSidebar** in composition-patterns.json:
 
 1. **Sidebar does NOT scroll** — It is fixed on the left, full height. It must never scroll or go under the navbar.
 2. **Breadcrumb does NOT scroll** — Place the breadcrumb above the scrollable main area with `flexShrink: 0` and margin-bottom; only the main content below it scrolls.
 3. **Only the main content area scrolls** — The right column structure: Navbar (fixed) → Breadcrumb (fixed, no scroll) → `<main style={{ flex: 1, overflow: 'auto', minHeight: 0 }}>`. The right column wrapper must have `overflow: hidden` so only `<main>` scrolls.
 
-Use the exact structure from `appLayoutWithSidebar` in composition-patterns.json (right column: overflow hidden; main: flex 1, overflow auto, minHeight 0).
+Use the exact structure from `appLayoutWithSidebar` in composition-patterns.json (right column: overflow hidden; main: flex 1, overflow auto, minHeight 0), or mirror **`TitanAppShell`**.
 
 ### Navbar request
 
