@@ -2556,10 +2556,12 @@
   z-index: 1;
 }
 
-/* Breadcrumb */
+/* Breadcrumb — React Aria Breadcrumbs renders <ol.breadcrumb-nav>; reset UA list margins so strip height matches --breadcrumb-slot-min-height. */
 .breadcrumb-nav {
   width: 100%;
   min-height: var(--breadcrumb-slot-min-height);
+  margin: 0;
+  list-style: none;
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-3xs);
