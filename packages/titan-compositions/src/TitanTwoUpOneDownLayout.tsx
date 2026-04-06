@@ -14,10 +14,12 @@ export interface TitanTwoUpOneDownLayoutProps {
 }
 
 /**
- * Reusable page composition:
- * - Navbar
+ * Reusable page composition (no sidebar):
+ * - Navbar (full width; inner content centered via `TitanNavBar`)
  * - Breadcrumb (flush under navbar via `page--flush-breadcrumb` + `page-breadcrumb-host`)
  * - Content: 2/4 + 2/4 in first row, 4/4 in second row
+ *
+ * For **navbar + sidebar + breadcrumb + main**, use `TitanAppShell` instead.
  *
  * For pages with **navbar only** (no breadcrumb), use `<main className="page">` without
  * `page--flush-breadcrumb` so normal top padding remains. Do not use the flush classes

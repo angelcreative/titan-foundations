@@ -8,6 +8,7 @@
 .select-popover, .select-popover *,
 .card, .card *,
 .page, .page *,
+.titan-app-root, .titan-app-root *,
 .layout-table-wrap, .layout-table-wrap *,
 .pill-group, .pill-group *,
 .breadcrumb-root, .breadcrumb-root *,
@@ -155,10 +156,16 @@
   background: var(--surface-slot-page, var(--color-white-900));
 }
 
+@media (min-width: 1440px) {
+  .page {
+    max-width: var(--layout-content-max-width-md);
+  }
+}
+
 /*
  * Navbar + breadcrumb as one chrome: removes main top padding so the strip sits flush under the navbar.
  * Use ONLY with navbar + breadcrumb together. For navbar-only pages, use plain .page (keep padding-top).
- * See: TitanTwoUpOneDownLayout, docs/TITAN-DS-ARCHITECTURE-AND-WORKFLOW.md §8.1
+ * See: TitanTwoUpOneDownLayout, docs/components/breadcrumb.md (layout + flush)
  */
 .page.page--flush-breadcrumb {
   padding-top: 0;
@@ -169,9 +176,96 @@
   width: 100%;
   margin: 0;
   padding: 0;
-  background: transparent;
-  border: none;
+  background: var(--breadcrumb-slot-bg);
+  border-bottom: var(--breadcrumb-slot-border-bottom);
   box-shadow: none;
+}
+
+.page-breadcrumb-host .breadcrumb-nav {
+  background: transparent;
+  border-bottom: none;
+}
+
+/* ---------------------------------------------------------------------- */
+/* App shell: navbar (full width) → [ sidebar | breadcrumb + main ]        */
+/* Breadcrumb/main column = viewport − sidebar; inner content max-width     */
+/* 1280 by default; 1440 from 1440px viewport (see .titan-app-content-inner). */
+/* ---------------------------------------------------------------------- */
+
+.titan-app-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-slot-page, var(--color-white-900));
+}
+
+.titan-app-body {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  min-height: 0;
+  min-width: 0;
+}
+
+.titan-app-sidebar-slot {
+  flex-shrink: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+}
+
+.titan-app-sidebar-slot .titan-sidebar {
+  flex: 1;
+  min-height: 100%;
+}
+
+.titan-app-main-column {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.titan-app-breadcrumb-strip {
+  width: 100%;
+  flex-shrink: 0;
+  background: var(--breadcrumb-slot-bg);
+  border-bottom: var(--breadcrumb-slot-border-bottom);
+}
+
+.titan-app-breadcrumb-strip .breadcrumb-nav {
+  background: transparent;
+  border-bottom: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.titan-app-content-inner {
+  width: 100%;
+  max-width: var(--layout-content-max-width-sm);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--layout-content-pad-x);
+  padding-right: var(--layout-content-pad-x);
+  box-sizing: border-box;
+}
+
+@media (min-width: 1440px) {
+  .titan-app-content-inner {
+    max-width: var(--layout-chrome-inner-max-width, var(--layout-content-max-width-md));
+  }
+}
+
+.titan-app-main {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding-top: var(--spacing-m);
+  padding-bottom: var(--spacing-xl);
+  background: var(--surface-slot-page, var(--color-white-900));
 }
 
 .card {
@@ -841,13 +935,20 @@
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: calc(var(--navbar-max-width, var(--navbar-slot-max)) - var(--spacing-l) * 2);
+  max-width: min(
+    var(--layout-chrome-inner-max-width, var(--layout-content-max-width-md)),
+    100%
+  );
   height: var(--navbar-height, var(--navbar-slot-height));
   padding: 0 var(--spacing-l);
 }
 
 .navbar-inner {
-  max-width: var(--navbar-slot-max);
+  max-width: min(
+    var(--layout-chrome-inner-max-width, var(--layout-content-max-width-md)),
+    var(--navbar-slot-max)
+  );
+  width: 100%;
   height: 100%;
   margin: 0 auto;
   padding: var(--navbar-slot-pad-y) var(--navbar-slot-pad-x);
@@ -2455,8 +2556,22 @@
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-3xs);
-  padding: var(--spacing-xs) 0;
-  border-bottom: var(--stroke-slot-width) solid var(--color-black-200);
+  padding: var(--spacing-xs) var(--layout-content-pad-x);
+  box-sizing: border-box;
+  background: var(--breadcrumb-slot-bg);
+  border-bottom: var(--breadcrumb-slot-border-bottom);
+}
+
+.titan-app-content-inner .breadcrumb-nav {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.page-breadcrumb-host .breadcrumb-nav {
+  padding-left: 0;
+  padding-right: 0;
+  background: transparent;
+  border-bottom: none;
 }
 
 .breadcrumb-item {

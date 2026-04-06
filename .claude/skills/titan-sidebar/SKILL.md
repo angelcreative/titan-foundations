@@ -15,6 +15,11 @@ description: Titan sidebar layout variants — flat nav, titled sections, file t
 | `packages/titan-compositions/src/TitanSidebar.tsx` | All sidebar components |
 | `packages/titan-compositions/src/styles/titan-compositions.css` | Styles (`.titan-sidebar*` classes) |
 | `packages/titan-compositions/src/icons/lucideRegistry.ts` | Icon registry (`folder`, `folder-open`, `file-text`, etc.) |
+| `packages/titan-compositions/src/TitanAppShell.tsx` | Navbar + optional sidebar + breadcrumb + main (sidebar column does **not** span under navbar) |
+
+## App shell
+
+For full-page chrome, compose the sidebar **inside** `TitanAppShell` as the `sidebar` prop. The sidebar stays **left-aligned** under the navbar; **breadcrumb** and **main** occupy the remaining column (`titan-app-main-column`). See `docs/components/breadcrumb.md` and `.cursor/rules/breadcrumb.mdc`.
 
 ## Components
 

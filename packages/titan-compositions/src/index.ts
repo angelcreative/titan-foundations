@@ -127,6 +127,8 @@ export {
 } from './TitanTableExamples'
 export { TitanTwoUpOneDownLayout } from './TitanTwoUpOneDownLayout'
 export type { TitanTwoUpOneDownLayoutProps } from './TitanTwoUpOneDownLayout'
+export { TitanAppShell } from './TitanAppShell'
+export type { TitanAppShellProps } from './TitanAppShell'
 
 export {
   TitanSidebar,

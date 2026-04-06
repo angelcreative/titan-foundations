@@ -1,0 +1,20 @@
+---
+description: Breadcrumb + app shell layout (Titan)
+globs:
+  - packages/titan-compositions/src/TitanBreadcrumb.tsx
+  - packages/titan-compositions/src/TitanAppShell.tsx
+  - packages/titan-compositions/src/styles/titan-compositions.css
+---
+
+# Breadcrumb
+
+- Contract: `component-specs/breadcrumb.json`, `docs/components/breadcrumb.md`. PDF in `titan-comp-doc/breadcrumb.pdf` wins on conflict.
+- Current page is **never** a link; use `aria-current="page"` on the last segment.
+- Overflow: `TitanBreadcrumb` collapses middle segments into a `…` menu; each item must use `onPress` for navigation — the component does not change `items` by itself.
+- Strip styling: `--breadcrumb-slot-bg`, `--breadcrumb-slot-border-bottom` on `.breadcrumb-nav` (or parent strip: `.page-breadcrumb-host`, `.titan-app-breadcrumb-strip`).
+
+# App shell
+
+- **Navbar + sidebar + breadcrumb + main:** use `TitanAppShell` (`titan-app-*` classes). Navbar is full width; sidebar is left; breadcrumb + main share the column `viewport − sidebar width`.
+- **Navbar only + breadcrumb + cards:** `TitanTwoUpOneDownLayout` or `main.page.page--flush-breadcrumb` with `page-breadcrumb-host`.
+- Inner chrome max width: **1280** default, **1440** from **1440px** viewport — `.titan-app-content-inner` and `.page` (media query in `titan-compositions.css`).

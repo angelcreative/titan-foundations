@@ -15,9 +15,13 @@ For **consuming** the design system in external apps (via MCP, npm package, or C
 4. For UI pattern requests, resolve via `docs/anatomies/README.md` then read the selected anatomy file.
 5. For implementation ownership and overlap, read `docs/integration/decision-policy.md` and `docs/integration/component-inventory.md`.
 
-## Page chrome (navbar / breadcrumb)
+## Page chrome (navbar / sidebar / breadcrumb)
 
-When editing layouts in `titan-compositions`: **navbar + breadcrumb** together use `page page--flush-breadcrumb` and `page-breadcrumb-host` (see `TitanTwoUpOneDownLayout` and `titan-compositions.css`). **Navbar only** uses plain `page` (keep top padding). Full table: **`docs/TITAN-DS-ARCHITECTURE-AND-WORKFLOW.md`** §8.1.
+- **Navbar + breadcrumb + cards (no sidebar):** `TitanTwoUpOneDownLayout`, or `main.page.page--flush-breadcrumb` with `page-breadcrumb-host` (see `titan-compositions.css`). Navbar inner row is centered at max **1440px** (`.navbar-inner` uses `--layout-chrome-inner-max-width`).
+- **Navbar + sidebar + breadcrumb + main:** `TitanAppShell` — sidebar flush left under the navbar; breadcrumb and main sit in the column to the right (`viewport − sidebar`); inner content uses `.titan-app-content-inner` (1280 / 1440 rules).
+- **Navbar only** (no breadcrumb): plain `main.page` (keep default top padding). Do not use `page--flush-breadcrumb` without a breadcrumb row.
+
+Details: **`docs/components/breadcrumb.md`** (layout + tokens), **`.cursor/rules/breadcrumb.mdc`**.
 
 ## Mandatory behavior
 

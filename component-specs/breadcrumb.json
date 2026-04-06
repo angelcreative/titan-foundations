@@ -26,7 +26,9 @@
       "focusRing": "var(--focus-ring)",
       "focusOffset": "var(--focus-ring-offset)",
       "itemGap": "var(--spacing-2xs)",
-      "marginBottom": "var(--spacing-m) — space below breadcrumb so it does not stick to content; see docs/components/breadcrumb.md"
+      "marginBottom": "var(--spacing-m) — space below breadcrumb so it does not stick to content; see docs/components/breadcrumb.md",
+      "stripBackground": "var(--breadcrumb-slot-bg)",
+      "stripBorderBottom": "var(--breadcrumb-slot-border-bottom)"
     },
     "interaction": {
       "clickableItems": "All previous hierarchy items are interactive links/buttons.",

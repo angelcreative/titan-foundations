@@ -34,6 +34,7 @@ __export(index_exports, {
   TITAN_CLUSTER_DEFAULT_GROUP_COUNT: () => TITAN_CLUSTER_DEFAULT_GROUP_COUNT,
   TITAN_CLUSTER_DEFAULT_NODE_COUNT: () => TITAN_CLUSTER_DEFAULT_NODE_COUNT,
   TITAN_CLUSTER_GROUP_LABELS: () => TITAN_CLUSTER_GROUP_LABELS,
+  TitanAppShell: () => TitanAppShell,
   TitanAvatar: () => TitanAvatar,
   TitanBadge: () => TitanBadge,
   TitanBadgeAnchor: () => TitanBadgeAnchor,
@@ -2327,10 +2328,26 @@ function TitanTwoUpOneDownLayout({
   ] });
 }
 
+// src/TitanAppShell.tsx
+var import_jsx_runtime24 = require("react/jsx-runtime");
+function TitanAppShell({ navbar, sidebar, breadcrumb, children, className }) {
+  const rootClass = ["titan-app-root", className].filter(Boolean).join(" ");
+  return /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { className: rootClass, children: [
+    navbar,
+    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { className: "titan-app-body", children: [
+      sidebar ? /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("div", { className: "titan-app-sidebar-slot", children: sidebar }) : null,
+      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { className: "titan-app-main-column", children: [
+        breadcrumb ? /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("div", { className: "titan-app-breadcrumb-strip", children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("div", { className: "titan-app-content-inner", children: breadcrumb }) }) : null,
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("main", { className: "titan-app-main", children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("div", { className: "titan-app-content-inner", children }) })
+      ] })
+    ] })
+  ] });
+}
+
 // src/TitanSidebar.tsx
 var import_react6 = require("react");
 var import_react_aria_components18 = require("react-aria-components");
-var import_jsx_runtime24 = require("react/jsx-runtime");
+var import_jsx_runtime25 = require("react/jsx-runtime");
 var SidebarContext = (0, import_react6.createContext)({
   collapsed: false,
   activeId: null,
@@ -2357,14 +2374,14 @@ function TitanSidebar({
     },
     [isControlled, onActiveChange]
   );
-  return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(SidebarContext.Provider, { value: { collapsed, activeId, setActiveId }, children: /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(SidebarContext.Provider, { value: { collapsed, activeId, setActiveId }, children: /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(
     "aside",
     {
       className: "titan-sidebar",
       ...collapsed ? { "data-collapsed": "" } : {},
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("div", { className: "titan-sidebar-body", children }),
-        onToggle && /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { className: "titan-sidebar-body", children }),
+        onToggle && /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
           import_react_aria_components18.Button,
           {
             className: "titan-sidebar-toggle",
@@ -2378,7 +2395,7 @@ function TitanSidebar({
   ) });
 }
 function TitanSidebarHeader({ children }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("div", { className: "titan-sidebar-header", children });
+  return /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { className: "titan-sidebar-header", children });
 }
 function TitanSidebarItem({
   id,
@@ -2389,7 +2406,7 @@ function TitanSidebarItem({
 }) {
   const { collapsed, activeId, setActiveId } = (0, import_react6.useContext)(SidebarContext);
   const isActive = activeId === id;
-  return /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(
     import_react_aria_components18.Button,
     {
       className: "titan-sidebar-item",
@@ -2403,13 +2420,13 @@ function TitanSidebarItem({
       },
       children: [
         icon ? renderIconNode(icon) : null,
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { className: "titan-sidebar-item-label", children })
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { className: "titan-sidebar-item-label", children })
       ]
     }
   );
 }
 function TitanSidebarSection({ children }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("div", { className: "titan-sidebar-section", children });
+  return /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { className: "titan-sidebar-section", children });
 }
 function TitanSidebarSearch({
   placeholder = "Search\u2026",
@@ -2419,7 +2436,7 @@ function TitanSidebarSearch({
 }) {
   const { collapsed } = (0, import_react6.useContext)(SidebarContext);
   if (collapsed) return null;
-  return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("div", { className: "titan-sidebar-search", children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { className: "titan-sidebar-search", children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
     TitanInputField,
     {
       "aria-label": ariaLabel,
@@ -2432,7 +2449,7 @@ function TitanSidebarSearch({
   ) });
 }
 function TitanSidebarTree({ children }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("div", { className: "titan-sidebar-tree", children });
+  return /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { className: "titan-sidebar-tree", children });
 }
 function TitanSidebarTreeItem({
   id,
@@ -2442,7 +2459,7 @@ function TitanSidebarTreeItem({
 }) {
   const { collapsed, activeId, setActiveId } = (0, import_react6.useContext)(SidebarContext);
   const isActive = activeId === id;
-  return /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(
     import_react_aria_components18.Button,
     {
       className: "titan-sidebar-item titan-sidebar-tree-item",
@@ -2455,7 +2472,7 @@ function TitanSidebarTreeItem({
       },
       children: [
         icon ? renderIconNode(icon) : renderIconNode("file-text"),
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { className: "titan-sidebar-item-label", children })
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { className: "titan-sidebar-item-label", children })
       ]
     }
   );
@@ -2475,14 +2492,14 @@ function TitanSidebarFolder({
     if (!isControlled) setUncontrolledOpen(next);
     onExpandedChange?.(next);
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(
     "div",
     {
       className: "titan-sidebar-folder",
       "data-folder-id": id,
       ...open ? { "data-open": "true" } : {},
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(
           import_react_aria_components18.Button,
           {
             className: "titan-sidebar-folder-row",
@@ -2490,13 +2507,13 @@ function TitanSidebarFolder({
             "aria-controls": `${id}-folder-children`,
             onPress: () => setOpen(!open),
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { className: "titan-sidebar-folder-toggle", "aria-hidden": true, children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { className: "titan-sidebar-folder-chevron", "aria-hidden": true, children: renderIconNode("chevron-right") }) }),
-              /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { className: "titan-sidebar-folder-icon", "aria-hidden": true, children: renderIconNode(open ? "folder-open" : "folder") }),
-              /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { className: "titan-sidebar-folder-label", children: label })
+              /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { className: "titan-sidebar-folder-toggle", "aria-hidden": true, children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { className: "titan-sidebar-folder-chevron", "aria-hidden": true, children: renderIconNode("chevron-right") }) }),
+              /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { className: "titan-sidebar-folder-icon", "aria-hidden": true, children: renderIconNode(open ? "folder-open" : "folder") }),
+              /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { className: "titan-sidebar-folder-label", children: label })
             ]
           }
         ),
-        children ? /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
+        children ? /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
           "div",
           {
             id: `${id}-folder-children`,
@@ -2505,7 +2522,7 @@ function TitanSidebarFolder({
             "aria-hidden": !open,
             "aria-label": typeof label === "string" ? label : "Folder contents",
             ...open ? { "data-open": "true" } : {},
-            children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("div", { className: "titan-sidebar-folder-children", children })
+            children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { className: "titan-sidebar-folder-children", children })
           }
         ) : null
       ]
@@ -2515,7 +2532,7 @@ function TitanSidebarFolder({
 
 // src/TitanSlider.tsx
 var import_react_aria_components19 = require("react-aria-components");
-var import_jsx_runtime25 = require("react/jsx-runtime");
+var import_jsx_runtime26 = require("react/jsx-runtime");
 function TitanSlider({
   label,
   defaultValue = 50,
@@ -2528,7 +2545,7 @@ function TitanSlider({
   formatOptions,
   className = ""
 }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(
     import_react_aria_components19.Slider,
     {
       className: `slider-root ${className}`.trim(),
@@ -2540,19 +2557,19 @@ function TitanSlider({
       onChange,
       formatOptions,
       children: [
-        (label || showOutput) && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { className: "slider-header", children: [
-          label && /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_react_aria_components19.Label, { className: "slider-label", children: label }),
-          showOutput && /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_react_aria_components19.SliderOutput, { className: "slider-output" })
+        (label || showOutput) && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { className: "slider-header", children: [
+          label && /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(import_react_aria_components19.Label, { className: "slider-label", children: label }),
+          showOutput && /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(import_react_aria_components19.SliderOutput, { className: "slider-output" })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_react_aria_components19.SliderTrack, { className: "slider-track", children: ({ state }) => /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_jsx_runtime25.Fragment, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(import_react_aria_components19.SliderTrack, { className: "slider-track", children: ({ state }) => /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(import_jsx_runtime26.Fragment, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
             "div",
             {
               className: "slider-track-fill",
               style: { width: `${state.getThumbPercent(0) * 100}%` }
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_react_aria_components19.SliderThumb, { className: "slider-thumb", index: 0 })
+          /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(import_react_aria_components19.SliderThumb, { className: "slider-thumb", index: 0 })
         ] }) })
       ]
     }
@@ -2570,7 +2587,7 @@ function TitanRangeSlider({
   formatOptions,
   className = ""
 }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(
     import_react_aria_components19.Slider,
     {
       className: `slider-root slider-root-range ${className}`.trim(),
@@ -2582,23 +2599,23 @@ function TitanRangeSlider({
       onChange,
       formatOptions,
       children: [
-        (label || showOutput) && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { className: "slider-header", children: [
-          label && /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_react_aria_components19.Label, { className: "slider-label", children: label }),
-          showOutput && /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_react_aria_components19.SliderOutput, { className: "slider-output" })
+        (label || showOutput) && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { className: "slider-header", children: [
+          label && /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(import_react_aria_components19.Label, { className: "slider-label", children: label }),
+          showOutput && /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(import_react_aria_components19.SliderOutput, { className: "slider-output" })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_react_aria_components19.SliderTrack, { className: "slider-track", children: ({ state }) => {
+        /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(import_react_aria_components19.SliderTrack, { className: "slider-track", children: ({ state }) => {
           const left = state.getThumbPercent(0) * 100;
           const right = state.getThumbPercent(1) * 100;
-          return /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_jsx_runtime25.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
+          return /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(import_jsx_runtime26.Fragment, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
               "div",
               {
                 className: "slider-track-fill",
                 style: { left: `${left}%`, width: `${right - left}%` }
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_react_aria_components19.SliderThumb, { className: "slider-thumb", index: 0 }),
-            /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_react_aria_components19.SliderThumb, { className: "slider-thumb", index: 1 })
+            /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(import_react_aria_components19.SliderThumb, { className: "slider-thumb", index: 0 }),
+            /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(import_react_aria_components19.SliderThumb, { className: "slider-thumb", index: 1 })
           ] });
         } })
       ]
@@ -2608,7 +2625,7 @@ function TitanRangeSlider({
 
 // src/TitanProgressBar.tsx
 var import_react_aria_components20 = require("react-aria-components");
-var import_jsx_runtime26 = require("react/jsx-runtime");
+var import_jsx_runtime27 = require("react/jsx-runtime");
 function TitanProgressBar({
   label,
   value = 0,
@@ -2619,7 +2636,7 @@ function TitanProgressBar({
   className = ""
 }) {
   const percent = (value - minValue) / (maxValue - minValue) * 100;
-  return /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
     import_react_aria_components20.ProgressBar,
     {
       className: `progress-root ${className}`.trim(),
@@ -2627,12 +2644,12 @@ function TitanProgressBar({
       minValue,
       maxValue,
       formatOptions,
-      children: ({ valueText }) => /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(import_jsx_runtime26.Fragment, { children: [
-        (label || showValue) && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { className: "progress-header", children: [
-          label && /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(import_react_aria_components20.Label, { className: "progress-label", children: label }),
-          showValue && /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("span", { className: "progress-value", children: valueText })
+      children: ({ valueText }) => /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(import_jsx_runtime27.Fragment, { children: [
+        (label || showValue) && /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { className: "progress-header", children: [
+          label && /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(import_react_aria_components20.Label, { className: "progress-label", children: label }),
+          showValue && /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("span", { className: "progress-value", children: valueText })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { className: "progress-track", children: /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { className: "progress-fill", style: { width: `${percent}%` } }) })
+        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("div", { className: "progress-track", children: /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("div", { className: "progress-fill", style: { width: `${percent}%` } }) })
       ] })
     }
   );
@@ -2642,7 +2659,7 @@ function TitanProgressBar({
 var import_react7 = require("react");
 var import_react_aria_components21 = require("react-aria-components");
 var import_date = require("@internationalized/date");
-var import_jsx_runtime27 = require("react/jsx-runtime");
+var import_jsx_runtime28 = require("react/jsx-runtime");
 function CalendarDropdown({
   options,
   value,
@@ -2676,8 +2693,8 @@ function CalendarDropdown({
     const active = listRef.current.querySelector('[data-active="true"]');
     if (active) active.scrollIntoView({ block: "nearest" });
   }, [open]);
-  return /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { className: `cal-dropdown ${className}`.trim(), ref, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { className: `cal-dropdown ${className}`.trim(), ref, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(
       "button",
       {
         type: "button",
@@ -2686,18 +2703,18 @@ function CalendarDropdown({
         "aria-haspopup": "listbox",
         "aria-expanded": open,
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("span", { children: selected?.label ?? "" }),
+          /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("span", { children: selected?.label ?? "" }),
           renderIconNode("chevron-down")
         ]
       }
     ),
-    open && /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
+    open && /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
       "ul",
       {
         className: `cal-dropdown-menu${flipUp ? " cal-dropdown-menu-flip" : ""}`,
         role: "listbox",
         ref: listRef,
-        children: options.map((o) => /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
+        children: options.map((o) => /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
           "li",
           {
             role: "option",
@@ -2749,8 +2766,8 @@ function TitanCalendar({
     () => years.map((y) => ({ value: y, label: String(y) })),
     [years]
   );
-  return /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { className: `calendar-wrapper ${className}`.trim(), children: [
-    /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { className: `calendar-wrapper ${className}`.trim(), children: [
+    /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(
       import_react_aria_components21.Calendar,
       {
         "aria-label": "Calendar",
@@ -2763,10 +2780,10 @@ function TitanCalendar({
         maxValue,
         isDisabled,
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("header", { className: "calendar-header", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(import_react_aria_components21.Button, { slot: "previous", className: "calendar-nav-btn", children: renderIconNode("chevron-left") }),
-            /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { className: "calendar-selects", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("header", { className: "calendar-header", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(import_react_aria_components21.Button, { slot: "previous", className: "calendar-nav-btn", children: renderIconNode("chevron-left") }),
+            /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { className: "calendar-selects", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
                 CalendarDropdown,
                 {
                   options: months,
@@ -2774,7 +2791,7 @@ function TitanCalendar({
                   onChange: (m) => setFocusedDate(focusedDate.set({ month: m }))
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
                 CalendarDropdown,
                 {
                   className: "cal-dropdown-year",
@@ -2784,19 +2801,19 @@ function TitanCalendar({
                 }
               )
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(import_react_aria_components21.Button, { slot: "next", className: "calendar-nav-btn", children: renderIconNode("chevron-right") })
+            /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(import_react_aria_components21.Button, { slot: "next", className: "calendar-nav-btn", children: renderIconNode("chevron-right") })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(import_react_aria_components21.CalendarGrid, { className: "calendar-grid", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(import_react_aria_components21.CalendarGridHeader, { children: (day) => /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(import_react_aria_components21.CalendarHeaderCell, { className: "calendar-header-cell" }) }),
-            /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(import_react_aria_components21.CalendarGridBody, { children: (date) => /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(import_react_aria_components21.CalendarCell, { date, className: "calendar-cell" }) })
+          /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(import_react_aria_components21.CalendarGrid, { className: "calendar-grid", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(import_react_aria_components21.CalendarGridHeader, { children: (day) => /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(import_react_aria_components21.CalendarHeaderCell, { className: "calendar-header-cell" }) }),
+            /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(import_react_aria_components21.CalendarGridBody, { children: (date) => /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(import_react_aria_components21.CalendarCell, { date, className: "calendar-cell" }) })
           ] })
         ]
       }
     ),
-    showTime && /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { className: "calendar-time", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { className: "calendar-time-field", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("label", { className: "calendar-time-label", children: "Hour" }),
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
+    showTime && /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { className: "calendar-time", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { className: "calendar-time-field", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("label", { className: "calendar-time-label", children: "Hour" }),
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
           "input",
           {
             type: "text",
@@ -2819,10 +2836,10 @@ function TitanCalendar({
           }
         )
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("span", { className: "calendar-time-separator", children: ":" }),
-      /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { className: "calendar-time-field", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("label", { className: "calendar-time-label", children: "Minute" }),
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("span", { className: "calendar-time-separator", children: ":" }),
+      /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { className: "calendar-time-field", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("label", { className: "calendar-time-label", children: "Minute" }),
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
           "input",
           {
             type: "text",
@@ -2851,7 +2868,7 @@ function TitanCalendar({
 
 // src/TitanLink.tsx
 var import_react_aria_components22 = require("react-aria-components");
-var import_jsx_runtime28 = require("react/jsx-runtime");
+var import_jsx_runtime29 = require("react/jsx-runtime");
 function TitanLink({
   children,
   size = "m",
@@ -2860,7 +2877,7 @@ function TitanLink({
   ...props
 }) {
   const mergedClassName = [`titan-link`, `text-link-${size}`, className].filter(Boolean).join(" ");
-  return /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(import_react_aria_components22.Link, { className: mergedClassName, ...props, children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(import_react_aria_components22.Link, { className: mergedClassName, ...props, children: [
     children,
     withIcon && renderIconNode("redirect")
   ] });
@@ -2868,7 +2885,7 @@ function TitanLink({
 
 // src/TitanPillGroup.tsx
 var import_react_aria_components23 = require("react-aria-components");
-var import_jsx_runtime29 = require("react/jsx-runtime");
+var import_jsx_runtime30 = require("react/jsx-runtime");
 function TitanPillGroup({
   children,
   label,
@@ -2876,14 +2893,14 @@ function TitanPillGroup({
   "aria-label": ariaLabel,
   className = ""
 }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(
     import_react_aria_components23.TagGroup,
     {
       className: ["titan-pill-group", className].filter(Boolean).join(" "),
       "aria-label": ariaLabel ?? label,
       onRemove: onRemove ? (keys) => onRemove(keys) : void 0,
       children: [
-        label && /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { className: "titan-pill-group-label", children: label }),
+        label && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)("span", { className: "titan-pill-group-label", children: label }),
         children
       ]
     }
@@ -2893,12 +2910,12 @@ function TitanPillList({
   children,
   className = ""
 }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(import_react_aria_components23.TagList, { className: ["titan-pill-list", className].filter(Boolean).join(" "), children });
+  return /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_react_aria_components23.TagList, { className: ["titan-pill-list", className].filter(Boolean).join(" "), children });
 }
 
 // src/TitanButtonGroup.tsx
 var import_react_aria_components24 = require("react-aria-components");
-var import_jsx_runtime30 = require("react/jsx-runtime");
+var import_jsx_runtime31 = require("react/jsx-runtime");
 function TitanButtonGroup({
   children,
   orientation = "horizontal",
@@ -2906,7 +2923,7 @@ function TitanButtonGroup({
   ...props
 }) {
   const mergedClassName = ["titan-button-group", `body-m-400`, className].filter(Boolean).join(" ");
-  return /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(
     import_react_aria_components24.ToggleButtonGroup,
     {
       selectionMode: "single",
@@ -2923,18 +2940,18 @@ function TitanIndividualButton({
   ...props
 }) {
   const mergedClassName = ["titan-individual-button", "heading-xs-500", className].filter(Boolean).join(" ");
-  return /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_react_aria_components24.ToggleButton, { className: mergedClassName, ...props, children });
+  return /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(import_react_aria_components24.ToggleButton, { className: mergedClassName, ...props, children });
 }
 
 // src/TitanDivider.tsx
-var import_jsx_runtime31 = require("react/jsx-runtime");
+var import_jsx_runtime32 = require("react/jsx-runtime");
 function TitanDivider({ className = "" }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("hr", { className: ["titan-divider", className].filter(Boolean).join(" ") });
+  return /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("hr", { className: ["titan-divider", className].filter(Boolean).join(" ") });
 }
 
 // src/TitanCollapsible.tsx
 var import_react8 = require("react");
-var import_jsx_runtime32 = require("react/jsx-runtime");
+var import_jsx_runtime33 = require("react/jsx-runtime");
 function TitanCollapsible({
   children,
   title,
@@ -2950,8 +2967,8 @@ function TitanCollapsible({
     if (!isControlled) setInternalCollapsed(next);
     onChange?.(next);
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)("div", { className: "titan-collapsible", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)("div", { className: "titan-collapsible", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(
       "button",
       {
         type: "button",
@@ -2960,12 +2977,12 @@ function TitanCollapsible({
         "aria-expanded": !collapsed,
         onClick: handleToggle,
         children: [
-          title != null && /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("span", { className: "titan-collapsible-title", children: title }),
-          /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("span", { className: "titan-collapsible-chevron", "aria-hidden": "true", children: collapsed ? renderIconNode("chevron-down") : renderIconNode("chevron-up") })
+          title != null && /* @__PURE__ */ (0, import_jsx_runtime33.jsx)("span", { className: "titan-collapsible-title", children: title }),
+          /* @__PURE__ */ (0, import_jsx_runtime33.jsx)("span", { className: "titan-collapsible-chevron", "aria-hidden": "true", children: collapsed ? renderIconNode("chevron-down") : renderIconNode("chevron-up") })
         ]
       }
     ),
-    !collapsed && /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("div", { className: "titan-collapsible-content", children })
+    !collapsed && /* @__PURE__ */ (0, import_jsx_runtime33.jsx)("div", { className: "titan-collapsible-content", children })
   ] });
 }
 
@@ -3027,7 +3044,7 @@ function getTitanClusterSegmentLabel(groupIndex, groupCount, segmentLabels) {
 // src/cluster/TitanClusterGraphCanvas.tsx
 var import_react9 = require("react");
 var d3 = __toESM(require("d3"), 1);
-var import_jsx_runtime33 = require("react/jsx-runtime");
+var import_jsx_runtime34 = require("react/jsx-runtime");
 function TitanClusterGraphCanvas({
   width,
   height,
@@ -3239,7 +3256,7 @@ function TitanClusterGraphCanvas({
       simulation.stop();
     };
   }, [width, height, data, groupCount, segmentLabels]);
-  return /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
     "svg",
     {
       ref: svgRef,
@@ -3251,7 +3268,7 @@ function TitanClusterGraphCanvas({
 }
 
 // src/TitanClusterGraph.tsx
-var import_jsx_runtime34 = require("react/jsx-runtime");
+var import_jsx_runtime35 = require("react/jsx-runtime");
 function TitanClusterGraph({
   data,
   height = 420,
@@ -3294,9 +3311,9 @@ function TitanClusterGraph({
     onSelectedNodeChange?.(node);
   };
   if (data.nodes.length === 0) {
-    return /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("div", { className, style, children: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("p", { className: "text-secondary", style: { margin: 0 }, children: emptyState }) });
+    return /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("div", { className, style, children: /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { className: "text-secondary", style: { margin: 0 }, children: emptyState }) });
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)(
     "div",
     {
       ref: wrapRef,
@@ -3311,7 +3328,7 @@ function TitanClusterGraph({
         ...style
       },
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("div", { style: { width: "100%", height }, children: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("div", { style: { width: "100%", height }, children: /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(
           TitanClusterGraphCanvas,
           {
             width,
@@ -3323,7 +3340,7 @@ function TitanClusterGraph({
             segmentLabels
           }
         ) }),
-        withDetailsDialog && /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
+        withDetailsDialog && /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(
           TitanDialog,
           {
             isOpen: selectedNode != null,
@@ -3332,7 +3349,7 @@ function TitanClusterGraph({
             },
             "aria-label": selectedNode ? `Profile: ${selectedNode.name}` : "Profile",
             closeButton: "none",
-            body: selectedNode ? /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(
+            body: selectedNode ? /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)(
               "div",
               {
                 style: {
@@ -3343,7 +3360,7 @@ function TitanClusterGraph({
                   gap: "var(--spacing-s)"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(
                     "div",
                     {
                       style: {
@@ -3352,10 +3369,10 @@ function TitanClusterGraph({
                         justifyContent: "flex-end",
                         marginBottom: "calc(-1 * var(--spacing-3xs))"
                       },
-                      children: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(TitanButton, { variant: "secondary", onPress: () => setSelectedNode(null), children: "Close" })
+                      children: /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(TitanButton, { variant: "secondary", onPress: () => setSelectedNode(null), children: "Close" })
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(
                     "div",
                     {
                       style: {
@@ -3365,7 +3382,7 @@ function TitanClusterGraph({
                         padding: 4,
                         background: TITAN_CLUSTER_COLORS[selectedNode.group] ?? TITAN_CLUSTER_COLORS[0]
                       },
-                      children: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
+                      children: /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(
                         "img",
                         {
                           src: selectedNode.avatarUrl,
@@ -3381,7 +3398,7 @@ function TitanClusterGraph({
                       )
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(
                     "h2",
                     {
                       id: "cluster-node-name",
@@ -3393,7 +3410,7 @@ function TitanClusterGraph({
                       children: selectedNode.name
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(
                     "span",
                     {
                       style: {
@@ -3416,7 +3433,7 @@ function TitanClusterGraph({
                       )
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(
                     "p",
                     {
                       style: {
@@ -3524,6 +3541,7 @@ function buildTitanClusterMockData(groupCount, width, height, nodeCount = TITAN_
   TITAN_CLUSTER_DEFAULT_GROUP_COUNT,
   TITAN_CLUSTER_DEFAULT_NODE_COUNT,
   TITAN_CLUSTER_GROUP_LABELS,
+  TitanAppShell,
   TitanAvatar,
   TitanBadge,
   TitanBadgeAnchor,

@@ -27,6 +27,13 @@ Rules:
 - Ellipsis collapse item for long paths
 - Expandable overflow segment (menu/popover) when requested by flow
 
+## Layout (app shell)
+
+- **Navbar:** full viewport width; inner row centered at **max 1440px** (`--layout-chrome-inner-max-width`).
+- **With sidebar:** sidebar sits **below** the navbar, flush **left**; **breadcrumb** and **main** live in the column **to the right** (width = viewport − sidebar). **Without** a sidebar, that column is full width.
+- **Inner content** for breadcrumb and main in that column: **max 1280px** by default; **max 1440px** from a **1440px** viewport width upward, centered (`--layout-content-max-width-sm` / `--layout-content-max-width-md`). Implement with `TitanAppShell` + `.titan-app-content-inner`.
+- **Without sidebar:** `TitanTwoUpOneDownLayout` or a single `.page` uses the same max-width rules for the main column.
+
 ## Tokens
 
 - Label: `--text-body`
@@ -36,7 +43,9 @@ Rules:
 - Separator: `--divider-strong`
 - Focus: `--focus-ring`, `--focus-ring-offset`
 - Item gap: `--spacing-2xs`
-- **Margin below breadcrumb:** `margin-bottom: var(--spacing-m)` or `var(--layout-grid-gap)` so the breadcrumb does not stick to the content below. Always apply when the breadcrumb is followed by page content (cards, sections).
+- **Strip surface:** `--breadcrumb-slot-bg`
+- **Strip border:** `--breadcrumb-slot-border-bottom`
+- **Margin below breadcrumb:** `margin-bottom: var(--spacing-m)` or `var(--layout-grid-gap)` when the breadcrumb is followed by page content (cards, sections). In `TitanAppShell`, vertical rhythm uses `.titan-app-main` padding instead.
 
 ## States
 

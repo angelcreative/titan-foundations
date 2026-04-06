@@ -103,6 +103,7 @@ import {
   TitanCalendar,
 
   TitanTwoUpOneDownLayout,
+  TitanAppShell,
   TitanTable,
   TitanTableHeader,
   TitanColumn,
@@ -1442,30 +1443,16 @@ function ShowcaseCard({ id, title, ariaImports, ariaDesc, ariaComponents, founda
 /*  Component source code strings                                      */
 /* ------------------------------------------------------------------ */
 
-const CODE_BREADCRUMB = `import { Breadcrumbs, Breadcrumb, Button } from 'react-aria-components'
-import { ChevronRight } from 'lucide-react'
+const CODE_BREADCRUMB = `import { TitanBreadcrumb } from 'titan-compositions'
 
-export function TitanBreadcrumb({ items, currentLabel, ariaLabel = 'Breadcrumb' }) {
-  return (
-    <Breadcrumbs className="breadcrumb-nav" aria-label={ariaLabel}>
-      {items.map((item) => (
-        <Breadcrumb key={item.id} className="breadcrumb-item">
-          <Button className="breadcrumb-link" onPress={item.onPress}>
-            {item.label}
-          </Button>
-          <span className="breadcrumb-separator" aria-hidden="true">
-            <ChevronRight />
-          </span>
-        </Breadcrumb>
-      ))}
-      <Breadcrumb className="breadcrumb-item">
-        <span className="breadcrumb-current" aria-current="page">
-          {currentLabel}
-        </span>
-      </Breadcrumb>
-    </Breadcrumbs>
-  )
-}`
+<TitanBreadcrumb
+  items={[
+    { id: 'home', label: 'Home', onPress: () => navigate('/home') },
+    { id: 'reports', label: 'Reports', onPress: () => navigate('/reports') },
+  ]}
+  currentLabel="Overview"
+  maxVisible={5}
+/>`
 
 const CODE_CARDGRID = `export function TitanCardGrid({ children }) {
   return <div className="cards-layout-grid">{children}</div>
@@ -2060,6 +2047,8 @@ function App() {
   const [pills, setPills] = useState(INITIAL_PILL_ITEMS)
   const [toasts, setToasts] = useState([])
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [breadcrumbNavFeedback, setBreadcrumbNavFeedback] = useState(null)
+  const [appShellSidebarCollapsed, setAppShellSidebarCollapsed] = useState(false)
   const toastIdRef = useRef(0)
   const mainScrollRef = useRef(null)
 
@@ -2299,12 +2288,13 @@ function App() {
             foundations={[
               { category: 'Spacing', detail: '--spacing-xl and --spacing-2xs for height calculation and item gaps.' },
               { category: 'Typography', detail: '--button-slot-font-size, --button-slot-line-height, --button-slot-font-weight for consistent text sizing with the button scale.' },
-              { category: 'Borders', detail: '--stroke-slot-width for the bottom separator line.' },
+              { category: 'Borders', detail: '--breadcrumb-slot-border-bottom on the strip; --stroke-s for separators.' },
+              { category: 'Surface', detail: '--breadcrumb-slot-bg for the trail strip (distinct from page canvas).' },
               { category: 'Icons', detail: '--icon-size-s and --icon-stroke-s for the ChevronRight separator icon.' },
             ]}
             tokenGroups={[
               { label: 'Color', tokens: ['--text-link', '--text-link-hover', '--text-muted', '--divider-strong', '--color-black-200'] },
-              { label: 'Layout', tokens: ['--spacing-xl', '--spacing-2xs', '--stroke-slot-width'] },
+              { label: 'Layout', tokens: ['--spacing-xl', '--spacing-2xs', '--breadcrumb-slot-bg', '--breadcrumb-slot-border-bottom'] },
               { label: 'Typography', tokens: ['--button-slot-font-size', '--button-slot-line-height', '--button-slot-font-weight', '--button-slot-font-family'] },
               { label: 'Icons', tokens: ['--icon-size-s', '--icon-stroke-s'] },
             ]}
@@ -2319,10 +2309,11 @@ function App() {
               { name: 'Breadcrumb current page', description: 'Non-clickable current page label.', rows: [
                 { property: 'Text color', chain: [{ label: 'color', type: 'component' }, { label: '--color-steel-500', type: 'primitive' }, { label: '#9CA3AF', type: 'value', swatch: '#9CA3AF' }] },
               ]},
-              { name: 'Breadcrumb nav bar', description: 'Full-width container with bottom border.', rows: [
+              { name: 'Breadcrumb nav bar', description: 'Full-width strip with background and bottom border.', rows: [
                 { property: 'Min height', chain: [{ label: 'min-height', type: 'component' }, { label: '40px', type: 'value' }] },
                 { property: 'Padding', chain: [{ label: '--spacing-xs', type: 'primitive' }, { label: '8px', type: 'value' }] },
-                { property: 'Border bottom', chain: [{ label: '--stroke-slot-width', type: 'component' }, { label: '--color-black-200', type: 'primitive' }, { label: '#E5E7EB', type: 'value', swatch: '#E5E7EB' }] },
+                { property: 'Background', chain: [{ label: '--breadcrumb-slot-bg', type: 'component' }, { label: '--color-black-100', type: 'primitive' }, { label: '#F3F4F6', type: 'value', swatch: '#F3F4F6' }] },
+                { property: 'Border bottom', chain: [{ label: '--breadcrumb-slot-border-bottom', type: 'component' }, { label: '--color-black-200', type: 'primitive' }, { label: '#E5E7EB', type: 'value', swatch: '#E5E7EB' }] },
                 { property: 'Separator icon', chain: [{ label: '--icon-size-s', type: 'primitive' }, { label: '12px', type: 'value' }] },
               ]},
             ]}
@@ -2354,6 +2345,37 @@ function App() {
                 />
               </div>
               <div>
+                <div style={{ fontSize: '12px', color: '#888', marginBottom: 4 }}>
+                  Overflow menu (…): choose a middle segment — parent handles navigation (simulated below)
+                </div>
+                <TitanBreadcrumb
+                  items={[
+                    { id: 'home', label: 'Home', onPress: () => setBreadcrumbNavFeedback({ source: 'link', id: 'home', label: 'Home' }) },
+                    { id: 'dashboard', label: 'Dashboard', onPress: () => setBreadcrumbNavFeedback({ source: 'link', id: 'dashboard', label: 'Dashboard' }) },
+                    { id: 'projects', label: 'Projects', onPress: () => setBreadcrumbNavFeedback({ source: 'link', id: 'projects', label: 'Projects' }) },
+                    { id: 'alpha', label: 'Alpha', onPress: () => setBreadcrumbNavFeedback({ source: 'link', id: 'alpha', label: 'Alpha' }) },
+                    { id: 'settings', label: 'Settings', onPress: () => setBreadcrumbNavFeedback({ source: 'link', id: 'settings', label: 'Settings' }) },
+                    { id: 'general', label: 'General', onPress: () => setBreadcrumbNavFeedback({ source: 'link', id: 'general', label: 'General' }) },
+                  ]}
+                  currentLabel="Notifications"
+                  maxVisible={5}
+                />
+                {breadcrumbNavFeedback ? (
+                  <p
+                    role="status"
+                    aria-live="polite"
+                    style={{
+                      fontSize: 'var(--font-size-s)',
+                      color: 'var(--copy-slot-secondary)',
+                      marginTop: 'var(--spacing-s)',
+                    }}
+                  >
+                    Simulated navigation:{' '}
+                    <strong>{breadcrumbNavFeedback.label}</strong> ({breadcrumbNavFeedback.source})
+                  </p>
+                ) : null}
+              </div>
+              <div>
                 <div style={{ fontSize: '12px', color: '#888', marginBottom: 4 }}>With disabled item</div>
                 <TitanBreadcrumb
                   items={[
@@ -2363,6 +2385,88 @@ function App() {
                   currentLabel="Old reports"
                 />
               </div>
+            </div>
+          </ShowcaseCard>
+
+          {/* ── App shell (navbar + sidebar + breadcrumb + main) ───────── */}
+          <ShowcaseCard
+            id="appshell"
+            title="App shell (navbar + sidebar + breadcrumb + main)"
+            ariaImports="import { TitanAppShell, TitanNavbar, TitanSidebar, TitanSidebarItem, TitanBreadcrumb } from 'titan-compositions'"
+            ariaDesc="Page chrome: navbar spans the viewport; sidebar is fixed to the left below the navbar; breadcrumb and main share the column to the right (viewport minus sidebar). Inner content uses .titan-app-content-inner (max 1280px, 1440px from 1440px viewport up), centered."
+            ariaComponents={['TitanAppShell', 'TitanNavbar', 'TitanSidebar', 'TitanBreadcrumb']}
+            foundations={[
+              { category: 'Layout', detail: 'titan-app-root → titan-app-body → [ titan-app-sidebar-slot | titan-app-main-column ] (breadcrumb strip + main).' },
+              { category: 'Widths', detail: 'Navbar inner .navbar-inner max 1440px; app column inner uses --layout-chrome-inner-max-width via media query.' },
+            ]}
+            tokenGroups={[
+              { label: 'Breadcrumb strip', tokens: ['--breadcrumb-slot-bg', '--breadcrumb-slot-border-bottom'] },
+              { label: 'Chrome', tokens: ['--layout-chrome-inner-max-width', '--layout-content-max-width-sm', '--layout-content-max-width-md'] },
+            ]}
+            code={`import { TitanAppShell, TitanNavbar, TitanSidebar, TitanSidebarItem, TitanBreadcrumb } from 'titan-compositions'
+import { LayoutDashboard, User, Settings } from 'lucide-react'
+
+<TitanAppShell
+  navbar={<TitanNavbar theme="audiense" userInitial="A" />}
+  sidebar={
+    <TitanSidebar collapsed={collapsed} onToggle={() => setCollapsed((c) => !c)}>
+      <TitanSidebarItem id="nav-1" icon={<LayoutDashboard />}>Dashboard</TitanSidebarItem>
+      <TitanSidebarItem id="nav-2" icon={<User />}>Audience</TitanSidebarItem>
+      <TitanSidebarItem id="nav-3" icon={<Settings />}>Settings</TitanSidebarItem>
+    </TitanSidebar>
+  }
+  breadcrumb={
+    <TitanBreadcrumb
+      items={[{ id: 'home', label: 'Home' }, { id: 'reports', label: 'Reports' }]}
+      currentLabel="Overview"
+    />
+  }
+>
+  <p>Main content (max 1440 / 1280 centered in column, minus sidebar).</p>
+</TitanAppShell>`}
+          >
+            <div
+              style={{
+                height: 420,
+                border: '1px solid var(--color-black-300)',
+                borderRadius: 'var(--rounded-m)',
+                overflow: 'hidden',
+              }}
+            >
+              <TitanAppShell
+                navbar={<TitanNavbar theme={theme} userInitial="A" />}
+                sidebar={
+                  <TitanSidebar
+                    collapsed={appShellSidebarCollapsed}
+                    onToggle={() => setAppShellSidebarCollapsed((c) => !c)}
+                    defaultActiveId="shell-1"
+                  >
+                    <TitanSidebarItem id="shell-1" icon={LayoutDashboard}>
+                      Dashboard
+                    </TitanSidebarItem>
+                    <TitanSidebarItem id="shell-2" icon={Users}>
+                      Audience
+                    </TitanSidebarItem>
+                    <TitanSidebarItem id="shell-3" icon={Settings}>
+                      Settings
+                    </TitanSidebarItem>
+                  </TitanSidebar>
+                }
+                breadcrumb={
+                  <TitanBreadcrumb
+                    items={[
+                      { id: 'h', label: 'Home' },
+                      { id: 'r', label: 'Reports' },
+                    ]}
+                    currentLabel="Overview"
+                  />
+                }
+              >
+                <p style={{ fontSize: 'var(--font-size-s)', color: 'var(--copy-slot-secondary)', margin: 0 }}>
+                  Main column: scrolls independently; inner width follows .titan-app-content-inner (1280 / 1440
+                  rules).
+                </p>
+              </TitanAppShell>
             </div>
           </ShowcaseCard>
 

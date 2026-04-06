@@ -624,6 +624,11 @@
   --layout-content-max-width-md: 1440px;
   --layout-content-max-width-sm: 1280px;
   --layout-content-pad-x: var(--spacing-l);
+  /* Navbar inner + app-shell main/breadcrumb inner: max 1440px centered at full width */
+  --layout-chrome-inner-max-width: var(--layout-content-max-width-md);
+  /* Breadcrumb strip surface (distinct from page canvas; PDF contract) */
+  --breadcrumb-slot-bg: var(--color-black-100);
+  --breadcrumb-slot-border-bottom: var(--stroke-s) solid var(--color-black-200);
 
   /* ---------------------------- */
   /* Elevation (aliases)          */
@@ -2273,15 +2278,12 @@
   --sidebar-slot-width-collapsed: 72px;
   --sidebar-slot-width-expanded: 14rem;
   --sidebar-slot-padding: var(--spacing-s) var(--spacing-2xs);
-  /* Vertical gap between stacked nav rows (collapsed + expanded); 8px */
-  --sidebar-slot-nav-stack-gap: var(--spacing-2xs);
 
   --sidebar-slot-item-color: var(--color-black-700);
   --sidebar-slot-item-color-hover: var(--color-black-900);
   --sidebar-slot-item-bg-hover: var(--color-black-100);
-  --sidebar-slot-item-color-active: var(--tab-text-selected, var(--color-black-900));
+  --sidebar-slot-item-color-active: var(--tab-border-selected, var(--tab-text-selected));
   --sidebar-slot-item-bg-active: var(--tab-selected-background, var(--color-black-100));
-  --sidebar-slot-item-accent-active: var(--tab-border-selected, var(--color-black-700));
   --sidebar-slot-item-radius: var(--radius-slot-control);
   --sidebar-slot-item-padding: var(--spacing-s) var(--spacing-m);
   --sidebar-slot-item-gap: var(--spacing-s);
