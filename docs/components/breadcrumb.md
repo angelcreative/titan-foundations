@@ -55,7 +55,8 @@ Rules:
 - Focus: `--focus-ring`, `--focus-ring-offset`
 - Item gap: `--spacing-2xs`
 - **Strip surface:** `--breadcrumb-slot-bg`
-- **Strip border:** `--breadcrumb-slot-border-bottom`
+- **Strip min height:** `--breadcrumb-slot-min-height` (default `var(--spacing-3xl)`, 48px)
+- **Strip border (optional):** `--breadcrumb-slot-border-bottom` (default `none`; set to a stroke token when a divider is required)
 - **Margin below breadcrumb:** `margin-bottom: var(--spacing-m)` or `var(--layout-grid-gap)` when the breadcrumb is followed by page content (cards, sections). In `TitanAppShell`, vertical rhythm uses `.titan-app-main` padding instead.
 
 ## States

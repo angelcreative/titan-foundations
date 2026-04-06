@@ -2366,13 +2366,13 @@ function App() {
             foundations={[
               { category: 'Spacing', detail: '--spacing-xl and --spacing-2xs for height calculation and item gaps.' },
               { category: 'Typography', detail: '--button-slot-font-size, --button-slot-line-height, --button-slot-font-weight for consistent text sizing with the button scale.' },
-              { category: 'Borders', detail: '--breadcrumb-slot-border-bottom on the strip; --stroke-s for separators.' },
+              { category: 'Borders', detail: 'Strip border optional via --breadcrumb-slot-border-bottom (default none); --stroke-s for separators.' },
               { category: 'Surface', detail: '--breadcrumb-slot-bg for the trail strip (distinct from page canvas).' },
               { category: 'Icons', detail: '--icon-size-s and --icon-stroke-s for the ChevronRight separator icon.' },
             ]}
             tokenGroups={[
               { label: 'Color', tokens: ['--text-link', '--text-link-hover', '--text-muted', '--divider-strong', '--color-black-200'] },
-              { label: 'Layout', tokens: ['--spacing-xl', '--spacing-2xs', '--breadcrumb-slot-bg', '--breadcrumb-slot-border-bottom'] },
+              { label: 'Layout', tokens: ['--spacing-xl', '--spacing-2xs', '--breadcrumb-slot-bg', '--breadcrumb-slot-min-height', '--breadcrumb-slot-border-bottom'] },
               { label: 'Typography', tokens: ['--button-slot-font-size', '--button-slot-line-height', '--button-slot-font-weight', '--button-slot-font-family'] },
               { label: 'Icons', tokens: ['--icon-size-s', '--icon-stroke-s'] },
             ]}
@@ -2387,11 +2387,11 @@ function App() {
               { name: 'Breadcrumb current page', description: 'Non-clickable current page label.', rows: [
                 { property: 'Text color', chain: [{ label: 'color', type: 'component' }, { label: '--color-steel-500', type: 'primitive' }, { label: '#9CA3AF', type: 'value', swatch: '#9CA3AF' }] },
               ]},
-              { name: 'Breadcrumb nav bar', description: 'Full-width strip with background and bottom border.', rows: [
-                { property: 'Min height', chain: [{ label: 'min-height', type: 'component' }, { label: '40px', type: 'value' }] },
+              { name: 'Breadcrumb nav bar', description: 'Full-width strip with background; min height from spacing token.', rows: [
+                { property: 'Min height', chain: [{ label: '--breadcrumb-slot-min-height', type: 'component' }, { label: '--spacing-3xl', type: 'primitive' }, { label: '48px', type: 'value' }] },
                 { property: 'Padding', chain: [{ label: '--spacing-xs', type: 'primitive' }, { label: '8px', type: 'value' }] },
                 { property: 'Background', chain: [{ label: '--breadcrumb-slot-bg', type: 'component' }, { label: '--color-black-100', type: 'primitive' }, { label: '#F3F4F6', type: 'value', swatch: '#F3F4F6' }] },
-                { property: 'Border bottom', chain: [{ label: '--breadcrumb-slot-border-bottom', type: 'component' }, { label: '--color-black-200', type: 'primitive' }, { label: '#E5E7EB', type: 'value', swatch: '#E5E7EB' }] },
+                { property: 'Border bottom', chain: [{ label: '--breadcrumb-slot-border-bottom', type: 'component' }, { label: 'none', type: 'value' }] },
                 { property: 'Separator icon', chain: [{ label: '--icon-size-s', type: 'primitive' }, { label: '12px', type: 'value' }] },
               ]},
             ]}
@@ -2467,13 +2467,14 @@ function App() {
               { category: 'Widths', detail: 'Navbar inner .navbar-inner max 1440px; app column inner uses --layout-chrome-inner-max-width via media query.' },
             ]}
             tokenGroups={[
-              { label: 'Breadcrumb strip', tokens: ['--breadcrumb-slot-bg', '--breadcrumb-slot-border-bottom'] },
+              { label: 'Breadcrumb strip', tokens: ['--breadcrumb-slot-bg', '--breadcrumb-slot-min-height', '--breadcrumb-slot-border-bottom'] },
               { label: 'Chrome', tokens: ['--layout-chrome-inner-max-width', '--layout-content-max-width-sm', '--layout-content-max-width-md'] },
             ]}
             code={`import { TitanAppShell, TitanNavbar, TitanSidebar, TitanSidebarItem, TitanBreadcrumb } from 'titan-compositions'
 import { LayoutDashboard, User, Settings } from 'lucide-react'
 
 <TitanAppShell
+  className="titan-app-root--fill-parent"
   navbar={<TitanNavbar theme="audiense" userInitial="A" />}
   sidebar={
     <TitanSidebar collapsed={collapsed} onToggle={() => setCollapsed((c) => !c)}>
@@ -2495,12 +2496,15 @@ import { LayoutDashboard, User, Settings } from 'lucide-react'
             <div
               style={{
                 height: 420,
+                display: 'flex',
+                flexDirection: 'column',
                 border: '1px solid var(--color-black-300)',
                 borderRadius: 'var(--rounded-m)',
                 overflow: 'hidden',
               }}
             >
               <TitanAppShell
+                className="titan-app-root--fill-parent"
                 navbar={<TitanNavbar theme={theme} userInitial="A" />}
                 sidebar={
                   <TitanSidebar

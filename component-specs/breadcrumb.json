@@ -28,6 +28,7 @@
       "itemGap": "var(--spacing-2xs)",
       "marginBottom": "var(--spacing-m) — space below breadcrumb so it does not stick to content; see docs/components/breadcrumb.md",
       "stripBackground": "var(--breadcrumb-slot-bg)",
+      "stripMinHeight": "var(--breadcrumb-slot-min-height)",
       "stripBorderBottom": "var(--breadcrumb-slot-border-bottom)"
     },
     "interaction": {

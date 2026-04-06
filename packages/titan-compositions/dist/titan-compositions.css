@@ -199,6 +199,12 @@
   background: var(--surface-slot-page, var(--color-white-900));
 }
 
+/* Use inside a fixed-height preview (e.g. playground) so body/sidebar fill the frame instead of 100vh. */
+.titan-app-root.titan-app-root--fill-parent {
+  min-height: 0;
+  height: 100%;
+}
+
 .titan-app-body {
   flex: 1;
   display: flex;
@@ -2552,7 +2558,7 @@
 /* Breadcrumb */
 .breadcrumb-nav {
   width: 100%;
-  min-height: 40px;
+  min-height: var(--breadcrumb-slot-min-height);
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-3xs);

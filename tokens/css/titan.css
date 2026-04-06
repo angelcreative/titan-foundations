@@ -628,7 +628,8 @@
   --layout-chrome-inner-max-width: var(--layout-content-max-width-md);
   /* Breadcrumb strip surface (distinct from page canvas; PDF contract) */
   --breadcrumb-slot-bg: var(--color-black-100);
-  --breadcrumb-slot-border-bottom: var(--stroke-s) solid var(--color-black-200);
+  --breadcrumb-slot-border-bottom: none;
+  --breadcrumb-slot-min-height: var(--spacing-3xl);
 
   /* ---------------------------- */
   /* Elevation (aliases)          */
