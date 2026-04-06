@@ -1443,16 +1443,25 @@ function ShowcaseCard({ id, title, ariaImports, ariaDesc, ariaComponents, founda
 /*  Component source code strings                                      */
 /* ------------------------------------------------------------------ */
 
-const CODE_BREADCRUMB = `import { TitanBreadcrumb } from 'titan-compositions'
+const CODE_BREADCRUMB = `import { useMemo, useState } from 'react'
+import { TitanBreadcrumb } from 'titan-compositions'
 
-<TitanBreadcrumb
-  items={[
-    { id: 'home', label: 'Home', onPress: () => navigate('/home') },
-    { id: 'reports', label: 'Reports', onPress: () => navigate('/reports') },
-  ]}
-  currentLabel="Overview"
-  maxVisible={5}
-/>`
+const [path, setPath] = useState([
+  { id: 'h', label: 'Home' },
+  { id: 'a', label: 'Apps' },
+  { id: 's', label: 'Sports' },
+])
+const items = useMemo(() => {
+  const ancestors = path.slice(0, -1)
+  return ancestors.map((seg) => ({
+    id: seg.id,
+    label: seg.label,
+    onPress: () =>
+      setPath((prev) => prev.slice(0, prev.findIndex((x) => x.id === seg.id) + 1)),
+  }))
+}, [path])
+
+<TitanBreadcrumb items={items} currentLabel={path[path.length - 1].label} maxVisible={5} />`
 
 const CODE_CARDGRID = `export function TitanCardGrid({ children }) {
   return <div className="cards-layout-grid">{children}</div>
@@ -2047,8 +2056,16 @@ function App() {
   const [pills, setPills] = useState(INITIAL_PILL_ITEMS)
   const [toasts, setToasts] = useState([])
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
-  const [breadcrumbNavFeedback, setBreadcrumbNavFeedback] = useState(null)
-  const [appShellSidebarCollapsed, setAppShellSidebarCollapsed] = useState(false)
+  /** Interactive breadcrumb demo: full path (last segment = current page). */
+  const [breadcrumbDemoPath, setBreadcrumbDemoPath] = useState([
+    { id: 'bd-h', label: 'Home' },
+    { id: 'bd-a', label: 'Apps' },
+    { id: 'bd-g', label: 'Games' },
+    { id: 'bd-l', label: 'League' },
+    { id: 'bd-d', label: 'Division' },
+    { id: 'bd-s', label: 'Sports' },
+  ])
+  const [appShellSidebarCollapsed, setAppShellSidebarCollapsed] = useState(true)
   const toastIdRef = useRef(0)
   const mainScrollRef = useRef(null)
 
@@ -2069,6 +2086,23 @@ function App() {
     ],
     []
   )
+
+  const breadcrumbDemoItems = useMemo(() => {
+    const ancestors = breadcrumbDemoPath.slice(0, -1)
+    return ancestors.map((seg) => ({
+      id: seg.id,
+      label: seg.label,
+      onPress: () => {
+        setBreadcrumbDemoPath((prev) => {
+          const idx = prev.findIndex((s) => s.id === seg.id)
+          if (idx < 0) return prev
+          return prev.slice(0, idx + 1)
+        })
+      },
+    }))
+  }, [breadcrumbDemoPath])
+
+  const breadcrumbDemoCurrentLabel = breadcrumbDemoPath[breadcrumbDemoPath.length - 1]?.label ?? ''
 
   function pushToast(variant) {
     const id = toastIdRef.current + 1
@@ -2345,35 +2379,38 @@ function App() {
                 />
               </div>
               <div>
-                <div style={{ fontSize: '12px', color: '#888', marginBottom: 4 }}>
-                  Overflow menu (…): choose a middle segment — parent handles navigation (simulated below)
+                <div style={{ fontSize: '12px', color: '#888', marginBottom: 8 }}>
+                  <strong>Navigation (links + … menu):</strong> the path updates like a real app — e.g.{' '}
+                  <code>Home › Apps › … › Sports</code> → open <code>…</code> and pick <code>Games</code> →{' '}
+                  <code>Home › Apps › Games</code>. Pick an ancestor to shorten to that level (e.g. Apps →{' '}
+                  <code>Home › Apps</code>).
                 </div>
                 <TitanBreadcrumb
-                  items={[
-                    { id: 'home', label: 'Home', onPress: () => setBreadcrumbNavFeedback({ source: 'link', id: 'home', label: 'Home' }) },
-                    { id: 'dashboard', label: 'Dashboard', onPress: () => setBreadcrumbNavFeedback({ source: 'link', id: 'dashboard', label: 'Dashboard' }) },
-                    { id: 'projects', label: 'Projects', onPress: () => setBreadcrumbNavFeedback({ source: 'link', id: 'projects', label: 'Projects' }) },
-                    { id: 'alpha', label: 'Alpha', onPress: () => setBreadcrumbNavFeedback({ source: 'link', id: 'alpha', label: 'Alpha' }) },
-                    { id: 'settings', label: 'Settings', onPress: () => setBreadcrumbNavFeedback({ source: 'link', id: 'settings', label: 'Settings' }) },
-                    { id: 'general', label: 'General', onPress: () => setBreadcrumbNavFeedback({ source: 'link', id: 'general', label: 'General' }) },
-                  ]}
-                  currentLabel="Notifications"
+                  items={breadcrumbDemoItems}
+                  currentLabel={breadcrumbDemoCurrentLabel}
                   maxVisible={5}
                 />
-                {breadcrumbNavFeedback ? (
-                  <p
-                    role="status"
-                    aria-live="polite"
-                    style={{
-                      fontSize: 'var(--font-size-s)',
-                      color: 'var(--copy-slot-secondary)',
-                      marginTop: 'var(--spacing-s)',
-                    }}
+                <div className="row" style={{ marginTop: 'var(--spacing-s)', flexWrap: 'wrap', gap: 'var(--spacing-s)' }}>
+                  <TitanButton
+                    variant="secondary"
+                    onPress={() =>
+                      setBreadcrumbDemoPath([
+                        { id: 'bd-h', label: 'Home' },
+                        { id: 'bd-a', label: 'Apps' },
+                        { id: 'bd-g', label: 'Games' },
+                        { id: 'bd-l', label: 'League' },
+                        { id: 'bd-d', label: 'Division' },
+                        { id: 'bd-s', label: 'Sports' },
+                      ])
+                    }
                   >
-                    Simulated navigation:{' '}
-                    <strong>{breadcrumbNavFeedback.label}</strong> ({breadcrumbNavFeedback.source})
-                  </p>
-                ) : null}
+                    Reset full path
+                  </TitanButton>
+                  <span style={{ fontSize: 'var(--font-size-s)', color: 'var(--copy-slot-secondary)' }}>
+                    Current route (simulated):{' '}
+                    <strong>{breadcrumbDemoPath.map((s) => s.label).join(' › ')}</strong>
+                  </span>
+                </div>
               </div>
               <div>
                 <div style={{ fontSize: '12px', color: '#888', marginBottom: 4 }}>With disabled item</div>

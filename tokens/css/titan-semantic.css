@@ -1698,6 +1698,7 @@
   --sidebar-slot-item-radius: var(--radius-slot-control);
   --sidebar-slot-item-padding: var(--spacing-s) var(--spacing-m);
   --sidebar-slot-item-gap: var(--spacing-s);
+  --sidebar-slot-nav-stack-gap: var(--spacing-2xs);
 
   --sidebar-slot-header-color: var(--color-black-500);
   --sidebar-slot-header-font-size: var(--font-size-xs);
