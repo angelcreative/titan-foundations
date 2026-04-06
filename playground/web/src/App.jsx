@@ -1463,6 +1463,48 @@ const items = useMemo(() => {
 
 <TitanBreadcrumb items={items} currentLabel={path[path.length - 1].label} maxVisible={5} />`
 
+/** Initial paths for breadcrumb showcase (reset restores all three). */
+const BREADCRUMB_STANDARD_INITIAL = [
+  { id: 'bs-h', label: 'Home' },
+  { id: 'bs-c', label: 'Creator discovery' },
+  { id: 'bs-p', label: 'Campaigns' },
+]
+const BREADCRUMB_COLLAPSED_INITIAL = [
+  { id: 'bc-h', label: 'Home' },
+  { id: 'bc-d', label: 'Dashboard' },
+  { id: 'bc-p', label: 'Projects' },
+  { id: 'bc-a', label: 'Alpha' },
+  { id: 'bc-s', label: 'Settings' },
+  { id: 'bc-g', label: 'General' },
+  { id: 'bc-n', label: 'Notifications' },
+]
+/** 9 segments → 8 ancestors + Sports: ellipsis menu shows Apps, Games, League, Division (4 middle items). */
+const BREADCRUMB_DEMO_INITIAL = [
+  { id: 'bd-h', label: 'Home' },
+  { id: 'bd-a', label: 'Apps' },
+  { id: 'bd-g', label: 'Games' },
+  { id: 'bd-l', label: 'League' },
+  { id: 'bd-d', label: 'Division' },
+  { id: 'bd-r', label: 'Region' },
+  { id: 'bd-t', label: 'Team' },
+  { id: 'bd-c', label: 'Club' },
+  { id: 'bd-s', label: 'Sports' },
+]
+
+function createBreadcrumbAncestorItems(path, setPath) {
+  return path.slice(0, -1).map((seg) => ({
+    id: seg.id,
+    label: seg.label,
+    onPress: () => {
+      setPath((prev) => {
+        const idx = prev.findIndex((s) => s.id === seg.id)
+        if (idx < 0) return prev
+        return prev.slice(0, idx + 1)
+      })
+    },
+  }))
+}
+
 const CODE_CARDGRID = `export function TitanCardGrid({ children }) {
   return <div className="cards-layout-grid">{children}</div>
 }
@@ -2056,15 +2098,10 @@ function App() {
   const [pills, setPills] = useState(INITIAL_PILL_ITEMS)
   const [toasts, setToasts] = useState([])
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
-  /** Interactive breadcrumb demo: full path (last segment = current page). */
-  const [breadcrumbDemoPath, setBreadcrumbDemoPath] = useState([
-    { id: 'bd-h', label: 'Home' },
-    { id: 'bd-a', label: 'Apps' },
-    { id: 'bd-g', label: 'Games' },
-    { id: 'bd-l', label: 'League' },
-    { id: 'bd-d', label: 'Division' },
-    { id: 'bd-s', label: 'Sports' },
-  ])
+  const [breadcrumbPathStandard, setBreadcrumbPathStandard] = useState(BREADCRUMB_STANDARD_INITIAL)
+  const [breadcrumbPathCollapsed, setBreadcrumbPathCollapsed] = useState(BREADCRUMB_COLLAPSED_INITIAL)
+  /** Long path: ellipsis lists multiple middle segments (not only Apps). */
+  const [breadcrumbDemoPath, setBreadcrumbDemoPath] = useState(BREADCRUMB_DEMO_INITIAL)
   const [appShellSidebarCollapsed, setAppShellSidebarCollapsed] = useState(true)
   const toastIdRef = useRef(0)
   const mainScrollRef = useRef(null)
@@ -2087,22 +2124,29 @@ function App() {
     []
   )
 
-  const breadcrumbDemoItems = useMemo(() => {
-    const ancestors = breadcrumbDemoPath.slice(0, -1)
-    return ancestors.map((seg) => ({
-      id: seg.id,
-      label: seg.label,
-      onPress: () => {
-        setBreadcrumbDemoPath((prev) => {
-          const idx = prev.findIndex((s) => s.id === seg.id)
-          if (idx < 0) return prev
-          return prev.slice(0, idx + 1)
-        })
-      },
-    }))
-  }, [breadcrumbDemoPath])
+  const breadcrumbStandardItems = useMemo(
+    () => createBreadcrumbAncestorItems(breadcrumbPathStandard, setBreadcrumbPathStandard),
+    [breadcrumbPathStandard],
+  )
+  const breadcrumbCollapsedItems = useMemo(
+    () => createBreadcrumbAncestorItems(breadcrumbPathCollapsed, setBreadcrumbPathCollapsed),
+    [breadcrumbPathCollapsed],
+  )
+  const breadcrumbDemoItems = useMemo(
+    () => createBreadcrumbAncestorItems(breadcrumbDemoPath, setBreadcrumbDemoPath),
+    [breadcrumbDemoPath],
+  )
 
+  const breadcrumbStandardCurrentLabel = breadcrumbPathStandard[breadcrumbPathStandard.length - 1]?.label ?? ''
+  const breadcrumbCollapsedCurrentLabel =
+    breadcrumbPathCollapsed[breadcrumbPathCollapsed.length - 1]?.label ?? ''
   const breadcrumbDemoCurrentLabel = breadcrumbDemoPath[breadcrumbDemoPath.length - 1]?.label ?? ''
+
+  function resetAllBreadcrumbDemos() {
+    setBreadcrumbPathStandard(BREADCRUMB_STANDARD_INITIAL)
+    setBreadcrumbPathCollapsed(BREADCRUMB_COLLAPSED_INITIAL)
+    setBreadcrumbDemoPath(BREADCRUMB_DEMO_INITIAL)
+  }
 
   function pushToast(variant) {
     const id = toastIdRef.current + 1
@@ -2353,64 +2397,50 @@ function App() {
             ]}
           >
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '100%' }}>
-              <div>
-                <div style={{ fontSize: '12px', color: '#888', marginBottom: 4 }}>Standard (3 items)</div>
-                <TitanBreadcrumb
-                  items={[
-                    { id: 'home', label: 'Home' },
-                    { id: 'creator', label: 'Creator discovery' },
-                  ]}
-                  currentLabel="Campaigns"
-                />
+              <div className="row" style={{ flexWrap: 'wrap', gap: 'var(--spacing-s)', alignItems: 'center' }}>
+                <TitanButton variant="secondary" onPress={resetAllBreadcrumbDemos}>
+                  Reset all breadcrumb demos
+                </TitanButton>
+                <span style={{ fontSize: 'var(--font-size-s)', color: 'var(--copy-slot-secondary)' }}>
+                  Restores the three examples below to their initial paths.
+                </span>
               </div>
               <div>
-                <div style={{ fontSize: '12px', color: '#888', marginBottom: 4 }}>Collapsed (7 items, max 5 visible)</div>
+                <div style={{ fontSize: '12px', color: '#888', marginBottom: 4 }}>
+                  Standard (3 levels) — click an ancestor to jump there (e.g. Home → only <code>Home</code>)
+                </div>
+                <TitanBreadcrumb items={breadcrumbStandardItems} currentLabel={breadcrumbStandardCurrentLabel} />
+                <p style={{ fontSize: 'var(--font-size-s)', color: 'var(--copy-slot-secondary)', margin: '8px 0 0' }}>
+                  Route: <strong>{breadcrumbPathStandard.map((s) => s.label).join(' › ')}</strong>
+                </p>
+              </div>
+              <div>
+                <div style={{ fontSize: '12px', color: '#888', marginBottom: 4 }}>
+                  Collapsed (7 levels, max 5 visible) — same navigation; <code>…</code> lists hidden middle
+                  segments
+                </div>
                 <TitanBreadcrumb
-                  items={[
-                    { id: 'home', label: 'Home' },
-                    { id: 'dashboard', label: 'Dashboard' },
-                    { id: 'projects', label: 'Projects' },
-                    { id: 'alpha', label: 'Alpha' },
-                    { id: 'settings', label: 'Settings' },
-                    { id: 'general', label: 'General' },
-                  ]}
-                  currentLabel="Notifications"
+                  items={breadcrumbCollapsedItems}
+                  currentLabel={breadcrumbCollapsedCurrentLabel}
                   maxVisible={5}
                 />
+                <p style={{ fontSize: 'var(--font-size-s)', color: 'var(--copy-slot-secondary)', margin: '8px 0 0' }}>
+                  Route: <strong>{breadcrumbPathCollapsed.map((s) => s.label).join(' › ')}</strong>
+                </p>
               </div>
               <div>
                 <div style={{ fontSize: '12px', color: '#888', marginBottom: 8 }}>
-                  <strong>Navigation (links + … menu):</strong> the path updates like a real app — e.g.{' '}
-                  <code>Home › Apps › … › Sports</code> → open <code>…</code> and pick <code>Games</code> →{' '}
-                  <code>Home › Apps › Games</code>. Pick an ancestor to shorten to that level (e.g. Apps →{' '}
-                  <code>Home › Apps</code>).
+                  <strong>Long path (9 levels)</strong> — the <code>…</code> menu lists <strong>four</strong> middle
+                  segments (Apps, Games, League, Division). Click any ancestor or a menu item to truncate the path.
                 </div>
                 <TitanBreadcrumb
                   items={breadcrumbDemoItems}
                   currentLabel={breadcrumbDemoCurrentLabel}
                   maxVisible={5}
                 />
-                <div className="row" style={{ marginTop: 'var(--spacing-s)', flexWrap: 'wrap', gap: 'var(--spacing-s)' }}>
-                  <TitanButton
-                    variant="secondary"
-                    onPress={() =>
-                      setBreadcrumbDemoPath([
-                        { id: 'bd-h', label: 'Home' },
-                        { id: 'bd-a', label: 'Apps' },
-                        { id: 'bd-g', label: 'Games' },
-                        { id: 'bd-l', label: 'League' },
-                        { id: 'bd-d', label: 'Division' },
-                        { id: 'bd-s', label: 'Sports' },
-                      ])
-                    }
-                  >
-                    Reset full path
-                  </TitanButton>
-                  <span style={{ fontSize: 'var(--font-size-s)', color: 'var(--copy-slot-secondary)' }}>
-                    Current route (simulated):{' '}
-                    <strong>{breadcrumbDemoPath.map((s) => s.label).join(' › ')}</strong>
-                  </span>
-                </div>
+                <p style={{ fontSize: 'var(--font-size-s)', color: 'var(--copy-slot-secondary)', margin: '8px 0 0' }}>
+                  Route: <strong>{breadcrumbDemoPath.map((s) => s.label).join(' › ')}</strong>
+                </p>
               </div>
               <div>
                 <div style={{ fontSize: '12px', color: '#888', marginBottom: 4 }}>With disabled item</div>
