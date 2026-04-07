@@ -2368,10 +2368,11 @@ function App() {
               { category: 'Typography', detail: '--button-slot-font-size, --button-slot-line-height, --button-slot-font-weight for consistent text sizing with the button scale.' },
               { category: 'Borders', detail: 'Strip border optional via --breadcrumb-slot-border-bottom (default none); --stroke-s for separators.' },
               { category: 'Surface', detail: '--breadcrumb-slot-bg for the trail strip (distinct from page canvas).' },
+              { category: 'Degraded hierarchy', detail: 'Use resolutionState (loading/unavailable/deleted/restricted) + fallbackLabel. Keep these segments disabled; no aggressive error red.' },
               { category: 'Icons', detail: '--icon-size-s and --icon-stroke-s for the ChevronRight separator icon.' },
             ]}
             tokenGroups={[
-              { label: 'Color', tokens: ['--text-link', '--text-link-hover', '--text-muted', '--divider-strong', '--color-black-200'] },
+              { label: 'Color', tokens: ['--text-link', '--text-link-hover', '--text-muted', '--copy-slot-muted', '--copy-slot-secondary', '--divider-strong', '--color-black-200'] },
               { label: 'Layout', tokens: ['--spacing-xl', '--spacing-2xs', '--breadcrumb-slot-bg', '--breadcrumb-slot-min-height', '--breadcrumb-slot-border-bottom'] },
               { label: 'Typography', tokens: ['--button-slot-font-size', '--button-slot-line-height', '--button-slot-font-weight', '--button-slot-font-family'] },
               { label: 'Icons', tokens: ['--icon-size-s', '--icon-stroke-s'] },
@@ -2450,6 +2451,26 @@ function App() {
                     { id: 'archive', label: 'Archive', disabled: true },
                   ]}
                   currentLabel="Old reports"
+                />
+              </div>
+              <div>
+                <div style={{ fontSize: '12px', color: '#888', marginBottom: 4 }}>
+                  Resolution states (soft) — <code>Hide &gt; Rebuild &gt; Fallback &gt; Soft state</code>
+                </div>
+                <TitanBreadcrumb
+                  items={[
+                    { id: 'home', label: 'Home', onPress: () => {} },
+                    { id: 'projects', label: 'Projects', onPress: () => {} },
+                    {
+                      id: 'project-x',
+                      label: 'Project X',
+                      fallbackLabel: 'Unknown',
+                      resolutionState: 'unavailable',
+                      tooltip: 'Project could not be loaded',
+                    },
+                    { id: 'analytics', label: 'Analytics', resolutionState: 'loading', fallbackLabel: 'Loading…' },
+                  ]}
+                  currentLabel="Overview"
                 />
               </div>
             </div>

@@ -4,7 +4,7 @@
 > This file defines operational implementation contract.
 > Canonical glossary: `docs/core/terminology.md` (mandatory naming).
 
-Canonical terminology (mandatory): `breadcrumb-nav`, `ordered-list`, `item`, `separator`, `current-item`, `overflow-ellipsis-item`; states `default/hover/pressed/focus-visible/disabled`.
+Canonical terminology (mandatory): `breadcrumb-nav`, `ordered-list`, `item`, `separator`, `current-item`, `overflow-ellipsis-item`; states `default/hover/pressed/focus-visible/disabled/loading/unavailable/deleted/restricted`.
 
 ## Purpose
 
@@ -37,6 +37,26 @@ Rules:
 - Home icon entry
 - Ellipsis collapse item for long paths
 - Expandable overflow segment (menu/popover) when requested by flow
+
+## Resolution/degradation states
+
+Breadcrumb is not a feedback surface, but it must degrade when hierarchy resolution fails.
+
+Priority order:
+- **Hide** invalid segment when possible (permissions/restricted context).
+- **Rebuild** a valid partial hierarchy from known parents.
+- **Fallback** to a neutral label (`Unknown`, `Unavailable`, `Deleted`).
+- **Soft state** on the segment as last resort (never critical/red form-error styling).
+
+`TitanBreadcrumbItem` supports:
+- `resolutionState`: `default | loading | unavailable | deleted | restricted`
+- `fallbackLabel`: optional neutral replacement label
+- `tooltip`: optional plain-language detail
+
+Behavior contract:
+- Non-`default` resolution states are non-interactive (disabled in visible trail and `…` menu).
+- Keep navigation functional for remaining valid ancestors.
+- Avoid technical messages (`500`, stack details) in breadcrumb labels/tooltips.
 
 ## Layout (app shell)
 
@@ -71,6 +91,12 @@ Interactive items:
 Current item:
 - default only (not interactive)
 
+Resolution states (non-interactive):
+- `loading` (context pending)
+- `unavailable` (failed fetch / unresolved)
+- `deleted` (resource no longer exists)
+- `restricted` (not accessible for current user)
+
 ## Responsive and overflow
 
 - Preserve first and last path segments on narrow widths.
@@ -82,6 +108,7 @@ Current item:
 - Correct landmark/aria semantics.
 - Keyboard focus only on interactive items.
 - Current page exposed with `aria-current="page"`.
+- Degraded segments are disabled (`isDisabled` / `aria-disabled`) and never route.
 
 ## Validation
 
@@ -94,6 +121,7 @@ Current item:
 - Interactive item: `default`, `hover`, `pressed`, `focus-visible`, `disabled` (si aplica).
 - Current item: `default` (no interactivo, `aria-current="page"`).
 - Overflow ellipsis item: `default`, `hover`, `focus-visible` (si es interactivo).
+- Resolution items: `loading`, `unavailable`, `deleted`, `restricted` (all non-interactive).
 
 ## Review Harness Requirements
 

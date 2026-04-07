@@ -9,7 +9,7 @@
     "description": "Breadcrumb shows current location hierarchy and allows step-back navigation.",
     "canonicalTerminology": {
       "partNames": ["breadcrumb-nav", "ordered-list", "item", "separator", "current-item", "overflow-ellipsis-item"],
-      "stateNames": ["default", "hover", "pressed", "focus-visible", "disabled"],
+      "stateNames": ["default", "hover", "pressed", "focus-visible", "disabled", "loading", "unavailable", "deleted", "restricted"],
       "rule": "Use canonical names in docs/rules/contracts; avoid alternate labels."
     },
     "structure": {
@@ -36,11 +36,13 @@
       "currentItem": "Current location is read-only text with aria-current='page'.",
       "keyboard": "Tab navigation only through interactive breadcrumb items.",
       "overflow": "Collapse middle segments with ellipsis when space is insufficient.",
-      "parentOwnsPath": "Component does not mutate items/currentLabel; on activation parent updates route/state (e.g. truncate path to chosen segment). Ellipsis menu items use the same onPress as collapsed segments."
+      "parentOwnsPath": "Component does not mutate items/currentLabel; on activation parent updates route/state (e.g. truncate path to chosen segment). Ellipsis menu items use the same onPress as collapsed segments.",
+      "resolutionStates": "Use resolutionState: default/loading/unavailable/deleted/restricted. Non-default states are non-interactive and should use neutral fallback labels."
     },
     "states": {
       "interactiveItem": ["default", "hover", "pressed", "focus-visible", "disabled when applicable"],
-      "currentItem": ["default"]
+      "currentItem": ["default"],
+      "resolutionItem": ["loading", "unavailable", "deleted", "restricted (all non-interactive)"]
     },
     "responsive": {
       "rule": "On narrow widths, preserve first and last levels and collapse middle levels first.",
@@ -54,32 +56,37 @@
     "requiredStatesVisible": {
       "interactiveItem": ["default", "hover", "pressed", "focus-visible", "disabled when applicable"],
       "currentItem": ["default"],
-      "overflowEllipsisItem": ["default", "hover", "focus-visible when interactive"]
+      "overflowEllipsisItem": ["default", "hover", "focus-visible when interactive"],
+      "resolutionItem": ["loading", "unavailable", "deleted", "restricted"]
     },
     "interactionMatrix": [
       { "event": "pointer-hover-item", "from": "default", "to": "hover" },
       { "event": "pointer-down-item", "from": "hover", "to": "pressed" },
       { "event": "keyboard-focus-item", "from": "default", "to": "focus-visible" },
       { "event": "activate-item", "from": "focus-visible|hover", "to": "navigate" },
-      { "event": "narrow-width", "from": "full-path", "to": "collapsed-middle-with-ellipsis" }
+      { "event": "narrow-width", "from": "full-path", "to": "collapsed-middle-with-ellipsis" },
+      { "event": "segment-resolution-fails", "from": "default", "to": "loading|unavailable|deleted|restricted (disabled)" }
     ],
     "reviewScenarios": [
       "Show breadcrumb with at least 4 levels and current-item semantics.",
       "Demonstrate interactive item states (default/hover/pressed/focus-visible).",
       "Demonstrate overflow strategy preserving first and last segment.",
-      "Demonstrate optional ellipsis item expansion behavior when interactive."
+      "Demonstrate optional ellipsis item expansion behavior when interactive.",
+      "Demonstrate degraded resolution states with neutral fallback labels and non-interactive behavior."
     ],
     "a11yAcceptance": [
       "Breadcrumb nav uses aria-label='Breadcrumb'.",
       "Current item exposes aria-current='page' and is not interactive.",
       "Only interactive items are keyboard focus targets.",
-      "Overflow strategy preserves semantics and discoverability."
+      "Overflow strategy preserves semantics and discoverability.",
+      "Resolution-state items are disabled and do not trigger navigation."
     ],
     "failConditions": {
       "fail": [
         "Current item is interactive or lacks aria-current='page'.",
         "Overflow strategy is missing for long paths.",
-        "Required interactive states are not visible in review harness."
+        "Required interactive states are not visible in review harness.",
+        "Resolution-state items remain interactive and can route into invalid pages."
       ],
       "blocker": [
         "Cannot provide breadcrumb landmark and current-item semantics.",

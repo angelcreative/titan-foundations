@@ -2619,6 +2619,17 @@
   text-decoration: none;
 }
 
+/* Structural breadcrumb degradation states (soft: avoid critical error red). */
+.breadcrumb-link-resolution-loading,
+.breadcrumb-link-resolution-unavailable,
+.breadcrumb-link-resolution-restricted {
+  color: var(--copy-slot-muted, var(--color-steel-600));
+}
+
+.breadcrumb-link-resolution-deleted {
+  color: var(--copy-slot-secondary, var(--color-steel-600));
+}
+
 .breadcrumb-ellipsis {
   border: none;
   background: transparent;

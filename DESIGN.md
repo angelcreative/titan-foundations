@@ -148,6 +148,7 @@ Never use brand accent colors for paragraph/body/helper text.
 ### App shell & breadcrumb
 - **TitanAppShell:** navbar (full width) → row `[ sidebar? | main column ]`. Sidebar **below** navbar, flush left; **breadcrumb strip + main** share the right column (width = viewport − sidebar). Inner column content: **max 1280px** by default, **max 1440px** from a **1440px** viewport up — `.titan-app-content-inner`.
 - **Breadcrumb:** `TitanBreadcrumb` is **presentational** — it does not mutate the path. The **app** (router/state) owns the trail; pass `items` (ancestors with `onPress`) + `currentLabel`. On navigation (link or **…** menu), update state so the path **truncates** to the chosen level (e.g. `Home › Apps › Games › Sports` → pick **Apps** → `Home › Apps`; with `…` hiding **Games**, open menu and pick **Games** → `Home › Apps › Games`).
+- **Breadcrumb degraded hierarchy:** when a segment cannot be resolved, prefer `Hide > Rebuild > Fallback > Soft state`. Use neutral labels (`Unknown`, `Unavailable`, `Deleted`) and disable that segment (`resolutionState`), never critical form-error red.
 - **Sidebar:** stacked nav rows use `--sidebar-slot-nav-stack-gap` (**8px** / `--spacing-2xs`).
 
 ### Checkbox / Radio / Toggle

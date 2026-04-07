@@ -11,6 +11,8 @@ globs:
 - Contract: `component-specs/breadcrumb.json`, `docs/components/breadcrumb.md`. PDF in `titan-comp-doc/breadcrumb.pdf` wins on conflict.
 - Current page is **never** a link; use `aria-current="page"` on the last segment.
 - Overflow: `TitanBreadcrumb` collapses middle segments into a `…` menu; each item uses `onPress` — **parent state** must update `items` / `currentLabel` (e.g. truncate path to chosen segment). Same for visible ancestor links.
+- Degraded hierarchy uses `resolutionState` (`loading|unavailable|deleted|restricted`) + optional `fallbackLabel`; these segments are always non-interactive (disabled) in both visible trail and `…` menu.
+- Error handling strategy: **Hide > Rebuild > Fallback > Soft state**. Breadcrumb is structural navigation, not an aggressive error-feedback surface.
 - Strip styling: `--breadcrumb-slot-bg`, `--breadcrumb-slot-min-height`, `--breadcrumb-slot-border-bottom` (default none) on `.breadcrumb-nav` (or parent strip: `.page-breadcrumb-host`, `.titan-app-breadcrumb-strip`).
 
 # App shell

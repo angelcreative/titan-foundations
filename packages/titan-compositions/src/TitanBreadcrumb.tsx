@@ -16,6 +16,18 @@ export interface TitanBreadcrumbItem {
   icon?: ReactNode
   selected?: boolean
   disabled?: boolean
+  /**
+   * Structural resolution status for this breadcrumb segment.
+   * Use this instead of a hard "error" state to keep breadcrumb degradation soft.
+   */
+  resolutionState?: 'default' | 'loading' | 'unavailable' | 'deleted' | 'restricted'
+  /**
+   * Optional UI fallback label when `resolutionState` is not `default`.
+   * Example: "Unknown", "Unavailable", "Deleted".
+   */
+  fallbackLabel?: string
+  /** Optional plain-language detail (renders as title tooltip). */
+  tooltip?: string
   onPress?: () => void
 }
 
@@ -24,6 +36,18 @@ export interface TitanBreadcrumbProps {
   currentLabel: string
   maxVisible?: number
   ariaLabel?: string
+}
+
+function getResolutionState(item: TitanBreadcrumbItem) {
+  return item.resolutionState ?? 'default'
+}
+
+function getItemLabel(item: TitanBreadcrumbItem) {
+  return item.fallbackLabel ?? item.label
+}
+
+function isItemDisabled(item: TitanBreadcrumbItem) {
+  return Boolean(item.disabled) || getResolutionState(item) !== 'default'
 }
 
 export function TitanBreadcrumb({
@@ -66,12 +90,13 @@ export function TitanBreadcrumb({
                   <MenuItem
                     key={item.id}
                     className="menu-item"
-                    textValue={item.label}
+                    textValue={getItemLabel(item)}
+                    isDisabled={isItemDisabled(item)}
                     onAction={() => item.onPress?.()}
                   >
                     <span className="menu-item-start">
                       {item.icon && <span className="menu-item-icon">{item.icon}</span>}
-                      <span className="menu-item-label">{item.label}</span>
+                      <span className="menu-item-label">{getItemLabel(item)}</span>
                     </span>
                   </MenuItem>
                 ))}
@@ -98,9 +123,16 @@ export function TitanBreadcrumb({
 }
 
 function BreadcrumbNode({ item }: { item: TitanBreadcrumbItem }) {
+  const resolutionState = getResolutionState(item)
+  const isDisabled = isItemDisabled(item)
+  const textLabel = getItemLabel(item)
   const linkClass = [
     'breadcrumb-link',
     item.selected ? 'breadcrumb-link-selected' : '',
+    resolutionState === 'loading' ? 'breadcrumb-link-resolution-loading' : '',
+    resolutionState === 'unavailable' ? 'breadcrumb-link-resolution-unavailable' : '',
+    resolutionState === 'deleted' ? 'breadcrumb-link-resolution-deleted' : '',
+    resolutionState === 'restricted' ? 'breadcrumb-link-resolution-restricted' : '',
   ].filter(Boolean).join(' ')
 
   return (
@@ -108,9 +140,10 @@ function BreadcrumbNode({ item }: { item: TitanBreadcrumbItem }) {
       <Button
         className={linkClass}
         onPress={item.onPress}
-        isDisabled={item.disabled}
+        isDisabled={isDisabled}
+        aria-label={item.tooltip ? `${textLabel}. ${item.tooltip}` : undefined}
       >
-        {item.label}
+        {textLabel}
       </Button>
       <span className="breadcrumb-separator" aria-hidden="true">
         {renderIconNode('chevron-right')}

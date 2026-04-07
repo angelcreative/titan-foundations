@@ -272,6 +272,15 @@ function renderIconNode(icon, props) {
 
 // src/TitanBreadcrumb.tsx
 var import_jsx_runtime2 = require("react/jsx-runtime");
+function getResolutionState(item) {
+  return item.resolutionState ?? "default";
+}
+function getItemLabel(item) {
+  return item.fallbackLabel ?? item.label;
+}
+function isItemDisabled(item) {
+  return Boolean(item.disabled) || getResolutionState(item) !== "default";
+}
 function TitanBreadcrumb({
   items,
   currentLabel,
@@ -300,11 +309,12 @@ function TitanBreadcrumb({
           import_react_aria_components.MenuItem,
           {
             className: "menu-item",
-            textValue: item.label,
+            textValue: getItemLabel(item),
+            isDisabled: isItemDisabled(item),
             onAction: () => item.onPress?.(),
             children: /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("span", { className: "menu-item-start", children: [
               item.icon && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "menu-item-icon", children: item.icon }),
-              /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "menu-item-label", children: item.label })
+              /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "menu-item-label", children: getItemLabel(item) })
             ] })
           },
           item.id
@@ -317,9 +327,16 @@ function TitanBreadcrumb({
   ] });
 }
 function BreadcrumbNode({ item }) {
+  const resolutionState = getResolutionState(item);
+  const isDisabled = isItemDisabled(item);
+  const textLabel = getItemLabel(item);
   const linkClass = [
     "breadcrumb-link",
-    item.selected ? "breadcrumb-link-selected" : ""
+    item.selected ? "breadcrumb-link-selected" : "",
+    resolutionState === "loading" ? "breadcrumb-link-resolution-loading" : "",
+    resolutionState === "unavailable" ? "breadcrumb-link-resolution-unavailable" : "",
+    resolutionState === "deleted" ? "breadcrumb-link-resolution-deleted" : "",
+    resolutionState === "restricted" ? "breadcrumb-link-resolution-restricted" : ""
   ].filter(Boolean).join(" ");
   return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(import_react_aria_components.Breadcrumb, { className: "breadcrumb-item", children: [
     /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
@@ -327,8 +344,9 @@ function BreadcrumbNode({ item }) {
       {
         className: linkClass,
         onPress: item.onPress,
-        isDisabled: item.disabled,
-        children: item.label
+        isDisabled,
+        "aria-label": item.tooltip ? `${textLabel}. ${item.tooltip}` : void 0,
+        children: textLabel
       }
     ),
     /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "breadcrumb-separator", "aria-hidden": "true", children: renderIconNode("chevron-right") })

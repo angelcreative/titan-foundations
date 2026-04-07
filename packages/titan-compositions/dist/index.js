@@ -197,6 +197,15 @@ function renderIconNode(icon, props) {
 
 // src/TitanBreadcrumb.tsx
 import { jsx as jsx2, jsxs as jsxs2 } from "react/jsx-runtime";
+function getResolutionState(item) {
+  return item.resolutionState ?? "default";
+}
+function getItemLabel(item) {
+  return item.fallbackLabel ?? item.label;
+}
+function isItemDisabled(item) {
+  return Boolean(item.disabled) || getResolutionState(item) !== "default";
+}
 function TitanBreadcrumb({
   items,
   currentLabel,
@@ -225,11 +234,12 @@ function TitanBreadcrumb({
           MenuItem,
           {
             className: "menu-item",
-            textValue: item.label,
+            textValue: getItemLabel(item),
+            isDisabled: isItemDisabled(item),
             onAction: () => item.onPress?.(),
             children: /* @__PURE__ */ jsxs2("span", { className: "menu-item-start", children: [
               item.icon && /* @__PURE__ */ jsx2("span", { className: "menu-item-icon", children: item.icon }),
-              /* @__PURE__ */ jsx2("span", { className: "menu-item-label", children: item.label })
+              /* @__PURE__ */ jsx2("span", { className: "menu-item-label", children: getItemLabel(item) })
             ] })
           },
           item.id
@@ -242,9 +252,16 @@ function TitanBreadcrumb({
   ] });
 }
 function BreadcrumbNode({ item }) {
+  const resolutionState = getResolutionState(item);
+  const isDisabled = isItemDisabled(item);
+  const textLabel = getItemLabel(item);
   const linkClass = [
     "breadcrumb-link",
-    item.selected ? "breadcrumb-link-selected" : ""
+    item.selected ? "breadcrumb-link-selected" : "",
+    resolutionState === "loading" ? "breadcrumb-link-resolution-loading" : "",
+    resolutionState === "unavailable" ? "breadcrumb-link-resolution-unavailable" : "",
+    resolutionState === "deleted" ? "breadcrumb-link-resolution-deleted" : "",
+    resolutionState === "restricted" ? "breadcrumb-link-resolution-restricted" : ""
   ].filter(Boolean).join(" ");
   return /* @__PURE__ */ jsxs2(Breadcrumb, { className: "breadcrumb-item", children: [
     /* @__PURE__ */ jsx2(
@@ -252,8 +269,9 @@ function BreadcrumbNode({ item }) {
       {
         className: linkClass,
         onPress: item.onPress,
-        isDisabled: item.disabled,
-        children: item.label
+        isDisabled,
+        "aria-label": item.tooltip ? `${textLabel}. ${item.tooltip}` : void 0,
+        children: textLabel
       }
     ),
     /* @__PURE__ */ jsx2("span", { className: "breadcrumb-separator", "aria-hidden": "true", children: renderIconNode("chevron-right") })

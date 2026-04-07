@@ -23,6 +23,18 @@ interface TitanBreadcrumbItem {
     icon?: ReactNode;
     selected?: boolean;
     disabled?: boolean;
+    /**
+     * Structural resolution status for this breadcrumb segment.
+     * Use this instead of a hard "error" state to keep breadcrumb degradation soft.
+     */
+    resolutionState?: 'default' | 'loading' | 'unavailable' | 'deleted' | 'restricted';
+    /**
+     * Optional UI fallback label when `resolutionState` is not `default`.
+     * Example: "Unknown", "Unavailable", "Deleted".
+     */
+    fallbackLabel?: string;
+    /** Optional plain-language detail (renders as title tooltip). */
+    tooltip?: string;
     onPress?: () => void;
 }
 interface TitanBreadcrumbProps {
